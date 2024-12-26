@@ -66,7 +66,8 @@
 
 1. mkdir -p .github/workfows/
 2. touch .github/workflows/deploy.yml
-3. 粘贴一下内容
+3. 粘贴一下 yaml 内容
+4. external_repository 配置项中 username 替换为 github ID 
 
 ```yaml
 name: GitHub Pages
