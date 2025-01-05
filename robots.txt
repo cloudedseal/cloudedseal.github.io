@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: http://stardustman.github.io/sitemap.xml
+Sitemap: http://buybyte.github.io/sitemap.xml
