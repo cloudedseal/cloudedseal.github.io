@@ -44,7 +44,7 @@ public final class MsgServer implements Runnable {
 
     private static void startServer() throws IOException {
         Path path = Paths.get(UDS);
-        logger.info("UDO  path: {}", UDS);
+        logger.info("UDS  path: {}", UDS);
         if (Files.exists(path)) {
             Files.delete(path);
         }
