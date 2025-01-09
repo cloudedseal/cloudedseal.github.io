@@ -102,6 +102,8 @@
    > The integrity of something such as a group of people or a text is its `state of being a united whole`. 完整性
 3. interpose
    > If you interpose something between `two` people or things, you place it `between` them. 将 ... 置于两者之间，中间层。
+4. inherent
+   > The inherent qualities of something are the necessary and natural parts of it. 天生就有的。资本一出生就带着...
 
 ## j
 
