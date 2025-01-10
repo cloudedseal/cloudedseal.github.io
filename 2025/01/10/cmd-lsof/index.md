@@ -1,7 +1,7 @@
 
 ## 通用
 1. ^ 表示非
-2. 多个值是 CSV 形式
+2. 多个值是 `CSV` 形式
 
 ## lsof -i(internet)
 
@@ -15,74 +15,74 @@
 6. `port` is a port number, or a list of them.
 
 
-### lsof -i@10.10.129.99:8080 
+### lsof `-i`@10.10.129.99:8080 
 
-### lsof -i4tcp
+### lsof `-i`4tcp
 
 > all ipv4 tcp
 
-### lsof -i4udp
+### lsof `-i`4udp
 
 > all ipv4 udp
 
-### lsof -i4udp@localhost
+### lsof `-i`4udp@localhost
 
 > all localhost ipv4 udp
 
-### lsof -i4tcp@10.10.129.99
+### lsof `-i`4tcp@10.10.129.99
 
 > all 10.10.129.99 tcp 
 
-### lsof -i :ssh
+### lsof `-i` :ssh
 
 > service ssh
 
-### lsof -i:22
+### lsof `-i`:22
 
 > port 22
 
-### lsof -iTCP -sTCP:LISTEN
+### lsof `-i`TCP -sTCP:LISTEN
 
 > tcp state Listen
 
 
-## lsof -p pid
+## lsof `-p` pid
 
 > by pid
 
 ## lsof /test.sock 
 
-## lsof -t /test.sock  
+## lsof `-t` /test.sock  
 
 > -t(terse) 简要的 get pid
 
-## lsof -c ^java 
+## lsof `-c` `^`java 
 
 > 找到以非 java 命令(command)开始的
 
-## lsof -c java 
+## lsof `-c` java 
 
 > 找到以 java 命令(command)开始的
 
-## lsof +d /dir
+## lsof `+d` /dir
 
 >  该 /dir目录(directory) 下所有
 
-## lsof -d `1`
+## lsof `-d` 1
 
 > 查看 descriptor = 1(标准输出)
 
-## lsof -d 1,2
+## lsof `-d` 1,2
 
 > 查看 descriptor = 1,2(标准输出、标准错误)
 
-## lsof -a -c java -d 3-10    
+## lsof `-a` `-c` java `-d` 3-10    
 > 条件组合查询 -a(and) -c(command) -d(范围)
 
-## lsof -u root
+## lsof `-u` root
 
 > 该 root 下所有 -u(user)
 
-## lsof -U 
+## lsof `-U`
 
 > -U(Unix domain socket)
