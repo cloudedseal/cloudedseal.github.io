@@ -4,7 +4,7 @@
 2. 多个值是 `CSV` 形式
 
 ## lsof -i(internet)
-
+> -i 后可以有空格
 > [46][protocol][@hostname|hostaddr][:service|port]
  
 1. `46` specifies the IP version, IPv4 or IPv6 that applies to the following address.'6' may be be specified only if the UNIX dialect supports IPv6.  If neither '4' nor '6' is specified, the following address applies to all IP versions.  
