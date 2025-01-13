@@ -19,6 +19,8 @@
    > The archive or archives are a collection of documents and records that contain `historical information`. You can also use archives to refer to the place where archives are stored. 包含历史信息，如 oracle 的 archived redo log.
 8. abstraction
    > An abstraction is a `general idea` rather than one `relating to a particular object, person, or situation`. 通用的概念，和特定的物体、人、情况无关。
+9. agent
+    > An agent acts on your behalf,
    
 
 ## b
@@ -88,6 +90,8 @@
    > 分解
 
 ## g
+1. gateway
+   > a gateway converts between protocols
 
 ## h
 1. handle
@@ -163,6 +167,9 @@
    > Per se means 'by itself' or 'in itself', and is used when you are talking about the qualities of one thing `considered on its own`, rather than in connection with other things. 本身，本质上
 13. permissible
    > If something is permissible, it is considered to be acceptable because it does not break any laws or rules. 不违反法律和规则即为允许的
+14. proxy
+    > a proxy emulates a service provided by a server that is `not contacted directly` by the client itself
+
 ## q
 
 ## r
