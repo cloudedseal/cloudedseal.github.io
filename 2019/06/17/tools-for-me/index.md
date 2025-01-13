@@ -39,6 +39,7 @@
 
 1. [code format](http://tool.oschina.net/codeformat/xml)
 2. [url](http://tool.chinaz.com/Tools/urlencode.aspx)
+3. [json format](https://tool.butof.com/office/json)
 
 ## unicode
 
@@ -98,6 +99,7 @@
 ## typing
 
 1. [practice typing](https://dazi.kukuw.com/)
+2. [https://qwerty.kaiyi.cool/](https://qwerty.kaiyi.cool/)
 
 # job
 
