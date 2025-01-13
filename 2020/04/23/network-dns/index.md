@@ -219,3 +219,5 @@ mail exchange 电子邮件服务器
 16. [域名信息查询](https://whois.gandi.net/zh-hans)
 17. [dns延迟测试](https://www.dnsperf.com/)
 18. [dns实践](https://messwithdns.net/)
+19. [dns-client-dog](https://github.com/ogham/dog)
+20. [dns-client-doggo](https://github.com/mr-karan/doggo)
