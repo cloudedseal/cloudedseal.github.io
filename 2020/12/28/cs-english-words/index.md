@@ -96,6 +96,8 @@
 ## h
 1. handle
    > A handle is the part of an object such as a tool, bag, or cup that you hold in order to be able to `pick up and use` the object.
+2. heap
+   > A heap of things is a pile of them, especially a pile arranged in a rather `untidy` way. 不规整放置的东西
 
 ## i
 
