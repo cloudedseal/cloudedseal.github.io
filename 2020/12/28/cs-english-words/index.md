@@ -162,15 +162,17 @@
 9. pending
    > If something is done `pending a future event`, it is done until that event happens. 
 10. post-
-   > Post- is used to form words that indicate that something takes place after a particular date, period, or event.
-11. pre-
-   > Pre- is used to form words that indicate that something takes place before a particular date, period, or event.
+    > Post- is used to form words that indicate that something takes place after a particular date, period, or event.
+12. pre-
+    > Pre- is used to form words that indicate that something takes place before a particular date, period, or event.
 12. per se
-   > Per se means 'by itself' or 'in itself', and is used when you are talking about the qualities of one thing `considered on its own`, rather than in connection with other things. 本身，本质上
-13. permissible
-   > If something is permissible, it is considered to be acceptable because it does not break any laws or rules. 不违反法律和规则即为允许的
+    > Per se means 'by itself' or 'in itself', and is used when you are talking about the qualities of one thing `considered on its own`, rather than in connection with other things. 本身，本质上
+14. permissible
+    > If something is permissible, it is considered to be acceptable because it does not break any laws or rules. 不违反法律和规则即为允许的
 14. proxy
     > a proxy emulates a service provided by a server that is `not contacted directly` by the client itself
+15. Respectively
+    > Respectively means in the `same order` as the items that you have `just mentioned`. 和刚刚提到过的保持一致的顺序。相应地
 
 ## q
 
@@ -201,6 +203,8 @@
    > A standby is something or someone that is `always ready to be used` if they are needed.
 7. segment
    > A segment of something is `one part of` it, considered separately from the rest. 整体的一部分，分段，和余下的部分分开的。
+8. split
+   > If something splits or if you split it, it is `divided` into two or more parts.
 
 ## t
 
