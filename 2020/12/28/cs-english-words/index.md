@@ -205,6 +205,8 @@
    > A segment of something is `one part of` it, considered separately from the rest. 整体的一部分，分段，和余下的部分分开的。
 8. split
    > If something splits or if you split it, it is `divided` into two or more parts.
+9. segregate
+   > To segregate two groups of people or things means to keep them `physically apart from` each other.
 
 ## t
 
