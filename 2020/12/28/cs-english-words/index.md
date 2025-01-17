@@ -78,6 +78,10 @@
    > If two things are `mutually exclusive`, they are separate and very different from each other, so that it is `impossible for them to exist or happen together`. 不可共存
 6. efficiency
    > Efficiency is the quality of being able to do a task successfully, `without wasting time or energy`. 何谓效率？不浪费时间或能量。
+7. entry
+   > An entry in a diary, account book, computer file, or reference book is `a short piece` of writing in it.
+8. immense
+   > If you describe something as immense, you mean that it is extremely large or great.
 
 ## f
 1. failover
