@@ -116,6 +116,8 @@
    > If you interpose something between `two` people or things, you place it `between` them. 将 ... 置于两者之间，中间层。
 4. inherent
    > The inherent qualities of something are the necessary and natural parts of it. 天生就有的。资本一出生就带着...
+5. i.e
+   > i.e .is used to introduce a word or sentence which makes what you have just said `clearer` or `gives details`. 即是,进一步解释清楚
 
 ## j
 
