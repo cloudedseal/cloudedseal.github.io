@@ -63,6 +63,8 @@
    > 代表更大集团的一个和其他人交流的小集团
 5. defer
    > If you defer an event or action, you arrange for it to happen `at a later date`, rather than immediately or at the previously planned time. 延迟到将来发生的事情
+6. dedicated
+   > You use dedicated to describe something that is `made`, `built`, or `designed` for one `particular purpose or thing`. 专用
 
 ## e
 
@@ -116,7 +118,7 @@
    > If you interpose something between `two` people or things, you place it `between` them. 将 ... 置于两者之间，中间层。
 4. inherent
    > The inherent qualities of something are the necessary and natural parts of it. 天生就有的。资本一出生就带着...
-5. i.e
+5. i.e.
    > i.e .is used to introduce a word or sentence which makes what you have just said `clearer` or `gives details`. 即是,进一步解释清楚
 
 ## j
@@ -179,8 +181,12 @@
     > If something is permissible, it is considered to be acceptable because it does not break any laws or rules. 不违反法律和规则即为允许的
 14. proxy
     > a proxy emulates a service provided by a server that is `not contacted directly` by the client itself
-15. Respectively
+15. respectively
     > Respectively means in the `same order` as the items that you have `just mentioned`. 和刚刚提到过的保持一致的顺序。相应地
+16. premise
+    > a premise is something that `you suppose is true` and that you use as a basis for developing an idea. 前提
+17. privileged
+    > Someone who is privileged has an `advantage or opportunity` that most other people do not have, often because of their wealth or high social class. 特权
 
 ## q
 
