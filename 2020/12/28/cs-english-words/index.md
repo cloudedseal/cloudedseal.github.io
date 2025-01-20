@@ -189,6 +189,8 @@
     > a premise is something that `you suppose is true` and that you use as a basis for developing an idea. 前提
 17. privileged
     > Someone who is privileged has an `advantage or opportunity` that most other people do not have, often because of their wealth or high social class. 特权
+18. pile
+    > A pile of things is a quantity of things that have been put `neatly` somewhere so that each thing is `on top of the one below`. 一个摞一个 stack
 
 ## q
 
