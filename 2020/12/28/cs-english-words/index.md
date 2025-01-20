@@ -49,6 +49,8 @@
    > A consensus is general agreement among a group of people. 一群人达成的协议。共识。
 5. coalesce
    > If two or more things coalesce, they come together and form a larger group or system. 合并
+6. counterbalance
+   > To counterbalance something means to balance or correct it with something that has `an equal but opposite effect` 相等但是有相反作用的
 
 ## d
 
