@@ -21,6 +21,8 @@
    > An abstraction is a `general idea` rather than one `relating to a particular object, person, or situation`. 通用的概念，和特定的物体、人、情况无关。
 9. agent
     > An agent acts on your behalf,
+10. abundant
+    > Something that is abundant is present in `large quantities`. 大量的
    
 
 ## b
