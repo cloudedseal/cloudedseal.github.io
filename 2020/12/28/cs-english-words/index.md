@@ -208,6 +208,7 @@
 
 1. sparse 
    > thinly dispersed or scattered, 稀疏的
+   > Something that is sparse is `small in number or amount` and `spread out over` an area.
 2. slot
    > a long, narrow aperture or slit in a machine for something to be inserted
    > an allotted place in a arrangement or plan such as a broadcasting schedule.(安排或计划中分配的位置)
