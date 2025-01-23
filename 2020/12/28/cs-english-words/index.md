@@ -153,6 +153,9 @@
   > If one thing overlaps another, or if you overlap them, a part of the first thing `occupies the same area` as a part of the other thing. You can also say that two things overlap. 空间上重叠
 4. outstanding
   > Outstanding issues or problems have not yet been resolved. 还没完成的、还没解决的。若用 tcp 确认机制，就是 unacknowledged 的包。
+5. offset
+   > If one thing is offset by another, the effect of the first thing is reduced by the second, so that any advantage or disadvantage is cancelled out. 抵消
+   > Refers to the distance between a base address (starting memory location) and a specific address
   
 
 ## p
