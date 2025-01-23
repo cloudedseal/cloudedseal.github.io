@@ -100,6 +100,8 @@
    > 分解
 5. fragemented
    > If something fragments or is fragmented, it `breaks` or `separates` into small `pieces` or `parts`. 碎片化
+6. flexible
+   > Something or someone that is flexible is able to `change easily` and `adapt to different conditions and circumstances` as they occur.
 
 ## g
 1. gateway
