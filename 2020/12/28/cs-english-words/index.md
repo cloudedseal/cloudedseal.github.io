@@ -126,6 +126,8 @@
    > The inherent qualities of something are the necessary and natural parts of it. 天生就有的。资本一出生就带着...
 5. i.e.
    > i.e .is used to introduce a word or sentence which makes what you have just said `clearer` or `gives details`. 即是,进一步解释清楚
+6. interface
+   > The interface between two subjects or systems is the area in which they `affect each other` or `have links with each other`.  两个之间的东西，那可不就是中间层么？
 
 ## j
 
