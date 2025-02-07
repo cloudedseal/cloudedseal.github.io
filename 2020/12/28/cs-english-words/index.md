@@ -237,6 +237,8 @@
    > If something splits or if you split it, it is `divided` into two or more parts.
 9. segregate
    > To segregate two groups of people or things means to keep them `physically apart from` each other.
+10. surrogate
+   > You use surrogate to describe a person or thing that is given a particular role `because the person or thing that should have the role is not available`. 代理
 
 ## t
 
