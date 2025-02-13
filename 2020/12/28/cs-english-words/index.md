@@ -53,6 +53,8 @@
    > If two or more things coalesce, they come together and form a larger group or system. 合并
 6. counterbalance
    > To counterbalance something means to balance or correct it with something that has `an equal but opposite effect` 相等但是有相反作用的
+7. compulsory
+   > If something is compulsory, you `must` do it or accept it, because it is the law or because someone in a position of authority says you must.
 
 ## d
 
