@@ -86,8 +86,8 @@
    > Efficiency is the quality of being able to do a task successfully, `without wasting time or energy`. 何谓效率？不浪费时间或能量。
 7. entry
    > An entry in a diary, account book, computer file, or reference book is `a short piece` of writing in it.
-8. immense
-   > If you describe something as immense, you mean that it is extremely large or great.
+8. evict
+   > If someone is evicted from the place where they are living, they are `forced` to leave it, usually because they have broken a law or contract. 驱逐
 
 ## f
 1. failover
@@ -128,6 +128,9 @@
    > i.e .is used to introduce a word or sentence which makes what you have just said `clearer` or `gives details`. 即是,进一步解释清楚
 6. interface
    > The interface between two subjects or systems is the area in which they `affect each other` or `have links with each other`.  两个之间的东西，那可不就是中间层么？
+7. immense
+   > If you describe something as immense, you mean that it is extremely large or great.
+
 
 ## j
 
