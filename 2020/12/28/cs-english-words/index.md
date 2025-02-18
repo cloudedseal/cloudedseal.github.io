@@ -219,6 +219,7 @@
 ## r
 
 1. relinquish
+   > to stop having sth, especially when this happens unwillingly 抢占式调度，timer 定时中断，time slice 用完，必须让出 CPU。
    > voluntarily cease to keep or claim; give up. 自愿放弃
    > to give over possession or control of : YIELD 放弃控制
 2. reference
