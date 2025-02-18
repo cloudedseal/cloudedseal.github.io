@@ -134,6 +134,8 @@
    > The interface between two subjects or systems is the area in which they `affect each other` or `have links with each other`.  两个之间的东西，那可不就是中间层么？
 7. immense
    > If you describe something as immense, you mean that it is extremely large or great.
+8. interfere
+   > If you say that someone interferes in a situation, you mean they `get involved in` it although it does not concern them and their involvement is not wanted. 干涉
 
 
 ## j
