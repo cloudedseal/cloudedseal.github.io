@@ -211,6 +211,8 @@
     > A pile of things is a quantity of things that have been put `neatly` somewhere so that each thing is `on top of the one below`. 一个摞一个 stack
 19. portion
     > A portion of something is `a part of` it.
+20. possession
+    > If you are in possession of something, you have it, because you `have obtained` it or because it `belongs to` you. 占有
 
 ## q
 
