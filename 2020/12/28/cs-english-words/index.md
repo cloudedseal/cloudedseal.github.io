@@ -251,6 +251,10 @@
    > To segregate two groups of people or things means to keep them `physically apart from` each other.
 10. surrogate
    > You use surrogate to describe a person or thing that is given a particular role `because the person or thing that should have the role is not available`. 代理
+11. sweep
+   > If someone makes a sweep of a place, they `search` it, usually because they are `looking for` people who are hiding or for an illegal activity. 搜寻，扫荡
+   > If lights or someone's eyes sweep an area, they move `across` the area from side to side.
+   > 磁盘的调度算法之 elevator(SCAN/C-SCAN) 从最内部向最外部(反之亦可)的磁道扫描
 
 ## t
 
