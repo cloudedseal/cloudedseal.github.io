@@ -255,6 +255,8 @@
    > If someone makes a sweep of a place, they `search` it, usually because they are `looking for` people who are hiding or for an illegal activity. 搜寻，扫荡
    > If lights or someone's eyes sweep an area, they move `across` the area from side to side.
    > 磁盘的调度算法之 elevator(SCAN/C-SCAN) 从最内部向最外部(反之亦可)的磁道扫描
+12. scatter
+    > If you scatter things over an area, you throw or drop them so that they spread all over the area.
 
 ## t
 
