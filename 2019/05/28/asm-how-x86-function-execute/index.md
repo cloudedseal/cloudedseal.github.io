@@ -1,6 +1,6 @@
 > 前一阵子去看 java 虚拟机原理, 忽然痛悟到虚拟机也是机器啊, 呵呵也就是个软件而已. 看到 java 方法调用太复杂. 字节码那一套又不太熟悉, 还不如直接去看 C 编译后的汇编代码.
 > 目的: 搞明白 X86 架构下函数到底是怎么调用执行的.
-> 这其实就是 Function Calling Conventions 的 Application Binary Interface。
+> 这其实就是 Application Binary Interface 之 Function Calling Conventions。
 
 # assembly syntax for X86
 
