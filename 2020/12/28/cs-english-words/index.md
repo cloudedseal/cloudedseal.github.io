@@ -25,6 +25,8 @@
     > Something that is abundant is present in `large quantities`. 大量的
 11. approximation
     > An approximation is a fact, object, or description which is `similar to` something else, but which is `not exactly` the same. 近似
+12. acquire
+    > If you acquire something, you `buy or obtain` it `for yourself`, or someone gives it to you.
    
 
 ## b
