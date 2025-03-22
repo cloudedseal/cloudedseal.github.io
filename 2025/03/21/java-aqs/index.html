@@ -115,7 +115,7 @@ It uses a <code>FIFO wait(sync) queue</code> to manage threads waiting for acces
                 cancelAcquire(node);
         }
     }
-</code></pre><h6 id=acquirequeued-for-循环退出两种情况>acquireQueued for 循环退出两种情况</h6><ol><li>当前节点是等待队列第一个 && tryAcquire 成功获取了锁</li><li>tryAcquire 抛出了 Error, finally 的 failed 逻辑会执行 cancelAcquire</li></ol><h6 id=acquirequeued-两轮循环分析>acquireQueued 两轮循环分析</h6><p><img src=https://raw.githubusercontent.com/buybyte/pictures/main/img/AQS-acquireQueued alt="acquireQueued 两轮分析"></p><h6 id=cancelacquire-分析>cancelAcquire 分析</h6><pre><code class=language-java>
+</code></pre><h6 id=acquirequeued-for-循环退出两种情况>acquireQueued for 循环退出两种情况</h6><ol><li>当前节点是等待队列第一个 && tryAcquire 成功获取了锁</li><li>tryAcquire 抛出了 Error, finally 的 failed 逻辑会执行 cancelAcquire</li></ol><h6 id=acquirequeued-两轮循环分析>acquireQueued 两轮循环分析</h6><p><img src=https://raw.githubusercontent.com/buybyte/pictures/main/img/AQS-acquireQueuedPark.drawio.svg alt="acquireQueued 两轮分析"></p><h6 id=cancelacquire-分析>cancelAcquire 分析</h6><pre><code class=language-java>
     /**
      * Cancels an ongoing attempt to acquire.
      *

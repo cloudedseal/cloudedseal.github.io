@@ -175,12 +175,13 @@
 ```
 
 ###### acquireQueued for 循环退出两种情况
+
 1. 当前节点是等待队列第一个 && tryAcquire 成功获取了锁
 2. tryAcquire 抛出了 Error, finally 的 failed 逻辑会执行 cancelAcquire 
 
 ###### acquireQueued 两轮循环分析
 
-![acquireQueued 两轮分析](https://raw.githubusercontent.com/buybyte/pictures/main/img/AQS-acquireQueued)
+![acquireQueued 两轮分析](https://raw.githubusercontent.com/buybyte/pictures/main/img/AQS-acquireQueuedPark.drawio.svg)
 
 ###### cancelAcquire 分析
 
