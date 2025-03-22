@@ -4,9 +4,7 @@
 > AQS is an abstract class that provides a skeleton for `managing thread contention`, `queuing`, and `state synchronization`.
 > It uses a `FIFO wait(sync) queue` to manage threads waiting for access to a shared resource and an `atomic integer (state)` to track the synchronizer's status (e.g., locked/unlocked, available permits).
 
-# 分析 ReentrantLock 的公平锁
-
-## AQS 数据结构
+# AQS 数据结构
 
 ```java
 
@@ -37,7 +35,7 @@
 
 ```
 
-## Node 数据结构
+# Node 数据结构
 
 > 组成双向链表之上构建等待队列
 
@@ -49,13 +47,13 @@
     volatile Thread thread; // 入队等待的线程
 ```
 
-## RentrantLock.lock 整体概览
+# RentrantLock.lock 整体概览
 
 [RentrantLock.lock 流程概览](https://raw.githubusercontent.com/buybyte/pictures/main/img/CAS_acquire.png)
 
-### FairSync.lock 分析
+## FairSync.lock 分析
 
-#### acquire(1) 分析
+### acquire(1) 分析
 
 ```java
     public final void acquire(int arg) {
@@ -69,7 +67,7 @@
 2. `tryAcquire` 若返回为 false, 表明获取 lock 失败, 为啥失败, 因为有其他线程获取了, 但是还没有释放。
    1. 流程进入 `addWaiter`, 也就是当前线程去排队等待获取 lock。
 
-#### tryAcquire 分析
+### tryAcquire 分析
 
 ```java
 
@@ -98,7 +96,7 @@
         }
 ```
 
-#### addWaiter 分析
+### addWaiter 分析
 
 > 线程获取锁失败, 到阻塞队列去排队。这里是 addWaiter(null, 1)
 
@@ -126,9 +124,9 @@
     }
 ```
 
-###### enq 返回 node 的前驱节点
+##### enq 返回 node 的前驱节点
 
-##### addWaiter 图示
+#### addWaiter 图示
 
 > 链表，还是画一画图，理解的更好
 
@@ -139,7 +137,7 @@
 2. tail != null, 等待队列里已经有等待的线程 Node 了
    - 直接添加到等待队列队尾
 
-#### acquireQueued 分析
+### acquireQueued 分析
 
 ```java
 
@@ -174,16 +172,16 @@
     }
 ```
 
-###### acquireQueued for 循环退出两种情况
+##### acquireQueued for 循环退出两种情况
 
 1. 当前节点是等待队列第一个 && tryAcquire 成功获取了锁
 2. tryAcquire 抛出了 Error, finally 的 failed 逻辑会执行 cancelAcquire 
 
-###### acquireQueued 两轮循环分析
+##### acquireQueued 两轮循环分析
 
 ![acquireQueued 两轮分析](https://raw.githubusercontent.com/buybyte/pictures/main/img/AQS-acquireQueuedPark.drawio.svg)
 
-###### cancelAcquire 分析
+##### cancelAcquire 分析
 
 ```java
 
@@ -239,7 +237,7 @@
     }
 
 ```
-###### if 为 true 判断分析
+##### if 为 true 判断分析
 
 > 为了将`取消节点`的`前驱节点`和`取消节点`的`后继节点`进行链接
 ```java
@@ -257,7 +255,7 @@ if (pred != head &&
 3. pred.thread != null 前驱节点有等待的线程
 
 
-##### shouldParkAfterFailedAcquire 分析
+#### shouldParkAfterFailedAcquire 分析
 
 > 为即将被 block 的线程，设置前驱节点的 waitStatus 为 -1, 表示下一个节点需要被唤醒
 
@@ -302,7 +300,7 @@ if (pred != head &&
 
 ```
 
-##### parkAndCheckInterrupt 分析
+#### parkAndCheckInterrupt 分析
 
 > 线程状态进入 waiting 的重要逻辑
 
@@ -319,9 +317,9 @@ if (pred != head &&
     }
 ```
 
-### FairSync.unlock 分析
+## FairSync.unlock 分析
 
-#### release 分析
+### release 分析
 
 ```java
 
@@ -346,7 +344,7 @@ if (pred != head &&
     }
 ```
 
-##### tryRelease 分析
+#### tryRelease 分析
 
 1. 该方法可能抛出异常
 
@@ -365,7 +363,7 @@ if (pred != head &&
         }
 ```
 
-##### unparkSuccessor 分析
+#### unparkSuccessor 分析
 
 ```java
 
