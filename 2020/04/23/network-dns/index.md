@@ -17,6 +17,14 @@
 
 `com`、`org`、 `cn` 等等就是所谓的[顶级域名](http://data.iana.org/TLD/tlds-alpha-by-domain.txt)。也就是一级域名。那么问题就来了，这些顶级域名存放在哪呢？存放到 [root server](https://www.cloudflare.com/learning/dns/glossary/dns-root-server/)。换一种理解方法就是，这些 root server 就是顶级域名的 metadata。这些 [root server IP](https://www.iana.org/domains/root/servers) 是固定的。实现 DNS 这个功能的软件内置这些 root server 的 ip。这一点很重要。
 
+```bash
+rpm -ql bind | grep named.ca
+/usr/share/doc/bind-9.11.4/sample/var/named/named.ca
+/var/named/named.ca
+```
+
+> centos 上安装 `bind9` 这个文件包含所有的 root servers 的 ip
+
 #### second level domain
 
 以 `www.google.com.` 为例 `google` 就是二级域名。其他的依此类推。
