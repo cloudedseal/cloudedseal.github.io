@@ -27,6 +27,8 @@
     > An approximation is a fact, object, or description which is `similar to` something else, but which is `not exactly` the same. 近似
 12. acquire
     > If you acquire something, you `buy or obtain` it `for yourself`, or someone gives it to you.
+13. await
+    > 及物动词，后跟无生命的事物，消息，等待特定的东西。conditionObject 的 await 等待满足特定的条件
    
 
 ## b
