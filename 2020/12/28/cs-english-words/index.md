@@ -29,6 +29,7 @@
     > If you acquire something, you `buy or obtain` it `for yourself`, or someone gives it to you.
 13. await
     > 及物动词，后跟无生命的事物，消息，等待特定的东西。conditionObject 的 await 等待满足特定的条件
+    > They are awaiting the outcome of the investigation. 
    
 
 ## b
