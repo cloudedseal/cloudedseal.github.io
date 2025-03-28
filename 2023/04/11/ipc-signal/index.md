@@ -3,6 +3,8 @@
 
 ## 什么是 signal
 
+> A signal can be thought of as a `software interrupt`. 
+> This means that a process that receives a signal `stops the execution` of the current program and makes the program `respond to the signal`.
 > Signals are various notifications sent to a process in order to notify it of various "important" events. 
 > 信号是发送给进程的各种通知，以便通知它发生了各种“重要”的事件。
 
@@ -136,3 +138,4 @@ public class ExampleSignalHandler {
 14. [kill(2)](https://man7.org/linux/man-pages/man2/kill.2.html)
 15. https://goodyduru.github.io/os/2023/10/05/ipc-unix-signals.html
 16. [java Signal 处理实现](https://github.com/JetBrains/jdk8u_jdk/blob/94318f9185757cc33d2b8d527d36be26ac6b7582/src/share/classes/sun/misc/Signal.java#L30)
+17. [https://cs341.cs.illinois.edu/coursebook/index.html](https://cs341.cs.illinois.edu/coursebook/index.html)
