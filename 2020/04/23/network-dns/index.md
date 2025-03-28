@@ -229,3 +229,4 @@ mail exchange 电子邮件服务器
 18. [dns实践](https://messwithdns.net/)
 19. [dns-client-dog](https://github.com/ogham/dog)
 20. [dns-client-doggo](https://github.com/mr-karan/doggo)
+21. [dns速度测试](https://dnsspeedtest.online/)
