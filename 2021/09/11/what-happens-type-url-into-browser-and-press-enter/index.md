@@ -6,6 +6,7 @@ get the ip of the target domain
 ### browser cache
 
 firefox(about:networking#dns)
+![firefox_dns_cache](https://raw.githubusercontent.com/buybyte/pictures/main/img/firefox_dns_cache.png)
 
 ### /etc/hosts
 
