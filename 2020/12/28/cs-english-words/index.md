@@ -286,6 +286,8 @@
   > Transient is used to describe a situation that `lasts only a short time` or is `constantly changing`. 持续时间很短或者一直在变化的情况，和 persistent 相反
 7. transition
    > Transition is the process in which something changes `from one state to another`. 一个状态变成另一个状态, 这是什么? 这就是状态机。
+8. trap
+   > A trap is a `device` which is placed somewhere or a hole which is dug somewhere in order to `catch` animals or birds.
 
 ## u
 
