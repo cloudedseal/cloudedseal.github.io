@@ -4,6 +4,7 @@
 操作系统运行在 kernel space, 拥有整个系统的控制权。
 应用程序运行在  user  space, 拥有部分权限。
 这就是隔离。
+To prevent user applications from `accessing or modifying` critical operating system data.
 想让操作系统做些事情怎么办？使用 syscall。
 
 # strace
