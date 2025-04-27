@@ -1,1 +1,117 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tools on buybyte</title><link>http://buybyte.github.io/tags/tools/</link><description>Recent content in tools on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 10 Sep 2019 09:51:07 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/tools/index.xml" rel="self" type="application/rss+xml"/><item><title>wireshark</title><link>http://buybyte.github.io/2019/09/10/wireshark/</link><pubDate>Tue, 10 Sep 2019 09:51:07 +0800</pubDate><guid>http://buybyte.github.io/2019/09/10/wireshark/</guid><description>Wireshark Windows 配置 SSL Version 3.0.3 配置 SSLKEYLOGFILE 系统变量 配置 Wireshark 编辑 -&amp;gt; 首选项 -&amp;gt; Protocols -&amp;gt; TLS 重启 Wireshark 过滤器查看 视图 -&amp;gt; 内部 -&amp;gt; 支持的协议</description></item><item><title>tools-for-me</title><link>http://buybyte.github.io/2019/06/17/tools-for-me/</link><pubDate>Mon, 17 Jun 2019 18:37:10 +0800</pubDate><guid>http://buybyte.github.io/2019/06/17/tools-for-me/</guid><description>programming java decompiler-Luyten decompiler-cfr byte-code-viewer jclasslib assembly godbolt json json-runoob json-online regexp regexp-jex.im regexp-regexr regexp-regexper hex hex converter hex editor html html beautify base64 base64 code format code format url json format unicode unicode for you shell oh-my-zsh starship working pc snipaste mubu process on screen-recorder reinstall os multibootusb universal usb installer rufus entertainment video online downloader-you-get downloader-motrix downloader-Xdown converter audio-converter movie cupfox agmov picture waifu2x papers-anwanqi ilovepapers file ilovepdf</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Tools</title><link>https://buybyte.github.io/tags/tools/</link><description>Recent content in Tools on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 10 Sep 2019 09:51:07 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/tools/index.xml" rel="self" type="application/rss+xml"/><item><title>wireshark</title><link>https://buybyte.github.io/blog/wireshark/</link><pubDate>Tue, 10 Sep 2019 09:51:07 +0800</pubDate><guid>https://buybyte.github.io/blog/wireshark/</guid><description>
+&lt;h2>Wireshark Windows 配置 SSL&lt;span class="hx-absolute -hx-mt-20" id="wireshark-windows-配置-ssl">&lt;/span>
+&lt;a href="#wireshark-windows-%e9%85%8d%e7%bd%ae-ssl" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>Version 3.0.3&lt;/p>
+&lt;/blockquote>
+&lt;h3>配置 SSLKEYLOGFILE 系统变量&lt;span class="hx-absolute -hx-mt-20" id="配置-sslkeylogfile-系统变量">&lt;/span>
+&lt;a href="#%e9%85%8d%e7%bd%ae-sslkeylogfile-%e7%b3%bb%e7%bb%9f%e5%8f%98%e9%87%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/SSLKEYLOGFILE.png" alt="系统变量 SSLKEYLOGFILE" loading="lazy" />&lt;/p>
+&lt;h3>配置 Wireshark&lt;span class="hx-absolute -hx-mt-20" id="配置-wireshark">&lt;/span>
+&lt;a href="#%e9%85%8d%e7%bd%ae-wireshark" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>编辑 -&amp;gt; 首选项 -&amp;gt; Protocols -&amp;gt; TLS
+&lt;img src="https://github.com/stardustman/pictures/raw/main/img/wireshark_tls_logfile.png" alt="Wireshark 配置 TLS logfile" loading="lazy" />&lt;/p>
+&lt;/blockquote>
+&lt;h3>重启 Wireshark&lt;span class="hx-absolute -hx-mt-20" id="重启-wireshark">&lt;/span>
+&lt;a href="#%e9%87%8d%e5%90%af-wireshark" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h2>过滤器查看&lt;span class="hx-absolute -hx-mt-20" id="过滤器查看">&lt;/span>
+&lt;a href="#%e8%bf%87%e6%bb%a4%e5%99%a8%e6%9f%a5%e7%9c%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>视图 -&amp;gt; 内部 -&amp;gt; 支持的协议&lt;/p>
+&lt;/blockquote></description></item><item><title>tools-for-me</title><link>https://buybyte.github.io/blog/tools-for-me/</link><pubDate>Mon, 17 Jun 2019 18:37:10 +0800</pubDate><guid>https://buybyte.github.io/blog/tools-for-me/</guid><description>
+&lt;h1>programming&lt;/h1>&lt;h2>java&lt;span class="hx-absolute -hx-mt-20" id="java">&lt;/span>
+&lt;a href="#java" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://github.com/deathmarine/Luyten" target="_blank" rel="noopener">decompiler-Luyten&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://www.benf.org/other/cfr/" target="_blank" rel="noopener">decompiler-cfr&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://bytecodeviewer.com/" target="_blank" rel="noopener">byte-code-viewer&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/ingokegel/jclasslib/releases" target="_blank" rel="noopener">jclasslib&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>assembly&lt;span class="hx-absolute -hx-mt-20" id="assembly">&lt;/span>
+&lt;a href="#assembly" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://godbolt.org/" target="_blank" rel="noopener">godbolt&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>json&lt;span class="hx-absolute -hx-mt-20" id="json">&lt;/span>
+&lt;a href="#json" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://c.runoob.com/front-end/53" target="_blank" rel="noopener">json-runoob&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.json.cn/" target="_blank" rel="noopener">json-online&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>regexp&lt;span class="hx-absolute -hx-mt-20" id="regexp">&lt;/span>
+&lt;a href="#regexp" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://jex.im/regulex/#!flags=&amp;amp;re=%5E%28a%7Cb%29*%3F%24" target="_blank" rel="noopener">regexp-jex.im&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://regexr.com/" target="_blank" rel="noopener">regexp-regexr&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://regexper.com/" target="_blank" rel="noopener">regexp-regexper&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>hex&lt;span class="hx-absolute -hx-mt-20" id="hex">&lt;/span>
+&lt;a href="#hex" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="http://tool.oschina.net/hexconvert/" target="_blank" rel="noopener">hex converter&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.onlinehexeditor.com/" target="_blank" rel="noopener">hex editor&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>html&lt;span class="hx-absolute -hx-mt-20" id="html">&lt;/span>
+&lt;a href="#html" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://tool.lu/html/" target="_blank" rel="noopener">html beautify&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>base64&lt;span class="hx-absolute -hx-mt-20" id="base64">&lt;/span>
+&lt;a href="#base64" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="http://www1.tc711.com/tool/BASE64.htm" target="_blank" rel="noopener">base64&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>code format&lt;span class="hx-absolute -hx-mt-20" id="code-format">&lt;/span>
+&lt;a href="#code-format" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="http://tool.oschina.net/codeformat/xml" target="_blank" rel="noopener">code format&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://tool.chinaz.com/Tools/urlencode.aspx" target="_blank" rel="noopener">url&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://tool.butof.com/office/json" target="_blank" rel="noopener">json format&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>unicode&lt;span class="hx-absolute -hx-mt-20" id="unicode">&lt;/span>
+&lt;a href="#unicode" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.ftrain.com/unicode/" target="_blank" rel="noopener">unicode for you&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>shell&lt;span class="hx-absolute -hx-mt-20" id="shell">&lt;/span>
+&lt;a href="#shell" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://ohmyz.sh/" target="_blank" rel="noopener">oh-my-zsh&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/starship/starship" target="_blank" rel="noopener">starship&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h1>working&lt;/h1>&lt;h2>pc&lt;span class="hx-absolute -hx-mt-20" id="pc">&lt;/span>
+&lt;a href="#pc" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.snipaste.com/" target="_blank" rel="noopener">snipaste&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mubu.com/" target="_blank" rel="noopener">mubu&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.processon.com" target="_blank" rel="noopener">process on&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.apowersoft.cn/free-online-screen-recorder" target="_blank" rel="noopener">screen-recorder&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h1>reinstall os&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="http://multibootusb.org/page_download/" target="_blank" rel="noopener">multibootusb&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.pendrivelinux.com/universal-usb-installer-easy-as-1-2-3/" target="_blank" rel="noopener">universal usb installer&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rufus.ie/zh/" target="_blank" rel="noopener">rufus&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h1>entertainment&lt;/h1>&lt;h2>video&lt;span class="hx-absolute -hx-mt-20" id="video">&lt;/span>
+&lt;a href="#video" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>online&lt;span class="hx-absolute -hx-mt-20" id="online">&lt;/span>
+&lt;a href="#online" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>&lt;a href="https://github.com/soimort/you-get" target="_blank" rel="noopener">downloader-you-get&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://motrix.app/" target="_blank" rel="noopener">downloader-motrix&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://xdown.org/" target="_blank" rel="noopener">downloader-Xdown&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h3>converter&lt;span class="hx-absolute -hx-mt-20" id="converter">&lt;/span>
+&lt;a href="#converter" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>&lt;a href="https://online-audio-converter.com/" target="_blank" rel="noopener">audio-converter&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>movie&lt;span class="hx-absolute -hx-mt-20" id="movie">&lt;/span>
+&lt;a href="#movie" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.cupfox.com/" target="_blank" rel="noopener">cupfox&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://agmov.com/" target="_blank" rel="noopener">agmov&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>picture&lt;span class="hx-absolute -hx-mt-20" id="picture">&lt;/span>
+&lt;a href="#picture" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="http://waifu2x.udp.jp/" target="_blank" rel="noopener">waifu2x&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.awanqi.com/" target="_blank" rel="noopener">papers-anwanqi&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://ilovepapers.com/" target="_blank" rel="noopener">ilovepapers&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>file&lt;span class="hx-absolute -hx-mt-20" id="file">&lt;/span>
+&lt;a href="#file" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.ilovepdf.com" target="_blank" rel="noopener">ilovepdf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://html2pdf.com/" target="_blank" rel="noopener">html to pdf&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>typing&lt;span class="hx-absolute -hx-mt-20" id="typing">&lt;/span>
+&lt;a href="#typing" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://dazi.kukuw.com/" target="_blank" rel="noopener">practice typing&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://qwerty.kaiyi.cool/" target="_blank" rel="noopener">https://qwerty.kaiyi.cool/&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h1>job&lt;/h1>&lt;h2>company&lt;span class="hx-absolute -hx-mt-20" id="company">&lt;/span>
+&lt;a href="#company" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.tianyancha.com/" target="_blank" rel="noopener">tianyancha&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://cv.ftqq.com/#" target="_blank" rel="noopener">resume&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.mujicv.com/" target="_blank" rel="noopener">木及简历&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

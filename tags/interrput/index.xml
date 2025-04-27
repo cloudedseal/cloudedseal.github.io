@@ -1,1 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>interrput on buybyte</title><link>http://buybyte.github.io/tags/interrput/</link><description>Recent content in interrput on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 11 Sep 2021 16:21:12 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/interrput/index.xml" rel="self" type="application/rss+xml"/><item><title>What-happens-type-url-into-browser-and-press-enter</title><link>http://buybyte.github.io/2021/09/11/what-happens-type-url-into-browser-and-press-enter/</link><pubDate>Sat, 11 Sep 2021 16:21:12 +0800</pubDate><guid>http://buybyte.github.io/2021/09/11/what-happens-type-url-into-browser-and-press-enter/</guid><description>dns query get the ip of the target domain browser cache firefox(about:networking#dns) /etc/hosts os cache macos 查看 dns 请求日志 sudo log stream &amp;ndash;predicate &amp;lsquo;process == &amp;ldquo;mDNSResponder&amp;rdquo;&amp;rsquo; &amp;ndash;info dns resolver /etc/resolv.conf arp -a 查看有没有 dns 服务器的 mac 地址 ARP request for the nameserver send dns query to get the ip of the domain arp 获取 gateway 的 mac</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Interrput</title><link>https://buybyte.github.io/tags/interrput/</link><description>Recent content in Interrput on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 11 Sep 2021 16:21:12 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/interrput/index.xml" rel="self" type="application/rss+xml"/><item><title>What-happens-type-url-into-browser-and-press-enter</title><link>https://buybyte.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</link><pubDate>Sat, 11 Sep 2021 16:21:12 +0800</pubDate><guid>https://buybyte.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</guid><description>
+&lt;h2>dns query&lt;span class="hx-absolute -hx-mt-20" id="dns-query">&lt;/span>
+&lt;a href="#dns-query" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>get the ip of the target domain&lt;/p>
+&lt;h3>browser cache&lt;span class="hx-absolute -hx-mt-20" id="browser-cache">&lt;/span>
+&lt;a href="#browser-cache" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>firefox(about:networking#dns)
+&lt;img src="https://raw.githubusercontent.com/buybyte/pictures/main/img/firefox_dns_cache.png" alt="firefox_dns_cache" loading="lazy" />&lt;/p>
+&lt;h3>/etc/hosts&lt;span class="hx-absolute -hx-mt-20" id="etchosts">&lt;/span>
+&lt;a href="#etchosts" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h3>os cache&lt;span class="hx-absolute -hx-mt-20" id="os-cache">&lt;/span>
+&lt;a href="#os-cache" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>macos 查看 dns 请求日志 sudo log stream &amp;ndash;predicate &amp;lsquo;process == &amp;ldquo;mDNSResponder&amp;rdquo;&amp;rsquo; &amp;ndash;info&lt;/li>
+&lt;/ol>
+&lt;h3>dns resolver&lt;span class="hx-absolute -hx-mt-20" id="dns-resolver">&lt;/span>
+&lt;a href="#dns-resolver" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>/etc/resolv.conf&lt;/p>
+&lt;ol>
+&lt;li>arp -a 查看有没有 dns 服务器的 mac 地址&lt;/li>
+&lt;li>ARP request for the nameserver&lt;/li>
+&lt;li>send dns query to get the ip of the domain&lt;/li>
+&lt;/ol>
+&lt;h2>arp 获取 gateway 的 mac 地址&lt;span class="hx-absolute -hx-mt-20" id="arp-获取-gateway-的-mac-地址">&lt;/span>
+&lt;a href="#arp-%e8%8e%b7%e5%8f%96-gateway-%e7%9a%84-mac-%e5%9c%b0%e5%9d%80" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>向 gateway 发送 ip packet&lt;span class="hx-absolute -hx-mt-20" id="向-gateway-发送-ip-packet">&lt;/span>
+&lt;a href="#%e5%90%91-gateway-%e5%8f%91%e9%80%81-ip-packet" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="http://www.science.smith.edu/~nhowe/262/oldlabs/keyboard.html" target="_blank" rel="noopener">keyborad-interrput&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.zhihu.com/question/560616439/answer/2722866208" target="_blank" rel="noopener">Chrome 是怎么判断地址栏输入的东西是不是网址? 这就是第一步😂-omnibox&lt;/a>&lt;/li>
+&lt;li>&lt;a href="about:networking#dns" >firefox dns&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.fortinet.com/resources/cyberglossary/what-is-arp" target="_blank" rel="noopener">ARP&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

@@ -1,1 +1,249 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>recource allocation on buybyte</title><link>http://buybyte.github.io/tags/recource-allocation/</link><description>Recent content in recource allocation on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 13 May 2020 15:31:05 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/recource-allocation/index.xml" rel="self" type="application/rss+xml"/><item><title>os-banker's-algorithm</title><link>http://buybyte.github.io/2020/05/13/os-bankers-algorithm/</link><pubDate>Wed, 13 May 2020 15:31:05 +0800</pubDate><guid>http://buybyte.github.io/2020/05/13/os-bankers-algorithm/</guid><description>Banker&amp;rsquo;s Algorithm 银行家算法是什么 银行家主要就是通过放贷来赚钱的。那最重要的问题是啥？当然是把钱借给还得起的人咯。试想，银行把钱都借给了还不起的人，那银行</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Recource Allocation</title><link>https://buybyte.github.io/tags/recource-allocation/</link><description>Recent content in Recource Allocation on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 13 May 2020 15:31:05 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/recource-allocation/index.xml" rel="self" type="application/rss+xml"/><item><title>os-banker's-algorithm</title><link>https://buybyte.github.io/blog/os-banker-s-algorithm/</link><pubDate>Wed, 13 May 2020 15:31:05 +0800</pubDate><guid>https://buybyte.github.io/blog/os-banker-s-algorithm/</guid><description>
+&lt;h2>Banker&amp;rsquo;s Algorithm&lt;span class="hx-absolute -hx-mt-20" id="bankers-algorithm">&lt;/span>
+&lt;a href="#bankers-algorithm" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>银行家算法是什么&lt;span class="hx-absolute -hx-mt-20" id="银行家算法是什么">&lt;/span>
+&lt;a href="#%e9%93%b6%e8%a1%8c%e5%ae%b6%e7%ae%97%e6%b3%95%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>银行家&lt;/code>主要就是通过放贷来赚钱的。那最重要的问题是啥？当然是把钱借给还得起的人咯。试想，银行把钱都借给了还不起的人，那银行就完蛋了。假设有一批人（多个进程）来借钱（将要申请资源），但是银行剩下的钱满足不了任何人，那就直接拒绝借贷。当然了，有一部分已经借出的钱回收之后（回收已经分配的资源），又可以满足一批人中某些人的借贷需求。依次类推，银行可以判定能不能按照某个顺序来给这批人放贷。类似的思路延伸到计算机世界，同理。操作系统给多个进程分配资源，&lt;code>能不能找到一个顺序给这些进程分配资源，并逐渐回收资源？&lt;/code>从而满足多个进程的资源需求。采用银行家放贷和收贷的思路（这里排除利息，放多少贷，收多少钱。呵呵，哪有此种好事？）来分配和回收系统资源就是所谓的&lt;code>银行家算法&lt;/code>。&lt;/p>
+&lt;h3>银行家算法解决什么问题&lt;span class="hx-absolute -hx-mt-20" id="银行家算法解决什么问题">&lt;/span>
+&lt;a href="#%e9%93%b6%e8%a1%8c%e5%ae%b6%e7%ae%97%e6%b3%95%e8%a7%a3%e5%86%b3%e4%bb%80%e4%b9%88%e9%97%ae%e9%a2%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>resource allocation and deadlock avoidance algorithm&lt;/code>。银行家算法用来进行资源分配和避免死锁。&lt;/p>
+&lt;h3>银行家算法怎样解决问题&lt;span class="hx-absolute -hx-mt-20" id="银行家算法怎样解决问题">&lt;/span>
+&lt;a href="#%e9%93%b6%e8%a1%8c%e5%ae%b6%e7%ae%97%e6%b3%95%e6%80%8e%e6%a0%b7%e8%a7%a3%e5%86%b3%e9%97%ae%e9%a2%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>P0、P1、P2、P3、P4 5个进程，视为需要钱的 5 个人。
+A、B、C 三种系统资源。分别视为是银行三种贵金属：金块、银块、铜块。&lt;/p>
+&lt;h4>allocation table 已放贷表&lt;span class="hx-absolute -hx-mt-20" id="allocation-table-已放贷表">&lt;/span>
+&lt;a href="#allocation-table-%e5%b7%b2%e6%94%be%e8%b4%b7%e8%a1%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>每个人已经借的金银铜个数列表&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: center">&lt;/th>
+&lt;th style="text-align: center">A&lt;/th>
+&lt;th style="text-align: center">B&lt;/th>
+&lt;th style="text-align: center">C&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: center">P0&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;td style="text-align: center">1&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P1&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P2&lt;/td>
+&lt;td style="text-align: center">3&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P3&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;td style="text-align: center">1&lt;/td>
+&lt;td style="text-align: center">1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P4&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4>max table 最大借贷表&lt;span class="hx-absolute -hx-mt-20" id="max-table-最大借贷表">&lt;/span>
+&lt;a href="#max-table-%e6%9c%80%e5%a4%a7%e5%80%9f%e8%b4%b7%e8%a1%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>每个人需要金银铜最大个数列表&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: center">&lt;/th>
+&lt;th style="text-align: center">A&lt;/th>
+&lt;th style="text-align: center">B&lt;/th>
+&lt;th style="text-align: center">C&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: center">P0&lt;/td>
+&lt;td style="text-align: center">7&lt;/td>
+&lt;td style="text-align: center">5&lt;/td>
+&lt;td style="text-align: center">3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P1&lt;/td>
+&lt;td style="text-align: center">3&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P2&lt;/td>
+&lt;td style="text-align: center">9&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P3&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P4&lt;/td>
+&lt;td style="text-align: center">4&lt;/td>
+&lt;td style="text-align: center">3&lt;/td>
+&lt;td style="text-align: center">3&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4>need table 还需放贷表&lt;span class="hx-absolute -hx-mt-20" id="need-table-还需放贷表">&lt;/span>
+&lt;a href="#need-table-%e8%bf%98%e9%9c%80%e6%94%be%e8%b4%b7%e8%a1%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>每个人还需要的金银铜个数列表。由 max table - allocation table 得到。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: center">&lt;/th>
+&lt;th style="text-align: center">A&lt;/th>
+&lt;th style="text-align: center">B&lt;/th>
+&lt;th style="text-align: center">C&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: center">P0&lt;/td>
+&lt;td style="text-align: center">7&lt;/td>
+&lt;td style="text-align: center">4&lt;/td>
+&lt;td style="text-align: center">3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P1&lt;/td>
+&lt;td style="text-align: center">1&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P2&lt;/td>
+&lt;td style="text-align: center">6&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P3&lt;/td>
+&lt;td style="text-align: center">0&lt;/td>
+&lt;td style="text-align: center">1&lt;/td>
+&lt;td style="text-align: center">1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">P4&lt;/td>
+&lt;td style="text-align: center">4&lt;/td>
+&lt;td style="text-align: center">3&lt;/td>
+&lt;td style="text-align: center">1&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4>available table 剩余资源表&lt;span class="hx-absolute -hx-mt-20" id="available-table-剩余资源表">&lt;/span>
+&lt;a href="#available-table-%e5%89%a9%e4%bd%99%e8%b5%84%e6%ba%90%e8%a1%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>银行还剩下的金银铜个数。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: center">A&lt;/th>
+&lt;th style="text-align: center">B&lt;/th>
+&lt;th style="text-align: center">C&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: center">3&lt;/td>
+&lt;td style="text-align: center">3&lt;/td>
+&lt;td style="text-align: center">2&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h4>剩余系统资源分配顺序推演&lt;span class="hx-absolute -hx-mt-20" id="剩余系统资源分配顺序推演">&lt;/span>
+&lt;a href="#%e5%89%a9%e4%bd%99%e7%b3%bb%e7%bb%9f%e8%b5%84%e6%ba%90%e5%88%86%e9%85%8d%e9%a1%ba%e5%ba%8f%e6%8e%a8%e6%bc%94" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ol>
+&lt;li>拿着 available table （剩余资源表），到 need table（还需放贷表） 比对。若 available table 的 A B C 满足 need table 的某一行（也就是 available table 每一列都大于等于 need table 的某一行的每一列）。说明可以分配给这个进程，标记这一行。同时回收这一行对应的 allocation table 中已经分配的 A B C。更新 available table 的 A B C。以此类推，继续比对 need table 中其他未标记的行。若最后 need table 所有行都有标记，说明存在一个给 P0、P1、P2、P3、P4 进程分配资源的顺序。&lt;/li>
+&lt;li>拿着 available table 剩余资源表，不满足 need table 中任何一行。说明不存在一个给 P0、P1、P2、P3、P4 进程分配资源的顺序。系统有可能进入死锁。&lt;/li>
+&lt;/ol>
+&lt;h4>银行家算法图解分析&lt;span class="hx-absolute -hx-mt-20" id="银行家算法图解分析">&lt;/span>
+&lt;a href="#%e9%93%b6%e8%a1%8c%e5%ae%b6%e7%ae%97%e6%b3%95%e5%9b%be%e8%a7%a3%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/banks-algorithm.svg" alt="银行家算法" loading="lazy" />
+存在的一个序列 P1 -&amp;gt; P3 -&amp;gt; P4 -&amp;gt; P0 -&amp;gt; P2&lt;/p>
+&lt;h3>有没有其他方法解决此问题&lt;span class="hx-absolute -hx-mt-20" id="有没有其他方法解决此问题">&lt;/span>
+&lt;a href="#%e6%9c%89%e6%b2%a1%e6%9c%89%e5%85%b6%e4%bb%96%e6%96%b9%e6%b3%95%e8%a7%a3%e5%86%b3%e6%ad%a4%e9%97%ae%e9%a2%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h3>Banker&amp;rsquo;s Algorithm implemention&lt;span class="hx-absolute -hx-mt-20" id="bankers-algorithm-implemention">&lt;/span>
+&lt;a href="#bankers-algorithm-implemention" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Banker&amp;#39;s Algorithm
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt; &lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// P0, P1, P2, P3, P4 are the Process names here
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">n&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// Number of processes
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">m&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// Number of resources
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">alloc&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">},&lt;/span> &lt;span class="c1">// P0 // Allocation Matrix
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">},&lt;/span> &lt;span class="c1">// P1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span> &lt;span class="p">},&lt;/span> &lt;span class="c1">// P2
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="p">},&lt;/span> &lt;span class="c1">// P3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="p">};&lt;/span> &lt;span class="c1">// P4
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">max&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">7&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span> &lt;span class="p">},&lt;/span> &lt;span class="c1">// P0 // MAX Matrix
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span> &lt;span class="p">},&lt;/span> &lt;span class="c1">// P1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">9&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span> &lt;span class="p">},&lt;/span> &lt;span class="c1">// P2
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span> &lt;span class="p">},&lt;/span> &lt;span class="c1">// P3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="p">};&lt;/span> &lt;span class="c1">// P4
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">avail&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span> &lt;span class="p">};&lt;/span> &lt;span class="c1">// Available Resources
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">finished&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">ans&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">index&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">k&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">finished&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">need&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">n&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">j&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 计算 need matrix
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">need&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">max&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">alloc&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">k&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">k&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">k&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">n&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">finished&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">j&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">j&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">j&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">need&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">avail&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">j&lt;/span>&lt;span class="p">]){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ans&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">index&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">avail&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">alloc&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">][&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">finished&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Following is the SAFE Sequence&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">n&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34; P%d -&amp;gt;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ans&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34; P%d&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ans&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">n&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">]);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://zh.wikipedia.org/wiki/%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">银行家算法-wiki&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.geeksforgeeks.org/bankers-algorithm-in-operating-system-2/" target="_blank" rel="noopener">bankers-algorithm&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

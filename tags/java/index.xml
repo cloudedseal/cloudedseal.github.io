@@ -1,1 +1,266 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>java on buybyte</title><link>http://buybyte.github.io/tags/java/</link><description>Recent content in java on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 09 Apr 2025 10:56:10 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/java/index.xml" rel="self" type="application/rss+xml"/><item><title>Java String Concat in Loop</title><link>http://buybyte.github.io/2025/04/09/java-string-concat-in-loop/</link><pubDate>Wed, 09 Apr 2025 10:56:10 +0800</pubDate><guid>http://buybyte.github.io/2025/04/09/java-string-concat-in-loop/</guid><description>分析环境 jdk8 分析代码 public class StringConcat { public static void main(String[] args) { String s = &amp;quot;$&amp;quot;; for (int i = 0; i &amp;lt; 10; i++) { s += i; } System.out.println(s); } } main 字节码 public static void main(java.lang.String[]); Code: 0: ldc #2 // String $ 2: astore_1 3: iconst_0 4: istore_2 5: iload_2 6: bipush 10 8: if_icmpge 36 11:</description></item><item><title>Asm How Java Byte Code Execute</title><link>http://buybyte.github.io/2023/04/05/asm-how-java-byte-code-execute/</link><pubDate>Wed, 05 Apr 2023 10:35:32 +0800</pubDate><guid>http://buybyte.github.io/2023/04/05/asm-how-java-byte-code-execute/</guid><description>jvm jvm 是一个栈式(stack-based)虚拟计算机。啥意思，就是大多数的 opcode 的操作数在 operand stack 上，执行的结果也放在 oprand stack 上。 有的 opcode 的操作数在 local variable ta</description></item><item><title>asm-java-jit</title><link>http://buybyte.github.io/2021/07/18/asm-java-jit/</link><pubDate>Sun, 18 Jul 2021 10:43:46 +0800</pubDate><guid>http://buybyte.github.io/2021/07/18/asm-java-jit/</guid><description>前言 无论多么花里胡哨的功能，最终落地到一台计算机上，都是二进制代码。虽然 java 代码跑在 jvm 平台之上，但是 jvm 只是负责执行 java 自定义的一套 bytecode 的工具，只要</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Java</title><link>https://buybyte.github.io/tags/java/</link><description>Recent content in Java on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 09 Apr 2025 10:56:10 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/java/index.xml" rel="self" type="application/rss+xml"/><item><title>Java String Concat in Loop</title><link>https://buybyte.github.io/blog/java-string-concat-in-loop/</link><pubDate>Wed, 09 Apr 2025 10:56:10 +0800</pubDate><guid>https://buybyte.github.io/blog/java-string-concat-in-loop/</guid><description>
+&lt;h1>分析环境&lt;/h1>&lt;blockquote>
+&lt;p>jdk8&lt;/p>
+&lt;/blockquote>
+&lt;h1>分析代码&lt;/h1>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">StringConcat&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;$&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">10&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h1>main 字节码&lt;/h1>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">java&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">lang&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">String&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Code&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ldc&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">#&lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// String $&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">astore_1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">3&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">iconst_0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">4&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">istore_2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">5&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">iload_2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">6&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">bipush&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">10&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">8&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">if_icmpge&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">36&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">11&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">#&lt;/span>&lt;span class="n">3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// class java/lang/StringBuilder&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">14&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">dup&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">15&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">invokespecial&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">#&lt;/span>&lt;span class="n">4&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Method java/lang/StringBuilder.&amp;#34;&amp;lt;init&amp;gt;&amp;#34;:()V&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">18&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">aload_1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">19&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">invokevirtual&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">#&lt;/span>&lt;span class="n">5&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">22&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">iload_2&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">23&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">invokevirtual&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">#&lt;/span>&lt;span class="n">6&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">26&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">invokevirtual&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">#&lt;/span>&lt;span class="n">7&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Method java/lang/StringBuilder.toString:()Ljava/lang/String;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">29&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">astore_1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">iinc&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">33&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">goto&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">5&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">36&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">getstatic&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">#&lt;/span>&lt;span class="n">8&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Field java/lang/System.out:Ljava/io/PrintStream;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">39&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">aload_1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">40&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">invokevirtual&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">#&lt;/span>&lt;span class="n">9&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Method java/io/PrintStream.println:(Ljava/lang/String;)V&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">43&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h1>main 字节码执行图解分析&lt;/h1>&lt;p>&lt;img src="https://raw.githubusercontent.com/buybyte/pictures/main/img/java-string-concat-in-loop.drawio.svg" alt="循环里字符串连接.drawio.svg" loading="lazy" />&lt;/p>
+&lt;blockquote>
+&lt;p>由图可以看出，在外部定义的字符串变量 s，在 for 循环中和其他变量进行拼接，最终得到连接后的 s。&lt;br>
+循环的每一轮都会生成一个新的 StringBuilder 对象，进行两次 append 操作，append(s) 和 append(i)。最终这一轮的 s 是由 sb.toString() 得来的。&lt;br>
+如果循环次数是 1万次，需要创建的 StringBuilder 是 1 万个。这样是对性能肯定有影响的。短时间内产生大量的对象。&lt;br>&lt;/p>
+&lt;/blockquote>
+&lt;h1>结论&lt;/h1>&lt;blockquote>
+&lt;p>循环次数过多时，不要在循环里拼接需要的字符串。&lt;/p>
+&lt;/blockquote>
+&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.ldc" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.ldc&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.astore_n" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.astore_n&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iload_n" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iload_n&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.bipush" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.bipush&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.if_icmp_cond" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.if_icmp_cond&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.new" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.new&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iinc" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iinc&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.getstatic" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.getstatic&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.invokevirtual" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.invokevirtual&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Asm How Java Byte Code Execute</title><link>https://buybyte.github.io/blog/asm-how-java-byte-code-execute/</link><pubDate>Wed, 05 Apr 2023 10:35:32 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-java-byte-code-execute/</guid><description>
+&lt;h1>jvm&lt;/h1>&lt;blockquote>
+&lt;p>jvm 是一个栈式(stack-based)虚拟计算机。啥意思，就是大多数的 opcode 的操作数在 operand stack 上，执行的结果也放在 oprand stack 上。&lt;br>
+有的 opcode 的操作数在 local variable table，如 &lt;code>iinc&lt;/code>。&lt;/p>
+&lt;/blockquote>
+&lt;h1>分析的代码&lt;/h1>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">package&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">stardustman.github.io&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">BoxingUnboxingExample&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Integer&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">sum&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1000000&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">sum&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Auto-boxing of primitive type int to Integer&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;The sum is: &amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">sum&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h1>jclasslib 查看字节码&lt;/h1>&lt;p>&lt;img src="https://raw.githubusercontent.com/stardustman/pictures/main/img/BoxingUnboxingExample.jpg" alt="BoxingUnboxingExample" loading="lazy" />&lt;/p>
+&lt;h1>字节码执行过程&lt;/h1>&lt;p>&lt;img src="https://raw.githubusercontent.com/stardustman/pictures/main/img/jvm%20-byte-code-execute.svg" alt="jvm-byte-code-execute" loading="lazy" />&lt;/p>
+&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://www.geeksforgeeks.org/evaluation-of-postfix-expression/" target="_blank" rel="noopener">postfix-expression&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/ingokegel/jclasslib/releases" target="_blank" rel="noopener">jclasslib&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iconst_i" target="_blank" rel="noopener">jvms-6.5.iconst_i&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.invokestatic" target="_blank" rel="noopener">jvms-6.5.invokestatic&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.getstatic" target="_blank" rel="noopener">jvms-6.5.getstatic&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>asm-java-jit</title><link>https://buybyte.github.io/blog/asm-java-jit/</link><pubDate>Sun, 18 Jul 2021 10:43:46 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-java-jit/</guid><description>
+&lt;h2>前言&lt;span class="hx-absolute -hx-mt-20" id="前言">&lt;/span>
+&lt;a href="#%e5%89%8d%e8%a8%80" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>无论多么花里胡哨的功能，最终落地到一台计算机上，都是二进制代码。虽然 java 代码跑在 jvm 平台之上，但是 jvm 只是负责执行 java 自定义的一套 bytecode 的工具，只要能解释字节码，这个工具用什么语言写都是可以的。主流的 HotSpot 虚拟机选择的 C++。&lt;/p>
+&lt;h2>二进制代码探析&lt;span class="hx-absolute -hx-mt-20" id="二进制代码探析">&lt;/span>
+&lt;a href="#%e4%ba%8c%e8%bf%9b%e5%88%b6%e4%bb%a3%e7%a0%81%e6%8e%a2%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>C 语言举例&lt;span class="hx-absolute -hx-mt-20" id="c-语言举例">&lt;/span>
+&lt;a href="#c-%e8%af%ad%e8%a8%80%e4%b8%be%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>gcc 不开启优化&lt;span class="hx-absolute -hx-mt-20" id="gcc-不开启优化">&lt;/span>
+&lt;a href="#gcc-%e4%b8%8d%e5%bc%80%e5%90%af%e4%bc%98%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span>&lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">long&lt;/span> &lt;span class="nf">desc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">long&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%ld&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nf">desc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>具体&lt;a href="https://stardustman.github.io/2019/06/24/asm-how-x86-64-arguments-pass/" target="_blank" rel="noopener">汇编级别的参数传递&lt;/a> 可以参考这篇。x86 架构下&lt;a href="https://stardustman.github.io/2019/05/28/asm-how-x86-function-execute/" target="_blank" rel="noopener">函数如何之行&lt;/a> 可以参考这篇。&lt;/p>
+&lt;p>gcc -o descv1 desc.c 之后通过 objdump -d descv11 可以找到 &lt;code>long desc(long a)&lt;/code> 的汇编代码如下：&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-asm" data-lang="asm">&lt;span class="line">&lt;span class="cl">&lt;span class="err">000000000000064&lt;/span>&lt;span class="nf">a&lt;/span> &lt;span class="err">&amp;lt;&lt;/span>&lt;span class="no">desc&lt;/span>&lt;span class="err">&amp;gt;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">64&lt;/span>&lt;span class="nl">a:&lt;/span> &lt;span class="err">55&lt;/span> &lt;span class="nf">push&lt;/span> &lt;span class="nv">%rbp&lt;/span> &lt;span class="c1">;❶ 保存上一个栈帧的 base，进入一个函数的常规操作。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="err">64&lt;/span>&lt;span class="nl">b:&lt;/span> &lt;span class="err">48&lt;/span> &lt;span class="err">89&lt;/span> &lt;span class="nf">e5&lt;/span> &lt;span class="no">mov&lt;/span> &lt;span class="nv">%rsp&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="nv">%rbp&lt;/span> &lt;span class="c1">;❷ 开辟新的栈帧
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="err">64&lt;/span>&lt;span class="nl">e:&lt;/span> &lt;span class="err">48&lt;/span> &lt;span class="err">89&lt;/span> &lt;span class="err">7&lt;/span>&lt;span class="nf">d&lt;/span> &lt;span class="no">f8&lt;/span> &lt;span class="no">mov&lt;/span> &lt;span class="nv">%rdi&lt;/span>&lt;span class="p">,-&lt;/span>&lt;span class="mi">0x8&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">%rbp&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">;❸ 参数 a（rdi）入栈
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="err">652:&lt;/span> &lt;span class="err">48&lt;/span> &lt;span class="err">8&lt;/span>&lt;span class="nf">b&lt;/span> &lt;span class="mi">45&lt;/span> &lt;span class="no">f8&lt;/span> &lt;span class="no">mov&lt;/span> &lt;span class="p">-&lt;/span>&lt;span class="mi">0x8&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">%rbp&lt;/span>&lt;span class="p">),&lt;/span>&lt;span class="nv">%rax&lt;/span> &lt;span class="c1">;❹ 参数 a 从栈中复制到 rax
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="err">656:&lt;/span> &lt;span class="err">48&lt;/span> &lt;span class="err">83&lt;/span> &lt;span class="nf">e8&lt;/span> &lt;span class="mi">01&lt;/span> &lt;span class="no">sub&lt;/span> &lt;span class="no">$0x1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="nv">%rax&lt;/span> &lt;span class="c1">;❺ a = a - 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="err">65&lt;/span>&lt;span class="nl">a:&lt;/span> &lt;span class="err">5&lt;/span>&lt;span class="nf">d&lt;/span> &lt;span class="no">pop&lt;/span> &lt;span class="nv">%rbp&lt;/span> &lt;span class="c1">;❻ 弹出 rbp，也即是恢复上一个栈帧的 base
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="err">65&lt;/span>&lt;span class="nl">b:&lt;/span> &lt;span class="nf">c3&lt;/span> &lt;span class="no">retq&lt;/span> &lt;span class="err">;❼&lt;/span> &lt;span class="err">函数返回&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>可以看到 ❸ 和 ❹ 这两步有些多余，这是没有开启优化，gcc 默认采用的方式，把所有的参数先放到栈上。我们可以进行优化。&lt;/p>
+&lt;h4>对 gcc 不开启优化选项的汇编代码优化&lt;span class="hx-absolute -hx-mt-20" id="对-gcc-不开启优化选项的汇编代码优化">&lt;/span>
+&lt;a href="#%e5%af%b9-gcc-%e4%b8%8d%e5%bc%80%e5%90%af%e4%bc%98%e5%8c%96%e9%80%89%e9%a1%b9%e7%9a%84%e6%b1%87%e7%bc%96%e4%bb%a3%e7%a0%81%e4%bc%98%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;memory.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;sys/mman.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="nf">int&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">desc_func&lt;/span>&lt;span class="p">)(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">char&lt;/span> &lt;span class="n">desc_code&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="mh">0x55&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// ❶ push rbp
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="mh">0x48&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0x89&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0xe5&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// ❷ mov rsp, rbp
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="mh">0x89&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0xf8&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// mov edi, eax ??
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="mh">0x48&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0x83&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0xe8&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0x01&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// sub $0x1,%rax
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="mh">0x5d&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// ❻ pop rbp
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="mh">0xc3&lt;/span> &lt;span class="c1">// ❼ ret
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">void&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">mmap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">desc_code&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">PROT_WRITE&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">PROT_EXEC&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">MAP_ANONYMOUS&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">MAP_PRIVATE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">memcpy&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">desc_code&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">desc_code&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">desc_func&lt;/span> &lt;span class="n">p_desc&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">desc_func&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%d&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nf">p_desc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>可以看到在运行中创建 desc 函数，&lt;code>运行时生成可执行的机器码&lt;/code>这种方式其实就是 JIT 实现的核心操作。
+同时可以看到，根本没有必要开辟栈帧来执行这个 desc 函数。也就是可以把 ➊ ➋ ➏ 栈帧相关操作删除。&lt;/p>
+&lt;/blockquote>
+&lt;h4>进一步优化，消除栈帧&lt;span class="hx-absolute -hx-mt-20" id="进一步优化消除栈帧">&lt;/span>
+&lt;a href="#%e8%bf%9b%e4%b8%80%e6%ad%a5%e4%bc%98%e5%8c%96%e6%b6%88%e9%99%a4%e6%a0%88%e5%b8%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;memory.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;sys/mman.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="nf">int&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">desc_func&lt;/span>&lt;span class="p">)(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">char&lt;/span> &lt;span class="n">desc_code&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="mh">0x89&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0xf8&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// mov edi, eax ??
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="mh">0x48&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0x83&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0xe8&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0x01&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// sub $0x1,%rax
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="mh">0xc3&lt;/span> &lt;span class="c1">// ❼ ret
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">void&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">mmap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">desc_code&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">PROT_WRITE&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">PROT_EXEC&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">MAP_ANONYMOUS&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">MAP_PRIVATE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">memcpy&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">desc_code&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">desc_code&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">desc_func&lt;/span> &lt;span class="n">p_desc&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">desc_func&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%d&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nf">p_desc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>可以看到不开辟栈帧，一样可以执行代码。&lt;/p>
+&lt;/blockquote>
+&lt;h4>lea addr dst 优化&lt;span class="hx-absolute -hx-mt-20" id="lea-addr-dst-优化">&lt;/span>
+&lt;a href="#lea-addr-dst-%e4%bc%98%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">char&lt;/span> &lt;span class="n">code&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="mh">0x48&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0x8d&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mh">0x47&lt;/span> &lt;span class="mh">0xff&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// lea -0x1(rdi), rax lea 直接将 rdi 寄存器里的值减去 1 复制给 rax
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="mh">0xc3&lt;/span> &lt;span class="c1">// ret
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">};&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>这个和 gcc -o desc desc.c -O2 结果是一样的。&lt;/p>
+&lt;/blockquote>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://mp.weixin.qq.com/s/TokGNbdnf2XkhHSbneppgg" target="_blank" rel="noopener">java 杂谈之 JIT&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://ref.x86asm.net/coder64.html" target="_blank" rel="noopener">x64-instruction-table&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://web.stanford.edu/class/archive/cs/cs107/cs107.1166/guide_x86-64.html" target="_blank" rel="noopener">https://web.stanford.edu/class/archive/cs/cs107/cs107.1166/guide_x86-64.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf" target="_blank" rel="noopener">http://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.felixcloutier.com/x86/lea" target="_blank" rel="noopener">load-effective-address(lea)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html" target="_blank" rel="noopener">java-bytecode&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.csdn.net/appleyuchi/article/details/84036985" target="_blank" rel="noopener">圆圈数字等&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

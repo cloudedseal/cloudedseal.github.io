@@ -1,1 +1,170 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>type on buybyte</title><link>http://buybyte.github.io/tags/type/</link><description>Recent content in type on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 25 Apr 2025 11:04:51 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/type/index.xml" rel="self" type="application/rss+xml"/><item><title>Master Type System</title><link>http://buybyte.github.io/2025/04/25/master-type-system/</link><pubDate>Fri, 25 Apr 2025 11:04:51 +0800</pubDate><guid>http://buybyte.github.io/2025/04/25/master-type-system/</guid><description>为啥需要 type system? type 就是契约 At the hardware level, the machine does not know types in the way humans or high-level programming languages do. 硬件级别就是电信号了。type 这种概念不存在。 Bits are just bits (0s and 1s), and the CPU/memory has no intrinsic understanding of &amp;ldquo;integers,&amp;rdquo; &amp;ldquo;strings,&amp;rdquo;</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Type</title><link>https://buybyte.github.io/tags/type/</link><description>Recent content in Type on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 25 Apr 2025 11:04:51 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/type/index.xml" rel="self" type="application/rss+xml"/><item><title>Master Type System</title><link>https://buybyte.github.io/blog/master-type-system/</link><pubDate>Fri, 25 Apr 2025 11:04:51 +0800</pubDate><guid>https://buybyte.github.io/blog/master-type-system/</guid><description>
+&lt;h1>为啥需要 type system?&lt;/h1>&lt;h2>&lt;code>type&lt;/code> 就是契约&lt;span class="hx-absolute -hx-mt-20" id="type-就是契约">&lt;/span>
+&lt;a href="#type-%e5%b0%b1%e6%98%af%e5%a5%91%e7%ba%a6" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>At the hardware level, the machine does not know types in the way humans or high-level programming languages do. 硬件级别就是电信号了。&lt;code>type&lt;/code> 这种概念不存在。&lt;/li>
+&lt;li>Bits are just bits (0s and 1s), and the CPU/memory has no intrinsic understanding of &amp;ldquo;integers,&amp;rdquo; &amp;ldquo;strings,&amp;rdquo; or &amp;ldquo;objects.&amp;rdquo;&lt;/li>
+&lt;li>But types exist in programming languages to &lt;code>impose structure on those raw bits&lt;/code>, guiding both the &lt;code>programmer&lt;/code> and the &lt;code>compiler/interpreter&lt;/code> on how to &lt;code>interpret and manipulate&lt;/code> data safely and meaningfully.&lt;/li>
+&lt;/ul>
+&lt;h2>Bridging Human Intent &amp;lt;-&amp;gt; Machine Execution&lt;span class="hx-absolute -hx-mt-20" id="bridging-human-intent---machine-execution">&lt;/span>
+&lt;a href="#bridging-human-intent---machine-execution" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Types act as a &lt;code>contract&lt;/code>&lt;/p>
+&lt;ul>
+&lt;li>For &lt;code>humans&lt;/code>: They make code &lt;code>readable&lt;/code> and &lt;code>intentional&lt;/code> (e.g., int age vs. string name).&lt;/li>
+&lt;li>For &lt;code>compilers&lt;/code>: They generate &lt;code>correct&lt;/code>, &lt;code>optimized&lt;/code> machine code (e.g., using ADD vs. FADD for integers vs. floats). 编译器根据数据类型使用相应的指令&lt;/li>
+&lt;li>For &lt;code>safety&lt;/code>: They prevent &lt;code>invalid&lt;/code> operations (e.g., multiplying a string by a file handle).&lt;/li>
+&lt;/ul>
+&lt;h1>硬件视角下的数据&lt;/h1>&lt;h2>Bits Are Just Bits&lt;span class="hx-absolute -hx-mt-20" id="bits-are-just-bits">&lt;/span>
+&lt;a href="#bits-are-just-bits" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>按照硬件电路的设计，就是一系列电信号而已。&lt;/p>
+&lt;/blockquote>
+&lt;h3>No inherent types&lt;span class="hx-absolute -hx-mt-20" id="no-inherent-types">&lt;/span>
+&lt;a href="#no-inherent-types" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>没有所谓的类型。&lt;/p>
+&lt;/blockquote>
+&lt;p>To the CPU, memory is a giant array of bytes. When you write 42 (integer) or &amp;ldquo;hello&amp;rdquo; (string), the machine sees only binary patterns like 00101010 or 01101000 01100101 01101100 01101100 01101111.&lt;/p>
+&lt;h3>Operations are &amp;ldquo;type-agnostic&amp;rdquo;&lt;span class="hx-absolute -hx-mt-20" id="operations-are-type-agnostic">&lt;/span>
+&lt;a href="#operations-are-type-agnostic" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>给定一个指令，指令就会按照设计好的功能来使用 bits, 不管这个 bits 到底是啥。&lt;/p>
+&lt;/blockquote>
+&lt;p>The CPU executes instructions (e.g., ADD, MOV) based on the binary values in registers, not their &amp;ldquo;meaning.&amp;rdquo; For example:&lt;/p>
+&lt;ul>
+&lt;li>ADD treats bits as integers (using &lt;code>arithmetic circuits&lt;/code>).&lt;/li>
+&lt;li>MOV copies bits &lt;code>blindly&lt;/code> from one location to another.&lt;/li>
+&lt;li>The &lt;code>same bits&lt;/code> could represent an integer, a float, or part of a string, depending on context.&lt;/li>
+&lt;/ul>
+&lt;h1>How Types Work &amp;ldquo;Under the Hood&amp;rdquo;？&lt;/h1>&lt;p>&lt;strong>&lt;code>Types are a human/compiler abstraction layered on top of raw bits&lt;/code>&lt;/strong>&lt;/p>
+&lt;p>Here’s how they translate to the machine:&lt;/p>
+&lt;ol>
+&lt;li>Compiler/Interpreter Assigns Meaning&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>A high-level language (e.g., C, Python) assigns semantic meaning to bits using types. For example:&lt;/li>
+&lt;li>int x = 42: The compiler allocates 4 bytes (32 bits) and encodes 42 as 00101010&amp;hellip;, then enforces that x can only be used in integer operations (e.g., x + 5).&lt;/li>
+&lt;li>float y = 3.14: The same 4 bytes are interpreted as an IEEE 754 floating-point number.&lt;/li>
+&lt;li>char* s = &amp;ldquo;hello&amp;rdquo;: The compiler stores the ASCII codes for each character in memory and treats the variable as a pointer to the first byte.&lt;/li>
+&lt;/ul>
+&lt;p>Without types, the compiler wouldn’t know &lt;code>how to generate correct machine code&lt;/code> (e.g., integer vs. floating-point arithmetic instructions).&lt;/p>
+&lt;ol start="2">
+&lt;li>Runtime Type Tracking (Dynamically Typed Languages)
+In languages like Python or JavaScript, types are &lt;code>checked at runtime&lt;/code>. For example:&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">42&lt;/span> &lt;span class="c1"># Interpreter tags `x` as an integer internally.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;hello&amp;#34;&lt;/span> &lt;span class="c1"># Later, the tag changes to &amp;#34;string.&amp;#34;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>The interpreter keeps metadata (e.g., type tags) to track what the bits represent. This adds overhead but allows flexibility.&lt;/p>
+&lt;h1>What Happens Without High-Level Type Abstractions?&lt;/h1>&lt;p>If you remove types from the equation (e.g., programming in raw assembly or using memory pointers without safeguards):&lt;/p>
+&lt;h2>Ambiguous Interpretation&lt;span class="hx-absolute -hx-mt-20" id="ambiguous-interpretation">&lt;/span>
+&lt;a href="#ambiguous-interpretation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The same bits can be misused as different types, leading to chaos:&lt;/p>
+&lt;p>// C code (no runtime type checking)&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">42&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">float&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">float&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// Reinterpret the bits of `x` as a float.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%f&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// Prints nonsense: 42 as a float ≈ 5.9e-44.
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>Undefined Behavior&lt;span class="hx-absolute -hx-mt-20" id="undefined-behavior">&lt;/span>
+&lt;a href="#undefined-behavior" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Memory corruption: Writing a string into memory allocated for an integer:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">arr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">malloc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">arr&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">100&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// Buffer overflow (undefined behavior).
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>• Security vulnerabilities: Treating data as executable code (e.g., injection attacks).&lt;/p>
+&lt;h2>No Guardrails&lt;span class="hx-absolute -hx-mt-20" id="no-guardrails">&lt;/span>
+&lt;a href="#no-guardrails" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• You could &amp;ldquo;add&amp;rdquo; a string to a file handle, and the CPU would try to execute it, resulting in crashes or garbage output.&lt;/p>
+&lt;h1>java 代码理解&lt;/h1>&lt;h2>Square.java&lt;span class="hx-absolute -hx-mt-20" id="squarejava">&lt;/span>
+&lt;a href="#squarejava" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">class&lt;/span> &lt;span class="nc">Square&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">square&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">float&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">square&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">float&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">square&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>Square 字节码查看&lt;span class="hx-absolute -hx-mt-20" id="square-字节码查看">&lt;/span>
+&lt;a href="#square-%e5%ad%97%e8%8a%82%e7%a0%81%e6%9f%a5%e7%9c%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>javap -c Square&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">class&lt;/span> &lt;span class="nc">Square&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Square&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Code&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">aload_0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">invokespecial&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">#&lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Method java/lang/Object.&amp;#34;&amp;lt;init&amp;gt;&amp;#34;:()V&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">4&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">square&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Code&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">iload_0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">iload_0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">imul&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">3&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ireturn&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">float&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">square&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">float&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Code&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">fload_0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">fload_0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">fmul&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">3&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">freturn&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">square&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">long&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Code&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">lload_0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">lload_0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">lmul&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">3&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">lreturn&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>可以看到编译器根据 type 使用了对应的 mul 指令&lt;/p>
+&lt;ol>
+&lt;li>可以看到 int 类型对应的指令有 imul&lt;/li>
+&lt;li>可以看到 float 类型对应的指令有 fmul&lt;/li>
+&lt;li>可以看到 long 类型对应的指令有 lmul&lt;/li>
+&lt;/ol>
+&lt;h1>总结&lt;/h1>&lt;p>Types are a tool &lt;code>for humans&lt;/code>, &lt;code>not the machine&lt;/code>. Without them, programming would require &lt;code>manually managing every bit and operation&lt;/code>, akin to writing assembly code for every program—a recipe for bugs and inefficiency&lt;/p></description></item></channel></rss>

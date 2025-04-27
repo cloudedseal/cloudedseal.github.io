@@ -1,1 +1,187 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>notions on buybyte</title><link>http://buybyte.github.io/tags/notions/</link><description>Recent content in notions on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 26 Nov 2020 16:18:52 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/notions/index.xml" rel="self" type="application/rss+xml"/><item><title>data_and_metadata</title><link>http://buybyte.github.io/2020/11/26/data_and_metadata/</link><pubDate>Thu, 26 Nov 2020 16:18:52 +0800</pubDate><guid>http://buybyte.github.io/2020/11/26/data_and_metadata/</guid><description>具体问题具体分析，确实非常重要。用正确的思想指导行动，才可事半功倍。 现实中的客观问题有意思的地方在于：无论你选择看得见，还是选择看不见，它都</description></item><item><title>notions_of_computer</title><link>http://buybyte.github.io/2020/11/24/notions_of_computer/</link><pubDate>Tue, 24 Nov 2020 13:25:13 +0800</pubDate><guid>http://buybyte.github.io/2020/11/24/notions_of_computer/</guid><description>指导思想 计算机是人发明的。由计算机组成的世界，其设计思想很明显要借鉴现实中的东西。正如一位伟人的著作开篇提出 “谁是我们的敌人？谁是我们的朋友</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Notions</title><link>https://buybyte.github.io/tags/notions/</link><description>Recent content in Notions on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 26 Nov 2020 16:18:52 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/notions/index.xml" rel="self" type="application/rss+xml"/><item><title>data_and_metadata</title><link>https://buybyte.github.io/blog/data-and-metadata/</link><pubDate>Thu, 26 Nov 2020 16:18:52 +0800</pubDate><guid>https://buybyte.github.io/blog/data-and-metadata/</guid><description>
+&lt;blockquote>
+&lt;p>具体问题具体分析，确实非常重要。用正确的思想指导行动，才可事半功倍。
+现实中的客观问题有意思的地方在于：无论你选择看得见，还是选择看不见，它都在那里，关键在于有没有人去解决，解决的人有多大的决心。&lt;/p>
+&lt;/blockquote>
+&lt;h2>data vs metadata&lt;span class="hx-absolute -hx-mt-20" id="data-vs-metadata">&lt;/span>
+&lt;a href="#data-vs-metadata" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>Metadata is &amp;ldquo;data that provides information about other data&amp;rdquo;. In other words, it is &amp;ldquo;&lt;code>data about data&lt;/code>&amp;rdquo;.
+正如这个世上的人，无论承认与否，分为两类：统治者与被统治者。数据也不可避免的被分为两种：metadata 和 data。&lt;code>数据的数据&lt;/code>和&lt;code>数据&lt;/code>。两者相辅相成。&lt;/p>
+&lt;/blockquote>
+&lt;h3>physical&lt;span class="hx-absolute -hx-mt-20" id="physical">&lt;/span>
+&lt;a href="#physical" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>data 数据(被统治者)
+metadata 元数据(统治者)
+正如如果被统治者都没有了，那也谈不上统治者。在一个个实体确实存在的情况下，如果没有数据，那也谈不上元数据。&lt;/p>
+&lt;h3>logical&lt;span class="hx-absolute -hx-mt-20" id="logical">&lt;/span>
+&lt;a href="#logical" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>有时没有实体的存在但是也可以在&lt;code>逻辑上&lt;/code>划分 data 和 Metadata 的。比如网络中的流量。仅仅是用户真正的数据吗？不，其实还有路由器之间的流量, 这部分流量对于整个网络系统的正常运行，不可缺少。&lt;/p>
+&lt;p>The control plane is the part of a network that controls &lt;code>how data is forwarded&lt;/code>, while the data plane is the actual forwarding process.
+那么网络流量就可以在逻辑上（也就是虚拟的）划分为：
+control plane 控制平面（视为 Metadata）
+data/forward plane 数据平面（视为 data）
+从这个角度来理解，metadata 有控制数据的意思，控制真正的用户数据如何转发。虽然大家都是同一种事物(都是数据包)，但是又不是平等的事物。咳咳，换成人类，似乎也说得过去。&lt;/p>
+&lt;h3>structural metadata&lt;span class="hx-absolute -hx-mt-20" id="structural-metadata">&lt;/span>
+&lt;a href="#structural-metadata" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>这种结构性的 metadata 相当于一份说明书，来说明哪一个位置的数据是什么数据。&lt;/p>
+&lt;h4>java class format&lt;span class="hx-absolute -hx-mt-20" id="java-class-format">&lt;/span>
+&lt;a href="#java-class-format" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>Java 代码经过编译，可以的到一个 .class 文件。&lt;/p>
+&lt;/blockquote>
+&lt;h5>Hello.java&lt;span class="hx-absolute -hx-mt-20" id="hellojava">&lt;/span>
+&lt;a href="#hellojava" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">Hello&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Hello, World&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h5>Hello.class&lt;span class="hx-absolute -hx-mt-20" id="helloclass">&lt;/span>
+&lt;a href="#helloclass" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">root@aliyun:java# xxd Hello.class
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000000: cafe babe &lt;span class="m">0000&lt;/span> &lt;span class="m">0034&lt;/span> 001d 0a00 &lt;span class="m">0600&lt;/span> 0f09 .......4........
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000010: &lt;span class="m">0010&lt;/span> &lt;span class="m">0011&lt;/span> &lt;span class="m">0800&lt;/span> 120a &lt;span class="m">0013&lt;/span> &lt;span class="m">0014&lt;/span> &lt;span class="m">0700&lt;/span> &lt;span class="m">1507&lt;/span> ................
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000020: &lt;span class="m">0016&lt;/span> &lt;span class="m">0100&lt;/span> 063c 696e &lt;span class="m">6974&lt;/span> 3e01 &lt;span class="m">0003&lt;/span> &lt;span class="m">2829&lt;/span> .....&amp;lt;init&amp;gt;...&lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000030: &lt;span class="m">5601&lt;/span> &lt;span class="m">0004&lt;/span> 436f &lt;span class="m">6465&lt;/span> &lt;span class="m">0100&lt;/span> 0f4c 696e 654e V...Code...LineN
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000040: 756d &lt;span class="m">6265&lt;/span> &lt;span class="m">7254&lt;/span> &lt;span class="m">6162&lt;/span> 6c65 &lt;span class="m">0100&lt;/span> 046d &lt;span class="m">6169&lt;/span> umberTable...mai
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000050: 6e01 &lt;span class="m">0016&lt;/span> 285b 4c6a &lt;span class="m">6176&lt;/span> 612f 6c61 6e67 n...&lt;span class="o">([&lt;/span>Ljava/lang
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000060: 2f53 &lt;span class="m">7472&lt;/span> 696e 673b &lt;span class="m">2956&lt;/span> &lt;span class="m">0100&lt;/span> 0a53 6f75 /String&lt;span class="p">;&lt;/span>&lt;span class="o">)&lt;/span>V...Sou
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000070: &lt;span class="m">7263&lt;/span> &lt;span class="m">6546&lt;/span> 696c &lt;span class="m">6501&lt;/span> 000a &lt;span class="m">4865&lt;/span> 6c6c 6f2e rceFile...Hello.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000080: 6a61 &lt;span class="m">7661&lt;/span> 0c00 &lt;span class="m">0700&lt;/span> &lt;span class="m">0807&lt;/span> &lt;span class="m">0017&lt;/span> 0c00 &lt;span class="m">1800&lt;/span> java............
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000090: &lt;span class="m">1901&lt;/span> 000c &lt;span class="m">4865&lt;/span> 6c6c 6f2c &lt;span class="m">2057&lt;/span> 6f72 6c64 ....Hello, World
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000a0: &lt;span class="m">0700&lt;/span> 1a0c 001b 001c &lt;span class="m">0100&lt;/span> &lt;span class="m">0548&lt;/span> 656c 6c6f ...........Hello
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000b0: &lt;span class="m">0100&lt;/span> 106a &lt;span class="m">6176&lt;/span> 612f 6c61 6e67 2f4f 626a ...java/lang/Obj
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000c0: &lt;span class="m">6563&lt;/span> &lt;span class="m">7401&lt;/span> &lt;span class="m">0010&lt;/span> 6a61 &lt;span class="m">7661&lt;/span> 2f6c 616e 672f ect...java/lang/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000d0: &lt;span class="m">5379&lt;/span> &lt;span class="m">7374&lt;/span> 656d &lt;span class="m">0100&lt;/span> 036f &lt;span class="m">7574&lt;/span> &lt;span class="m">0100&lt;/span> 154c System...out...L
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000e0: 6a61 &lt;span class="m">7661&lt;/span> 2f69 6f2f &lt;span class="m">5072&lt;/span> 696e &lt;span class="m">7453&lt;/span> &lt;span class="m">7472&lt;/span> java/io/PrintStr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000f0: &lt;span class="m">6561&lt;/span> 6d3b &lt;span class="m">0100&lt;/span> 136a &lt;span class="m">6176&lt;/span> 612f 696f 2f50 eam&lt;span class="p">;&lt;/span>...java/io/P
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000100: &lt;span class="m">7269&lt;/span> 6e74 &lt;span class="m">5374&lt;/span> &lt;span class="m">7265&lt;/span> 616d &lt;span class="m">0100&lt;/span> &lt;span class="m">0770&lt;/span> &lt;span class="m">7269&lt;/span> rintStream...pri
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000110: 6e74 6c6e &lt;span class="m">0100&lt;/span> &lt;span class="m">1528&lt;/span> 4c6a &lt;span class="m">6176&lt;/span> 612f 6c61 ntln...&lt;span class="o">(&lt;/span>Ljava/la
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000120: 6e67 2f53 &lt;span class="m">7472&lt;/span> 696e 673b &lt;span class="m">2956&lt;/span> &lt;span class="m">0021&lt;/span> &lt;span class="m">0005&lt;/span> ng/String&lt;span class="p">;&lt;/span>&lt;span class="o">)&lt;/span>V.!..
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000130: &lt;span class="m">0006&lt;/span> &lt;span class="m">0000&lt;/span> &lt;span class="m">0000&lt;/span> &lt;span class="m">0002&lt;/span> &lt;span class="m">0001&lt;/span> &lt;span class="m">0007&lt;/span> &lt;span class="m">0008&lt;/span> &lt;span class="m">0001&lt;/span> ................
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000140: &lt;span class="m">0009&lt;/span> &lt;span class="m">0000&lt;/span> 001d &lt;span class="m">0001&lt;/span> &lt;span class="m">0001&lt;/span> &lt;span class="m">0000&lt;/span> &lt;span class="m">0005&lt;/span> 2ab7 ..............*.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000150: &lt;span class="m">0001&lt;/span> b100 &lt;span class="m">0000&lt;/span> &lt;span class="m">0100&lt;/span> 0a00 &lt;span class="m">0000&lt;/span> &lt;span class="m">0600&lt;/span> &lt;span class="m">0100&lt;/span> ................
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000160: &lt;span class="m">0000&lt;/span> &lt;span class="m">0100&lt;/span> &lt;span class="m">0900&lt;/span> 0b00 0c00 &lt;span class="m">0100&lt;/span> &lt;span class="m">0900&lt;/span> &lt;span class="m">0000&lt;/span> ................
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000170: &lt;span class="m">2500&lt;/span> &lt;span class="m">0200&lt;/span> &lt;span class="m">0100&lt;/span> &lt;span class="m">0000&lt;/span> 09b2 &lt;span class="m">0002&lt;/span> &lt;span class="m">1203&lt;/span> b600 %...............
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000180: 04b1 &lt;span class="m">0000&lt;/span> &lt;span class="m">0001&lt;/span> 000a &lt;span class="m">0000&lt;/span> 000a &lt;span class="m">0002&lt;/span> &lt;span class="m">0000&lt;/span> ................
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000190: &lt;span class="m">0003&lt;/span> &lt;span class="m">0008&lt;/span> &lt;span class="m">0004&lt;/span> &lt;span class="m">0001&lt;/span> 000d &lt;span class="m">0000&lt;/span> &lt;span class="m">0002&lt;/span> 000e ................&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>Hello.class 怎样解析的？&lt;span class="hx-absolute -hx-mt-20" id="helloclass-怎样解析的">&lt;/span>
+&lt;a href="#helloclass-%e6%80%8e%e6%a0%b7%e8%a7%a3%e6%9e%90%e7%9a%84" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>如果丢给我一个 .class 文件，其他啥也没有。我也看不懂。但是由于 &lt;code>class file format&lt;/code> 的存在，只要足够耐心，自己也可以解析出 .class 是怎样的。这里的 &lt;a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html" target="_blank" rel="noopener">class format&lt;/a> 就是 Metadata。没有这个格式说明，谁也弄不明白这一堆二进制的 0 和 1 是啥意思。&lt;/p>
+&lt;h4>IP header&lt;span class="hx-absolute -hx-mt-20" id="ip-header">&lt;/span>
+&lt;a href="#ip-header" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>IP 这个协议是用来将不同局域网组成互联网的。既然通信是双向的，要知道发送者的 IP，接收者的 IP，IP 包的总大小，IP Header 的大小，这个 IP 包能跨越多少路由器(&lt;a href="https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/" target="_blank" rel="noopener">TTL&lt;/a>)，使用的 IP 协议版本，是哪一个上层协议在使用 IP 协议，IP 包是否切分了，切分后怎样组装，校验整个 IP 包在传输过程中是否发生了错误等信息。记在哪里呢？IP header，这个 IP header 就是 Metadata。这些也可理解成控制数据。&lt;/p>
+&lt;h4>TCP header&lt;span class="hx-absolute -hx-mt-20" id="tcp-header">&lt;/span>
+&lt;a href="#tcp-header" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>TCP 传输层的协议。用来保证数据不丢失且按照发送顺序到达目的地。
+怎样保证顺序呢？对每一个字节编号(sequence number)。
+怎样保证数据不丢失呢？确认机制(ack)。
+怎样找到目的地呢？一个在网络上的计算机，可能同时运行许多程序，如打开浏览器，在线听歌，在线编辑文档等等。用端口号(port number)。
+同时，怎样知道接收方现在接收网络包的大小呢？用窗口(window size)。
+怎样能知道网络包传输过程是否发生了错误？用校验和(checksum)。
+这些信息都存在哪里了呢？TCP header 里。这就是 Metadata。也可理解成控制数据。&lt;/p>
+&lt;h4>InnoDB row format&lt;span class="hx-absolute -hx-mt-20" id="innodb-row-format">&lt;/span>
+&lt;a href="#innodb-row-format" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>InnoDB 存储表是按行存储的。这只是逻辑上的说法。真正的数据存储是要落到磁盘上的。对于每一行，字段是不是空的，定长还是变长，变长字段的长度，该列的主键，这行数据是哪一个事务操作的，这些记录的相关日志都记在哪里了呢？
+不错。这其实也是有相应的说明的。而且，InnoDB 提供了不同的 &lt;a href="https://mariadb.com/kb/en/innodb-row-formats-overview/" target="_blank" rel="noopener">row format&lt;/a>。对用户的每一行来说，该行的 row format 就是 Metadata。当然这就是描述（或者说是控制）该行用户数据的。&lt;/p>
+&lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
+&lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Metadata" target="_blank" rel="noopener">Metadata&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dataedo.com/kb/data-glossary/what-is-metadata" target="_blank" rel="noopener">what-is-metadata&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cloudflare.com/learning/network-layer/what-is-the-control-plane/" target="_blank" rel="noopener">what-is-the-control-plane&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html" target="_blank" rel="noopener">class file format&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mariadb.com/kb/en/innodb-row-formats-overview/" target="_blank" rel="noopener">InnoDB-row-format&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/" target="_blank" rel="noopener">TTL&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>notions_of_computer</title><link>https://buybyte.github.io/blog/notions-of-computer/</link><pubDate>Tue, 24 Nov 2020 13:25:13 +0800</pubDate><guid>https://buybyte.github.io/blog/notions-of-computer/</guid><description>
+&lt;h2>指导思想&lt;span class="hx-absolute -hx-mt-20" id="指导思想">&lt;/span>
+&lt;a href="#%e6%8c%87%e5%af%bc%e6%80%9d%e6%83%b3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>计算机是人发明的。由计算机组成的世界，其设计思想很明显要借鉴现实中的东西。正如一位伟人的著作开篇提出 &lt;code>“谁是我们的敌人？谁是我们的朋友？这个问题是革命的首要问题。中国过去一切革命斗争成效甚少，其基本原因就是因为不能团结真正的朋友，以攻击真正的敌人。”&lt;/code>那么应对计算机，什么才是计算机组织背后的指导思想呢？个人认为有三个：1. hierarchy(层级)、2：group(分组)、3：order(有序)&lt;/p>
+&lt;h3>hierarchy(层级)&lt;span class="hx-absolute -hx-mt-20" id="hierarchy层级">&lt;/span>
+&lt;a href="#hierarchy%e5%b1%82%e7%ba%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;em>hierarchy&lt;/em> 在这里也可以理解成等级。层级结构最重要的一点就是最顶层在哪？用 &lt;code>tree&lt;/code> 理解就是，&lt;code>root&lt;/code> 在哪？这个信息整个层级都要知道。哈哈，是不是挺像皇帝。😄&lt;/p>
+&lt;h4>面对数量庞大的相同事物，怎样管理呢？用什么组织方式呢？&lt;span class="hx-absolute -hx-mt-20" id="面对数量庞大的相同事物怎样管理呢用什么组织方式呢">&lt;/span>
+&lt;a href="#%e9%9d%a2%e5%af%b9%e6%95%b0%e9%87%8f%e5%ba%9e%e5%a4%a7%e7%9a%84%e7%9b%b8%e5%90%8c%e4%ba%8b%e7%89%a9%e6%80%8e%e6%a0%b7%e7%ae%a1%e7%90%86%e5%91%a2%e7%94%a8%e4%bb%80%e4%b9%88%e7%bb%84%e7%bb%87%e6%96%b9%e5%bc%8f%e5%91%a2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>这里的数量庞大要是成千上万的。比如中国有十几亿人口、中国有 960 万平方公里的土地，等等。首先简述一下历史上的经验，比如西周，采用分封制。天子、诸侯、卿、士、平民等所有人组成一个金字塔形状。每一个层级的人&lt;code>权力大小不同&lt;/code>、&lt;code>承担的责任和义务也不同&lt;/code>。对于土地则是封邦建国。分封制可以对人口、土地等进行有效的统治。更直观的理解就是形成稳定的阶级。到这是不是立刻就能想到由于每种存储的&lt;code>价格&lt;/code>、&lt;code>速度&lt;/code>、&lt;code>容量&lt;/code>不同，应用在哪个地方也不同。也是组织成一个层级结构来构成整个计算机的存储系统。&lt;/p>
+&lt;p>从数学的角度分析就是：用&lt;code>对数的方式&lt;/code>搞定数量庞大的事物的管理。不管数量多庞大，用对数搞一下，数量立刻就降下来。比如 log&lt;sub>2&lt;/sub>4294967296 = 32。对数的发明、解析几何的创立和微积分的建立是17世纪数学的三大成就。&lt;/p>
+&lt;h5>域名组织方式&lt;span class="hx-absolute -hx-mt-20" id="域名组织方式">&lt;/span>
+&lt;a href="#%e5%9f%9f%e5%90%8d%e7%bb%84%e7%bb%87%e6%96%b9%e5%bc%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;blockquote>
+&lt;p>In 2017, 330.6 million domain names had been registered.
+2017 年已经有 33 多亿的注册域名了。&lt;/p>
+&lt;/blockquote>
+&lt;p>如果让你组织数量如此庞大的域名，你该怎样组织呢？没错，也是组织成层级结构，来管理数量如此庞大的域名。一开始的解决方法是直接把域名信息放在 /etc/hosts 文件，随着域名增多，单独的一个文件没法满足要求，数量太多了嘛，放在一个文件，且不论能不能全部存储，查找都是一个大问题。&lt;/p>
+&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/dns-root-server.png" alt="domain-name-hierarchy" loading="lazy" />&lt;/p>
+&lt;h5>IP 分配管理方式&lt;span class="hx-absolute -hx-mt-20" id="ip-分配管理方式">&lt;/span>
+&lt;a href="#ip-%e5%88%86%e9%85%8d%e7%ae%a1%e7%90%86%e6%96%b9%e5%bc%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>IP Addresses are &lt;code>unique identifiers&lt;/code> used to determine who is who on the Internet.
+IP 地址是一个 32bit 的无符号整数。范围是 [0,2^32-1], 一共有 4294967296 个整数。将近 43 亿个 ip 地址(这里不考虑公网、私网)该怎样分配使用呢？由 &lt;a href="https://www.iana.org/numbers" target="_blank" rel="noopener">Internet Assigned Numbers Authority (IANA)&lt;/a> 负责协调管理所有 IP，同时负责分配自治系统号(Autonomous System number)。&lt;/p>
+&lt;blockquote>
+&lt;p>Both IPv4 and IPv6 addresses are generally assigned in a &lt;code>hierarchical manner&lt;/code>. Users are assigned IP addresses by &lt;code>Internet service providers (ISPs)&lt;/code>. ISPs obtain allocations of IP addresses from a &lt;code>local Internet registry (LIR&lt;/code>) or &lt;code>National Internet Registry (NIR)&lt;/code>, or from their appropriate &lt;code>Regional Internet Registry (RIR)&lt;/code>:&lt;/p>
+&lt;/blockquote>
+&lt;p>数量庞大的 IP 地址怎样分配管理呢？组成层级结构。通过一级一级&lt;code>委托&lt;/code>，管理数量庞大的 IP 地址。&lt;/p>
+&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/IP_AS_Number.svg" alt="地址分配管理" loading="lazy" />&lt;/p>
+&lt;h5>文件组织方式&lt;span class="hx-absolute -hx-mt-20" id="文件组织方式">&lt;/span>
+&lt;a href="#%e6%96%87%e4%bb%b6%e7%bb%84%e7%bb%87%e6%96%b9%e5%bc%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/file_system_hierarchy.png" alt="file system hierarchy" loading="lazy" />&lt;/p>
+&lt;h4>不同性质的事物，怎样组织呢？&lt;span class="hx-absolute -hx-mt-20" id="不同性质的事物怎样组织呢">&lt;/span>
+&lt;a href="#%e4%b8%8d%e5%90%8c%e6%80%a7%e8%b4%a8%e7%9a%84%e4%ba%8b%e7%89%a9%e6%80%8e%e6%a0%b7%e7%bb%84%e7%bb%87%e5%91%a2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h5>memory hierarchy&lt;span class="hx-absolute -hx-mt-20" id="memory-hierarchy">&lt;/span>
+&lt;a href="#memory-hierarchy" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/ComputerMemoryHierarchy.svg" alt="ComputerMemoryHierarchy" loading="lazy" />&lt;/p>
+&lt;h5>Typical memory hierarchy&lt;span class="hx-absolute -hx-mt-20" id="typical-memory-hierarchy">&lt;/span>
+&lt;a href="#typical-memory-hierarchy" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/typical-memory-hierarchy.png" alt=" typical-memory-hierarchy " loading="lazy" />&lt;/p>
+&lt;h5>OSI 参考模型&lt;span class="hx-absolute -hx-mt-20" id="osi-参考模型">&lt;/span>
+&lt;a href="#osi-%e5%8f%82%e8%80%83%e6%a8%a1%e5%9e%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>网络每一层，功能不同。&lt;/p>
+&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/network-layer.svg" alt="OSI VS TCP/IP" loading="lazy" />&lt;/p>
+&lt;h3>group(分组)&lt;span class="hx-absolute -hx-mt-20" id="group分组">&lt;/span>
+&lt;a href="#group%e5%88%86%e7%bb%84" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>体量庞大的东西的基层组织。&lt;/p>
+&lt;ol>
+&lt;li>可视为层级结构的最底层。block、page、packet、fragment、set&lt;/li>
+&lt;li>也可以视为不同的模块。module、segment、section&lt;/li>
+&lt;li>也可以理解成分类。sort&lt;/li>
+&lt;/ol>
+&lt;h4>域名&lt;span class="hx-absolute -hx-mt-20" id="域名">&lt;/span>
+&lt;a href="#%e5%9f%9f%e5%90%8d" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>对域名来说一个分组可以理解成一个&lt;code>一级域名&lt;/code>下的所有域名。如 &lt;code>org&lt;/code>下的域名。当然也可以理解成一个 &lt;code>二级域名&lt;/code>下的所有域名。如 &lt;code>google.com&lt;/code> 下 Google 家所有的域名。依次类推。可以看出，同种事物进行层级组织，本身就是在进行分组。&lt;/p>
+&lt;h4>IP 地址&lt;span class="hx-absolute -hx-mt-20" id="ip-地址">&lt;/span>
+&lt;a href="#ip-%e5%9c%b0%e5%9d%80" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>An autonomous system (AS) is a very large network or group of networks with a single routing policy. Each AS is assigned a unique ASN, which is a number that identifies the AS.&lt;/p>
+&lt;/blockquote>
+&lt;p>没错。IP 地址也是通过一个一个的实体来管理使用的，一个实体就是一个自治系统。(autonomous system)。比如中国移动这个运营商的 AS Number 是 &lt;a href="https://ipinfo.io/AS56041" target="_blank" rel="noopener">56041&lt;/a>，管理一系列 IP 地址。再比如 Apple 的 AS Number 是 &lt;a href="https://ipinfo.io/AS714" target="_blank" rel="noopener">714&lt;/a>。&lt;/p>
+&lt;h4>Internet Protocol&lt;span class="hx-absolute -hx-mt-20" id="internet-protocol">&lt;/span>
+&lt;a href="#internet-protocol" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>Data traversing the Internet is &lt;code>divided into&lt;/code> smaller pieces, called &lt;code>packets&lt;/code>. IP information is attached to &lt;code>each packet&lt;/code>, and this information helps &lt;code>routers&lt;/code> to send packets to the right place.&lt;/p>
+&lt;/blockquote>
+&lt;p>通过网络发送大量的信息，也是拆分成一个个 &lt;code>packet&lt;/code>。这里也可以理解成分组。&lt;/p>
+&lt;h4>文件系统&lt;span class="hx-absolute -hx-mt-20" id="文件系统">&lt;/span>
+&lt;a href="#%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>文件系统管理磁盘空间。磁盘空间划分为一个个相同大小的 Block。一个扇区是 512Bytes，这可以视为一个分组。&lt;/p>
+&lt;h4>网络流量&lt;span class="hx-absolute -hx-mt-20" id="网络流量">&lt;/span>
+&lt;a href="#%e7%bd%91%e7%bb%9c%e6%b5%81%e9%87%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>Ports are virtual places within an operating system where network connections start and end. They help computers sort the &lt;code>network traffic&lt;/code> they receive.&lt;/p>
+&lt;/blockquote>
+&lt;p>计算机从网络上接收的 packet 怎样判定哪一个是接收者呢？对网络流量分类就行。怎样分类呢？用端口号，不同的接收者，接收不同端口的流量。&lt;/p>
+&lt;h4>subnet&lt;span class="hx-absolute -hx-mt-20" id="subnet">&lt;/span>
+&lt;a href="#subnet" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>Think of the Internet as a network of networks: computers are connected to each other within networks, and these networks connect to other networks. This enables these computers to connect with other computers both near and far.
+A network is a group of two or more connected computing devices.&lt;/p>
+&lt;/blockquote>
+&lt;p>划分子网，也是在分组。&lt;/p>
+&lt;h3>order(顺序)&lt;span class="hx-absolute -hx-mt-20" id="order顺序">&lt;/span>
+&lt;a href="#order%e9%a1%ba%e5%ba%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>顺序、分支、循环。顺序就是程序三大结构之一。没有秩序的世界是混乱的，啥事也做不成。
+TCP 协议目的之一就是要保证计算机接收到的网络包的顺序。怎样保证顺序呢？非常简单，为每一个 Byte 编号就行。&lt;/p>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.geeksforgeeks.org/memory-hierarchy-design-and-its-characteristics/" target="_blank" rel="noopener">memory-hierarchy&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cloudflare.com/learning/dns/glossary/what-is-a-domain-name/" target="_blank" rel="noopener">what-is-a-domain-name&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cloudflare.com/learning/dns/glossary/dns-root-server/" target="_blank" rel="noopener">dns-root-server&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.iana.org/numbers" target="_blank" rel="noopener">ip number resources&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://tools.ietf.org/html/rfc7020" target="_blank" rel="noopener">The Internet Numbers Registry System&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard" target="_blank" rel="noopener">Filesystem_Hierarchy_Standard&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.pathname.com/fhs/2.2/" target="_blank" rel="noopener">Filesystem Hierarchy Standard List&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cloudflare.com/learning/network-layer/what-is-the-network-layer/" target="_blank" rel="noopener">network-layer&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cloudflare.com/learning/network-layer/internet-protocol/" target="_blank" rel="noopener">internet-protocol&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cloudflare.com/learning/network-layer/what-is-a-computer-port/" target="_blank" rel="noopener">what-is-a-computer-port&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/" target="_blank" rel="noopener">open-systems-interconnection-model&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://cseweb.ucsd.edu/classes/sp10/cse141/pdf/07/09_CSE141-Caching.pdf" target="_blank" rel="noopener">CSE141-Caching&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

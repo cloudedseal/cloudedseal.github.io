@@ -1,1 +1,119 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>notion on buybyte</title><link>http://buybyte.github.io/tags/notion/</link><description>Recent content in notion on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 01 Dec 2020 08:40:29 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/notion/index.xml" rel="self" type="application/rss+xml"/><item><title>cs-cache</title><link>http://buybyte.github.io/2020/12/01/cs-cache/</link><pubDate>Tue, 01 Dec 2020 08:40:29 +0800</pubDate><guid>http://buybyte.github.io/2020/12/01/cs-cache/</guid><description>There can be many caches stacked on top of each other. Cache 可以一层一层累积。 if you miss in one you try in the “lower level cache” Lower level, mean higher number. 在上层的 Cache miss 了，可以在下层的 Cache 去找。依次类推</description></item><item><title>acknowledgement-timeout-retry-sequence-number</title><link>http://buybyte.github.io/2020/11/30/acknowledgement-timeout-retry-sequence-number/</link><pubDate>Mon, 30 Nov 2020 10:54:57 +0800</pubDate><guid>http://buybyte.github.io/2020/11/30/acknowledgement-timeout-retry-sequence-number/</guid><description>TCP 要解决的问题 references tcp-congestion-control tcp-congestion-control-ppt</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Notion</title><link>https://buybyte.github.io/tags/notion/</link><description>Recent content in Notion on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 01 Dec 2020 08:40:29 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/notion/index.xml" rel="self" type="application/rss+xml"/><item><title>cs-cache</title><link>https://buybyte.github.io/blog/cs-cache/</link><pubDate>Tue, 01 Dec 2020 08:40:29 +0800</pubDate><guid>https://buybyte.github.io/blog/cs-cache/</guid><description>
+&lt;blockquote>
+&lt;p>There can be many caches &lt;code>stacked&lt;/code> on top of each other.
+Cache 可以一层一层累积。&lt;/p>
+&lt;/blockquote>
+&lt;ol>
+&lt;li>if you miss in one you try in the “lower level cache”
+Lower level, mean higher number.
+在上层的 Cache miss 了，可以在下层的 Cache 去找。依次类推。&lt;/li>
+&lt;li>There can also be &lt;code>separate&lt;/code> caches for data and
+instructions. Or the cache can be &lt;code>“unified”&lt;/code>.
+数据和指令的 Cache 可以独立，也可以混合。&lt;/li>
+&lt;li>to wit:
+&lt;ul>
+&lt;li>the &lt;code>L1 data cache (d-cache)&lt;/code> is the one nearest processor. It
+corresponds to the “data memory” block in our pipeline
+diagrams&lt;/li>
+&lt;li>the &lt;code>L1 instruction cache (i-cache)&lt;/code> corresponds to the
+“instruction memory” block in our pipeline diagrams.&lt;/li>
+&lt;li>The L2 sits &lt;code>underneath&lt;/code> the L1s.&lt;/li>
+&lt;li>There is often an &lt;code>L3 in modern systems&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2>cache 指导思想&lt;span class="hx-absolute -hx-mt-20" id="cache-指导思想">&lt;/span>
+&lt;a href="#cache-%e6%8c%87%e5%af%bc%e6%80%9d%e6%83%b3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>局部性原理&lt;span class="hx-absolute -hx-mt-20" id="局部性原理">&lt;/span>
+&lt;a href="#%e5%b1%80%e9%83%a8%e6%80%a7%e5%8e%9f%e7%90%86" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>temporal locality (时间局部性)&lt;span class="hx-absolute -hx-mt-20" id="temporal-locality-时间局部性">&lt;/span>
+&lt;a href="#temporal-locality-%e6%97%b6%e9%97%b4%e5%b1%80%e9%83%a8%e6%80%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Taking advantage of temporal locality:&lt;/p>
+&lt;ol>
+&lt;li>bring data into cache whenever its referenced&lt;/li>
+&lt;li>kick out something that hasn’t been used recently&lt;/li>
+&lt;/ol>
+&lt;h4>spatial locality (空间局部性)&lt;span class="hx-absolute -hx-mt-20" id="spatial-locality-空间局部性">&lt;/span>
+&lt;a href="#spatial-locality-%e7%a9%ba%e9%97%b4%e5%b1%80%e9%83%a8%e6%80%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Taking advantage of spatial locality:
+bring in a block of &lt;code>contiguous data (cacheline)&lt;/code>, not just
+the &lt;code>requested data&lt;/code>.&lt;/p>
+&lt;h2>基本问题&lt;span class="hx-absolute -hx-mt-20" id="基本问题">&lt;/span>
+&lt;a href="#%e5%9f%ba%e6%9c%ac%e9%97%ae%e9%a2%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>怎样找到 cache 中的数据？&lt;span class="hx-absolute -hx-mt-20" id="怎样找到-cache-中的数据">&lt;/span>
+&lt;a href="#%e6%80%8e%e6%a0%b7%e6%89%be%e5%88%b0-cache-%e4%b8%ad%e7%9a%84%e6%95%b0%e6%8d%ae" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>以 32bits 的内存地址，来分析。
+(index, offset) 二维坐标来定位一个 byte 的数据。&lt;/p>
+&lt;/blockquote>
+&lt;h4>index&lt;span class="hx-absolute -hx-mt-20" id="index">&lt;/span>
+&lt;a href="#index" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>定位 cache line，可视为&lt;code>横坐标&lt;/code>。
+现在可以通过 cache lines = cache size / cache line size 来计算。
+index bits = log2(cache lines)&lt;/p>
+&lt;h4>offset&lt;span class="hx-absolute -hx-mt-20" id="offset">&lt;/span>
+&lt;a href="#offset" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>通过 index 定位到 cache line 后，offset 定位到这个 cache line 的哪一个 byte。
+可以视为&lt;code>纵坐标&lt;/code>。
+offset bits = log2(offset)&lt;/p>
+&lt;h4>tag&lt;span class="hx-absolute -hx-mt-20" id="tag">&lt;/span>
+&lt;a href="#tag" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>32bits 剩下的部分。&lt;/p>
+&lt;h4>cache line 应该是多大？&lt;span class="hx-absolute -hx-mt-20" id="cache-line-应该是多大">&lt;/span>
+&lt;a href="#cache-line-%e5%ba%94%e8%af%a5%e6%98%af%e5%a4%9a%e5%a4%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>这其实是分块(block)思想。在利用空间局部性原理。&lt;/p>
+&lt;/blockquote>
+&lt;h5>cache line size 越大&lt;span class="hx-absolute -hx-mt-20" id="cache-line-size-越大">&lt;/span>
+&lt;a href="#cache-line-size-%e8%b6%8a%e5%a4%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ol>
+&lt;li>Exploits more spatial locality.&lt;/li>
+&lt;li>Large cache lines effectively prefetch data that we have not
+explicitly asked for.
+更好地利用空间局部性，提前获取将要访问的数据。&lt;/li>
+&lt;/ol>
+&lt;h5>cache line size 越小&lt;span class="hx-absolute -hx-mt-20" id="cache-line-size-越小">&lt;/span>
+&lt;a href="#cache-line-size-%e8%b6%8a%e5%b0%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ol>
+&lt;li>Focuses on temporal locality.&lt;/li>
+&lt;li>If there is little spatial locality, large cache lines waste
+space and bandwidth.
+聚焦在时间局部性上，如果没有较好的空间局部性，提前 &lt;code>fetch&lt;/code> 了数据，那就浪费了空间和带宽。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/cache_organization.svg" alt="cache_organization" loading="lazy" /> #(cache 组织方式)&lt;/p>
+&lt;h3>实例分析&lt;span class="hx-absolute -hx-mt-20" id="实例分析">&lt;/span>
+&lt;a href="#%e5%ae%9e%e4%be%8b%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>内存地址 32bits。&lt;/p>
+&lt;h4>1024 cache lines, 32 Bytes per line.&lt;span class="hx-absolute -hx-mt-20" id="1024-cache-lines-32-bytes-per-line">&lt;/span>
+&lt;a href="#1024-cache-lines-32-bytes-per-line" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>index bits = log2(1024) = 10
+offset bits = log2(32) = 5
+tags bits = 32 - index - offset = 17&lt;/p>
+&lt;h4>32KB cache, 64byte lines&lt;span class="hx-absolute -hx-mt-20" id="32kb-cache-64byte-lines">&lt;/span>
+&lt;a href="#32kb-cache-64byte-lines" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>index bits = log2(32KB / 64Bytes) = 9
+offset bits = log2(64) = 6
+tags bits = 32 - 9 - 6 = 17&lt;/p>
+&lt;h4>set 是干什么的？&lt;span class="hx-absolute -hx-mt-20" id="set-是干什么的">&lt;/span>
+&lt;a href="#set-%e6%98%af%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>(set) &lt;code>Associativity&lt;/code> means providing &lt;code>more than one&lt;/code> place for a cache line to live.
+One group of lines corresponds to each index.&lt;/p>
+&lt;ol>
+&lt;li>it is called a “set”&lt;/li>
+&lt;li>&lt;code>Each line&lt;/code> in a set is called a &lt;code>“way”&lt;/code>&lt;/li>
+&lt;li>N-Way associativity requires N parallel comparators
+set = ？&lt;/li>
+&lt;/ol>
+&lt;p>{% asset_img cache-2-ways-cache.svg 2-ways-cache%}
+&lt;img src="https://github.com/stardustman/pictures/raw/main/img/cache-2-ways-cache.svg" alt="2-ways-cache" loading="lazy" />&lt;/p>
+&lt;h3>cache 哪一种 address？&lt;span class="hx-absolute -hx-mt-20" id="cache-哪一种-address">&lt;/span>
+&lt;a href="#cache-%e5%93%aa%e4%b8%80%e7%a7%8d-address" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>virtual memory address&lt;span class="hx-absolute -hx-mt-20" id="virtual-memory-address">&lt;/span>
+&lt;a href="#virtual-memory-address" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h4>physical memory address&lt;span class="hx-absolute -hx-mt-20" id="physical-memory-address">&lt;/span>
+&lt;a href="#physical-memory-address" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/cache-memory-address-type.svg" alt="cache-memory-address-type" loading="lazy" /> #(缓存类型)&lt;/p>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="http://cseweb.ucsd.edu/classes/wi12/cse141-a/Slides/09_Cache_intro.pdf" target="_blank" rel="noopener">CSE141-Caching-Intro&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://cseweb.ucsd.edu/classes/sp10/cse141/pdf/07/09_CSE141-Caching.pdf" target="_blank" rel="noopener">CSE141-Caching&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://cseweb.ucsd.edu/classes/wi12/cse141-a/Slides/10_Caches_detail.pdf" target="_blank" rel="noopener">CSE141-Caches-Details&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.0xffffff.org/2014/01/06/26-x86-cache/" target="_blank" rel="noopener">x86-cache&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.kernel.org/doc/html/latest/admin-guide/mm/memory-hotplug.html" target="_blank" rel="noopener">memory-hotplug&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/31859105" target="_blank" rel="noopener">Cache 是怎样组织和工作的？&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.microsoft.com/en-us/sysinternals/downloads/coreinfo" target="_blank" rel="noopener">cacheinfo-windows&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://manybutfinite.com/post/intel-cpu-caches/" target="_blank" rel="noopener">intel-cpu-cache&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://www.cs.cornell.edu/courses/cs3410/2013sp/lecture/18-caches3-w.pdf" target="_blank" rel="noopener">caches3-w.pdf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/CPU_cache" target="_blank" rel="noopener">wiki-cpu-cache&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cs.princeton.edu/courses/archive/fall19/cos316/lectures/10-cpu-cache.pdf" target="_blank" rel="noopener">cos316-10-cpu-cache.pdf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://aturing.umcs.maine.edu/~meadow/courses/cos335/Intel-CacheOverview.pdf" target="_blank" rel="noopener">cos355-Intel-CacheOverview&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/31875174" target="_blank" rel="noopener">细说Cache-L1/L2/L3/TLB&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>acknowledgement-timeout-retry-sequence-number</title><link>https://buybyte.github.io/blog/acknowledgement-timeout-retry-sequence-number/</link><pubDate>Mon, 30 Nov 2020 10:54:57 +0800</pubDate><guid>https://buybyte.github.io/blog/acknowledgement-timeout-retry-sequence-number/</guid><description>
+&lt;h3>TCP 要解决的问题&lt;span class="hx-absolute -hx-mt-20" id="tcp-要解决的问题">&lt;/span>
+&lt;a href="#tcp-%e8%a6%81%e8%a7%a3%e5%86%b3%e7%9a%84%e9%97%ae%e9%a2%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/notions_tcp.svg" alt="notions_tcp" loading="lazy" />&lt;/p>
+&lt;h2>references&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.geeksforgeeks.org/tcp-congestion-control/" target="_blank" rel="noopener">tcp-congestion-control&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://web.cs.wpi.edu/~rek/Undergrad_Nets/B06/TCP_Congestion_Control.ppt" target="_blank" rel="noopener">tcp-congestion-control-ppt&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

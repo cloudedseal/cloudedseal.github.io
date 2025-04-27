@@ -1,1 +1,38 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BTree on buybyte</title><link>http://buybyte.github.io/tags/btree/</link><description>Recent content in BTree on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 12 Jun 2020 14:11:02 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/btree/index.xml" rel="self" type="application/rss+xml"/><item><title>data-structure-btree</title><link>http://buybyte.github.io/2020/06/12/data-structure-btree/</link><pubDate>Fri, 12 Jun 2020 14:11:02 +0800</pubDate><guid>http://buybyte.github.io/2020/06/12/data-structure-btree/</guid><description>B-tree 特性 所有的 leaves 都在同一层级。 B-Tree 被 minimum degree t 定义。t 依赖于 disk block size。 除了 root，其余节点必须至少有 t - 1 个 key。root 节点至少有 1 个 ke</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – BTree</title><link>https://buybyte.github.io/tags/btree/</link><description>Recent content in BTree on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 12 Jun 2020 14:11:02 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/btree/index.xml" rel="self" type="application/rss+xml"/><item><title>data-structure-btree</title><link>https://buybyte.github.io/blog/data-structure-btree/</link><pubDate>Fri, 12 Jun 2020 14:11:02 +0800</pubDate><guid>https://buybyte.github.io/blog/data-structure-btree/</guid><description>
+&lt;h3>B-tree 特性&lt;span class="hx-absolute -hx-mt-20" id="b-tree-特性">&lt;/span>
+&lt;a href="#b-tree-%e7%89%b9%e6%80%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>所有的 leaves 都在同一层级。&lt;/li>
+&lt;li>B-Tree 被 minimum degree t 定义。t 依赖于 disk block size。&lt;/li>
+&lt;li>除了 root，其余节点必须至少有 t - 1 个 key。root 节点至少有 1 个 key。&lt;/li>
+&lt;li>所有的节点（包括 root）最多有 2t - 1 个 key。&lt;/li>
+&lt;li>某一个节点的子节点的个数 = 这个节点的 key 的个数 + 1。&lt;/li>
+&lt;li>一个节点的所有 key 从小到大排序。两个 key1 和 key2 之间的所有 child 都在 key1 和 key2 之间。&lt;/li>
+&lt;li>B-Tree 从 root 节点 grow(扩张) 和 shrink(收缩)。&lt;/li>
+&lt;li>search、insert、delete 时间复杂度是O(log n)。n 是 key 的总数。&lt;/li>
+&lt;/ol>
+&lt;h3>t=3 为例来理解 B-tree&lt;span class="hx-absolute -hx-mt-20" id="t3-为例来理解-b-tree">&lt;/span>
+&lt;a href="#t3-%e4%b8%ba%e4%be%8b%e6%9d%a5%e7%90%86%e8%a7%a3-b-tree" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>每一个节点(root 除外) 至少有 t - 1 = 2 个 key。&lt;/li>
+&lt;li>每一个节点最多有 2t - 1 = 5 个 key。节点 key 数量 = 5，称为节点满了。
+问题来了，节点 key 个数大于 5 了咋办？拆分。什么时候来拆分呢？在向下遍历节点时发现满了，立即进行拆分。&lt;/li>
+&lt;/ol>
+&lt;h4>B-Tree insert operation&lt;span class="hx-absolute -hx-mt-20" id="b-tree-insert-operation">&lt;/span>
+&lt;a href="#b-tree-insert-operation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h5>拆分已满节点&lt;span class="hx-absolute -hx-mt-20" id="拆分已满节点">&lt;/span>
+&lt;a href="#%e6%8b%86%e5%88%86%e5%b7%b2%e6%bb%a1%e8%8a%82%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/btree-full-root-split.svg" alt="btree-full-root-split" loading="lazy" /> #(btree-拆分已满节点)&lt;/p>
+&lt;ol>
+&lt;li>如上图，节点1 已经满了，对此时的 root 节点进行拆分。&lt;/li>
+&lt;li>创建节点2，s 节点，作为新的 root 节点，同时设置 s.child[0] = root。&lt;/li>
+&lt;li>创建节点2，z 节点，将原来 root 节点一半的 key，复制到 z 节点。&lt;/li>
+&lt;li>将 z 节点设置为 s 节点的 child。s.child[1] = z。&lt;/li>
+&lt;/ol>
+&lt;h5>拆分已满节点(有子节点)&lt;span class="hx-absolute -hx-mt-20" id="拆分已满节点有子节点">&lt;/span>
+&lt;a href="#%e6%8b%86%e5%88%86%e5%b7%b2%e6%bb%a1%e8%8a%82%e7%82%b9%e6%9c%89%e5%ad%90%e8%8a%82%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/btree-full-root-split2.svg" alt=" btree-full-root-split2" loading="lazy" /> #(btree-拆分已满节点2)&lt;/p>
+&lt;p>B-Tree 是向上扩张的(grow)。可以看到所有的 key 都是在 leaf 节点插入的。节点的 key 值的数量一旦等于 2t - 1 = 5 时，就会对该节点进行拆分。所以这也是每一个节点(root 除外)至少有 t-1 = 2 个 key 的原因。&lt;/p>
+&lt;h4>B-Tree delete operation&lt;span class="hx-absolute -hx-mt-20" id="b-tree-delete-operation">&lt;/span>
+&lt;a href="#b-tree-delete-operation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.cs.usfca.edu/~galles/visualization/BTree.html" target="_blank" rel="noopener">BTree-visualization&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.geeksforgeeks.org/introduction-of-b-tree-2/" target="_blank" rel="noopener">BTree introduction&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.geeksforgeeks.org/insert-operation-in-b-tree/" target="_blank" rel="noopener">BTree insertion&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.geeksforgeeks.org/delete-operation-in-b-tree/" target="_blank" rel="noopener">BTree deletion&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

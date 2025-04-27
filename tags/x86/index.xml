@@ -1,1 +1,150 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>x86 on buybyte</title><link>http://buybyte.github.io/tags/x86/</link><description>Recent content in x86 on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 08 Jun 2020 08:09:12 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/x86/index.xml" rel="self" type="application/rss+xml"/><item><title>asm-how-computer-startup</title><link>http://buybyte.github.io/2020/06/08/asm-how-computer-startup/</link><pubDate>Mon, 08 Jun 2020 08:09:12 +0800</pubDate><guid>http://buybyte.github.io/2020/06/08/asm-how-computer-startup/</guid><description>x86 架构计算机是如何启动的？ 16-bit Processors and Segmentation (1978) The IA-32 architecture family was preceded by 16-bit processors, the 8086 and 8088. The 8086 has 16-bit registers and a 16-bit external data bus, with 20-bit addressing giving a 1-MByte address space. The 8088 is similar to the 8086 except it has an 8-bit external data bus. The 8086/8088 introduced segmentation to</description></item><item><title>x86-64-architecture</title><link>http://buybyte.github.io/2019/10/16/x86-64-architecture/</link><pubDate>Wed, 16 Oct 2019 13:59:24 +0800</pubDate><guid>http://buybyte.github.io/2019/10/16/x86-64-architecture/</guid><description>操作系统其实很大一部分面向 CPU 来编程的。一些 OS 的概念直接来源于 CPU 的术语，或者和 CPU 关联性非常大。要想彻底理解 OS ，无法绕过 CPU。因为 Intel 的 X86(Intel 80386 之后</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – X86</title><link>https://buybyte.github.io/tags/x86/</link><description>Recent content in X86 on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 08 Jun 2020 08:09:12 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/x86/index.xml" rel="self" type="application/rss+xml"/><item><title>asm-how-computer-startup</title><link>https://buybyte.github.io/blog/asm-how-computer-startup/</link><pubDate>Mon, 08 Jun 2020 08:09:12 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-computer-startup/</guid><description>
+&lt;p>&lt;code>x86&lt;/code> 架构计算机是如何启动的？&lt;/p>
+&lt;h2>16-bit Processors and Segmentation (1978)&lt;span class="hx-absolute -hx-mt-20" id="16-bit-processors-and-segmentation-1978">&lt;/span>
+&lt;a href="#16-bit-processors-and-segmentation-1978" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>The IA-32 architecture family was preceded by &lt;code>16-bit processors&lt;/code>, the 8086 and 8088. The 8086 has &lt;code>16-bit registers&lt;/code> and a &lt;code>16-bit external data bus&lt;/code>, with &lt;code>20-bit addressing giving a 1-MByte address space&lt;/code>. The 8088 is similar to the 8086 except it has an 8-bit external data bus.
+The 8086/8088 introduced &lt;code>segmentation&lt;/code> to the IA-32 architecture. With segmentation, a &lt;code>16-bit segment register&lt;/code> contains a pointer to &lt;code>a memory segment of up to 64 KBytes&lt;/code>. Using &lt;code>four&lt;/code> segment registers at a time, 8086/8088 processors are able to address up to 256 KBytes &lt;code>without&lt;/code> switching between segments. The 20-bit addresses that can be formed using a segment register and an additional 16-bit pointer provide a total address range of 1 MByte.&lt;/p>
+&lt;/blockquote>
+&lt;p>8086 是整个 intel 系列处理器的老祖宗。所有后续的一系列处理器都兼容 8086。唉，这就是路径依赖啊。这是一个 16-bit 的处理器。寄存器也是 16-bit 的。but 却能寻址 20-bit 的地址空间，也就是 1M 的内存。怎样在 16-bit 的处理器上实现呢？很简单，将 1M 的空间分成多个 64K 的 segment。那怎样用 16-bit 的寄存器表示 20-bit 的地址呢？也很简单，用 2 个 16-bit 的寄存器组合得来的(register1,register2)。那怎样组合的呢？&lt;code>address = register1 &amp;lt;&amp;lt; 4 + register2&lt;/code>。将 register1 &amp;laquo; 4 和 register2 用一个 20-bit 的加法器就能得到内存地址。这种方式就是所谓的 &lt;code>real address mode&lt;/code>。也即是拿到的是真正的内存地址。x86 架构的计算机启动时会先进入 real address mode。&lt;/p>
+&lt;h2>计算机启动前置知识&lt;span class="hx-absolute -hx-mt-20" id="计算机启动前置知识">&lt;/span>
+&lt;a href="#%e8%ae%a1%e7%ae%97%e6%9c%ba%e5%90%af%e5%8a%a8%e5%89%8d%e7%bd%ae%e7%9f%a5%e8%af%86" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>CPU 工作方式是: 从&lt;code>内存&lt;/code>中取指、执行。&lt;/li>
+&lt;li>内存是存储数据的地方，给出一个内存地址，可以得到该处的数据。&lt;/li>
+&lt;li>CPU 从内存哪里取指令，由 &lt;code>instruction pointer&lt;/code> 这个寄存器的值决定。这个值不断 +1，或者跳转(jump) 到某处。real address mode 下由 CS:IP 组合决定。&lt;/li>
+&lt;/ol>
+&lt;h2>BIOS&lt;span class="hx-absolute -hx-mt-20" id="bios">&lt;/span>
+&lt;a href="#bios" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>BIOS 是啥&lt;span class="hx-absolute -hx-mt-20" id="bios-是啥">&lt;/span>
+&lt;a href="#bios-%e6%98%af%e5%95%a5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>BIOS&lt;/code> 是啥呢？一个软件而已。不像我们平时在 PC 上使用如 &lt;code>QQ&lt;/code> 等软件是安装在硬盘上的。BIOS 安装在 ROM 中。这个软件干啥的呢？帮助计算机启动，开机时检测整个机器的硬件。计算机启动需要运行软件，软件运行需要计算机先启动。咳咳，成了先有鸡还是先有蛋了，这怎么行？所以需要 BIOS 这个在硬件上的软件来帮助，破除这种依赖。&lt;/p>
+&lt;h3>BIOS 大小&lt;span class="hx-absolute -hx-mt-20" id="bios-大小">&lt;/span>
+&lt;a href="#bios-%e5%a4%a7%e5%b0%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>通过 &lt;code>dmidecode&lt;/code> 这个命令来查看。也就是读取 BIOS 的信息。&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~# dmidecode -t bios -q &lt;span class="c1"># 方法一&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">BIOS Information
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Vendor: SeaBIOS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Version: 8c24b4c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Release Date: 04/01/2014
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Address: 0xE8000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Runtime Size: &lt;span class="m">96&lt;/span> kB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ROM Size: &lt;span class="m">64&lt;/span> kB --- ROM Size，在此可以看到，BIOS 大小为 64K。
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Characteristics:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> BIOS characteristics not supported
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Targeted content distribution is supported
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> BIOS Revision: 0.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~# &lt;span class="nb">cd&lt;/span> /sys/class/dmi/id/ &lt;span class="c1"># 方法二&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:id# ls
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bios_date chassis_serial modalias product_serial sys_vendor
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bios_vendor chassis_type power product_uuid uevent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bios_version chassis_vendor product_family product_version
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chassis_asset_tag chassis_version product_name subsystem&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>x86 架构计算机启动流程&lt;span class="hx-absolute -hx-mt-20" id="x86-架构计算机启动流程">&lt;/span>
+&lt;a href="#x86-%e6%9e%b6%e6%9e%84%e8%ae%a1%e7%ae%97%e6%9c%ba%e5%90%af%e5%8a%a8%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/real-address-mode-how-computer-startup.svg" alt="real address mode 1M 内存布局" loading="lazy" /> #(real address mode 1M 内存布局)&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>如上图所示，当按下 &lt;code>power on&lt;/code> 之后，此时的 CPU 处于 real address mode。由硬件负责将 &lt;code>BIOS 64K&lt;/code> 的内容加载到 &lt;code>0xF0000 到 0xFFFFF&lt;/code>(64K 内存)。并将 &lt;code>CS(code segment) 置为 0xF000&lt;/code>，&lt;code>IP(instruction pointer) 置为 0xFFF0&lt;/code>。组合起来的内存地址 &lt;code>PC&lt;/code> 就是 0xFFFF0。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>此时 CPU 从 &lt;code>PC = 0xFFFF0&lt;/code> 处开始取指、执行。那么从 &lt;code>0xFFFF0 到 0xFFFFF&lt;/code> 只有 16Bytes。空间太小了，能放啥呢？但是可以跳到其他地方去执行啊。不错，这里存放的有一条指令是 &lt;code>jmp far f000:e05b&lt;/code>, 组合起来就是 &lt;code>0xfe05b&lt;/code>。注意这个地址可是在 &lt;code>0xF0000 到 0xFFFFF&lt;/code> 范围之内，也就是这条指令跳转到 &lt;code>BIOS 内部的代码&lt;/code>去执行。从 0xFE05B 到 0xFFFF0 将近 8K 内存，代码不少。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>此时 CPU 从 &lt;code>PC = 0xfe05b&lt;/code> 开始取值、执行。具体干啥呢？就是执行所谓的开机自检。检查计算机硬件。同时去找启动扇区，那什么才是启动扇区呢？若 0 盘 0 道 1 扇区最后两个字节分别是 0x55,0xaa，那就是启动区。很像 java class 文件中的魔数，就是标记一下。同时将找到的启动扇区(512Bytes) 复制到内存 &lt;code>0x7C00 到 0x7DFF&lt;/code>(512Bytes) 处。最后会将 &lt;code>CS 置为 0x0000， IP 置为 0x7C00&lt;/code>，组合起来就是 &lt;code>0x7C00&lt;/code>。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>此时 CPU 从 &lt;code>PC = 0x7C00&lt;/code> 开始取值、执行。具体干啥呢？这就是开发人员可以决定的了。在启动扇区上可以是加载 OS Kernel 的代码，硬盘分区，boot loader 等。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>1.&lt;a href="http://dewkumar.blogspot.com/2012/01/what-is-org-origin-directive-in.html" target="_blank" rel="noopener">x86-ORG&lt;/a>
+2. &lt;a href="https://superuser.com/questions/806226/how-to-see-rom-size" target="_blank" rel="noopener">how-to-see-rom-size&lt;/a>
+3. &lt;a href="http://smilejay.com/2013/02/bios-info-dmidecode/" target="_blank" rel="noopener">bios-info-dmidecode&lt;/a>
+4. &lt;a href="https://en.wikipedia.org/wiki/System_Management_BIOS" target="_blank" rel="noopener">system-management-bios&lt;/a>
+5. &lt;a href="http://www.ruanyifeng.com/blog/2013/02/booting.html" target="_blank" rel="noopener">计算机是如何启动的？&lt;/a>
+6. &lt;a href="https://en.wikipedia.org/wiki/Master_boot_record" target="_blank" rel="noopener">多种 MBR 组织方式&lt;/a>
+7. &lt;a href="https://mp.weixin.qq.com/s/g6m_r28bvyyWIu1CAzxLdg" target="_blank" rel="noopener">计算机是怎样启动的？&lt;/a>&lt;/p></description></item><item><title>x86-64-architecture</title><link>https://buybyte.github.io/blog/x86-64-architecture/</link><pubDate>Wed, 16 Oct 2019 13:59:24 +0800</pubDate><guid>https://buybyte.github.io/blog/x86-64-architecture/</guid><description>
+&lt;blockquote>
+&lt;p>操作系统其实很大一部分面向 &lt;code>CPU&lt;/code> 来编程的。一些 &lt;code>OS&lt;/code> 的概念直接来源于 &lt;code>CPU&lt;/code> 的术语，或者和 &lt;code>CPU&lt;/code> 关联性非常大。要想彻底理解 &lt;code>OS&lt;/code> ，无法绕过 &lt;code>CPU&lt;/code>。因为 Intel 的 &lt;code>X86&lt;/code>(Intel 80386 之后的一系列 CPU 称之为 X86 架构) 是业界的标准。掌握这个架构对于理解 &lt;code>OS&lt;/code> 是非常必要的。因为 &lt;code>X86&lt;/code> 系列的 &lt;code>CPU&lt;/code> 向后兼容，所以本文使用 Intel 8086(16 bit) 和 Intel 80386(32 bit) 来试图理解 &lt;code>X86&lt;/code> 架构。&lt;/p>
+&lt;/blockquote>
+&lt;h2>Intel 8086&lt;span class="hx-absolute -hx-mt-20" id="intel-8086">&lt;/span>
+&lt;a href="#intel-8086" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>16 bit processor&lt;span class="hx-absolute -hx-mt-20" id="16-bit-processor">&lt;/span>
+&lt;a href="#16-bit-processor" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>&lt;code>16-bit&lt;/code> is a computer hardware device or software program capable of transferring 16 bits of data at a time. 一次传输 16 bits 的数据
+For example, early computer processors (e.g., 8088 and 80286) were 16-bit processors, meaning they were capable of working with 16-bit binary numbers (decimal number up to 65,535). Anything larger and the computer would need to break the number into smaller pieces.&lt;/p>
+&lt;/blockquote>
+&lt;h3>1M 的寻址空间带来的问题与解决方法&lt;span class="hx-absolute -hx-mt-20" id="1m-的寻址空间带来的问题与解决方法">&lt;/span>
+&lt;a href="#1m-%e7%9a%84%e5%af%bb%e5%9d%80%e7%a9%ba%e9%97%b4%e5%b8%a6%e6%9d%a5%e7%9a%84%e9%97%ae%e9%a2%98%e4%b8%8e%e8%a7%a3%e5%86%b3%e6%96%b9%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Intel 8086 地址引脚&lt;span class="hx-absolute -hx-mt-20" id="intel-8086-地址引脚">&lt;/span>
+&lt;a href="#intel-8086-%e5%9c%b0%e5%9d%80%e5%bc%95%e8%84%9a" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/intel8086_address.png" alt="intel8086_address" loading="lazy" /> #(Intel 8086 寻址空间)&lt;/p>
+&lt;blockquote>
+&lt;p>上图的 AD&lt;sub>0&lt;/sub> ~ AD&lt;sub>15&lt;/sub> 是复用(Multiplex)引脚
+A&lt;sub>16&lt;/sub> ~ A&lt;sub>19&lt;/sub> 也是复用引脚&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>ALE(Address Latch Enable) = 1 是作为地址线 A&lt;sub>0&lt;/sub>~A&lt;sub>15&lt;/sub>(寻址) 再加上A&lt;sub>16&lt;/sub> ~ A&lt;sub>19&lt;/sub>.&lt;/li>
+&lt;li>ALE(Address Latch Enable) = 0 是作为数据线 D&lt;sub>0&lt;/sub>~D&lt;sub>15&lt;/sub>(传输 16 bit 数据)&lt;/li>
+&lt;/ul>
+&lt;h4>物理地址生成&lt;span class="hx-absolute -hx-mt-20" id="物理地址生成">&lt;/span>
+&lt;a href="#%e7%89%a9%e7%90%86%e5%9c%b0%e5%9d%80%e7%94%9f%e6%88%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>20 bit 来表示一个内存地址. 但是 Intel 8086 是一个 &lt;code>16 bit&lt;/code> 的处理器(其实就是一次只能传输 16 bit 的数据). 怎样来表示 &lt;code>20 bit&lt;/code> 的内存地址呢? 比如一个内存地址是: &lt;code>0x18AC9&lt;/code>, 该怎样表示呢? 其实道理很简单, 既然没法一次传输 20 bit, 那就分两次好了. 最后用两个 &lt;code>16 bit&lt;/code> 的数据来合成 &lt;code>0x18AC9&lt;/code> 这个地址. 很显然要有生成 &lt;code>0x18AC9&lt;/code> 这个地址的策略. 在 Intel 8086 中, 将 &lt;code>0x18AC9&lt;/code> 拆分为 &lt;code>0x1234&lt;/code>(segment address) 和 &lt;code>0x6789&lt;/code>(offset address) 这两个 &lt;code>16 bit&lt;/code> 的地址, 这就是所谓的逻辑地址(logical address). 怎样生成 &lt;code>0x18AC9&lt;/code> 这个真实的物理地址呢? 也很简单使用一个 &lt;code>20 bit&lt;/code> 的 &lt;code>adder&lt;/code>(加法器). 0x18AC9 = 0x1234 * 16 + 0x6789&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/intel8086_real_address_mode_translation.png" alt="intel8086_real_address_mode_translation" loading="lazy" />&lt;/p>
+&lt;h4>Real Address Mode&lt;span class="hx-absolute -hx-mt-20" id="real-address-mode">&lt;/span>
+&lt;a href="#real-address-mode" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>物理地址由两部分组成: segment address 和 offset address. 这两个地址不能直接使用, 是用来合成真正的物理地址的. 这两个地址称之为 &lt;code>逻辑地址&lt;/code>. 16 * segment address + offset address 合成的地址称之为 &lt;code>物理地址&lt;/code>, 也叫 &lt;code>线性地址&lt;/code>(也就是从 0 ~ 2^20 -1 地址空间). Intel 8086 这种得到物理地址的机制就叫做 &lt;code>real address mode&lt;/code>. 也就是所谓的 &lt;code>实模式&lt;/code>.
+PS: 多说一句, &lt;code>实模式&lt;/code> 这个翻译有点坑, 翻译成 &lt;code>实地址模式&lt;/code> 不就十分清楚了吗?&lt;/p>
+&lt;/blockquote>
+&lt;h4>segmented memory&lt;span class="hx-absolute -hx-mt-20" id="segmented-memory">&lt;/span>
+&lt;a href="#segmented-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>physical address = 16 * segment address + offset address
+offset address 是 16 bit, 决定了一个 segment 的范围是 64K. 将 1M 的寻址空间以 64K 为一个 segment 划分为多个 segment. 反过来说就是一个 segment 可以选择一个 64K 范围内的地址. 是的, &lt;code>segment&lt;/code> 可以当作是一种 &lt;code>selector&lt;/code>, 就像 &lt;code>CSS&lt;/code> 里面的选择器.
+那么这个 segment 存放在哪里呢? 放在专门的 &lt;code>segment register&lt;/code> 里.&lt;/p>
+&lt;/blockquote>
+&lt;h4>segment registers&lt;span class="hx-absolute -hx-mt-20" id="segment-registers">&lt;/span>
+&lt;a href="#segment-registers" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>Intel 8086 提供了 &lt;code>Extra Segment&lt;/code>(ES), &lt;code>Data Segment&lt;/code>(DS), &lt;code>Stack Segment&lt;/code>(SS), &lt;code>Code Segment&lt;/code>(CS) 这 4 个 段寄存器.&lt;/p>
+&lt;/blockquote>
+&lt;h5>code segment(CS) + instruction pointer(IP)&lt;span class="hx-absolute -hx-mt-20" id="code-segmentcs--instruction-pointerip">&lt;/span>
+&lt;a href="#code-segmentcs--instruction-pointerip" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;blockquote>
+&lt;p>code segment 存放 segment address, 这是个专门的代码段寄存器, 用来存放代码的地址.
+instruction pointer 存放 offset address, 这个是专门的指令寄存器, 用来存放下一条指令的地址.
+所以访问代码的 &lt;code>物理地址 = 16 * CS + IP&lt;/code>&lt;/p>
+&lt;/blockquote>
+&lt;h5>stack segment(SS) + stack pointer(SP)&lt;span class="hx-absolute -hx-mt-20" id="stack-segmentss--stack-pointersp">&lt;/span>
+&lt;a href="#stack-segmentss--stack-pointersp" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;blockquote>
+&lt;p>stack segment 存放 segment address, 这个是专门的栈帧段寄存器.
+stack pointer 存放 offset address, 这个专门的记录栈顶的寄存器.
+所以访问函数栈帧的 &lt;code>物理地址 = 16 * SS + SP&lt;/code>&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>注意: 如果令 SS = 0, 那么访问函数栈帧的 &lt;code>物理地址 = SP&lt;/code>, 也就是只能访问 64K 的空间.
+注意: real address mode 能够不受限制地访问 1M 的地址空间. 程序可以自由的访问 1M 的地址空间, 无法进行内存的保护, 这也是 &lt;code>Intel 80386&lt;/code> 要解决的问题之一.&lt;/p>
+&lt;/blockquote>
+&lt;h4>&lt;span class="hx-absolute -hx-mt-20" id="">&lt;/span>
+&lt;a href="#" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h3>general purpose register&lt;span class="hx-absolute -hx-mt-20" id="general-purpose-register">&lt;/span>
+&lt;a href="#general-purpose-register" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h3>memory mapping&lt;span class="hx-absolute -hx-mt-20" id="memory-mapping">&lt;/span>
+&lt;a href="#memory-mapping" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>已安装内存 8G(7.88G) 可用？？？原因在哪里呢？&lt;/p>
+&lt;/blockquote>
+&lt;h2>Intel 80386&lt;span class="hx-absolute -hx-mt-20" id="intel-80386">&lt;/span>
+&lt;a href="#intel-80386" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
+&lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="http://8086microprocessor4u.blogspot.com/2012/12/bus-interface-unit-biu.html" target="_blank" rel="noopener">bus interface unit&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://8086microprocessor4u.blogspot.com/2015/04/the-execution-unit-eu.html" target="_blank" rel="noopener">execution unit&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.tutorialspoint.com/microprocessor/microprocessor_8086_functional_units.htm" target="_blank" rel="noopener">8086 Functional Units&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.csetutor.com/components-of-cpu-and-their-functions/" target="_blank" rel="noopener">components of cpu&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://vdocuments.mx/8086-microprocessor-architecture-5584489b9c738.html" target="_blank" rel="noopener">8086-microprocessor-architecture&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.academia.edu/40314276/8086_microprocessor20190911_87442_nxpkcz" target="_blank" rel="noopener">8086-microprocessor&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.geeksforgeeks.org/memory-segmentation-8086-microprocessor/" target="_blank" rel="noopener">memory-segmentation-8086-microprocessor&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cs.usfca.edu/~cruse/cs630f06/" target="_blank" rel="noopener">Advanced Microcomputer Programming&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.computerhope.com/jargon/num/16bit.htm" target="_blank" rel="noopener">16 bit processor mean?&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://cgnail.github.io/academic/mem-layout/" target="_blank" rel="noopener">memory layout&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://cs.lmu.edu/~ray/notes/x86overview/" target="_blank" rel="noopener">x86-overview&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.zhihu.com/question/552957041/answer/2738625402" target="_blank" rel="noopener">计算机位数发展&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

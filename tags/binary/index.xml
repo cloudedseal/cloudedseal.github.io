@@ -1,1 +1,159 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>binary on buybyte</title><link>http://buybyte.github.io/tags/binary/</link><description>Recent content in binary on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 22 May 2022 16:26:36 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/binary/index.xml" rel="self" type="application/rss+xml"/><item><title>Virtual Memory Address Explore</title><link>http://buybyte.github.io/2022/05/22/virtual-memory-address-explore/</link><pubDate>Sun, 22 May 2022 16:26:36 +0800</pubDate><guid>http://buybyte.github.io/2022/05/22/virtual-memory-address-explore/</guid><description>virtual memory address space layout 代码测试 cargo new vas-explore main.rs use std::{thread,time}; fn main() { println!(&amp;quot;Hello, world!&amp;quot;); let sl = time::Duration::from_millis(10000000); thread::sleep(sl); println!(&amp;quot;Goodbye, world!&amp;quot;); } cargo build ./target/debug/vas-explore pidof vas-explore /proc/pid/maps stardust@os:x86_64-linux-gnu$ pidof vas-explore 75599 stardust@os:x86_64-linux-gnu$ cat /proc/75599/maps 556a8a831000-556a8a837000 r--p 00000000 08:12 815699 /home/stardust/Desktop/rust/vas-explore/target/debug/vas-explore 556a8a837000-556a8a86e000 r-xp 00006000 08:12 815699 /home/stardust/Desktop/rust/ vas-explore/target/debug/vas-explore # text(code segment) segment 556a8a86e000-556a8a87c000 r--p 0003d000 08:12 815699 /home/stardust/Desktop/rust/vas-explore/target/debug/vas-explore 556a8a87d000-556a8a880000 r--p 0004b000 08:12 815699 /home/stardust/Desktop/rust/vas-explore/target/debug/vas-explore</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Binary</title><link>https://buybyte.github.io/tags/binary/</link><description>Recent content in Binary on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 22 May 2022 16:26:36 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/binary/index.xml" rel="self" type="application/rss+xml"/><item><title>Virtual Memory Address Explore</title><link>https://buybyte.github.io/blog/virtual-memory-address-explore/</link><pubDate>Sun, 22 May 2022 16:26:36 +0800</pubDate><guid>https://buybyte.github.io/blog/virtual-memory-address-explore/</guid><description>
+&lt;h1>virtual memory address space layout&lt;/h1>&lt;p>&lt;img src="https://raw.githubusercontent.com/stardustman/pictures/main/img/virtual-memory-address-space.jpg" alt="virtual-memory-address-space" loading="lazy" />&lt;/p>
+&lt;h2>代码测试&lt;span class="hx-absolute -hx-mt-20" id="代码测试">&lt;/span>
+&lt;a href="#%e4%bb%a3%e7%a0%81%e6%b5%8b%e8%af%95" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;code>cargo new vas-explore&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;p>main.rs&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="line">&lt;span class="cl">&lt;span class="k">use&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">std&lt;/span>::&lt;span class="p">{&lt;/span>&lt;span class="n">thread&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">};&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="fm">println!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Hello, world!&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">sl&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">time&lt;/span>::&lt;span class="n">Duration&lt;/span>::&lt;span class="n">from_millis&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">10000000&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">thread&lt;/span>::&lt;span class="n">sleep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sl&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="fm">println!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Goodbye, world!&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol start="2">
+&lt;li>cargo build&lt;/li>
+&lt;li>./target/debug/vas-explore&lt;/li>
+&lt;li>pidof vas-explore&lt;/li>
+&lt;/ol>
+&lt;h2>/proc/pid/maps&lt;span class="hx-absolute -hx-mt-20" id="procpidmaps">&lt;/span>
+&lt;a href="#procpidmaps" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">stardust@os:x86_64-linux-gnu$ pidof vas-explore
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">75599&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">stardust@os:x86_64-linux-gnu$ cat /proc/75599/maps
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">556a8a831000-556a8a837000 r--p &lt;span class="m">00000000&lt;/span> 08:12 &lt;span class="m">815699&lt;/span> /home/stardust/Desktop/rust/vas-explore/target/debug/vas-explore
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">556a8a837000-556a8a86e000 r-xp &lt;span class="m">00006000&lt;/span> 08:12 &lt;span class="m">815699&lt;/span> /home/stardust/Desktop/rust/ vas-explore/target/debug/vas-explore &lt;span class="c1"># text(code segment) segment&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">556a8a86e000-556a8a87c000 r--p 0003d000 08:12 &lt;span class="m">815699&lt;/span> /home/stardust/Desktop/rust/vas-explore/target/debug/vas-explore
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">556a8a87d000-556a8a880000 r--p 0004b000 08:12 &lt;span class="m">815699&lt;/span> /home/stardust/Desktop/rust/vas-explore/target/debug/vas-explore
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">556a8a880000-556a8a881000 rw-p 0004e000 08:12 &lt;span class="m">815699&lt;/span> /home/stardust/Desktop/rust/vas-explore/target/debug/vas-explore
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">556a8c01b000-556a8c03c000 rw-p &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span> &lt;span class="o">[&lt;/span>heap&lt;span class="o">]&lt;/span> &lt;span class="c1"># heap segment&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59636000-7f5e59638000 rw-p &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59638000-7f5e5965a000 r--p &lt;span class="m">00000000&lt;/span> 08:12 &lt;span class="m">533486&lt;/span> /lib/x86_64-linux-gnu/libc-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5965a000-7f5e597d2000 r-xp &lt;span class="m">00022000&lt;/span> 08:12 &lt;span class="m">533486&lt;/span> /lib/x86_64-linux-gnu/libc-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e597d2000-7f5e59820000 r--p 0019a000 08:12 &lt;span class="m">533486&lt;/span> /lib/x86_64-linux-gnu/libc-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59820000-7f5e59824000 r--p 001e7000 08:12 &lt;span class="m">533486&lt;/span> /lib/x86_64-linux-gnu/libc-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59824000-7f5e59826000 rw-p 001eb000 08:12 &lt;span class="m">533486&lt;/span> /lib/x86_64-linux-gnu/libc-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59826000-7f5e5982a000 rw-p &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5982a000-7f5e5982b000 r--p &lt;span class="m">00000000&lt;/span> 08:12 &lt;span class="m">533487&lt;/span> /lib/x86_64-linux-gnu/libdl-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5982b000-7f5e5982d000 r-xp &lt;span class="m">00001000&lt;/span> 08:12 &lt;span class="m">533487&lt;/span> /lib/x86_64-linux-gnu/libdl-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5982d000-7f5e5982e000 r--p &lt;span class="m">00003000&lt;/span> 08:12 &lt;span class="m">533487&lt;/span> /lib/x86_64-linux-gnu/libdl-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5982e000-7f5e5982f000 r--p &lt;span class="m">00003000&lt;/span> 08:12 &lt;span class="m">533487&lt;/span> /lib/x86_64-linux-gnu/libdl-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5982f000-7f5e59830000 rw-p &lt;span class="m">00004000&lt;/span> 08:12 &lt;span class="m">533487&lt;/span> /lib/x86_64-linux-gnu/libdl-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59830000-7f5e59836000 r--p &lt;span class="m">00000000&lt;/span> 08:12 &lt;span class="m">533569&lt;/span> /lib/x86_64-linux-gnu/libpthread-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59836000-7f5e59847000 r-xp &lt;span class="m">00006000&lt;/span> 08:12 &lt;span class="m">533569&lt;/span> /lib/x86_64-linux-gnu/libpthread-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59847000-7f5e5984d000 r--p &lt;span class="m">00017000&lt;/span> 08:12 &lt;span class="m">533569&lt;/span> /lib/x86_64-linux-gnu/libpthread-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5984d000-7f5e5984e000 r--p 0001c000 08:12 &lt;span class="m">533569&lt;/span> /lib/x86_64-linux-gnu/libpthread-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5984e000-7f5e5984f000 rw-p 0001d000 08:12 &lt;span class="m">533569&lt;/span> /lib/x86_64-linux-gnu/libpthread-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5984f000-7f5e59853000 rw-p &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59853000-7f5e59856000 r--p &lt;span class="m">00000000&lt;/span> 08:12 &lt;span class="m">531127&lt;/span> /lib/x86_64-linux-gnu/libgcc_s.so.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59856000-7f5e59868000 r-xp &lt;span class="m">00003000&lt;/span> 08:12 &lt;span class="m">531127&lt;/span> /lib/x86_64-linux-gnu/libgcc_s.so.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59868000-7f5e5986c000 r--p &lt;span class="m">00015000&lt;/span> 08:12 &lt;span class="m">531127&lt;/span> /lib/x86_64-linux-gnu/libgcc_s.so.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5986c000-7f5e5986d000 r--p &lt;span class="m">00018000&lt;/span> 08:12 &lt;span class="m">531127&lt;/span> /lib/x86_64-linux-gnu/libgcc_s.so.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5986d000-7f5e5986e000 rw-p &lt;span class="m">00019000&lt;/span> 08:12 &lt;span class="m">531127&lt;/span> /lib/x86_64-linux-gnu/libgcc_s.so.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e5986e000-7f5e59870000 rw-p &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59885000-7f5e59886000 ---p &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59886000-7f5e59888000 rw-p &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59888000-7f5e59889000 r--p &lt;span class="m">00000000&lt;/span> 08:12 &lt;span class="m">533138&lt;/span> /lib/x86_64-linux-gnu/ld-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e59889000-7f5e598ac000 r-xp &lt;span class="m">00001000&lt;/span> 08:12 &lt;span class="m">533138&lt;/span> /lib/x86_64-linux-gnu/ld-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e598ac000-7f5e598b4000 r--p &lt;span class="m">00024000&lt;/span> 08:12 &lt;span class="m">533138&lt;/span> /lib/x86_64-linux-gnu/ld-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e598b5000-7f5e598b6000 r--p 0002c000 08:12 &lt;span class="m">533138&lt;/span> /lib/x86_64-linux-gnu/ld-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e598b6000-7f5e598b7000 rw-p 0002d000 08:12 &lt;span class="m">533138&lt;/span> /lib/x86_64-linux-gnu/ld-2.31.so
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7f5e598b7000-7f5e598b8000 rw-p &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7ffe91c09000-7ffe91c2a000 rw-p &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span> &lt;span class="o">[&lt;/span>stack&lt;span class="o">]&lt;/span> &lt;span class="c1"># stack segment&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7ffe91c38000-7ffe91c3b000 r--p &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span> &lt;span class="o">[&lt;/span>vvar&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">7ffe91c3b000-7ffe91c3c000 r-xp &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span> &lt;span class="o">[&lt;/span>vdso&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ffffffffff600000-ffffffffff601000 --xp &lt;span class="m">00000000&lt;/span> 00:00 &lt;span class="m">0&lt;/span> &lt;span class="o">[&lt;/span>vsyscall&lt;span class="o">]&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>row format&lt;span class="hx-absolute -hx-mt-20" id="row-format">&lt;/span>
+&lt;a href="#row-format" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;img src="https://raw.githubusercontent.com/stardustman/pictures/main/img/virtual-memory-address-space-format.jpg" alt="row format" loading="lazy" />&lt;/p>
+&lt;h2>text&lt;span class="hx-absolute -hx-mt-20" id="text">&lt;/span>
+&lt;a href="#text" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>代码段，程序的可执行代码在这里。&lt;/p>
+&lt;h2>stack&lt;span class="hx-absolute -hx-mt-20" id="stack">&lt;/span>
+&lt;a href="#stack" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>栈区，从 maps 可以看到 &lt;code>7ffe91c09000-7ffe91c2a000&lt;/code>，这个区域是这个进程的栈区，可读、可写。&lt;code>7ffe91c09000&lt;/code> 这个 48bits 的地址就是虚拟内存地址。为什么是 48bits，因为 amd64 的虚拟地址用 48bits(256TB)地址空间足够了。&lt;/p>
+&lt;h2>heap&lt;span class="hx-absolute -hx-mt-20" id="heap">&lt;/span>
+&lt;a href="#heap" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;code>556a8c01b000-556a8c03c000&lt;/code> 可以看到 heap 的地址，是比较小的地址段。&lt;/p>
+&lt;h2>heap 与 stack 会不会相互覆盖？&lt;span class="hx-absolute -hx-mt-20" id="heap-与-stack-会不会相互覆盖">&lt;/span>
+&lt;a href="#heap-%e4%b8%8e-stack-%e4%bc%9a%e4%b8%8d%e4%bc%9a%e7%9b%b8%e4%ba%92%e8%a6%86%e7%9b%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>查看 /proc/pid/maps 计算：&lt;/p>
+&lt;p>(low address stack - high address heap) / 1024 / 1024 /1024 / 1024
+= (0x7ffe91c09000 - 0x556a8c03c000) / 1024 / 1024 /1024 / 1024 = 42TB
+可以看出相差有 42TB 的空间。就算真的覆盖了，内核会终止这个程序。这也就是虚拟内存的作用之一，程序可以使用远远超过实际物理内存的空间。&lt;/p>
+&lt;h2>rust 程序内存布局分析&lt;span class="hx-absolute -hx-mt-20" id="rust-程序内存布局分析">&lt;/span>
+&lt;a href="#rust-%e7%a8%8b%e5%ba%8f%e5%86%85%e5%ad%98%e5%b8%83%e5%b1%80%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-rust" data-lang="rust">&lt;span class="line">&lt;span class="cl">&lt;span class="k">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="no">MAX&lt;/span>: &lt;span class="kt">u32&lt;/span> &lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">foo&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">fn&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">hello&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;hello world&amp;#34;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">to_string&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">let&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nb">Box&lt;/span>::&lt;span class="n">new&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// string literals 指向 RODATA section 地址
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="fm">println!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;RODATA: &lt;/span>&lt;span class="si">{:p}&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;hello world!&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// static 变量在 DATA section
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="fm">println!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;DATA: (static var): &lt;/span>&lt;span class="si">{:p}&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="no">MAX&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// function 在 TEXT section
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="fm">println!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;TEXT: (function):&lt;/span>&lt;span class="si">{:p}&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">foo&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">as&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="k">const&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// string 结构体分配在栈上，所以其引用是指向的是一个栈地址
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="fm">println!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;STACK: (&amp;amp;hello):&lt;/span>&lt;span class="si">{:p}&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">hello&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 通过 deference 获取指向的 heap 上的数据，然后获取其引用
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="fm">println!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;HEAP: (&amp;amp;(*hello)):&lt;/span>&lt;span class="si">{:p}&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">hello&lt;/span>&lt;span class="p">));&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Box 实现了 Pointer trait, 无须额外 deference
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="fm">println!&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;HEAP: (Box impl Pointer trait)&lt;/span>&lt;span class="si">{:p}&lt;/span>&lt;span class="s">,&lt;/span>&lt;span class="si">{:p}&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="p">));&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>查看变量在虚拟内存中的分布&lt;span class="hx-absolute -hx-mt-20" id="查看变量在虚拟内存中的分布">&lt;/span>
+&lt;a href="#%e6%9f%a5%e7%9c%8b%e5%8f%98%e9%87%8f%e5%9c%a8%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98%e4%b8%ad%e7%9a%84%e5%88%86%e5%b8%83" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">cargo run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Compiling stack-or-heap v0.1.0 &lt;span class="o">(&lt;/span>/Users/stardust/Downloads/rust-projects/stack-or-heap&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Finished dev &lt;span class="o">[&lt;/span>unoptimized + debuginfo&lt;span class="o">]&lt;/span> target&lt;span class="o">(&lt;/span>s&lt;span class="o">)&lt;/span> in 0.48s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Running &lt;span class="sb">`&lt;/span>target/debug/stack-or-heap&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">RODATA: 0x106df1090
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DATA: &lt;span class="o">(&lt;/span>static var&lt;span class="o">)&lt;/span>: 0x106df1080
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">TEXT: &lt;span class="o">(&lt;/span>&lt;span class="k">function&lt;/span>&lt;span class="o">)&lt;/span>:0x106db61b0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">STACK: &lt;span class="o">(&lt;/span>&lt;span class="p">&amp;amp;&lt;/span>hello&lt;span class="o">)&lt;/span>:0x7ff7b9149950
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">HEAP: &lt;span class="o">(&lt;/span>&lt;span class="p">&amp;amp;&lt;/span>&lt;span class="o">(&lt;/span>*hello&lt;span class="o">))&lt;/span>:0x60000346c050
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">HEAP: &lt;span class="o">(&lt;/span>Box impl Pointer trait&lt;span class="o">)&lt;/span>0x60000346c060,0x7ff7b9149968&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://www.baeldung.com/linux/proc-id-maps" target="_blank" rel="noopener">/proc/pid/maps&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Virtual_address_space" target="_blank" rel="noopener">virtual memory address space&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elinux.org/images/b/b0/Introduction_to_Memory_Management_in_Linux.pdf" target="_blank" rel="noopener">Memory_Management_in_Linux&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

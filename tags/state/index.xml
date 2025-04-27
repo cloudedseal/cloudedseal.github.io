@@ -1,1 +1,243 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>state on buybyte</title><link>http://buybyte.github.io/tags/state/</link><description>Recent content in state on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 22 Apr 2025 17:07:48 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/state/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux Process State</title><link>http://buybyte.github.io/2025/04/22/linux-process-state/</link><pubDate>Tue, 22 Apr 2025 17:07:48 +0800</pubDate><guid>http://buybyte.github.io/2025/04/22/linux-process-state/</guid><description>进程状态机 最近在看南京大学蒋炎岩老师的 2025 操作系统课程。里面有一句话, 计算机中的一切程序可以视为 state machine。很有启发。进程有初始状态, CPU</description></item><item><title>cs-condition-variables</title><link>http://buybyte.github.io/2021/04/18/cs-condition-variables/</link><pubDate>Sun, 18 Apr 2021 20:44:09 +0800</pubDate><guid>http://buybyte.github.io/2021/04/18/cs-condition-variables/</guid><description>condition variable 是啥？ condition variable 是啥？本质上就是一个状态变量 +队列。现实世界中，想要进行下一步的行动，往往需要满足一定的条件(condition)。如十字路口</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – State</title><link>https://buybyte.github.io/tags/state/</link><description>Recent content in State on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 22 Apr 2025 17:07:48 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/state/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux Process State</title><link>https://buybyte.github.io/blog/linux-process-state/</link><pubDate>Tue, 22 Apr 2025 17:07:48 +0800</pubDate><guid>https://buybyte.github.io/blog/linux-process-state/</guid><description>
+&lt;h1>进程状态机&lt;/h1>&lt;p>最近在看南京大学&lt;a href="https://ics.nju.edu.cn/~jyy/" target="_blank" rel="noopener">蒋炎岩&lt;/a>老师的 2025 操作系统课程。里面有一句话, 计算机中的一切程序可以视为 &lt;code>state machine&lt;/code>。很有启发。进程有初始状态, CPU 这个无情的执行指令的机器执行一条指令后，程序的状态就发生了变化。&lt;/p>
+&lt;p>&lt;img src="https://raw.githubusercontent.com/buybyte/pictures/main/img/linux-process-state-machine-userspace.drawio.svg" alt="linux-process-state-machine-userspace" loading="lazy" />&lt;/p>
+&lt;h1>process state&lt;/h1>&lt;h2>Running/Runnable(R)&lt;span class="hx-absolute -hx-mt-20" id="runningrunnabler">&lt;/span>
+&lt;a href="#runningrunnabler" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>万事俱备，只需要被 &lt;code>scheduler&lt;/code> 调度到 CPU 上去运行。&lt;/p>
+&lt;h2>Interruptable Sleep(S)&lt;span class="hx-absolute -hx-mt-20" id="interruptable-sleeps">&lt;/span>
+&lt;a href="#interruptable-sleeps" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>处于这个状态的不会被 &lt;code>scheduler&lt;/code> 调度到 CPU 上去运行。&lt;/p>
+&lt;h3>d_state.c code&lt;span class="hx-absolute -hx-mt-20" id="d_statec-code">&lt;/span>
+&lt;a href="#d_statec-code" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;unistd.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">(){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">pause&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol>
+&lt;li>gcc -o d_state d_state.c&lt;/li>
+&lt;li>./d_state&lt;/li>
+&lt;li>ps aux | grep d_state&lt;/li>
+&lt;/ol>
+&lt;h2>Uninterruptible Sleep(D)&lt;span class="hx-absolute -hx-mt-20" id="uninterruptible-sleepd">&lt;/span>
+&lt;a href="#uninterruptible-sleepd" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>可能是 &lt;code>Disk Sleep&lt;/code> 的原因。状态用 &lt;code>D&lt;/code> 表示。&lt;/p>
+&lt;h2>Stopped(T)&lt;span class="hx-absolute -hx-mt-20" id="stoppedt">&lt;/span>
+&lt;a href="#stoppedt" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>如使用 &lt;code>SIGSTOP&lt;/code> 信号，暂停的进程。&lt;/p>
+&lt;h3>d_state.c code&lt;span class="hx-absolute -hx-mt-20" id="d_statec-code-1">&lt;/span>
+&lt;a href="#d_statec-code-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;unistd.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">(){&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">pause&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol>
+&lt;li>gcc -o d_state d_state.c&lt;/li>
+&lt;li>./d_state&lt;/li>
+&lt;li>ps aux | grep d_state&lt;/li>
+&lt;li>kill -SIGTSTP $(pidof d_state)&lt;/li>
+&lt;li>ps aux | grep d_state&lt;/li>
+&lt;/ol>
+&lt;h2>Zombie(Z)&lt;span class="hx-absolute -hx-mt-20" id="zombiez">&lt;/span>
+&lt;a href="#zombiez" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>进程已经执行了 &lt;code>exit&lt;/code>, &lt;code>exit code&lt;/code> 还没有被&lt;code>父进程&lt;/code> &lt;code>wait/waitpid&lt;/code> 读取。也就是进程的 &lt;code>PCB&lt;/code> 还没有从 kernel 的 &lt;code>process table&lt;/code> 中清除。&lt;/p>
+&lt;h3>zombie.c code&lt;span class="hx-absolute -hx-mt-20" id="zombiec-code">&lt;/span>
+&lt;a href="#zombiec-code" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdlib.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;unistd.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;sched.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">pid_t&lt;/span> &lt;span class="n">child_pid&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">fork&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">child_pid&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="c1">// Child process
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Child PID: %d&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nf">getpid&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">exit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// Child exits immediately
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="c1">// Parent process
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Parent PID: %d&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nf">getpid&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Child PID: %d&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">child_pid&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Parent is sleeping (check for zombie with `ps`).&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">sleep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// Parent sleeps (does not call wait())
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Parent exiting.&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol>
+&lt;li>gcc -o zombie zombie.c&lt;/li>
+&lt;li>./zombie&lt;/li>
+&lt;li>ps aux | grep zombie&lt;/li>
+&lt;/ol>
+&lt;h1>system calls changing process state on Linux&lt;/h1>&lt;h2>&lt;code>fork()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="fork">&lt;/span>
+&lt;a href="#fork" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Creates a new child process by duplicating the parent process.&lt;/p>
+&lt;p>• State Change: The child starts in the ready/runnable state (waiting for CPU time).&lt;/p>
+&lt;p>• Parameters: None.&lt;/p>
+&lt;p>• Return Value:&lt;/p>
+&lt;p>• &lt;code>0&lt;/code> to the child process.&lt;/p>
+&lt;p>• &lt;code>Child's PID&lt;/code> to the parent.&lt;/p>
+&lt;p>• &lt;code>-1&lt;/code> on error.&lt;/p>
+&lt;p>• Example: Used in spawning new processes (e.g., shell commands).&lt;/p>
+&lt;h2>&lt;code>execve()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="execve">&lt;/span>
+&lt;a href="#execve" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Replaces the current process&amp;rsquo;s memory space with a new program.&lt;/p>
+&lt;p>• State Change: The process remains in the &lt;code>running state&lt;/code> but executes new code.&lt;/p>
+&lt;p>• Parameters:&lt;/p>
+&lt;p>• &lt;code>path&lt;/code>: Path to the executable.&lt;/p>
+&lt;p>• &lt;code>argv&lt;/code>: Command-line arguments.&lt;/p>
+&lt;p>• &lt;code>envp&lt;/code>: Environment variables.&lt;/p>
+&lt;p>• Return Value: Only returns on error (&lt;code>-1&lt;/code>).&lt;/p>
+&lt;p>• Example: Running programs like &lt;code>ls&lt;/code> or &lt;code>grep&lt;/code> from a shell.&lt;/p>
+&lt;h2>&lt;code>exit()&lt;/code> / &lt;code>_exit()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="exit--_exit">&lt;/span>
+&lt;a href="#exit--_exit" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Terminates the current process.&lt;/p>
+&lt;p>• State Change: Moves the process to &lt;code>zombie&lt;/code> (until the parent calls &lt;code>wait()&lt;/code>).&lt;/p>
+&lt;p>• Parameters:&lt;/p>
+&lt;p>• &lt;code>status&lt;/code>: Exit status code.&lt;/p>
+&lt;p>• Return Value: None (does not return).&lt;/p>
+&lt;p>• Difference: &lt;code>exit()&lt;/code> flushes buffers; &lt;code>_exit()&lt;/code> is a raw system call.&lt;/p>
+&lt;p>• Example: Clean termination after program completion.&lt;/p>
+&lt;h2>&lt;code>wait()&lt;/code> / &lt;code>waitpid()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="wait--waitpid">&lt;/span>
+&lt;a href="#wait--waitpid" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Suspends the parent until a child changes state (exits or stops).&lt;/p>
+&lt;p>• State Change: Parent enters sleeping state until child exits.&lt;/p>
+&lt;p>• Parameters:&lt;/p>
+&lt;p>• &lt;code>status&lt;/code>: Stores child&amp;rsquo;s exit status.&lt;/p>
+&lt;p>• &lt;code>pid&lt;/code>: Specific child to wait for (in &lt;code>waitpid&lt;/code>).&lt;/p>
+&lt;p>• Return Value: Child PID on success; &lt;code>-1&lt;/code> on error.&lt;/p>
+&lt;p>• Example: Parent process ensuring a child completes first.&lt;/p>
+&lt;h2>&lt;code>kill()&lt;/code> / &lt;code>raise()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="kill--raise">&lt;/span>
+&lt;a href="#kill--raise" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Sends signals to processes (e.g., &lt;code>SIGTERM&lt;/code>, &lt;code>SIGSTOP&lt;/code>).&lt;/p>
+&lt;p>• State Change:&lt;/p>
+&lt;p>• &lt;code>SIGSTOP&lt;/code>: Moves process to stopped state.&lt;/p>
+&lt;p>• &lt;code>SIGCONT&lt;/code>: Resumes a stopped process.&lt;/p>
+&lt;p>• &lt;code>SIGKILL&lt;/code>: Terminates immediately.&lt;/p>
+&lt;p>• Parameters:&lt;/p>
+&lt;p>• &lt;code>pid&lt;/code>: Target process ID.&lt;/p>
+&lt;p>• &lt;code>sig&lt;/code>: Signal to send.&lt;/p>
+&lt;p>• Return Value: &lt;code>0&lt;/code> on success; &lt;code>-1&lt;/code> on error.&lt;/p>
+&lt;p>• Example: Terminating a frozen process via &lt;code>kill -9 PID&lt;/code>.&lt;/p>
+&lt;h2>&lt;code>pause()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="pause">&lt;/span>
+&lt;a href="#pause" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Suspends the process until a signal is received.&lt;/p>
+&lt;p>• State Change: Process enters &lt;strong>&lt;code>interruptable sleeping&lt;/code>&lt;/strong> state.&lt;/p>
+&lt;p>• Parameters: None.&lt;/p>
+&lt;p>• Return Value: Always &lt;code>-1&lt;/code> (interrupted by signal).&lt;/p>
+&lt;p>• Example: Waiting indefinitely for user input or signals.&lt;/p>
+&lt;h2>&lt;code>nanosleep()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="nanosleep">&lt;/span>
+&lt;a href="#nanosleep" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Pauses execution for a specified time.&lt;/p>
+&lt;p>• State Change: Process enters &lt;strong>&lt;code>interruptible sleep&lt;/code>&lt;/strong>.&lt;/p>
+&lt;p>• Parameters:&lt;/p>
+&lt;p>• &lt;code>req&lt;/code>: Time to sleep.&lt;/p>
+&lt;p>• &lt;code>rem&lt;/code>: Remaining time if interrupted.&lt;/p>
+&lt;p>• Return Value: &lt;code>0&lt;/code> on success; &lt;code>-1&lt;/code> on error.&lt;/p>
+&lt;p>• Example: High-precision delays in real-time applications.&lt;/p>
+&lt;h2>&lt;code>ptrace()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="ptrace">&lt;/span>
+&lt;a href="#ptrace" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Allows a process to control another (debugging, tracing).&lt;/p>
+&lt;p>• State Change: Traced process enters &lt;strong>&lt;code>stopped&lt;/code>&lt;/strong> state on signals.&lt;/p>
+&lt;p>• Parameters:&lt;/p>
+&lt;p>• &lt;code>request&lt;/code>: Action (e.g., &lt;code>PTRACE_ATTACH&lt;/code>, &lt;code>PTRACE_CONT&lt;/code>).&lt;/p>
+&lt;p>• &lt;code>pid&lt;/code>: Target process ID.&lt;/p>
+&lt;p>• Return Value: Varies by request; &lt;code>-1&lt;/code> on error.&lt;/p>
+&lt;p>• Example: Debuggers like &lt;code>gdb&lt;/code> using breakpoints.&lt;/p>
+&lt;h2>&lt;code>clone()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="clone">&lt;/span>
+&lt;a href="#clone" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Creates a child process or thread with configurable behavior.&lt;/p>
+&lt;p>• State Change: New process/thread starts in ready state.&lt;/p>
+&lt;p>• Parameters:&lt;/p>
+&lt;p>• &lt;code>fn&lt;/code>: Function for the child to execute.&lt;/p>
+&lt;p>• &lt;code>flags&lt;/code>: Options (e.g., &lt;code>CLONE_VM&lt;/code> for shared memory).&lt;/p>
+&lt;p>• &lt;code>arg&lt;/code>: Arguments for &lt;code>fn&lt;/code>.&lt;/p>
+&lt;p>• Return Value: Child PID on success; &lt;code>-1&lt;/code> on error.&lt;/p>
+&lt;p>• Example: Implementing threads (used by &lt;code>pthread&lt;/code> library).&lt;/p>
+&lt;h2>&lt;code>sched_yield()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="sched_yield">&lt;/span>
+&lt;a href="#sched_yield" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Voluntarily yields the CPU to other processes/threads.&lt;/p>
+&lt;p>• State Change: Process moves from running to &lt;code>ready&lt;/code> state.&lt;/p>
+&lt;p>• Parameters: None.&lt;/p>
+&lt;p>• Return Value: &lt;code>0&lt;/code> on success; &lt;code>-1&lt;/code> on error.&lt;/p>
+&lt;p>• Example: Cooperative multitasking in real-time apps.&lt;/p>
+&lt;h2>&lt;code>exit_group()&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="exit_group">&lt;/span>
+&lt;a href="#exit_group" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>• Purpose: Terminates all threads in a process.&lt;/p>
+&lt;p>• State Change: All threads enter zombie state.&lt;/p>
+&lt;p>• Parameters:&lt;/p>
+&lt;p>• &lt;code>status&lt;/code>: Exit code.&lt;/p>
+&lt;p>• Return Value: Does not return.&lt;/p>
+&lt;p>• Example: Terminating multi-threaded applications.&lt;/p>
+&lt;h1>Key Signals Affecting Process State&lt;/h1>&lt;p>• &lt;code>SIGSTOP&lt;/code>: Forcefully stops a process.&lt;/p>
+&lt;p>• &lt;code>SIGCONT&lt;/code>: Resumes a stopped process.&lt;/p>
+&lt;p>• &lt;code>SIGTERM&lt;/code>: Requests graceful termination.&lt;/p>
+&lt;p>• &lt;code>SIGKILL&lt;/code>: Forcefully kills a process.&lt;/p>
+&lt;h1>Summary Table&lt;/h1>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>System Call&lt;/th>
+&lt;th>Purpose&lt;/th>
+&lt;th>Key State Change&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>fork()&lt;/code>&lt;/td>
+&lt;td>Create child process&lt;/td>
+&lt;td>Child → Runnable&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>execve()&lt;/code>&lt;/td>
+&lt;td>Replace process image&lt;/td>
+&lt;td>Process runs new code&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>exit()&lt;/code>&lt;/td>
+&lt;td>Terminate process&lt;/td>
+&lt;td>Process → Zombie&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>wait()&lt;/code>&lt;/td>
+&lt;td>Wait for child state change&lt;/td>
+&lt;td>Parent → Sleeping&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>kill()&lt;/code>&lt;/td>
+&lt;td>Send signal (e.g., stop/resume)&lt;/td>
+&lt;td>Target → Stopped/Running&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>pause()&lt;/code>&lt;/td>
+&lt;td>Sleep until signal&lt;/td>
+&lt;td>Process → Sleeping&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>ptrace()&lt;/code>&lt;/td>
+&lt;td>Debug/trace another process&lt;/td>
+&lt;td>Target → Stopped&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>clone()&lt;/code>&lt;/td>
+&lt;td>Create thread/process&lt;/td>
+&lt;td>New entity → Runnable&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>These system calls and signals form the backbone of process lifecycle management in Linux, enabling creation, termination, synchronization, and debugging of processes.&lt;/p></description></item><item><title>cs-condition-variables</title><link>https://buybyte.github.io/blog/cs-condition-variables/</link><pubDate>Sun, 18 Apr 2021 20:44:09 +0800</pubDate><guid>https://buybyte.github.io/blog/cs-condition-variables/</guid><description>
+&lt;h2>condition variable 是啥？&lt;span class="hx-absolute -hx-mt-20" id="condition-variable-是啥">&lt;/span>
+&lt;a href="#condition-variable-%e6%98%af%e5%95%a5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>condition variable 是啥？本质上就是一个&lt;code>状态变量&lt;/code> +&lt;code>队列&lt;/code>。现实世界中，想要进行下一步的行动，往往需要满足一定的条件(condition)。如十字路口的交通信号灯，信号灯的颜色可以视为状态变量，根据不同的状态，汽车做出不同的选择。一条马路，可以视为&lt;code>队列&lt;/code>。红灯时, 汽车就不能通过，排队等候。绿灯时，汽车才可以通过。在计算机中，同样存在这样的问题，如父进程需要等待&lt;code>子进程完成后(条件)&lt;/code>，才能继续运行。关键就是围绕&lt;code>状态变量&lt;/code>来构建。&lt;/p>
+&lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
+&lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>1.&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_wait.3p.html" target="_blank" rel="noopener">pthread_cond_wait&lt;/a>
+2.&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_signal.3p.html" target="_blank" rel="noopener">pthread_cond_signal&lt;/a>&lt;/p></description></item></channel></rss>

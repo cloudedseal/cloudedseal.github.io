@@ -1,1 +1,130 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>syscall on buybyte</title><link>http://buybyte.github.io/tags/syscall/</link><description>Recent content in syscall on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 21 Apr 2025 15:34:28 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/syscall/index.xml" rel="self" type="application/rss+xml"/><item><title>Asm How Glibc Wrap Syscall</title><link>http://buybyte.github.io/2025/04/21/asm-how-glibc-wrap-syscall/</link><pubDate>Mon, 21 Apr 2025 15:34:28 +0800</pubDate><guid>http://buybyte.github.io/2025/04/21/asm-how-glibc-wrap-syscall/</guid><description>实验平台: x86_64 GNU/Linux mint22.1 使用 glibc 的函数 write1.c #include &amp;lt;unistd.h&amp;gt; int main() { const char msg[] = &amp;quot;Hello, glibc!\n&amp;quot;; write(1, msg, sizeof(msg) - 1); // glibc's write() wrapper return 0; } gcc -o write1 write1.c 使用 ltrace ./write1 查看调用了 write 库函数 不使用 glibc 的函数 write2.c #include &amp;lt;errno.h&amp;gt; #include &amp;lt;syscall.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; ssize_t</description></item><item><title>Cmd Strace</title><link>http://buybyte.github.io/2025/04/19/cmd-strace/</link><pubDate>Sat, 19 Apr 2025 16:29:04 +0800</pubDate><guid>http://buybyte.github.io/2025/04/19/cmd-strace/</guid><description>syscall 操作系统运行在 kernel space, 拥有整个系统的控制权。 应用程序运行在 user space, 拥有部分权限。 这就是隔离。 To prevent user applications from accessing or modifying critical operating system data. 想让操作系统做些事情怎么办？使</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Syscall</title><link>https://buybyte.github.io/tags/syscall/</link><description>Recent content in Syscall on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 21 Apr 2025 15:34:28 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/syscall/index.xml" rel="self" type="application/rss+xml"/><item><title>Asm How Glibc Wrap Syscall</title><link>https://buybyte.github.io/blog/asm-how-glibc-wrap-syscall/</link><pubDate>Mon, 21 Apr 2025 15:34:28 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-glibc-wrap-syscall/</guid><description>
+&lt;blockquote>
+&lt;p>实验平台: x86_64 GNU/Linux mint22.1&lt;/p>
+&lt;/blockquote>
+&lt;h1>使用 &lt;code>glibc&lt;/code> 的函数&lt;/h1>&lt;p>write1.c&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;unistd.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">const&lt;/span> &lt;span class="kt">char&lt;/span> &lt;span class="n">msg&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;Hello, glibc!&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">write&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">msg&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">msg&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// glibc&amp;#39;s write() wrapper
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol>
+&lt;li>gcc -o write1 write1.c&lt;/li>
+&lt;li>使用 &lt;code>ltrace ./write1&lt;/code> 查看调用了 write 库函数&lt;/li>
+&lt;/ol>
+&lt;h1>不使用 glibc 的函数&lt;/h1>&lt;p>write2.c&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;errno.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;syscall.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;unistd.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">ssize_t&lt;/span> &lt;span class="nf">write_no_glibc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">fd&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">const&lt;/span> &lt;span class="kt">void&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">buf&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">size_t&lt;/span> &lt;span class="n">count&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">long&lt;/span> &lt;span class="n">ret&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">asm&lt;/span> &lt;span class="k">volatile&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s">&amp;#34;syscall&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">:&lt;/span> &lt;span class="s">&amp;#34;=a&amp;#34;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ret&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">// Output: result in rax
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="s">&amp;#34;a&amp;#34;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">__NR_write&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="s">&amp;#34;D&amp;#34;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">fd&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="s">&amp;#34;S&amp;#34;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">buf&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="s">&amp;#34;d&amp;#34;&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">// Inputs
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="s">&amp;#34;rcx&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;r11&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;memory&amp;#34;&lt;/span> &lt;span class="c1">// Clobbered registers
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">ret&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">errno&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">ret&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// Set errno on error
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">ret&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// Return bytes written
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">const&lt;/span> &lt;span class="kt">char&lt;/span> &lt;span class="n">msg&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;Hello, glibc!&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">write_no_glibc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">msg&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">msg&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol>
+&lt;li>gcc -o write2 write2.c&lt;/li>
+&lt;li>使用 &lt;code>ltrace ./write2&lt;/code> 查看没有调用 write 库函数&lt;/li>
+&lt;/ol>
+&lt;h1>How glibc Wraps System Calls​​&lt;/h1>&lt;h2>​System Call Number​​&lt;span class="hx-absolute -hx-mt-20" id="system-call-number">&lt;/span>
+&lt;a href="#system-call-number" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Each system call (e.g., write, read) is assigned a &lt;code>unique number&lt;/code> (e.g., __NR_write). 要使用哪一个 syscall&lt;/p>
+&lt;h2>Argument Setup​​&lt;span class="hx-absolute -hx-mt-20" id="argument-setup">&lt;/span>
+&lt;a href="#argument-setup" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The wrapper loads the system call number and arguments into specific registers (architecture-dependent). 设置 syscall 的参数&lt;/p>
+&lt;h2>​Kernel Transition​​&lt;span class="hx-absolute -hx-mt-20" id="kernel-transition">&lt;/span>
+&lt;a href="#kernel-transition" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The wrapper uses an instruction like syscall (x86-64) to switch to kernel mode. 进入 kernel mode&lt;/p>
+&lt;h2>Result Handling​​&lt;span class="hx-absolute -hx-mt-20" id="result-handling">&lt;/span>
+&lt;a href="#result-handling" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>After the kernel finishes, the wrapper checks for errors, sets errno if needed, and returns the result. 处理返回值&lt;/p>
+&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/ltrace.1.html" target="_blank" rel="noopener">https://man7.org/linux/man-pages/man1/ltrace.1.html&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Cmd Strace</title><link>https://buybyte.github.io/blog/cmd-strace/</link><pubDate>Sat, 19 Apr 2025 16:29:04 +0800</pubDate><guid>https://buybyte.github.io/blog/cmd-strace/</guid><description>
+&lt;h1>syscall&lt;/h1>&lt;p>操作系统运行在 kernel space, 拥有整个系统的控制权。
+应用程序运行在 user space, 拥有部分权限。
+这就是隔离。
+To prevent user applications from &lt;code>accessing or modifying&lt;/code> critical operating system data.
+想让操作系统做些事情怎么办？使用 syscall。&lt;/p>
+&lt;h1>strace&lt;/h1>&lt;h2>strace -t -ff -o MainTest.log -f java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--t--ff--o-maintestlog--f--java-maintest">&lt;/span>
+&lt;a href="#strace--t--ff--o-maintestlog--f--java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;code>-t&lt;/code> time&lt;/li>
+&lt;li>&lt;code>-ff&lt;/code> follow-fork&lt;/li>
+&lt;li>&lt;code>-o&lt;/code> output&lt;/li>
+&lt;/ol>
+&lt;h2>strace -tt -ff -o MainTest.log -f -e trace=futex,write java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--tt--ff--o-maintestlog---f--e-tracefutexwrite-java-maintest">&lt;/span>
+&lt;a href="#strace--tt--ff--o-maintestlog---f--e-tracefutexwrite-java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>-ff -o 每一个进程的 log 单独写到一个文件&lt;/p>
+&lt;/blockquote>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">13468&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21792
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">455425&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21793
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1254&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21794
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1361&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21795
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">3802&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21796
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1677&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21797
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1705&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21798
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1797&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21810
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">6087&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21811
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">5541&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21812
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1444&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21813
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">33890&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21814
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">3996&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21822&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>strace -tt -ff -o MainTest.log -f -e trace=futex,write java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--tt--ff--o-maintestlog---f--e-tracefutexwrite--java-maintest">&lt;/span>
+&lt;a href="#strace--tt--ff--o-maintestlog---f--e-tracefutexwrite--java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>-e expr 多个 syscall CSV 形式&lt;/p>
+&lt;/blockquote>
+&lt;h2>strace -tt -ff -o MainTest.log -f -e trace=%process java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--tt--ff--o-maintestlog---f--e-traceprocess-java-maintest">&lt;/span>
+&lt;a href="#strace--tt--ff--o-maintestlog---f--e-traceprocess-java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>strace -tt -ff -o MainTest.log -f -e trace=%memory -a java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--tt--ff--o-maintestlog---f--e-tracememory--a-java-maintest">&lt;/span>
+&lt;a href="#strace--tt--ff--o-maintestlog---f--e-tracememory--a-java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>strace -tt -ff -o MainTest.log -f -e trace=%ipc java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--tt--ff--o-maintestlog---f--e-traceipc--java-maintest">&lt;/span>
+&lt;a href="#strace--tt--ff--o-maintestlog---f--e-traceipc--java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://jvns.ca/strace-zine-v2.pdf" target="_blank" rel="noopener">https://jvns.ca/strace-zine-v2.pdf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/strace.1.html" target="_blank" rel="noopener">https://man7.org/linux/man-pages/man1/strace.1.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://strace.io/" target="_blank" rel="noopener">https://strace.io/&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

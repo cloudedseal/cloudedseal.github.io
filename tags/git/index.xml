@@ -1,1 +1,1336 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>git on buybyte</title><link>http://buybyte.github.io/tags/git/</link><description>Recent content in git on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 28 Dec 2019 13:15:29 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>master-git</title><link>http://buybyte.github.io/2019/12/28/master-git/</link><pubDate>Sat, 28 Dec 2019 13:15:29 +0800</pubDate><guid>http://buybyte.github.io/2019/12/28/master-git/</guid><description>git init Create an empty Git repository or reinitialize an existing one 也即是向 working directory 里添加 .git 文件夹 .git/ ├── branches # git 分支 ├── config # git 配置 ├── description ├── HEAD # HEAD 指针, 指向当前分支最新的 commit ├── hooks │</description></item><item><title>git-commands</title><link>http://buybyte.github.io/2019/05/20/git-commands/</link><pubDate>Mon, 20 May 2019 22:33:03 +0800</pubDate><guid>http://buybyte.github.io/2019/05/20/git-commands/</guid><description>git rebase -i HEAD~N 复制提交记录 git branch -f target-branch-name commit-id 切换到 target-branch-name 并指向 commit-id git cherry-pick commit-id1 commit-id2 重新排序提交的记录. cherry-pick 名字起得真是有意思啊. 像捡樱桃似的, 把一个个想要的记录捡到当前分</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Git</title><link>https://buybyte.github.io/tags/git/</link><description>Recent content in Git on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 28 Dec 2019 13:15:29 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>master-git</title><link>https://buybyte.github.io/blog/master-git/</link><pubDate>Sat, 28 Dec 2019 13:15:29 +0800</pubDate><guid>https://buybyte.github.io/blog/master-git/</guid><description>
+&lt;h2>git init&lt;span class="hx-absolute -hx-mt-20" id="git-init">&lt;/span>
+&lt;a href="#git-init" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>Create an empty Git repository or reinitialize an existing one
+也即是向 &lt;code>working directory&lt;/code> 里添加 &lt;code>.git&lt;/code> 文件夹&lt;/p>
+&lt;/blockquote>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">.git/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── branches &lt;span class="c1"># git 分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── config &lt;span class="c1"># git 配置&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── description
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── HEAD &lt;span class="c1"># HEAD 指针, 指向当前分支最新的 commit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── hooks
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── applypatch-msg.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── commit-msg.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── fsmonitor-watchman.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── post-update.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── pre-applypatch.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── pre-commit.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── prepare-commit-msg.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── pre-push.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── pre-rebase.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── pre-receive.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── update.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── exclude
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── objects &lt;span class="c1"># 存放不同种类的 git 对象，实现版本管理的关键 &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── pack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── refs
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ├── heads
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> └── tags &lt;span class="c1"># git 标签&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>第一次 git add | git commit&lt;span class="hx-absolute -hx-mt-20" id="第一次-git-add--git-commit">&lt;/span>
+&lt;a href="#%e7%ac%ac%e4%b8%80%e6%ac%a1-git-add--git-commit" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>git add&lt;span class="hx-absolute -hx-mt-20" id="git-add">&lt;/span>
+&lt;a href="#git-add" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>Add file contents to the index
+添加文件内容到 &lt;code>index&lt;/code> 区&lt;/p>
+&lt;/blockquote>
+&lt;ol>
+&lt;li>
+&lt;p>添加两个文件 &lt;code>file1&lt;/code> 和 &lt;code>file2&lt;/code>, 文件内容分别是 &lt;code>111&lt;/code> 和 &lt;code>222&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>git add file_name&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">git add file1&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol start="3">
+&lt;li>tree .git/objects 查看添加的 git object&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">.git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">58&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── pack&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>对 file1 文件内容也就是 &lt;code>111&lt;/code> 和一些其他的信息做 &lt;code>SHA-1&lt;/code> 运算得出 &lt;code>58c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c&lt;/code> 这个 &lt;code>40&lt;/code> 位 &lt;code>16 进制&lt;/code>的值.&lt;/p>
+&lt;/blockquote>
+&lt;ol>
+&lt;li>git cat-file 查看 objects 相关信息
+&lt;strong>查看 object 类型&lt;/strong>&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">git cat-file -t 58c9bd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">blob&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>&lt;strong>查看 object 大小&lt;/strong>&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">git cat-file -s 58c9bd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">4&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>&lt;strong>查看 object 内容&lt;/strong>&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">git cat-file -p 58c9bd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">111&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol start="5">
+&lt;li>对文件内容为 &lt;code>222&lt;/code> 的 &lt;code>file2&lt;/code> 进行步骤 2 ~ 4.&lt;/li>
+&lt;/ol>
+&lt;p>查看 .git/objects 如下:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">.git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">58&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c &lt;span class="c1"># file1:blob&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── c2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c &lt;span class="c1"># file2:blob&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── pack&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>git commit&lt;span class="hx-absolute -hx-mt-20" id="git-commit">&lt;/span>
+&lt;a href="#git-commit" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>Stores the current contents of the index in a new commit along with a log message from the user describing the changes.
+A &lt;em>commit&lt;/em> in a git repository records a &lt;em>snapshot of all the files&lt;/em> in your directory.&lt;/p>
+&lt;/blockquote>
+&lt;h4>执行 git commit -m &amp;ldquo;add file1 and file2&amp;rdquo;&lt;span class="hx-absolute -hx-mt-20" id="执行-git-commit--m-add-file1-and-file2">&lt;/span>
+&lt;a href="#%e6%89%a7%e8%a1%8c-git-commit--m-add-file1-and-file2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h4>查看 .git/objects 的变化&lt;span class="hx-absolute -hx-mt-20" id="查看-gitobjects-的变化">&lt;/span>
+&lt;a href="#%e6%9f%a5%e7%9c%8b-gitobjects-%e7%9a%84%e5%8f%98%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">tree .git/objects
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">.git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">58&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c &lt;span class="c1"># file1:blob&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">73&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5 &lt;span class="c1"># 1:commit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── c2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c &lt;span class="c1"># file2:blob&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── d9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 64f468f776fac72a049a884ae24e7dbb838fd0 &lt;span class="c1"># 1:tree&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── pack&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>查看 HEAD&lt;span class="hx-absolute -hx-mt-20" id="查看-head">&lt;/span>
+&lt;a href="#%e6%9f%a5%e7%9c%8b-head" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# cat .git/HEAD
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ref: refs/heads/master &lt;span class="c1"># 目前在 master 分支上&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# cat .git/refs/heads/master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">73622e96d5b5389d63dd74e3c40db9d4c4296ff5 &lt;span class="c1"># 1:commit &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>第二次 git add | git commit&lt;span class="hx-absolute -hx-mt-20" id="第二次-git-add--git-commit">&lt;/span>
+&lt;a href="#%e7%ac%ac%e4%ba%8c%e6%ac%a1-git-add--git-commit" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>修改 &lt;code>file1&lt;/code> 的文件内容为 &lt;code>333&lt;/code>&lt;/p>
+&lt;/blockquote>
+&lt;h3>git add file1&lt;span class="hx-absolute -hx-mt-20" id="git-add-file1">&lt;/span>
+&lt;a href="#git-add-file1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git add file1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# tree .git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">.git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">55&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── bd0ac4c42e46cd751eb7405e12a35e61425550 &lt;span class="c1"># file1_modify: blob&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">58&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">73&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── c2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── d9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── pack&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>git commit -m &amp;ldquo;modify file1&amp;rdquo;&lt;span class="hx-absolute -hx-mt-20" id="git-commit--m-modify-file1">&lt;/span>
+&lt;a href="#git-commit--m-modify-file1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git commit -m &lt;span class="s2">&amp;#34;modify file1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>master 558e28c&lt;span class="o">]&lt;/span> modify file1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">1&lt;/span> file changed, &lt;span class="m">1&lt;/span> insertion&lt;span class="o">(&lt;/span>+&lt;span class="o">)&lt;/span>, &lt;span class="m">1&lt;/span> deletion&lt;span class="o">(&lt;/span>-&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# tree .git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">.git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">55&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e &lt;span class="c1"># 2:commit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── bd0ac4c42e46cd751eb7405e12a35e61425550 &lt;span class="c1"># file1_modify: blob&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">58&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">61&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560 &lt;span class="c1"># 2:tree&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">73&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── c2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── d9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── pack&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>查看 HEAD&lt;span class="hx-absolute -hx-mt-20" id="查看-head-1">&lt;/span>
+&lt;a href="#%e6%9f%a5%e7%9c%8b-head-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# cat .git/HEAD
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ref: refs/heads/master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# cat .git/refs/heads/master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">558e28c67089eea9bdfbfd748d32baa8f2ce944e &lt;span class="c1"># 指向了第二次 commit 的 hash 值&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>git add | git commit 实质&lt;span class="hx-absolute -hx-mt-20" id="git-add--git-commit-实质">&lt;/span>
+&lt;a href="#git-add--git-commit-%e5%ae%9e%e8%b4%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>git add: 向 &lt;code>.git/objects&lt;/code> 添加类型是 &lt;code>blob&lt;/code> 的文件
+git commit: 向 &lt;code>.git/objects&lt;/code> 添加类型是 &lt;code>tree&lt;/code> 和 &lt;code>commit&lt;/code> 的文件&lt;/p>
+&lt;h2>git branch&lt;span class="hx-absolute -hx-mt-20" id="git-branch">&lt;/span>
+&lt;a href="#git-branch" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>List, create, or delete branches
+Branches in Git are incredibly lightweight as well. They are simply pointers to a specific commit &amp;ndash; nothing more. 仅仅是添加了一个指向特定 commit 的指针。
+a branch essentially says &amp;ldquo;I want to include the work of this commit and all parent commits.&amp;rdquo; 一个分支就是我想要这个 commit 以及这个 commit 的所有 &lt;code>parent commits&lt;/code>&lt;/p>
+&lt;/blockquote>
+&lt;h3>创建一个 &lt;code>new-branch&lt;/code> 的分支&lt;span class="hx-absolute -hx-mt-20" id="创建一个-new-branch-的分支">&lt;/span>
+&lt;a href="#%e5%88%9b%e5%bb%ba%e4%b8%80%e4%b8%aa-new-branch-%e7%9a%84%e5%88%86%e6%94%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git branch new-branch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# tree .git/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">.git/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── branches
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── COMMIT_EDITMSG
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── description
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── HEAD
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── hooks
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── applypatch-msg.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── commit-msg.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── fsmonitor-watchman.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── post-update.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── pre-applypatch.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── pre-commit.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── prepare-commit-msg.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── pre-push.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── pre-rebase.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── pre-receive.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── update.sample
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── index
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── exclude
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── logs
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── HEAD
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── refs
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── heads
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── new-branch &lt;span class="c1"># git branch new-branch 添加的分支日志&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── objects
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── &lt;span class="m">55&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   │   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   │   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── &lt;span class="m">58&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   │   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── &lt;span class="m">61&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   │   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── &lt;span class="m">73&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   │   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── c2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   │   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── d9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   │   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── pack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── refs
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ├── heads
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> │   ├── master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> │   └── new-branch &lt;span class="c1"># git branch new-branch 添加的 refs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> └── tags
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">18&lt;/span> directories, &lt;span class="m">29&lt;/span> files&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>git branch - -list 查看分支&lt;span class="hx-absolute -hx-mt-20" id="git-branch----list-查看分支">&lt;/span>
+&lt;a href="#git-branch----list-%e6%9f%a5%e7%9c%8b%e5%88%86%e6%94%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git branch --list
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">* master &lt;span class="c1"># * 表示当前所在分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> new-branch &lt;span class="c1"># 新创建的 new-branch 分支&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>git checkout new-branch 切换分支&lt;span class="hx-absolute -hx-mt-20" id="git-checkout-new-branch-切换分支">&lt;/span>
+&lt;a href="#git-checkout-new-branch-%e5%88%87%e6%8d%a2%e5%88%86%e6%94%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git checkout new-branch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switched to branch &lt;span class="s1">&amp;#39;new-branch&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git branch --list
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">* new-branch&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>创建分支 &lt;code>new-branch&lt;/code>, 并切换到 &lt;code>new-branch&lt;/code> 分支.&lt;/p>
+&lt;ol>
+&lt;li>git branch new-branch&lt;/li>
+&lt;li>git checkout new-branch
+可以简化为:&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">git checkout -b new-branch&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>查看 HEAD&lt;span class="hx-absolute -hx-mt-20" id="查看-head-2">&lt;/span>
+&lt;a href="#%e6%9f%a5%e7%9c%8b-head-2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# cat .git/HEAD
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ref: refs/heads/new-branch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# cat .git/refs/heads/new-branch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">558e28c67089eea9bdfbfd748d32baa8f2ce944e &lt;span class="c1"># 指向了第二次 commit 的 hash值&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>由此可知 git branch new-branch 创建一个分支,实际上做了两件事情:&lt;/p>
+&lt;ol>
+&lt;li>添加 .git/logs/refs/heads/new-branch 记录该分支的 &lt;code>log&lt;/code>&lt;/li>
+&lt;li>添加 .git/refs/heads/new-branch 指向最新的 &lt;code>commit&lt;/code>
+这也就是 &lt;code>git&lt;/code> 创建新的分支如此快的原因.&lt;/li>
+&lt;/ol>
+&lt;h2>第三次 git add | git commit&lt;span class="hx-absolute -hx-mt-20" id="第三次-git-add--git-commit">&lt;/span>
+&lt;a href="#%e7%ac%ac%e4%b8%89%e6%ac%a1-git-add--git-commit" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>切换到 &lt;code>new-branch&lt;/code> 分支, 新建一个 &lt;code>file3&lt;/code> 的文件, 内容是 &lt;code>new-branch-file3&lt;/code>&lt;/p>
+&lt;h3>git add file3&lt;span class="hx-absolute -hx-mt-20" id="git-add-file3">&lt;/span>
+&lt;a href="#git-add-file3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git add file3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# tree .git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">.git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── 2e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 799a48d8c045b814c3862af40dea98bdde790a &lt;span class="c1"># file3&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">55&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">58&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">61&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">73&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── c2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── d9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── pack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">9&lt;/span> directories, &lt;span class="m">8&lt;/span> files
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git cat-file -t 2e79
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">blob
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git cat-file -p 2e79
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">new-branch-file3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git cat-file -s 2e79
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">17&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>git commit -m &amp;ldquo;file3 on new-branch&amp;rdquo;&lt;span class="hx-absolute -hx-mt-20" id="git-commit--m-file3-on-new-branch">&lt;/span>
+&lt;a href="#git-commit--m-file3-on-new-branch" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git commit -m &lt;span class="s2">&amp;#34;add file3 on new-branch&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>new-branch ce907fa&lt;span class="o">]&lt;/span> add file3 on new-branch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">1&lt;/span> file changed, &lt;span class="m">1&lt;/span> insertion&lt;span class="o">(&lt;/span>+&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> create mode &lt;span class="m">100644&lt;/span> file3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# tree .git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">.git/objects/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── 2e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 799a48d8c045b814c3862af40dea98bdde790a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">55&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">58&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">61&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── &lt;span class="m">73&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── b7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3 &lt;span class="c1"># new-branch:tree&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── c2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── ce
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 907fabd08138058b05428d7cac017507b33c44 &lt;span class="c1"># new-branch:commit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── d9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── info
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── pack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">11&lt;/span> directories, &lt;span class="m">10&lt;/span> files
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git cat-file -t b721
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tree
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git cat-file -p b721 &lt;span class="c1"># 全量的快照(snapshot)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">100644&lt;/span> blob 55bd0ac4c42e46cd751eb7405e12a35e61425550 file1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">100644&lt;/span> blob c200906efd24ec5e783bee7f23b5d7c941b0c12c file2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">100644&lt;/span> blob 2e799a48d8c045b814c3862af40dea98bdde790a file3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git cat-file -s b721
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">99&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git cat-file -t ce90
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">commit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git cat-file -p ce90
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tree b72118da210e8e3f4127cfc16cc819eff58e42e3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">parent 558e28c67089eea9bdfbfd748d32baa8f2ce944e &lt;span class="c1"># 上一次 commit &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">author root &amp;lt;root@aliyun&amp;gt; &lt;span class="m">1578039532&lt;/span> +0800
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">committer root &amp;lt;root@aliyun&amp;gt; &lt;span class="m">1578039532&lt;/span> +0800
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">add file3 on new-branch &lt;span class="c1"># commit message&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git cat-file -s ce90
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">208&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>查看 HEAD&lt;span class="hx-absolute -hx-mt-20" id="查看-head-3">&lt;/span>
+&lt;a href="#%e6%9f%a5%e7%9c%8b-head-3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# cat .git/HEAD
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ref: refs/heads/new-branch &lt;span class="c1"># 当前在 new-branch 分支上&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# cat .git/refs/heads/new-branch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ce907fabd08138058b05428d7cac017507b33c44 &lt;span class="c1"># new-branch 分支最新的提交&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>切换到 master 分支查看 HEAD&lt;span class="hx-absolute -hx-mt-20" id="切换到-master-分支查看-head">&lt;/span>
+&lt;a href="#%e5%88%87%e6%8d%a2%e5%88%b0-master-%e5%88%86%e6%94%af%e6%9f%a5%e7%9c%8b-head" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# git checkout master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switched to branch &lt;span class="s1">&amp;#39;master&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# cat .git/HEAD
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ref: refs/heads/master &lt;span class="c1"># 当前在 master 分支&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~/blog# cat .git/refs/heads/master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">558e28c67089eea9bdfbfd748d32baa8f2ce944e &lt;span class="c1"># master 分支最新的提交&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>查看 &lt;code>master&lt;/code> 和 &lt;code>new-branch&lt;/code> 两个分支可知, 每一分支对应的 &lt;code>HEAD&lt;/code> 和 &lt;code>.git/refs/heads/branch_name&lt;/code> 记录的 &lt;code>commit&lt;/code> 不同. 这就是 git 分支的实现.&lt;/p>
+&lt;h2>git add | git commit | git branch 图解&lt;span class="hx-absolute -hx-mt-20" id="git-add--git-commit--git-branch-图解">&lt;/span>
+&lt;a href="#git-add--git-commit--git-branch-%e5%9b%be%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/git.svg" alt="git" loading="lazy" />&lt;/p>
+&lt;h2>Fast-forward Merge&lt;span class="hx-absolute -hx-mt-20" id="fast-forward-merge">&lt;/span>
+&lt;a href="#fast-forward-merge" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>两次 git add 和 git commit 之后，创建 &lt;code>new-branch&lt;/code> ，在 &lt;code>new-branch&lt;/code> 进行了修改。
+但是 &lt;code>master&lt;/code> 分支没有做任何更改。也就是 &lt;code>master&lt;/code> 此时分支落后了 &lt;code>new-branch&lt;/code> 分支。
+&lt;code>new-branch&lt;/code> 分支的修改 &lt;code>master&lt;/code> 分支怎样看到呢？可以进行所谓的 &lt;code>Fast-forward merge&lt;/code>。&lt;/p>
+&lt;/blockquote>
+&lt;h3>切换到 master 分支&lt;span class="hx-absolute -hx-mt-20" id="切换到-master-分支">&lt;/span>
+&lt;a href="#%e5%88%87%e6%8d%a2%e5%88%b0-master-%e5%88%86%e6%94%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>root@aliyun:~/blog# git checkout master # 切换到 master 分支
+Switched to branch &amp;#39;master&amp;#39;
+root@aliyun:~/blog# cat .git/refs/heads/master # master 分支仍然指向第二次的 commit。
+558e28c67089eea9bdfbfd748d32baa8f2ce944e
+root@aliyun:~/blog# tree .git/objects/ # 查看 objects 对象。
+.git/objects/
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── info
+└── pack
+11 directories, 10 files&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>合并 new-branch 分支到 master 分支&lt;span class="hx-absolute -hx-mt-20" id="合并-new-branch-分支到-master-分支">&lt;/span>
+&lt;a href="#%e5%90%88%e5%b9%b6-new-branch-%e5%88%86%e6%94%af%e5%88%b0-master-%e5%88%86%e6%94%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>root@aliyun:~/blog# git merge new-branch # 合并 new-branch 分支
+Updating 558e28c..ce907fa ### 更新 558e 这个object
+Fast-forward # fast-forward
+file3 | 1 &amp;#43;
+1 file changed, 1 insertion(&amp;#43;)
+create mode 100644 file3
+root@aliyun:~/blog# ls
+file1 file2 file3
+root@aliyun:~/blog# tree .git/objects/ # 查看 objects 对象。并没增加任何 object
+.git/objects/
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── info
+└── pack
+11 directories, 10 files
+root@aliyun:~/blog# cat .git/refs/heads/master
+ce907fabd08138058b05428d7cac017507b33c44 # 更新了 master 指向，指向了 new-branch 的 commit。&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>Fast-Forward 图解&lt;span class="hx-absolute -hx-mt-20" id="fast-forward-图解">&lt;/span>
+&lt;a href="#fast-forward-%e5%9b%be%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/fast-forward-merge.svg" alt="git fast forward" loading="lazy" />&lt;/p>
+&lt;h2>删除 master 分支上的 file1 文件，然后提交&lt;span class="hx-absolute -hx-mt-20" id="删除-master-分支上的-file1-文件然后提交">&lt;/span>
+&lt;a href="#%e5%88%a0%e9%99%a4-master-%e5%88%86%e6%94%af%e4%b8%8a%e7%9a%84-file1-%e6%96%87%e4%bb%b6%e7%84%b6%e5%90%8e%e6%8f%90%e4%ba%a4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>root@aliyun:~# cp -r blog blog-delete # 复制一份，在 master 分支上删除 file1
+root@aliyun:~# cd blog-delete/
+root@aliyun:~/blog-delete# ls
+file1 file2 file3
+root@aliyun:~/blog-delete# tree .git/objects/ # 删除前的 git objects
+.git/objects/
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── info
+└── pack
+11 directories, 10 files
+root@aliyun:~/blog-delete# rm file1 # 删除file1
+root@aliyun:~/blog-delete# git status
+On branch master
+Changes not staged for commit:
+(use &amp;#34;git add/rm &amp;lt;file&amp;gt;...&amp;#34; to update what will be committed)
+(use &amp;#34;git checkout -- &amp;lt;file&amp;gt;...&amp;#34; to discard changes in working directory)
+deleted: file1
+no changes added to commit (use &amp;#34;git add&amp;#34; and/or &amp;#34;git commit -a&amp;#34;)
+root@aliyun:~/blog-delete# git add file1 # 修改添加到 working tree
+root@aliyun:~/blog-delete# tree .git/objects/ # 注意，此时的并没有删除或者增加 git objects
+.git/objects/
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── info
+└── pack
+11 directories, 10 files
+root@aliyun:~/blog-delete# git status
+On branch master
+Changes to be committed:
+(use &amp;#34;git reset HEAD &amp;lt;file&amp;gt;...&amp;#34; to unstage)
+deleted: file1
+root@aliyun:~/blog-delete# git commit -m &amp;#34;delete file1 on master&amp;#34; # 提交这个修改到 repository
+[master f24e8b6] delete file1 on master
+1 file changed, 1 deletion(-)
+delete mode 100644 file1
+root@aliyun:~/blog-delete# tree .git/objects/ # 查看此时的 git objects
+.git/objects/
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c # blob:file1 仍然在 git objects 中
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── ba
+│   └── 61ba35d824408f8135ec77b7efdcdfc0281fba # 新添加一个 tree
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── f2
+│   └── 4e8b6fb771347156b615c795f7fd886dc49088 # 新添加一个 commit
+├── info
+└── pack
+13 directories, 12 files
+root@aliyun:~/blog-delete# git cat-file -s ba61 # ba61 的大小,zlib compressed data
+66
+root@aliyun:~/blog-delete# git cat-file -t ba61 # ba61 的类型
+tree
+root@aliyun:~/blog-delete# git cat-file -p ba61
+100644 blob c200906efd24ec5e783bee7f23b5d7c941b0c12c file2 # master 分支剩下的 file2
+100644 blob 2e799a48d8c045b814c3862af40dea98bdde790a file3 # master 分支剩下的 file3
+root@aliyun:~/blog-delete# git cat-file -s f24e
+207
+root@aliyun:~/blog-delete# git cat-file -t f24e # 新加的 commit object
+commit
+root@aliyun:~/blog-delete# git cat-file -p f24e
+tree ba61ba35d824408f8135ec77b7efdcdfc0281fba # 新加的 tree object
+parent ce907fabd08138058b05428d7cac017507b33c44 # delete file1 之前的 commit object
+author root &amp;lt;root@aliyun&amp;gt; 1586307459 &amp;#43;0800
+committer root &amp;lt;root@aliyun&amp;gt; 1586307459 &amp;#43;0800
+delete file1 on master
+root@aliyun:~/blog-delete# cat .git/refs/heads/master # master 分支指向了新的 commit
+f24e8b6fb771347156b615c795f7fd886dc49088
+root@aliyun:~/blog-delete# cat .git/logs/refs/heads/
+master new-branch
+root@aliyun:~/blog-delete# cat .git/logs/refs/heads/master # 查看 master 分支的提交日志
+0000000000000000000000000000000000000000 73622e96d5b5389d63dd74e3c40db9d4c4296ff5 root &amp;lt;root@aliyun&amp;gt; 1578027036 &amp;#43;0800 commit (initial): add file1 and file2
+73622e96d5b5389d63dd74e3c40db9d4c4296ff5 558e28c67089eea9bdfbfd748d32baa8f2ce944e root &amp;lt;root@aliyun&amp;gt; 1578036269 &amp;#43;0800 commit: modify file1
+558e28c67089eea9bdfbfd748d32baa8f2ce944e ce907fabd08138058b05428d7cac017507b33c44 root &amp;lt;root@aliyun&amp;gt; 1586241477 &amp;#43;0800 merge new-branch: Fast-forward
+ce907fabd08138058b05428d7cac017507b33c44 f24e8b6fb771347156b615c795f7fd886dc49088 root &amp;lt;root@aliyun&amp;gt; 1586307459 &amp;#43;0800 commit: delete file1 on master&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>master 分支删除 file1 图解&lt;span class="hx-absolute -hx-mt-20" id="master-分支删除-file1-图解">&lt;/span>
+&lt;a href="#master-%e5%88%86%e6%94%af%e5%88%a0%e9%99%a4-file1-%e5%9b%be%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/git-delete-a-file-and-commit.svg" alt="delete file1 on maste" loading="lazy" />&lt;/p>
+&lt;h4>master 分支删除 file1 图解分析&lt;span class="hx-absolute -hx-mt-20" id="master-分支删除-file1-图解分析">&lt;/span>
+&lt;a href="#master-%e5%88%86%e6%94%af%e5%88%a0%e9%99%a4-file1-%e5%9b%be%e8%a7%a3%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>master 分支 git 中删除一个文件的实质是：&lt;/p>
+&lt;ol>
+&lt;li>生成一个 &lt;code>tree object ba61ba&lt;/code>，指向剩下的每一个文件的最新的 blob object。&lt;code>blob c20090 file2&lt;/code> 和 &lt;code>blob 2e799a file3&lt;/code>&lt;/li>
+&lt;li>生成一个 &lt;code>commit f24e8b&lt;/code> 节点，指向本次提交的上一个 &lt;code>commit object(ce907f)&lt;/code> 和这次提交生成的 &lt;code>tree object(ba61ba)&lt;/code>。&lt;/li>
+&lt;li>移动 &lt;code>master&lt;/code> 和 &lt;code>HEAD&lt;/code> 的指向，指向本次提交的 &lt;code>commit object f24e8b&lt;/code>。&lt;/li>
+&lt;li>在 master 的 &lt;code>.git/logs/refs/heads/master&lt;/code> 分支添加本次提交的 git log。&lt;/li>
+&lt;li>删除 file1，但是 git object 下 file1 的 &lt;code>blob(58c9bd)&lt;/code> 并没有删除。这也意味着可以恢复 file1。&lt;/li>
+&lt;li>其他分支同理。&lt;/li>
+&lt;/ol>
+&lt;h2>合并分支(combine work)&lt;span class="hx-absolute -hx-mt-20" id="合并分支combine-work">&lt;/span>
+&lt;a href="#%e5%90%88%e5%b9%b6%e5%88%86%e6%94%afcombine-work" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>使用 git merge&lt;span class="hx-absolute -hx-mt-20" id="使用-git-merge">&lt;/span>
+&lt;a href="#%e4%bd%bf%e7%94%a8-git-merge" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>Merging in Git &lt;strong>creates a special commit&lt;/strong> that has &lt;strong>two unique parents&lt;/strong>. A commit with two parents essentially means &amp;ldquo;I want to include all the work from this parent over here and this one over here, and the set of all their parents.&amp;rdquo;&lt;/p>
+&lt;/blockquote>
+&lt;h4>new-branch 分支添加 file4&lt;span class="hx-absolute -hx-mt-20" id="new-branch-分支添加-file4">&lt;/span>
+&lt;a href="#new-branch-%e5%88%86%e6%94%af%e6%b7%bb%e5%8a%a0-file4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h5>new-branch 分支添加 file4 步骤&lt;span class="hx-absolute -hx-mt-20" id="new-branch-分支添加-file4-步骤">&lt;/span>
+&lt;a href="#new-branch-%e5%88%86%e6%94%af%e6%b7%bb%e5%8a%a0-file4-%e6%ad%a5%e9%aa%a4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>root@aliyun:~# cd blog-delete
+root@aliyun:~/blog-delete# ls
+file2 file3
+root@aliyun:~/blog-delete# git branch --list # 查看分支
+* master
+new-branch
+root@aliyun:~/blog-delete# git checkout new-branch # 切换到 new-branch
+Switched to branch &amp;#39;new-branch&amp;#39;
+root@aliyun:~/blog-delete# ls
+file1 file2 file3
+root@aliyun:~/blog-delete# echo 444 &amp;gt; file4 # 创建 file4
+root@aliyun:~/blog-delete# git status
+On branch new-branch
+Untracked files:
+(use &amp;#34;git add &amp;lt;file&amp;gt;...&amp;#34; to include in what will be committed)
+file4
+nothing added to commit but untracked files present (use &amp;#34;git add&amp;#34; to track)
+root@aliyun:~/blog-delete# tree .git/objects/
+.git/objects/
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── ba
+│   └── 61ba35d824408f8135ec77b7efdcdfc0281fba
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── f2
+│   └── 4e8b6fb771347156b615c795f7fd886dc49088
+├── info
+└── pack
+13 directories, 12 files
+root@aliyun:~/blog-delete# git add file4 # 添加 file4
+root@aliyun:~/blog-delete# tree .git/objects/
+.git/objects/
+├── 1e
+│   └── 6fd033863540bfb9eadf22019a6b4b3de7d07a # blob:file4
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── ba
+│   └── 61ba35d824408f8135ec77b7efdcdfc0281fba
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── f2
+│   └── 4e8b6fb771347156b615c795f7fd886dc49088
+├── info
+└── pack
+14 directories, 13 files
+root@aliyun:~/blog-delete# git commit -m &amp;#34;add file4 on new-branch&amp;#34;
+[new-branch c9918ce] add file4 on new-branch
+1 file changed, 1 insertion(&amp;#43;)
+create mode 100644 file4
+root@aliyun:~/blog-delete# tree .git/objects/
+.git/objects/
+├── 09
+│   └── 77e7b9e8643eaa75b679d7e82b048723e9f491 # 4:tree
+├── 1e
+│   └── 6fd033863540bfb9eadf22019a6b4b3de7d07a # blob:file4
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── ba
+│   └── 61ba35d824408f8135ec77b7efdcdfc0281fba
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── c9
+│   └── 918cea80e46648c4e98da5b1c4b072f0794795
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44 # 4:commit
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── f2
+│   └── 4e8b6fb771347156b615c795f7fd886dc49088
+├── info
+└── pack
+16 directories, 15 files
+root@aliyun:~/blog-delete# git cat-file -s 0977 # 新加的 tree object
+132
+root@aliyun:~/blog-delete# git cat-file -t 0977
+tree
+root@aliyun:~/blog-delete# git cat-file -p 0977 # new-branch 分支上所有文件的 snapshot
+100644 blob 55bd0ac4c42e46cd751eb7405e12a35e61425550 file1
+100644 blob c200906efd24ec5e783bee7f23b5d7c941b0c12c file2
+100644 blob 2e799a48d8c045b814c3862af40dea98bdde790a file3
+100644 blob 1e6fd033863540bfb9eadf22019a6b4b3de7d07a file4
+root@aliyun:~/blog-delete# git cat-file -s 1e6f # new-branch 分支新加的 file4
+4
+root@aliyun:~/blog-delete# git cat-file -t 1e6f
+blob
+root@aliyun:~/blog-delete# git cat-file -p 1e6f
+444
+root@aliyun:~/blog-delete# git cat-file -s c991 # 新的 commit object
+208
+root@aliyun:~/blog-delete# git cat-file -t c991
+commit
+root@aliyun:~/blog-delete# git cat-file -p c991
+tree 0977e7b9e8643eaa75b679d7e82b048723e9f491 # 本次生成的 tree object
+parent ce907fabd08138058b05428d7cac017507b33c44 # 上一次 commit
+author root &amp;lt;root@aliyun&amp;gt; 1586330993 &amp;#43;0800
+committer root &amp;lt;root@aliyun&amp;gt; 1586330993 &amp;#43;0800
+add file4 on new-branch # git commit-m 的信息
+root@aliyun:~/blog-delete-new-branch-file4# git checkout master # 切换到 master
+Switched to branch &amp;#39;master&amp;#39;
+root@aliyun:~/blog-delete-new-branch-file4# ls # 查看 master 分支的文件
+file2 file3
+root@aliyun:~/blog-delete-new-branch-file4# tree .git/objects/ # 在 master 分支查看 objects
+.git/objects/ # 和在 new-branch 分支上看到的一样
+├── 09
+│   └── 77e7b9e8643eaa75b679d7e82b048723e9f491
+├── 1e
+│   └── 6fd033863540bfb9eadf22019a6b4b3de7d07a
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── ba
+│   └── 61ba35d824408f8135ec77b7efdcdfc0281fba
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── c9
+│   └── 918cea80e46648c4e98da5b1c4b072f0794795
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── f2
+│   └── 4e8b6fb771347156b615c795f7fd886dc49088
+├── info
+└── pack
+16 directories, 15 files &lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h5>new-branch 分支添加 file4 图解&lt;span class="hx-absolute -hx-mt-20" id="new-branch-分支添加-file4-图解">&lt;/span>
+&lt;a href="#new-branch-%e5%88%86%e6%94%af%e6%b7%bb%e5%8a%a0-file4-%e5%9b%be%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/new-branch-add-file4.svg" alt="new-branch-add-file4" loading="lazy" />&lt;/p>
+&lt;h4>master 分支添加 file5&lt;span class="hx-absolute -hx-mt-20" id="master-分支添加-file5">&lt;/span>
+&lt;a href="#master-%e5%88%86%e6%94%af%e6%b7%bb%e5%8a%a0-file5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h5>master 分支添加 file5 步骤&lt;span class="hx-absolute -hx-mt-20" id="master-分支添加-file5-步骤">&lt;/span>
+&lt;a href="#master-%e5%88%86%e6%94%af%e6%b7%bb%e5%8a%a0-file5-%e6%ad%a5%e9%aa%a4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>root@aliyun:~# cp -r blog-delete blog-delete-master-file5 # 复制一份
+root@aliyun:~# cd blog-delete-master-file5/
+root@aliyun:~/blog-delete-master-file5# ls
+file1 file2 file3 file4
+root@aliyun:~/blog-delete-master-file5# git branch --list
+master
+* new-branch
+root@aliyun:~/blog-delete-master-file5# git checkout master # 切换到 master
+Switched to branch &amp;#39;master&amp;#39;
+root@aliyun:~/blog-delete-master-file5# echo 555 &amp;gt; file5 创建 file5
+root@aliyun:~/blog-delete-master-file5# tree .git/objects/
+.git/objects/
+├── 09
+│   └── 77e7b9e8643eaa75b679d7e82b048723e9f491
+├── 1e
+│   └── 6fd033863540bfb9eadf22019a6b4b3de7d07a
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── ba
+│   └── 61ba35d824408f8135ec77b7efdcdfc0281fba
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── c9
+│   └── 918cea80e46648c4e98da5b1c4b072f0794795
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── f2
+│   └── 4e8b6fb771347156b615c795f7fd886dc49088
+├── info
+└── pack
+16 directories, 15 files
+root@aliyun:~/blog-delete-master-file5# git add file5
+root@aliyun:~/blog-delete-master-file5# tree .git/objects/
+.git/objects/
+├── 09
+│   └── 77e7b9e8643eaa75b679d7e82b048723e9f491
+├── 1e
+│   └── 6fd033863540bfb9eadf22019a6b4b3de7d07a
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 37
+│   └── 49383ded246790596d2f39db4dd8b71f525bbc
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── ba
+│   └── 61ba35d824408f8135ec77b7efdcdfc0281fba
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── c9
+│   └── 918cea80e46648c4e98da5b1c4b072f0794795
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── f2
+│   └── 4e8b6fb771347156b615c795f7fd886dc49088
+├── info
+└── pack
+17 directories, 16 files
+root@aliyun:~/blog-delete-master-file5# git commit -m &amp;#34;add file5 on master&amp;#34;
+[master 3de903f] add file5 on master
+1 file changed, 1 insertion(&amp;#43;)
+create mode 100644 file5
+root@aliyun:~/blog-delete-master-file5# tree .git/objects/
+.git/objects/
+├── 09
+│   └── 77e7b9e8643eaa75b679d7e82b048723e9f491
+├── 1e
+│   └── 6fd033863540bfb9eadf22019a6b4b3de7d07a
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 37
+│   └── 49383ded246790596d2f39db4dd8b71f525bbc # blob:file5
+├── 3d
+│   └── e903f0c523d57b4880be68bacb1eaa1195ebac #5:commit
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── ba
+│   └── 61ba35d824408f8135ec77b7efdcdfc0281fba
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── c9
+│   └── 918cea80e46648c4e98da5b1c4b072f0794795
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── f2
+│   └── 4e8b6fb771347156b615c795f7fd886dc49088
+├── f5
+│   └── 4ecef60b4376ae5531032cbeaade01184da4fa # 5:tree
+├── info
+└── pack
+19 directories, 18 files
+root@aliyun:~/blog-delete-master-file5# git cat-file -t 3de90 # 本次的 commit object
+commit
+root@aliyun:~/blog-delete-master-file5# git cat-file -s 3de90
+204
+root@aliyun:~/blog-delete-master-file5# git cat-file -p 3de90
+tree f54ecef60b4376ae5531032cbeaade01184da4fa
+parent f24e8b6fb771347156b615c795f7fd886dc49088
+author root &amp;lt;root@aliyun&amp;gt; 1586340888 &amp;#43;0800
+committer root &amp;lt;root@aliyun&amp;gt; 1586340888 &amp;#43;0800
+add file5 on master
+root@aliyun:~/blog-delete-master-file5# git cat-file -t f54ece # 本次的 tree objet
+tree
+root@aliyun:~/blog-delete-master-file5# git cat-file -s f54ece
+99
+root@aliyun:~/blog-delete-master-file5# git cat-file -p f54ece
+100644 blob c200906efd24ec5e783bee7f23b5d7c941b0c12c file2 # master 分支上的 file2
+100644 blob 2e799a48d8c045b814c3862af40dea98bdde790a file3 # master 分支上的 file3
+100644 blob 3749383ded246790596d2f39db4dd8b71f525bbc file5 # master 分支上的 file5
+root@aliyun:~/blog-delete-master-file5# git cat-file -t 374938 # file5
+blob
+root@aliyun:~/blog-delete-master-file5# git cat-file -s 374938
+4
+root@aliyun:~/blog-delete-master-file5# git cat-file -p 374938
+555&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h5>master 分支添加 file5 图解&lt;span class="hx-absolute -hx-mt-20" id="master-分支添加-file5-图解">&lt;/span>
+&lt;a href="#master-%e5%88%86%e6%94%af%e6%b7%bb%e5%8a%a0-file5-%e5%9b%be%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/git-master-add-file5.svg" alt="master-add-file5" loading="lazy" />&lt;/p>
+&lt;h4>master 分支合并到 new-branch 分支&lt;span class="hx-absolute -hx-mt-20" id="master-分支合并到-new-branch-分支">&lt;/span>
+&lt;a href="#master-%e5%88%86%e6%94%af%e5%90%88%e5%b9%b6%e5%88%b0-new-branch-%e5%88%86%e6%94%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h5>master 分支合并到 new-branch 分支步骤&lt;span class="hx-absolute -hx-mt-20" id="master-分支合并到-new-branch-分支步骤">&lt;/span>
+&lt;a href="#master-%e5%88%86%e6%94%af%e5%90%88%e5%b9%b6%e5%88%b0-new-branch-%e5%88%86%e6%94%af%e6%ad%a5%e9%aa%a4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>root@aliyun:~# cp -r blog-delete-master-file5/ blog-delete-file4-file5-merge
+root@aliyun:~# cd blog-delete-file4-file5-merge/
+root@aliyun:~/blog-delete-file4-file5-merge# git branch --list
+* master
+new-branch
+root@aliyun:~/blog-delete-file4-file5-merge# tree .git/objects/
+09/ 1e/ 2e/ 37/ 3d/ 55/ 58/ 61/ 73/ b7/ ba/ c2/ c9/ ce/ d9/ f2/ f5/ info/ pack/
+root@aliyun:~/blog-delete-file4-file5-merge# tree .git/objects/
+.git/objects/
+├── 09
+│   └── 77e7b9e8643eaa75b679d7e82b048723e9f491
+├── 1e
+│   └── 6fd033863540bfb9eadf22019a6b4b3de7d07a
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 37
+│   └── 49383ded246790596d2f39db4dd8b71f525bbc
+├── 3d
+│   └── e903f0c523d57b4880be68bacb1eaa1195ebac
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── ba
+│   └── 61ba35d824408f8135ec77b7efdcdfc0281fba
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── c9
+│   └── 918cea80e46648c4e98da5b1c4b072f0794795
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── f2
+│   └── 4e8b6fb771347156b615c795f7fd886dc49088
+├── f5
+│   └── 4ecef60b4376ae5531032cbeaade01184da4fa
+├── info
+└── pack
+19 directories, 18 files
+root@aliyun:~/blog-delete-file4-file5-merge# git checkout new-branch # 切换到 new-branch
+Switched to branch &amp;#39;new-branch&amp;#39;
+root@aliyun:~/blog-delete-file4-file5-merge# git merge master # 把 master 分支合并到当前分支，也就是 new-branch 分支
+Removing file1 # master 分支上删除了 file1，new-branch 分支合并时也会删掉。
+Merge made by the &amp;#39;recursive&amp;#39; strategy.
+file1 | 1 -
+file5 | 1 &amp;#43;
+2 files changed, 1 insertion(&amp;#43;), 1 deletion(-)
+delete mode 100644 file1
+create mode 100644 file5
+root@aliyun:~/blog-delete-file4-file5-merge# tree .git/objects/
+.git/objects/
+├── 09
+│   └── 77e7b9e8643eaa75b679d7e82b048723e9f491
+├── 1e
+│   └── 6fd033863540bfb9eadf22019a6b4b3de7d07a
+├── 2e
+│   └── 799a48d8c045b814c3862af40dea98bdde790a
+├── 37
+│   └── 49383ded246790596d2f39db4dd8b71f525bbc
+├── 3d
+│   └── e903f0c523d57b4880be68bacb1eaa1195ebac
+├── 4f
+│   └── ed41461bcfd7157b71d757b2fe70e3d7317f94 # 6:tree 合并生成的 tree object
+├── 55
+│   ├── 8e28c67089eea9bdfbfd748d32baa8f2ce944e
+│   └── bd0ac4c42e46cd751eb7405e12a35e61425550
+├── 58
+│   └── c9bdf9d017fcd178dc8c073cbfcbb7ff240d6c
+├── 61
+│   └── 74c3edb1e8dc4f1692b69fd43c8c6af85ce560
+├── 73
+│   └── 622e96d5b5389d63dd74e3c40db9d4c4296ff5
+├── b7
+│   └── 2118da210e8e3f4127cfc16cc819eff58e42e3
+├── ba
+│   └── 61ba35d824408f8135ec77b7efdcdfc0281fba
+├── c2
+│   └── 00906efd24ec5e783bee7f23b5d7c941b0c12c
+├── c9
+│   └── 918cea80e46648c4e98da5b1c4b072f0794795
+├── ce
+│   └── 907fabd08138058b05428d7cac017507b33c44
+├── d9
+│   └── 64f468f776fac72a049a884ae24e7dbb838fd0
+├── f2
+│   └── 4e8b6fb771347156b615c795f7fd886dc49088
+├── f5
+│   └── 4ecef60b4376ae5531032cbeaade01184da4fa
+├── fc
+│   └── 094b5b4e7a0f4028c5735d95f844b1aea1a9b6 # 6:commit 合并生成的 commit object
+├── info
+└── pack
+21 directories, 20 files
+root@aliyun:~/blog-delete-file4-file5-merge# git cat-file -s 4fed41
+132
+root@aliyun:~/blog-delete-file4-file5-merge# git cat-file -t 4fed41
+tree
+root@aliyun:~/blog-delete-file4-file5-merge# git cat-file -p 4fed41
+100644 blob c200906efd24ec5e783bee7f23b5d7c941b0c12c file2
+100644 blob 2e799a48d8c045b814c3862af40dea98bdde790a file3
+100644 blob 1e6fd033863540bfb9eadf22019a6b4b3de7d07a file4
+100644 blob 3749383ded246790596d2f39db4dd8b71f525bbc file5
+root@aliyun:~/blog-delete-file4-file5-merge# git cat-file -s fc094b # 本次合并生成的 commit object
+270
+root@aliyun:~/blog-delete-file4-file5-merge# git cat-file -t fc094b
+commit
+root@aliyun:~/blog-delete-file4-file5-merge# git cat-file -p fc094b
+tree 4fed41461bcfd7157b71d757b2fe70e3d7317f94 # 本次合并时两个分支的 snapshot
+parent c9918cea80e46648c4e98da5b1c4b072f0794795 # new branch 分支合并时最新的 commit
+parent 3de903f0c523d57b4880be68bacb1eaa1195ebac # master 分支合并时最新的 commit
+author root &amp;lt;root@aliyun&amp;gt; 1586344983 &amp;#43;0800
+committer root &amp;lt;root@aliyun&amp;gt; 1586344983 &amp;#43;0800
+Merge branch &amp;#39;master&amp;#39; into new-branch
+root@aliyun:~/blog-delete-file4-file5-merge# cat .git/refs/heads/new-branch # new branch 已经指向了新生成的 commit 节点
+fc094b5b4e7a0f4028c5735d95f844b1aea1a9b6
+root@aliyun:~/blog-delete-file4-file5-merge# cat .git/refs/heads/master # master 分支没有发生改变
+3de903f0c523d57b4880be68bacb1eaa1195ebac
+root@aliyun:~/blog-delete-file4-file5-merge# cat .git/logs/refs/heads/new-branch # new branch 分支 log
+0000000000000000000000000000000000000000 558e28c67089eea9bdfbfd748d32baa8f2ce944e root &amp;lt;root@aliyun&amp;gt; 1578037705 &amp;#43;0800 branch: Created from master
+558e28c67089eea9bdfbfd748d32baa8f2ce944e ce907fabd08138058b05428d7cac017507b33c44 root &amp;lt;root@aliyun&amp;gt; 1578039532 &amp;#43;0800 commit: add file3 on new-branch
+ce907fabd08138058b05428d7cac017507b33c44 c9918cea80e46648c4e98da5b1c4b072f0794795 root &amp;lt;root@aliyun&amp;gt; 1586330993 &amp;#43;0800 commit: add file4 on new-branch
+c9918cea80e46648c4e98da5b1c4b072f0794795 fc094b5b4e7a0f4028c5735d95f844b1aea1a9b6 root &amp;lt;root@aliyun&amp;gt; 1586344983 &amp;#43;0800 merge master: Merge made by the &amp;#39;recursive&amp;#39; strategy. # 本次 merge 的 log&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h5>master 分支合并到 new-branch 图解&lt;span class="hx-absolute -hx-mt-20" id="master-分支合并到-new-branch-图解">&lt;/span>
+&lt;a href="#master-%e5%88%86%e6%94%af%e5%90%88%e5%b9%b6%e5%88%b0-new-branch-%e5%9b%be%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/git-merge-master.svg" alt="git-merge-master" loading="lazy" />
+master 分支合并到 new-branch 分支实质：&lt;/p>
+&lt;ol>
+&lt;li>生成一个新的 &lt;code>tree object 4f1d41&lt;/code> 指向 &lt;code>master&lt;/code> 分支和 &lt;code>new-branch&lt;/code> 分支共有的&lt;code>文件 blob&lt;/code>。&lt;/li>
+&lt;li>生成一个新的 &lt;code>commit object fc094b&lt;/code> 指向新生成的 &lt;code>tree object 4f1d41&lt;/code>以及合并前的 master 分支的 commit
+和 new-branch 分支的 commit。&lt;/li>
+&lt;li>&lt;code>.git/refs/heads/new-branch&lt;/code>指向新生成的 &lt;code>commit object fc094b&lt;/code>。&lt;/li>
+&lt;li>&lt;code>.git/logs/refs/heads/new-branch&lt;/code> 添加本次 merge 的 log。&lt;/li>
+&lt;li>&lt;code>.git/refs/heads/master&lt;/code> master 分支的指向并没有发生改变。&lt;/li>
+&lt;/ol>
+&lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
+&lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.lzane.com/slide/git-under-the-hood/index.html#/" target="_blank" rel="noopener">git-under-the-hood&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.bilibili.com/video/av77252063" target="_blank" rel="noopener">Bilibili-git-under-the-hood&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zh.wikipedia.org/wiki/SHA-1" target="_blank" rel="noopener">SHA-1&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://learngitbranching.js.org/" target="_blank" rel="noopener">git-branch&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://marklodato.github.io/visual-git-guide/index-en.html" target="_blank" rel="noopener">visual-git-reference&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://dev.to/lydiahallie/cs-visualized-useful-git-commands-37p1" target="_blank" rel="noopener">visualized-useful-git-commands&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>git-commands</title><link>https://buybyte.github.io/blog/git-commands/</link><pubDate>Mon, 20 May 2019 22:33:03 +0800</pubDate><guid>https://buybyte.github.io/blog/git-commands/</guid><description>
+&lt;p>git rebase -i HEAD~N&lt;/p>
+&lt;blockquote>
+&lt;p>复制提交记录&lt;/p>
+&lt;/blockquote>
+&lt;p>git branch -f target-branch-name commit-id&lt;/p>
+&lt;blockquote>
+&lt;p>切换到 target-branch-name 并指向 commit-id&lt;/p>
+&lt;/blockquote>
+&lt;p>git cherry-pick commit-id1 commit-id2&lt;/p>
+&lt;blockquote>
+&lt;p>重新排序提交的记录. cherry-pick 名字起得真是有意思啊. 像捡樱桃似的, 把一个个想要的记录捡到当前分支的后面.&lt;/p>
+&lt;/blockquote>
+&lt;p>git checkout -b branch-name&lt;/p>
+&lt;blockquote>
+&lt;p>创建一个新分支, 并切换到新建的分支&lt;/p>
+&lt;/blockquote>
+&lt;p>git merge target-branch-name&lt;/p>
+&lt;blockquote>
+&lt;p>合并 target-branch-name 到当前分支. 结果是创建一个新的提交记录.&lt;/p>
+&lt;/blockquote>
+&lt;p>git checkout target-commit-id&lt;/p>
+&lt;blockquote>
+&lt;p>detach HEAD, let &lt;em>HEAD&lt;/em> point to target-commit-id.&lt;/p>
+&lt;/blockquote>
+&lt;p>git tag tag-name target-commit-id&lt;/p>
+&lt;blockquote>
+&lt;p>在 target-commit-id 处, 打上 tag-name 标签.&lt;/p>
+&lt;/blockquote>
+&lt;h1>reference&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://learngitbranching.js.org/" target="_blank" rel="noopener">learning git branch&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

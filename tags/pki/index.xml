@@ -1,1 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>pki on buybyte</title><link>http://buybyte.github.io/tags/pki/</link><description>Recent content in pki on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 23 Jun 2022 22:17:42 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/pki/index.xml" rel="self" type="application/rss+xml"/><item><title>Master Pki</title><link>http://buybyte.github.io/2022/06/23/master-pki/</link><pubDate>Thu, 23 Jun 2022 22:17:42 +0800</pubDate><guid>http://buybyte.github.io/2022/06/23/master-pki/</guid><description>certificate 目标：绑定 public key 和 name。一切围绕着这个目标来展开。 图解 References 强烈推荐-everything-pki 翻译版-everything-pki ubuntu-trust-store-location decode-an-ssl-certificate c</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Pki</title><link>https://buybyte.github.io/tags/pki/</link><description>Recent content in Pki on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 23 Jun 2022 22:17:42 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/pki/index.xml" rel="self" type="application/rss+xml"/><item><title>Master Pki</title><link>https://buybyte.github.io/blog/master-pki/</link><pubDate>Thu, 23 Jun 2022 22:17:42 +0800</pubDate><guid>https://buybyte.github.io/blog/master-pki/</guid><description>
+&lt;h1>certificate&lt;/h1>&lt;blockquote>
+&lt;p>目标：绑定 &lt;code>public key&lt;/code> 和 &lt;code>name&lt;/code>。一切围绕着这个目标来展开。&lt;/p>
+&lt;/blockquote>
+&lt;h1>图解&lt;/h1>&lt;p>&lt;img src="https://raw.githubusercontent.com/stardustman/pictures/main/img/everything-pki.drawio.svg" alt="pki" loading="lazy" />&lt;/p>
+&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://smallstep.com/blog/everything-pki/" target="_blank" rel="noopener">强烈推荐-everything-pki&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://arthurchiao.art/blog/everything-about-pki-zh/" target="_blank" rel="noopener">翻译版-everything-pki&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://ubuntu.com/server/docs/security-trust-store#:~:text=The%20CA%20trust%20store%20location,%2Fcerts%2Fca%2Dcertificates." target="_blank" rel="noopener">ubuntu-trust-store-location&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.oreilly.com/library/view/linux-security-cookbook/0596003919/ch04s05.html" target="_blank" rel="noopener">decode-an-ssl-certificate&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://web.chacuo.net/netcsrdecoder/" target="_blank" rel="noopener">csr-在线解析&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/stardustman.keys" target="_blank" rel="noopener">github-public-key&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://geekflare.com/dns-caa-record/" target="_blank" rel="noopener">dns-caa-record&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/X.509" target="_blank" rel="noopener">X.509&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

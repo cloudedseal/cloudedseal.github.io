@@ -1,1 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tcp on buybyte</title><link>http://buybyte.github.io/tags/tcp/</link><description>Recent content in tcp on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 22 May 2019 09:18:08 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/tcp/index.xml" rel="self" type="application/rss+xml"/><item><title>master-tcp</title><link>http://buybyte.github.io/2019/05/22/master-tcp/</link><pubDate>Wed, 22 May 2019 09:18:08 +0800</pubDate><guid>http://buybyte.github.io/2019/05/22/master-tcp/</guid><description>The Transmission Control Protocol (TCP) is intended for use as a highly reliable host-to-host protocol between hosts in packet-switched computer communication networks, and in interconnected systems of such networks. TCP header format basic data transfer reliability sequence number acknowledgement flow control window size multiplexing socket (ip, port) connections Each connection is uniquely specified by a pair of sockets identifying its two sides.(source ip, source port),(destination ip, destination port) sockets sequence</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Tcp</title><link>https://buybyte.github.io/tags/tcp/</link><description>Recent content in Tcp on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 22 May 2019 09:18:08 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/tcp/index.xml" rel="self" type="application/rss+xml"/><item><title>master-tcp</title><link>https://buybyte.github.io/blog/master-tcp/</link><pubDate>Wed, 22 May 2019 09:18:08 +0800</pubDate><guid>https://buybyte.github.io/blog/master-tcp/</guid><description>
+&lt;blockquote>
+&lt;p>The Transmission Control Protocol (TCP) is intended for use as a highly
+reliable &lt;strong>host-to-host&lt;/strong> protocol between hosts in &lt;strong>packet-switched&lt;/strong> computer communication networks, and in interconnected systems of such networks.&lt;/p>
+&lt;/blockquote>
+&lt;h1>TCP header format&lt;/h1>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/master-tcp-tcp-header.png" alt="tcp header" loading="lazy" />&lt;/p>
+&lt;h2>basic data transfer&lt;span class="hx-absolute -hx-mt-20" id="basic-data-transfer">&lt;/span>
+&lt;a href="#basic-data-transfer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>reliability&lt;span class="hx-absolute -hx-mt-20" id="reliability">&lt;/span>
+&lt;a href="#reliability" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>sequence number&lt;/li>
+&lt;li>acknowledgement&lt;/li>
+&lt;/ul>
+&lt;h2>flow control&lt;span class="hx-absolute -hx-mt-20" id="flow-control">&lt;/span>
+&lt;a href="#flow-control" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>window size&lt;/li>
+&lt;/ul>
+&lt;h2>multiplexing&lt;span class="hx-absolute -hx-mt-20" id="multiplexing">&lt;/span>
+&lt;a href="#multiplexing" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>socket (ip, port)&lt;/li>
+&lt;/ul>
+&lt;h2>connections&lt;span class="hx-absolute -hx-mt-20" id="connections">&lt;/span>
+&lt;a href="#connections" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>Each connection is uniquely specified by a &lt;strong>pair&lt;/strong> of sockets identifying its two sides.(source ip, source port),(destination ip, destination port)&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>sockets&lt;/li>
+&lt;li>sequence numbers&lt;/li>
+&lt;li>window size&lt;/li>
+&lt;/ul>
+&lt;h1>TCP 建立连接目的&lt;/h1>&lt;blockquote>
+&lt;p>交换通信双方的 ISN (Initial Sequence Number)
+凡是占据序列号的任何TCP报文，一定对方确认，如果没有收到确认，会一直重传，直到达到规定的上限次数。
+syn , data , fin 占据 sequence number 需要确认. ack 不占据 sequence number 不需要确认.&lt;/p>
+&lt;/blockquote>
+&lt;h1>参考链接&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="" >TCP three way handshake 1&lt;/a>&lt;/li>
+&lt;li>&lt;a href="" >TCP three way handshake 2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://tools.ietf.org/html/rfc793" target="_blank" rel="noopener">rfc793&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

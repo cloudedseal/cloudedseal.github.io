@@ -1,1 +1,532 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ipc on buybyte</title><link>http://buybyte.github.io/tags/ipc/</link><description>Recent content in ipc on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 23 Jul 2024 15:00:13 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/ipc/index.xml" rel="self" type="application/rss+xml"/><item><title>Ipc Unix Domain Socket</title><link>http://buybyte.github.io/2024/07/23/ipc-unix-domain-socket/</link><pubDate>Tue, 23 Jul 2024 15:00:13 +0800</pubDate><guid>http://buybyte.github.io/2024/07/23/ipc-unix-domain-socket/</guid><description>unix domain socket 是啥? A Unix domain socket (UDS) or IPC socket (inter-process communication) is a data communications endpoint for exchanging data between processes executing on the same host operating system. 同一台机器两个不同的进程之间交换数据，优化过的 socket。 问题背景 java 写的</description></item><item><title>Ipc Signal</title><link>http://buybyte.github.io/2023/04/11/ipc-signal/</link><pubDate>Tue, 11 Apr 2023 20:15:57 +0800</pubDate><guid>http://buybyte.github.io/2023/04/11/ipc-signal/</guid><description>signal 什么是 signal A signal can be thought of as a software interrupt. This means that a process that receives a signal stops the execution of the current program and makes the program respond to the signal. Signals are various notifications sent to a process in order to notify it of various &amp;ldquo;important&amp;rdquo; events. 信号是发送给进程的各种通知，</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Ipc</title><link>https://buybyte.github.io/tags/ipc/</link><description>Recent content in Ipc on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 23 Jul 2024 15:00:13 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/ipc/index.xml" rel="self" type="application/rss+xml"/><item><title>Ipc Unix Domain Socket</title><link>https://buybyte.github.io/blog/ipc-unix-domain-socket/</link><pubDate>Tue, 23 Jul 2024 15:00:13 +0800</pubDate><guid>https://buybyte.github.io/blog/ipc-unix-domain-socket/</guid><description>
+&lt;h1>unix domain socket 是啥?&lt;/h1>&lt;blockquote>
+&lt;p>A &lt;code>Unix domain socket (UDS)&lt;/code> or &lt;code>IPC socket&lt;/code> (inter-process communication) is a data communications &lt;code>endpoint&lt;/code> for exchanging data between processes executing on the &lt;code>same&lt;/code> host operating system.
+同一台机器两个不同的进程之间交换数据，优化过的 socket。&lt;/p>
+&lt;/blockquote>
+&lt;h1>问题背景&lt;/h1>&lt;blockquote>
+&lt;p>java 写的程序需要和 c 写的程序交换数据，且两个程序运行在同一台机器上。&lt;/p>
+&lt;/blockquote>
+&lt;h1>gradle 配置&lt;/h1>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-groovy" data-lang="groovy">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// https://mvnrepository.com/artifact/com.kohlschutter.junixsocket/junixsocket-native-common
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">implementation&lt;/span> &lt;span class="nl">group:&lt;/span> &lt;span class="s1">&amp;#39;com.kohlschutter.junixsocket&amp;#39;&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="nl">name:&lt;/span> &lt;span class="s1">&amp;#39;junixsocket-native-common&amp;#39;&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="nl">version:&lt;/span> &lt;span class="s1">&amp;#39;2.9.1&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// https://mvnrepository.com/artifact/com.kohlschutter.junixsocket/junixsocket-common
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">implementation&lt;/span> &lt;span class="nl">group:&lt;/span> &lt;span class="s1">&amp;#39;com.kohlschutter.junixsocket&amp;#39;&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="nl">name:&lt;/span> &lt;span class="s1">&amp;#39;junixsocket-common&amp;#39;&lt;/span>&lt;span class="o">,&lt;/span> &lt;span class="nl">version:&lt;/span> &lt;span class="s1">&amp;#39;2.9.1&amp;#39;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h1>java 服务端程序示例&lt;/h1>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">org.newsclub.net.unix.AFUNIXServerSocket&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">org.newsclub.net.unix.AFUNIXSocket&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">org.newsclub.net.unix.AFUNIXSocketAddress&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">org.slf4j.Logger&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">org.slf4j.LoggerFactory&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">java.io.*&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">java.nio.charset.StandardCharsets&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">java.nio.file.Files&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">java.nio.file.Path&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">java.nio.file.Paths&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="cm">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> * unix domain socket 进程通信
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> */&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nd">@SuppressWarnings&lt;/span>&lt;span class="p">({&lt;/span>&lt;span class="s">&amp;#34;CatchAndPrintStackTrace&amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="cm">/* errorprone */&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;PMD.CognitiveComplexity&amp;#34;&lt;/span>&lt;span class="p">})&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">final&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">MsgServer&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">implements&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Runnable&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">final&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">UDS&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getProperty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;user.home&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;ipc.sock&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">final&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Logger&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">LoggerFactory&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getLogger&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">MsgServer&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">class&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">startServer&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">throws&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">IOException&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Path&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Paths&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">get&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">UDS&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;UDS path: {}&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">UDS&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Files&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">exists&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Files&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">delete&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">File&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">socketFile&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">File&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">UDS&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">try&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">AFUNIXServerSocket&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">AFUNIXServerSocket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">newInstance&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">setReuseAddress&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">bind&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">AFUNIXSocketAddress&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">of&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">socketFile&lt;/span>&lt;span class="p">));&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;MsgServer 监听 socket: {}&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">while&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="n">Thread&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">interrupted&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">isClosed&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Waiting for connection...&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">try&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">AFUNIXSocket&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">sock&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">accept&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Thread&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">thread&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Thread&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ClientHandler&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sock&lt;/span>&lt;span class="p">),&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;msg-receiver&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">thread&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">start&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">catch&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IOException&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;server.accept() 出错&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">finally&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;MsgServer terminated&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@Override&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">run&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">try&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">startServer&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">catch&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IOException&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;启动 MsgServer 失败&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="cm">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> * 处理连接,以接收 utf-8 字符串为例
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> */&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">ClientHandler&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">implements&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Runnable&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">AFUNIXSocket&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">sock&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">ClientHandler&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">AFUNIXSocket&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">socket&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">sock&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">socket&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@Override&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">run&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">try&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">InputStream&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">is&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">sock&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getInputStream&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">OutputStream&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">os&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">sock&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getOutputStream&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">PrintWriter&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">writer&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">PrintWriter&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">os&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">BufferedReader&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">reader&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">BufferedReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">InputStreamReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">is&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">StandardCharsets&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">UTF_8&lt;/span>&lt;span class="p">)))&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">line&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">while&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="n">line&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">reader&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">readLine&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">!=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">null&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="n">line&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">equalsIgnoreCase&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;bye&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Received: &amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">line&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">handleMsg&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">line&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">writer&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Received successfully&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">writer&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">flush&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">catch&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IOException&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;客户端关闭了连接&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">finally&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">try&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">sock&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">close&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">catch&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IOException&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">logger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;关闭连接出错&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">handleMsg&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">msg&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// process receive string msg&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h1>C 客户端程序示例&lt;/h1>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdlib.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;string.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;sys/socket.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;sys/un.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;unistd.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#define SOCKET_PATH &amp;#34;/path/to/ipc.sock&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">client_fd&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">struct&lt;/span> &lt;span class="n">sockaddr_un&lt;/span> &lt;span class="n">addr&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">const&lt;/span> &lt;span class="kt">char&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">message&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s">&amp;#34;Hello from 中国!&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">char&lt;/span> &lt;span class="n">buffer&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">100&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Create a socket
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">((&lt;/span>&lt;span class="n">client_fd&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">socket&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">AF_UNIX&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">SOCK_STREAM&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">perror&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;socket error&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">exit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">EXIT_FAILURE&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Set up the address structure
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">memset&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">addr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">struct&lt;/span> &lt;span class="n">sockaddr_un&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">addr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">sun_family&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">AF_UNIX&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">strncpy&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">addr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">sun_path&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">SOCKET_PATH&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">addr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">sun_path&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Connect to the server
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">connect&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">client_fd&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">struct&lt;/span> &lt;span class="n">sockaddr&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">addr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">struct&lt;/span> &lt;span class="n">sockaddr_un&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">perror&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;connect error&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">exit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">EXIT_FAILURE&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Send a message to the server
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">write&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">client_fd&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">message&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nf">strlen&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">message&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">perror&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;write error&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">exit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">EXIT_FAILURE&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Receive a response from the server
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">read&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">client_fd&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">buffer&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">buffer&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">perror&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;read error&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">exit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">EXIT_FAILURE&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Received response: %s&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">buffer&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">close&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">client_fd&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://github.com/kohlschutter/junixsocket" target="_blank" rel="noopener">junixsocket&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Unix_domain_socket" target="_blank" rel="noopener">Unix_domain_socket&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Ipc Signal</title><link>https://buybyte.github.io/blog/ipc-signal/</link><pubDate>Tue, 11 Apr 2023 20:15:57 +0800</pubDate><guid>https://buybyte.github.io/blog/ipc-signal/</guid><description>
+&lt;h1>signal&lt;/h1>&lt;h2>什么是 signal&lt;span class="hx-absolute -hx-mt-20" id="什么是-signal">&lt;/span>
+&lt;a href="#%e4%bb%80%e4%b9%88%e6%98%af-signal" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>A signal can be thought of as a &lt;code>software interrupt&lt;/code>.
+This means that a process that receives a signal &lt;code>stops the execution&lt;/code> of the current program and makes the program &lt;code>respond to the signal&lt;/code>.
+Signals are various notifications sent to a process in order to notify it of various &amp;ldquo;important&amp;rdquo; events.
+信号是发送给进程的各种通知，以便通知它发生了各种“重要”的事件。&lt;/p>
+&lt;/blockquote>
+&lt;h2>有哪些信号？默认怎么处理？&lt;span class="hx-absolute -hx-mt-20" id="有哪些信号默认怎么处理">&lt;/span>
+&lt;a href="#%e6%9c%89%e5%93%aa%e4%ba%9b%e4%bf%a1%e5%8f%b7%e9%bb%98%e8%ae%a4%e6%80%8e%e4%b9%88%e5%a4%84%e7%90%86" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: left">Signal Name&lt;/th>
+&lt;th style="text-align: left">Default Action&lt;/th>
+&lt;th style="text-align: left">Comment&lt;/th>
+&lt;th style="text-align: left">POSIX&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: left">1 SIGHUP&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Hang up controlling terminal or process&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">2 SIGINT&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Interrupt from keyboard, Control-C&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">3 SIGQUIT&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">Quit from keyboard, Control-\&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">4 SIGILL&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">Illegal instruction&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">5 SIGTRAP&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">Breakpoint for debugging&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">6 SIGABRT&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">Abnormal termination&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">6 SIGIOT&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">Equivalent to SIGABRT&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">7 SIGBUS&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">Bus error&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">8 SIGFPE&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">Floating-point exception&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">9 &lt;code>SIGKILL&lt;/code>&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Forced-process termination&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">10 SIGUSR1&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Available to processes&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">11 SIGSEGV&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">Invalid memory reference&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">12 SIGUSR2&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Available to processes&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">13 SIGPIPE&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Write to pipe with no readers&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">14 SIGALRM&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Real-timer clock&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">15 SIGTERM&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Process termination&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">16 SIGSTKFLT&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Coprocessor stack error&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">17 SIGCHLD&lt;/td>
+&lt;td style="text-align: left">Ignore&lt;/td>
+&lt;td style="text-align: left">Child process stopped or terminated or got a signal if traced&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">18 SIGCONT&lt;/td>
+&lt;td style="text-align: left">Continue&lt;/td>
+&lt;td style="text-align: left">Resume execution, if stopped&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">19 &lt;code>SIGSTOP&lt;/code>&lt;/td>
+&lt;td style="text-align: left">Stop&lt;/td>
+&lt;td style="text-align: left">Stop process execution, Ctrl-Z&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">20 SIGTSTP&lt;/td>
+&lt;td style="text-align: left">Stop&lt;/td>
+&lt;td style="text-align: left">Stop process issued from tty&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">21 SIGTTIN&lt;/td>
+&lt;td style="text-align: left">Stop&lt;/td>
+&lt;td style="text-align: left">Background process requires input&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">22 SIGTTOU&lt;/td>
+&lt;td style="text-align: left">Stop&lt;/td>
+&lt;td style="text-align: left">Background process requires output&lt;/td>
+&lt;td style="text-align: left">Yes&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">23 SIGURG&lt;/td>
+&lt;td style="text-align: left">Ignore&lt;/td>
+&lt;td style="text-align: left">Urgent condition on socket&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">24 SIGXCPU&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">CPU time limit exceeded&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">25 SIGXFSZ&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">File size limit exceeded&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">26 SIGVTALRM&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Virtual timer clock&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">27 SIGPROF&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Profile timer clock&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">28 SIGWINCH&lt;/td>
+&lt;td style="text-align: left">Ignore&lt;/td>
+&lt;td style="text-align: left">Window resizing&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">29 SIGIO&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">I/O now possible&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">29 SIGPOLL&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Equivalent to SIGIO&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">30 SIGPWR&lt;/td>
+&lt;td style="text-align: left">Terminate&lt;/td>
+&lt;td style="text-align: left">Power supply failure&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">31 SIGSYS&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">Bad system call&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: left">31SIGUNUSED&lt;/td>
+&lt;td style="text-align: left">Dump&lt;/td>
+&lt;td style="text-align: left">Equivalent to SIGSYS&lt;/td>
+&lt;td style="text-align: left">No&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2>如何发送信号？&lt;span class="hx-absolute -hx-mt-20" id="如何发送信号">&lt;/span>
+&lt;a href="#%e5%a6%82%e4%bd%95%e5%8f%91%e9%80%81%e4%bf%a1%e5%8f%b7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>1. keyboard&lt;span class="hx-absolute -hx-mt-20" id="1-keyboard">&lt;/span>
+&lt;a href="#1-keyboard" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>SIGINT(Ctrl + C)&lt;/li>
+&lt;li>SIGTSTP(Ctrl + Z) -&amp;gt; resume by &lt;code>fg&lt;/code>&lt;/li>
+&lt;li>SIGQUIT(Ctrl + \)&lt;/li>
+&lt;/ol>
+&lt;h3>2. command line&lt;span class="hx-absolute -hx-mt-20" id="2-command-line">&lt;/span>
+&lt;a href="#2-command-line" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>kill -&amp;lt;signal&amp;gt; &amp;lt;PID&amp;gt;&lt;/li>
+&lt;li>fg&lt;/li>
+&lt;/ol>
+&lt;h3>3. system call&lt;span class="hx-absolute -hx-mt-20" id="3-system-call">&lt;/span>
+&lt;a href="#3-system-call" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/kill.2.html" target="_blank" rel="noopener">kill syscall&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2>进程收到信号会怎么处理？&lt;span class="hx-absolute -hx-mt-20" id="进程收到信号会怎么处理">&lt;/span>
+&lt;a href="#%e8%bf%9b%e7%a8%8b%e6%94%b6%e5%88%b0%e4%bf%a1%e5%8f%b7%e4%bc%9a%e6%80%8e%e4%b9%88%e5%a4%84%e7%90%86" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>分为 &lt;code>3&lt;/code> 种情况:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>&lt;code>Ignore it&lt;/code>&lt;/strong>. Many signals can be and are ignored, but not all. Hardware exceptions such as &amp;ldquo;divide by 0&amp;rdquo; (with integers) cannot be ignored successfully and some signals such as SIGKILL cannot be ignored at all.&lt;/li>
+&lt;li>&lt;strong>&lt;code>Catch and handle the exception&lt;/code>&lt;/strong>. The process has a function to be executed if and when the exception occurs. The function may terminate the program gracefully or it may handle it without terminating the program.&lt;/li>
+&lt;li>&lt;strong>&lt;code>Let the default action apply&lt;/code>&lt;/strong>. Every signal has a default action. The default may be:
+&lt;ul>
+&lt;li>ignore&lt;/li>
+&lt;li>terminate&lt;/li>
+&lt;li>terminate and dump core&lt;/li>
+&lt;li>stop or pause the program&lt;/li>
+&lt;li>resume a program paused earlier&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2>如何自定义 signal handler?&lt;span class="hx-absolute -hx-mt-20" id="如何自定义-signal-handler">&lt;/span>
+&lt;a href="#%e5%a6%82%e4%bd%95%e8%87%aa%e5%ae%9a%e4%b9%89-signal-handler" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>注意：这里只有可以被 caught 的才可以自定义 handler。SIGKILL 和 SIGSTOP 这两个是不能自己定义 handler 的。&lt;/p>
+&lt;/blockquote>
+&lt;h3>java example&lt;span class="hx-absolute -hx-mt-20" id="java-example">&lt;/span>
+&lt;a href="#java-example" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">sun.misc.Signal&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">sun.misc.SignalHandler&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">ExampleSignalHandler&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="p">...&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">throws&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">InterruptedException&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">final&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">long&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">start&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">nanoTime&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Signal&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">handle&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Signal&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;INT&amp;#34;&lt;/span>&lt;span class="p">),&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SignalHandler&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">handle&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Signal&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">sig&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">format&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;\nProgram execution took %f seconds\n&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">nanoTime&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">start&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1e9f&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;cat the INT signal, but still run.....😄&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">});&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">counter&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">counter&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Thread&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">sleep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">500&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol>
+&lt;li>可以将 “INT” 替换为 “STOP” 运行结果为:
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Exception in thread &lt;span class="s2">&amp;#34;main&amp;#34;&lt;/span> java.lang.IllegalArgumentException: Signal already used by VM or OS: SIGSTOP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> at sun.misc.Signal.handle&lt;span class="o">(&lt;/span>Signal.java:166&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> at ExampleSignalHandler.main&lt;span class="o">(&lt;/span>ExampleSignalHandler.java:9&lt;span class="o">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;/li>
+&lt;li>可以将 “INT” 替换为 “KILL” 运行结果为:
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Exception in thread &lt;span class="s2">&amp;#34;main&amp;#34;&lt;/span> java.lang.IllegalArgumentException: Signal already used by VM or OS: SIGKILL
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> at sun.misc.Signal.handle&lt;span class="o">(&lt;/span>Signal.java:166&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> at stardustman.github.io.signal.ExampleSignalHandler.main&lt;span class="o">(&lt;/span>ExampleSignalHandler.java:9&lt;span class="o">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;/li>
+&lt;/ol>
+&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://chromium.googlesource.com/chromiumos/docs/&amp;#43;/HEAD/constants/signals.md" target="_blank" rel="noopener">Linux Signal Table&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Signal_%28IPC%29" target="_blank" rel="noopener">Signal_(IPC)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cs.kent.edu/~ruttan/sysprog/lectures/signals.html" target="_blank" rel="noopener">Introduction To Unix Signals Programming&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.gnu.org/software/libc/manual/html_node/Standard-Signals.html" target="_blank" rel="noopener">Standard-Signals&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://rosettacode.org/wiki/Handle_a_signal#Java" target="_blank" rel="noopener">handle-a-signal&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/sigprocmask.2.html" target="_blank" rel="noopener">signal-block&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://stackabuse.com/handling-unix-signals-in-python/" target="_blank" rel="noopener">handling-unix-signals-in-python&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm" target="_blank" rel="noopener">signals&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://www.alexonlinux.com/signal-handling-in-linux" target="_blank" rel="noopener">signal-handling-in-linux&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/busybox/latest/source/coreutils/nohup.c#L94" target="_blank" rel="noopener">nohup&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cs.princeton.edu/courses/archive/fall05/cos217/lectures/23signals.pdf" target="_blank" rel="noopener">https://www.cs.princeton.edu/courses/archive/fall05/cos217/lectures/23signals.pdf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.cs.kent.edu/~ruttan/sysprog/lectures/signals.html" target="_blank" rel="noopener">cs.kent.edu/signals.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://faculty.cs.niu.edu/~hutchins/csci480/signals.htm" target="_blank" rel="noopener">csci480/signals.htm&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/kill.2.html" target="_blank" rel="noopener">kill(2)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://goodyduru.github.io/os/2023/10/05/ipc-unix-signals.html" target="_blank" rel="noopener">https://goodyduru.github.io/os/2023/10/05/ipc-unix-signals.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/JetBrains/jdk8u_jdk/blob/94318f9185757cc33d2b8d527d36be26ac6b7582/src/share/classes/sun/misc/Signal.java#L30" target="_blank" rel="noopener">java Signal 处理实现&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://cs341.cs.illinois.edu/coursebook/index.html" target="_blank" rel="noopener">https://cs341.cs.illinois.edu/coursebook/index.html&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

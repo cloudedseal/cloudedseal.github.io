@@ -1,1 +1,51 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>strace on buybyte</title><link>http://buybyte.github.io/tags/strace/</link><description>Recent content in strace on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 19 Apr 2025 16:29:04 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/strace/index.xml" rel="self" type="application/rss+xml"/><item><title>Cmd Strace</title><link>http://buybyte.github.io/2025/04/19/cmd-strace/</link><pubDate>Sat, 19 Apr 2025 16:29:04 +0800</pubDate><guid>http://buybyte.github.io/2025/04/19/cmd-strace/</guid><description>syscall 操作系统运行在 kernel space, 拥有整个系统的控制权。 应用程序运行在 user space, 拥有部分权限。 这就是隔离。 To prevent user applications from accessing or modifying critical operating system data. 想让操作系统做些事情怎么办？使</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Strace</title><link>https://buybyte.github.io/tags/strace/</link><description>Recent content in Strace on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 19 Apr 2025 16:29:04 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/strace/index.xml" rel="self" type="application/rss+xml"/><item><title>Cmd Strace</title><link>https://buybyte.github.io/blog/cmd-strace/</link><pubDate>Sat, 19 Apr 2025 16:29:04 +0800</pubDate><guid>https://buybyte.github.io/blog/cmd-strace/</guid><description>
+&lt;h1>syscall&lt;/h1>&lt;p>操作系统运行在 kernel space, 拥有整个系统的控制权。
+应用程序运行在 user space, 拥有部分权限。
+这就是隔离。
+To prevent user applications from &lt;code>accessing or modifying&lt;/code> critical operating system data.
+想让操作系统做些事情怎么办？使用 syscall。&lt;/p>
+&lt;h1>strace&lt;/h1>&lt;h2>strace -t -ff -o MainTest.log -f java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--t--ff--o-maintestlog--f--java-maintest">&lt;/span>
+&lt;a href="#strace--t--ff--o-maintestlog--f--java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;code>-t&lt;/code> time&lt;/li>
+&lt;li>&lt;code>-ff&lt;/code> follow-fork&lt;/li>
+&lt;li>&lt;code>-o&lt;/code> output&lt;/li>
+&lt;/ol>
+&lt;h2>strace -tt -ff -o MainTest.log -f -e trace=futex,write java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--tt--ff--o-maintestlog---f--e-tracefutexwrite-java-maintest">&lt;/span>
+&lt;a href="#strace--tt--ff--o-maintestlog---f--e-tracefutexwrite-java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>-ff -o 每一个进程的 log 单独写到一个文件&lt;/p>
+&lt;/blockquote>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">13468&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21792
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">455425&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21793
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1254&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21794
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1361&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21795
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">3802&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21796
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1677&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21797
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1705&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21798
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1797&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21810
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">6087&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21811
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">5541&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21812
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">1444&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21813
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">33890&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21814
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-rw-rw-r-- &lt;span class="m">1&lt;/span> yang yang &lt;span class="m">3996&lt;/span> Apr &lt;span class="m">20&lt;/span> 21:10 MainTest.log.21822&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>strace -tt -ff -o MainTest.log -f -e trace=futex,write java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--tt--ff--o-maintestlog---f--e-tracefutexwrite--java-maintest">&lt;/span>
+&lt;a href="#strace--tt--ff--o-maintestlog---f--e-tracefutexwrite--java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>-e expr 多个 syscall CSV 形式&lt;/p>
+&lt;/blockquote>
+&lt;h2>strace -tt -ff -o MainTest.log -f -e trace=%process java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--tt--ff--o-maintestlog---f--e-traceprocess-java-maintest">&lt;/span>
+&lt;a href="#strace--tt--ff--o-maintestlog---f--e-traceprocess-java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>strace -tt -ff -o MainTest.log -f -e trace=%memory -a java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--tt--ff--o-maintestlog---f--e-tracememory--a-java-maintest">&lt;/span>
+&lt;a href="#strace--tt--ff--o-maintestlog---f--e-tracememory--a-java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>strace -tt -ff -o MainTest.log -f -e trace=%ipc java MainTest&lt;span class="hx-absolute -hx-mt-20" id="strace--tt--ff--o-maintestlog---f--e-traceipc--java-maintest">&lt;/span>
+&lt;a href="#strace--tt--ff--o-maintestlog---f--e-traceipc--java-maintest" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://jvns.ca/strace-zine-v2.pdf" target="_blank" rel="noopener">https://jvns.ca/strace-zine-v2.pdf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/strace.1.html" target="_blank" rel="noopener">https://man7.org/linux/man-pages/man1/strace.1.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://strace.io/" target="_blank" rel="noopener">https://strace.io/&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

@@ -1,1 +1,126 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>io on buybyte</title><link>http://buybyte.github.io/tags/io/</link><description>Recent content in io on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 19 Sep 2019 14:43:18 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/io/index.xml" rel="self" type="application/rss+xml"/><item><title>select_poll_epoll</title><link>http://buybyte.github.io/2019/09/19/select_poll_epoll/</link><pubDate>Thu, 19 Sep 2019 14:43:18 +0800</pubDate><guid>http://buybyte.github.io/2019/09/19/select_poll_epoll/</guid><description>弄清楚 I/O Multiplexing 和 Linux 中 select, poll, epoll 之间的关系. multiplexer Multiplexer is a combinational circuit that has maximum of 2^n data inputs, n selection lines and single output line. One of these data inputs will be connected to the output based on the values of selection lines. Since there are n selection lines, there will be 2^n possible combinations of zeros and</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Io</title><link>https://buybyte.github.io/tags/io/</link><description>Recent content in Io on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 19 Sep 2019 14:43:18 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/io/index.xml" rel="self" type="application/rss+xml"/><item><title>select_poll_epoll</title><link>https://buybyte.github.io/blog/select-poll-epoll/</link><pubDate>Thu, 19 Sep 2019 14:43:18 +0800</pubDate><guid>https://buybyte.github.io/blog/select-poll-epoll/</guid><description>
+&lt;blockquote>
+&lt;p>弄清楚 I/O Multiplexing 和 Linux 中 select, poll, epoll 之间的关系.&lt;/p>
+&lt;/blockquote>
+&lt;h2>multiplexer&lt;span class="hx-absolute -hx-mt-20" id="multiplexer">&lt;/span>
+&lt;a href="#multiplexer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>&lt;code>Multiplexer&lt;/code> is a combinational circuit that has maximum of 2^n data inputs, &lt;code>n&lt;/code> &lt;code>selection lines&lt;/code> and &lt;code>single output line&lt;/code>. One of these data inputs will be connected to the output based on the values of selection lines.
+Since there are &lt;code>n&lt;/code> selection lines, there will be 2^n possible combinations of zeros and ones. So, each combination will select only one data input. Multiplexer is also called as Mux.
+聚合多个输入, 通过 selection lines 来选择一个输出.&lt;/p>
+&lt;/blockquote>
+&lt;h3>4x1 Multiplexer 分析&lt;span class="hx-absolute -hx-mt-20" id="4x1-multiplexer-分析">&lt;/span>
+&lt;a href="#4x1-multiplexer-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>聚合 I&lt;sub>0&lt;/sub>, I&lt;sub>1&lt;/sub>, I&lt;sub>2&lt;/sub>, I&lt;sub>3&lt;/sub> 这 4 个输入, 通过 S1 和 S0 来选择一个输出.&lt;/p>
+&lt;/blockquote>
+&lt;h3>Block diagram of 4x1 Multiplexer&lt;span class="hx-absolute -hx-mt-20" id="block-diagram-of-4x1-multiplexer">&lt;/span>
+&lt;a href="#block-diagram-of-4x1-multiplexer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/4x1_Multiplexer.png" alt="4x1_Multiplexer" loading="lazy" />&lt;/p>
+&lt;h3>Y&lt;sub>(output)&lt;/sub> 输出值的分析&lt;span class="hx-absolute -hx-mt-20" id="youtput-输出值的分析">&lt;/span>
+&lt;a href="#youtput-%e8%be%93%e5%87%ba%e5%80%bc%e7%9a%84%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>S&lt;sub>1&lt;/sub> = 0, S&lt;sub>0&lt;/sub> = 0 时 Y 的值由 I&lt;sub>0&lt;/sub> 决定&lt;span class="hx-absolute -hx-mt-20" id="s1--0-s0--0-时-y-的值由-i0-决定">&lt;/span>
+&lt;a href="#s1--0-s0--0-%e6%97%b6-y-%e7%9a%84%e5%80%bc%e7%94%b1-i0-%e5%86%b3%e5%ae%9a" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/multiplexers_S1_S0_I0.png" alt="multiplexers_S1_S0_I0" loading="lazy" />&lt;/p>
+&lt;blockquote>
+&lt;p>S1 = 0, S0 = 0. 此时的 I1, I2, I3, 无论是 0 还是 1, 对应的 &lt;code>and gate&lt;/code> 输出都是 0, 对最终输出 &lt;code>Y&lt;/code> 没有影响. 此时 I0 的输入决定 &lt;code>Y&lt;/code> 的值. 也就是 &lt;code>Y&lt;/code> = I0.&lt;/p>
+&lt;/blockquote>
+&lt;h4>S&lt;sub>1&lt;/sub> = 0, S&lt;sub>0&lt;/sub> = 1 时 Y 的值由 I&lt;sub>1&lt;/sub> 决定&lt;span class="hx-absolute -hx-mt-20" id="s1--0-s0--1-时-y-的值由-i1-决定">&lt;/span>
+&lt;a href="#s1--0-s0--1-%e6%97%b6-y-%e7%9a%84%e5%80%bc%e7%94%b1-i1-%e5%86%b3%e5%ae%9a" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/multiplexers_S1_S0_I1.png" alt="multiplexers_S1_S0_I1" loading="lazy" />&lt;/p>
+&lt;blockquote>
+&lt;p>S1 = 0, S0 = 1. 此时的 I0, I2, I3, 无论是 0 还是 1, 对应的 &lt;code>and gate&lt;/code> 输出都是 0, 对最终输出 &lt;code>Y&lt;/code> 没有影响. 此时 I1 的输入决定 &lt;code>Y&lt;/code> 的值. 也就是 &lt;code>Y&lt;/code> = I1.&lt;/p>
+&lt;/blockquote>
+&lt;h4>S&lt;sub>1&lt;/sub> = 1, S&lt;sub>0&lt;/sub> = 0 时 Y 的值由 I&lt;sub>2&lt;/sub> 决定&lt;span class="hx-absolute -hx-mt-20" id="s1--1-s0--0-时-y-的值由-i2-决定">&lt;/span>
+&lt;a href="#s1--1-s0--0-%e6%97%b6-y-%e7%9a%84%e5%80%bc%e7%94%b1-i2-%e5%86%b3%e5%ae%9a" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/multiplexers_S1_S0_I2.png" alt="multiplexers_S1_S0_I2" loading="lazy" />&lt;/p>
+&lt;blockquote>
+&lt;p>S1 = 1, S0 = 0. 此时的 I0, I1, I3, 无论是 0 还是 1, 对应的 &lt;code>and gate&lt;/code> 输出都是 0, 对最终输出 &lt;code>Y&lt;/code> 没有影响. 此时 I2 的输入决定 &lt;code>Y&lt;/code> 的值. 也就是 &lt;code>Y&lt;/code> = I2.&lt;/p>
+&lt;/blockquote>
+&lt;h4>S&lt;sub>1&lt;/sub> = 1, S&lt;sub>1&lt;/sub> = 0 时 Y 的值由 I&lt;sub>3&lt;/sub> 决定&lt;span class="hx-absolute -hx-mt-20" id="s1--1-s1--0-时-y-的值由-i3-决定">&lt;/span>
+&lt;a href="#s1--1-s1--0-%e6%97%b6-y-%e7%9a%84%e5%80%bc%e7%94%b1-i3-%e5%86%b3%e5%ae%9a" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/multiplexers_S1_S0_I3.png" alt="multiplexers_S1_S0_I3" loading="lazy" />&lt;/p>
+&lt;blockquote>
+&lt;p>S1 = 1, S0 = 1. 此时的 I0, I1, I2, 无论是 0 还是 1, 对应的 &lt;code>and gate&lt;/code> 输出都是 0, 对最终输出 &lt;code>Y&lt;/code> 没有影响. 此时 I3 的输入决定 &lt;code>Y&lt;/code> 的值. 也就是 &lt;code>Y&lt;/code> = I3.&lt;/p>
+&lt;/blockquote>
+&lt;h3>Truth table of 4x1 Multiplexer&lt;span class="hx-absolute -hx-mt-20" id="truth-table-of-4x1-multiplexer">&lt;/span>
+&lt;a href="#truth-table-of-4x1-multiplexer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>S1(高位)&lt;/th>
+&lt;th>S0(低位)&lt;/th>
+&lt;th>S1S0(值)&lt;/th>
+&lt;th>Y&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>0&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>I&lt;sub>0&lt;/sub>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>I&lt;sub>1&lt;/sub>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>1&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>I&lt;sub>2&lt;/sub>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>1&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>I&lt;sub>3&lt;/sub>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3>Multiplexer (Mux)&lt;span class="hx-absolute -hx-mt-20" id="multiplexer-mux">&lt;/span>
+&lt;a href="#multiplexer-mux" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>4x1 Multiplexer 相当于提供了一种映射, Y = I&lt;sub>(S1S0)&lt;/sub>.
+通过组合S&lt;sub>1&lt;/sub> 和 S&lt;sub>0&lt;/sub> 的值, 可以直接得到 I&lt;sub>S1S0&lt;/sub> 的值.也就是通过 4x1 Multiplexer 输出的 Y 值是 I&lt;sub>0&lt;/sub>, I&lt;sub>1&lt;/sub>, I&lt;sub>2&lt;/sub>, I&lt;sub>3&lt;/sub> 之一.&lt;/p>
+&lt;/blockquote>
+&lt;h2>I/O Multiplexing&lt;span class="hx-absolute -hx-mt-20" id="io-multiplexing">&lt;/span>
+&lt;a href="#io-multiplexing" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>I/O multiplexing 这里面的 multiplexing 指的其实是在单个线程通过记录跟踪每一个 Sock(I/O 流)的状态.
+select, poll, epoll 都是 I/O multiplexing的具体的实现, 之所以有这三个存在，其实是他们出现是有先后顺序的.&lt;/p>
+&lt;/blockquote>
+&lt;h2>I/O Multiplexing 和 Multiplexer&lt;span class="hx-absolute -hx-mt-20" id="io-multiplexing-和-multiplexer">&lt;/span>
+&lt;a href="#io-multiplexing-%e5%92%8c-multiplexer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>I&lt;sub>0&lt;/sub>, I&lt;sub>1&lt;/sub>, I&lt;sub>2&lt;/sub>, I&lt;sub>3&lt;/sub> 视为 4 个 I/O 流. 值为 1 时, 视为一个 I/O 流. 4x1 Multiplexer 作为硬件实现的 I/O multiplexing. 可以周期性的设置S&lt;sub>1&lt;/sub> 和 S&lt;sub>0&lt;/sub> 的值, 通过监测 Y 的输出, 得到 I&lt;sub>0&lt;/sub>, I&lt;sub>1&lt;/sub>, I&lt;sub>2&lt;/sub>, I&lt;sub>3&lt;/sub> 的输入.
+{% asset_img multiplexers_S1_S0_I0.png multiplexers_S1_S0_I0 %}&lt;/p>
+&lt;/blockquote>
+&lt;h3>select&lt;span class="hx-absolute -hx-mt-20" id="select">&lt;/span>
+&lt;a href="#select" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>select 被实现以后, 很快就暴露出了很多问题.&lt;/p>
+&lt;ul>
+&lt;li>select 会修改传入的参数数组, 这个对于一个需要调用很多次的函数, 是非常不友好的.&lt;/li>
+&lt;li>select 如果任何一个 sock(I/O stream) 出现了数据, select 仅仅会返回, 但是并不会告诉你是那个 sock 上有数,于是你只能自己一个一个的找.&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>相当于监测到 &lt;code>Mutiplexer&lt;/code> 的 Y = 1, 但是不知道 I&lt;sub>0&lt;/sub>, I&lt;sub>1&lt;/sub>, I&lt;sub>2&lt;/sub>, I&lt;sub>3&lt;/sub>哪一个的输入是 1. 也就是不告诉 S&lt;sub>1&lt;/sub> 和 S&lt;sub>0&lt;/sub>的值, 那就只好再去具体查看一次.
+I&lt;sub>0&lt;/sub>, I&lt;sub>1&lt;/sub>, I&lt;sub>2&lt;/sub>, I&lt;sub>3&lt;/sub>的值.&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>select 只能监视 1024 个链接. 相当于实现了一个 1024x1 的 Mutiplexer. 只能有1024 个输入.&lt;/li>
+&lt;li>select 不是线程安全的.&lt;/li>
+&lt;/ul>
+&lt;h3>poll&lt;span class="hx-absolute -hx-mt-20" id="poll">&lt;/span>
+&lt;a href="#poll" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>修复版的 select&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>poll 去掉了 1024 个链接的限制&lt;/li>
+&lt;/ul>
+&lt;h3>epoll&lt;span class="hx-absolute -hx-mt-20" id="epoll">&lt;/span>
+&lt;a href="#epoll" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>epoll 可以说是 I/O 多路复用最新的一个实现, epoll 修复了 poll 和 select 绝大部分问题, 比如:&lt;/p>
+&lt;ul>
+&lt;li>epoll 现在是线程安全的。&lt;/li>
+&lt;li>epoll 现在不仅告诉你 sock 组里面数据，还会告诉你具体哪个 sock 有数据, 你不用自己去找了.&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>相当于监测到 &lt;code>Mutiplexer&lt;/code> 的 Y = 1, 且告知了此时的 S&lt;sub>1&lt;/sub> 和 S&lt;sub>0&lt;/sub> 的值, 通过组合就可以知道是哪一个具体的输入是 1 了.&lt;/p>
+&lt;/blockquote>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.tutorialspoint.com/digital_circuits/digital_circuits_multiplexers.htm" target="_blank" rel="noopener">circuits_multiplexers&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.tutorialspoint.com/digital_circuits/digital_circuits_demultiplexers.htm" target="_blank" rel="noopener">circuits_demultiplexers&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/64138532" target="_blank" rel="noopener">epoll的本质&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.zhihu.com/question/32163005" target="_blank" rel="noopener">I/O multiplexing&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>

@@ -1,1 +1,297 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cache replacement on buybyte</title><link>http://buybyte.github.io/tags/cache-replacement/</link><description>Recent content in cache replacement on buybyte</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 11 May 2020 08:39:15 +0800</lastBuildDate><atom:link href="http://buybyte.github.io/tags/cache-replacement/index.xml" rel="self" type="application/rss+xml"/><item><title>cache-replacement-policy-lru</title><link>http://buybyte.github.io/2020/05/11/cache-replacement-policy-lru/</link><pubDate>Mon, 11 May 2020 08:39:15 +0800</pubDate><guid>http://buybyte.github.io/2020/05/11/cache-replacement-policy-lru/</guid><description>Cache cache 为啥要有 Cache 呢？根本原因是各种存储速度不匹配。或者为了加快某个过程，直接将多次转换的转换结果直接缓存起来，便于再次使用时直接绕开这些转换过</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hextra – Cache Replacement</title><link>https://buybyte.github.io/tags/cache-replacement/</link><description>Recent content in Cache Replacement on Hextra</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 11 May 2020 08:39:15 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/cache-replacement/index.xml" rel="self" type="application/rss+xml"/><item><title>cache-replacement-policy-lru</title><link>https://buybyte.github.io/blog/cache-replacement-policy-lru/</link><pubDate>Mon, 11 May 2020 08:39:15 +0800</pubDate><guid>https://buybyte.github.io/blog/cache-replacement-policy-lru/</guid><description>
+&lt;h2>Cache&lt;span class="hx-absolute -hx-mt-20" id="cache">&lt;/span>
+&lt;a href="#cache" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>cache&lt;span class="hx-absolute -hx-mt-20" id="cache-1">&lt;/span>
+&lt;a href="#cache-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>为啥要有 &lt;code>Cache&lt;/code> 呢？根本原因是各种存储速度不匹配。或者为了加快某个过程，直接将多次转换的转换结果直接缓存起来，便于再次使用时直接绕开这些转换过程。典型的就是 &lt;code>MMU&lt;/code> 的地址翻译过程，直接将&lt;code>虚拟地址&lt;/code>多次转换的最后结果，也就是&lt;code>物理地址&lt;/code>，直接缓存到 &lt;code>TLB&lt;/code> 中，下次再次访问同一个虚拟地址，直接从虚拟地址拿到物理地址，绕开多次转换过程，这可不就提高了速度。&lt;code>CPU&lt;/code> 的速度比 &lt;code>Memory&lt;/code> 快得多，为了配上 &lt;code>CPU&lt;/code> 超级快的速度，也就有了 &lt;code>L1&lt;/code>，&lt;code>L2&lt;/code>，&lt;code>L3&lt;/code> cache。还有就是存储器层次结构，&lt;em>速度快，容量小&lt;/em>的存储作为&lt;em>速度慢，容量大&lt;/em>的上级缓存。&lt;/p>
+&lt;h3>cache replacement&lt;span class="hx-absolute -hx-mt-20" id="cache-replacement">&lt;/span>
+&lt;a href="#cache-replacement" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>为啥要有 &lt;code>cache replacement&lt;/code> 呢？ 因为再大的存储容量也有限，总有使用完的时候，何况速度快的存储，容量本身就小。cache 使用完，再有需要缓存的东西，就需要从缓存中剔除一些，来存放新的内容。那问题就来了，缓存使用完，&lt;em>该剔除哪些已经缓存的内容呢？&lt;/em> 这就是所谓的 &lt;code>cache replacement policy&lt;/code>。从不同的角度，可以有不同的替换策略。&lt;/p>
+&lt;h3>least recently used&lt;span class="hx-absolute -hx-mt-20" id="least-recently-used">&lt;/span>
+&lt;a href="#least-recently-used" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>本文来说明这个策略。我不想记忆定义。来通过一个实例来理解这个策略的思想。
+磁盘要缓存到内存中的内容划分为相等的 page，称之为 &lt;code>virtual page&lt;/code>，每一个 page 一个编号，称之为 page number。
+同理，内存的容量也划分为和磁盘大小一致的 page，称之为 &lt;code>page frame&lt;/code>。
+以下为访问磁盘 page number 的顺序：
+1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
+缓存大小为 3 个 page frame。组成一个&lt;em>缓存 Queue&lt;/em>&lt;/p>
+&lt;h4>virtual page 存放规则&lt;span class="hx-absolute -hx-mt-20" id="virtual-page-存放规则">&lt;/span>
+&lt;a href="#virtual-page-%e5%ad%98%e6%94%be%e8%a7%84%e5%88%99" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h4>缓存队列没满&lt;span class="hx-absolute -hx-mt-20" id="缓存队列没满">&lt;/span>
+&lt;a href="#%e7%bc%93%e5%ad%98%e9%98%9f%e5%88%97%e6%b2%a1%e6%bb%a1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ol>
+&lt;li>virtual page 已在缓存队列中，将代表 virtual page 的队列节点移动到队首。&lt;/li>
+&lt;li>virtual page 不在缓存队列中，添加代表这个 virtual page 的队列节点到队首。&lt;/li>
+&lt;/ol>
+&lt;h4>缓存队列已满&lt;span class="hx-absolute -hx-mt-20" id="缓存队列已满">&lt;/span>
+&lt;a href="#%e7%bc%93%e5%ad%98%e9%98%9f%e5%88%97%e5%b7%b2%e6%bb%a1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ol>
+&lt;li>virtual page 已在缓存队列中，将代表 virtual page 的队列节点移动到队首。&lt;/li>
+&lt;li>virtual page 不在缓存队列中，&lt;em>移除队尾队列节点&lt;/em>，添加代表这个 virtual page 的队列节点到队首。&lt;/li>
+&lt;/ol>
+&lt;h4>LRU 图解&lt;span class="hx-absolute -hx-mt-20" id="lru-图解">&lt;/span>
+&lt;a href="#lru-%e5%9b%be%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/lru.svg" alt="lru" loading="lazy" />&lt;/p>
+&lt;p>可以看到一直是对&lt;code>缓存队列队首&lt;/code>操作。
+1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5&lt;/p>
+&lt;ol>
+&lt;li>访问 page 1，缓存队列中没有，page 1 放到队首。&lt;/li>
+&lt;li>访问 page 2，缓存队列中没有，page 2 放到队首。&lt;/li>
+&lt;li>访问 page 3，缓存队列中没有，page 3 放到队首。&lt;/li>
+&lt;li>访问 page 4，缓存队列中没有，且缓存队列满了。移除队尾 page 1，page 4 放到队首。&lt;/li>
+&lt;li>访问 page 1，缓存队列中没有，且缓存队列满了。移除队尾 page 2，page 1 放到队首。&lt;/li>
+&lt;li>访问 page 2，缓存队列中没有，且缓存队列满了。移除队尾 page 3，page 2 放到队首。&lt;/li>
+&lt;li>访问 page 5，缓存队列中没有，且缓存队列满了。移除队尾 page 4，page 5 放到队首。&lt;/li>
+&lt;li>访问 page 1，缓存队列中有，page 1 移动到队首。&lt;/li>
+&lt;li>访问 page 2，缓存队列中有，page 2 移动到队首。&lt;/li>
+&lt;li>访问 page 3，缓存队列中没有，且缓存队列满了。移除队尾 page 5，page 3 放到队首。&lt;/li>
+&lt;li>访问 page 4，缓存队列中没有，且缓存队列满了。移除队尾 page 1，page 4 放到队首。&lt;/li>
+&lt;li>访问 page 5，缓存队列中没有，且缓存队列满了。移除队尾 page 2，page 5 放到队首。
+最后缓存队列中存放的是 page 5，page 4，page 3。&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>由上可知从队首到队尾包含着一个信息就是，越接近队首，越是最近刚访问的 page。缓存背后的原理其实和&lt;code>程序运行的局部性原理&lt;/code>有关。
+通过上述操作，可以看到队列节点调整非常频繁，且队列节点之间有先后关系。这也决定了队列是个双端队列。
+QNode 指针数组指向已经在缓存队列中的代表 page 的队列节点。&lt;/p>
+&lt;/blockquote>
+&lt;h4>LRU 实现&lt;span class="hx-absolute -hx-mt-20" id="lru-实现">&lt;/span>
+&lt;a href="#lru-%e5%ae%9e%e7%8e%b0" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A C program to show implementation of LRU cache
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt; &lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdlib.h&amp;gt; &lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A Queue Node (Queue is implemented using Doubly Linked List)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="n">QNode&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">struct&lt;/span> &lt;span class="n">QNode&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">prev&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">unsigned&lt;/span> &lt;span class="n">pageNumber&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// the page number stored in this QNode
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="n">QNode&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A Queue (A FIFO collection of Queue Nodes)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="n">Queue&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">unsigned&lt;/span> &lt;span class="n">count&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// Number of filled frames
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">unsigned&lt;/span> &lt;span class="n">numberOfFrames&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// total number of frames
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">QNode&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">front&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">rear&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span> &lt;span class="n">Queue&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A hash (Collection of pointers to Queue Nodes)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 怎样判定 page 是不是已经在 cache 中，用这个结构。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="n">Hash&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">capacity&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// how many pages can be there
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">QNode&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// an array of queue nodes pointer，QNode 指针数组下标作为 page number 直接索引得到 QNode，或者判定 QNode 存在与否。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="n">Hash&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A utility function to create a new Queue Node. The queue Node
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// will store the given &amp;#39;pageNumber&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">QNode&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="nf">newQNode&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="kt">unsigned&lt;/span> &lt;span class="n">pageNumber&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Allocate memory and assign &amp;#39;pageNumber&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">QNode&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">QNode&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="nf">malloc&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">QNode&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">temp&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">pageNumber&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">pageNumber&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Initialize prev and next as NULL
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A utility function to create an empty Queue.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// The queue can have at most &amp;#39;numberOfFrames&amp;#39; nodes
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">Queue&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="nf">createQueue&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">numberOfFrames&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Queue&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">queue&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">Queue&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="nf">malloc&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">Queue&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// The queue is empty
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">count&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Number of frames that can be stored in memory
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">numberOfFrames&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">numberOfFrames&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A utility function to create an empty Hash of given capacity
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// capacity 其实就是 page number 范围
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">Hash&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="nf">createHash&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">capacity&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Allocate memory for hash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">Hash&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">hash&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">Hash&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="nf">malloc&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">Hash&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;====&amp;gt;%d&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Hash&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">hash&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">capacity&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">capacity&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Create an array of pointers for refering queue nodes
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">array&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">QNode&lt;/span> &lt;span class="o">**&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="nf">malloc&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">capacity&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">QNode&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Initialize all hash entries as empty
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">capacity&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="o">++&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">hash&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A function to check if there is slot available in memory
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">AreAllFramesFull&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">Queue&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">queue&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">count&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">numberOfFrames&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A utility function to check if queue is empty
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">isQueueEmpty&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">Queue&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">queue&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A utility function to delete a frame from queue
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">void&lt;/span> &lt;span class="nf">deQueue&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">Queue&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">queue&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 判断队列是不是空
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="nf">isQueueEmpty&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">queue&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// If this is the only node in list, then change front
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// 只有一个 node
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Change rear and remove the previous rear
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">QNode&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">free&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">temp&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// decrement the number of full frames by 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="o">--&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// A function to add a page with given &amp;#39;pageNumber&amp;#39; to both queue
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// and hash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">void&lt;/span> &lt;span class="nf">Enqueue&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">Queue&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Hash&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">unsigned&lt;/span> &lt;span class="n">pageNumber&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// If all frames are full, remove the page at the rear
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="nf">AreAllFramesFull&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="n">queue&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// remove page from hash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// 移除队尾 QNode
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">[&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">pageNumber&lt;/span> &lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">deQueue&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">queue&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Create a new node with given page number,
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// And add the new node to the front of queue
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">QNode&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">temp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">newQNode&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">pageNumber&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">temp&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// If queue is empty, change both front and rear pointers
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="nf">isQueueEmpty&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">queue&lt;/span> &lt;span class="p">)&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span> &lt;span class="c1">// Else change the front
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 队首前一个 Node 是 temp
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 队首调整成 temp
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Add page entry to hash also
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">[&lt;/span> &lt;span class="n">pageNumber&lt;/span> &lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// increment number of full frames
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">count&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// This function is called when a page with given &amp;#39;pageNumber&amp;#39; is referenced
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// from cache (or memory). There are two cases:
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 1. Frame is not there in memory, we bring it in memory and add to the front
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// of queue
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 2. Frame is there in memory, we move the frame to front of queue
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">void&lt;/span> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">Queue&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Hash&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">unsigned&lt;/span> &lt;span class="n">pageNumber&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">QNode&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">reqPage&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">[&lt;/span> &lt;span class="n">pageNumber&lt;/span> &lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// the page is not in cache, bring it
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span> &lt;span class="n">reqPage&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="nb">NULL&lt;/span> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">Enqueue&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">pageNumber&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// page is there and not at front, change pointer
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">reqPage&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Unlink rquested page from its current location
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// in queue. 把这个 Node 从队列上拿下来
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">reqPage&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">reqPage&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 这个 Node 不是最后一个
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">reqPage&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// reqPage 的下一个 Node 的 prev 指向 reqPage 的前一个 Node
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">reqPage&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">reqPage&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// If the requested page is rear, then change rear
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// as this node will be moved to front
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// reqPage 是队尾
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">reqPage&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 更改队尾 Node
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">reqPage&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 队尾 Node 没有下一个 Node 了
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">rear&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Put the requested page before current front
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// reqPage 成为新的队首 Node
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">reqPage&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reqPage&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Change prev of current front
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// old 队首的 prev 变成 reqPage
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">reqPage&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">prev&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">reqPage&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Change front to the requested page
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// 队列的队首是 reqPage
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">queue&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">reqPage&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Driver program to test above functions
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// Let cache can hold 3 pages
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">Queue&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">q&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">createQueue&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="mi">3&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Let 6 different pages can be requested (pages to be
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// referenced are numbered from 0 to 5
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">Hash&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">hash&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">createHash&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="mi">6&lt;/span> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Let us refer pages 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ReferencePage&lt;/span>&lt;span class="p">(&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">hash&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Let us print cache frames after the above referenced pages
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">printf&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%d &amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">pageNumber&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%d &amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">pageNumber&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%d &amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">q&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">front&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">pageNumber&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.geeksforgeeks.org/lru-cache-implementation/" target="_blank" rel="noopener">least recently used&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Cache_%28computing%29" target="_blank" rel="noopener">cache wiki&lt;/a>&lt;/li>
+&lt;/ol></description></item></channel></rss>
