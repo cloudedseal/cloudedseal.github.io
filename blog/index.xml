@@ -1,7 +1,8 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://buybyte.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://buybyte.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://buybyte.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Master Type System</title><link>https://buybyte.github.io/blog/master-type-system/</link><pubDate>Fri, 25 Apr 2025 11:04:51 +0800</pubDate><guid>https://buybyte.github.io/blog/master-type-system/</guid><description>
+&lt;/blockquote></description></item><item><title>Great Prompt</title><link>https://buybyte.github.io/blog/great-prompt/</link><pubDate>Mon, 28 Apr 2025 09:35:51 +0800</pubDate><guid>https://buybyte.github.io/blog/great-prompt/</guid><description>
+&lt;h1>great prompt&lt;/h1>&lt;p>我在做 XX。如果你是一位专业人士，有更好的方法和建议吗？尽可能全面。&lt;/p></description></item><item><title>Master Type System</title><link>https://buybyte.github.io/blog/master-type-system/</link><pubDate>Fri, 25 Apr 2025 11:04:51 +0800</pubDate><guid>https://buybyte.github.io/blog/master-type-system/</guid><description>
 &lt;h1>为啥需要 type system?&lt;/h1>&lt;h2>&lt;code>type&lt;/code> 就是契约&lt;span class="hx-absolute -hx-mt-20" id="type-就是契约">&lt;/span>
 &lt;a href="#type-%e5%b0%b1%e6%98%af%e5%a5%91%e7%ba%a6" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
 &lt;li>At the hardware level, the machine does not know types in the way humans or high-level programming languages do. 硬件级别就是电信号了。&lt;code>type&lt;/code> 这种概念不存在。&lt;/li>
@@ -6046,9 +6047,4 @@ title="Copy code"
 &lt;li>&lt;a href="https://medium.com/@bromiley/full-packet-friday-dhcp-abbc6b7b3c77" target="_blank" rel="noopener">full-packet-friday-dhcp&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/dynamic-host-configuration-protocol-dhcp/" target="_blank" rel="noopener">dynamic-host-configuration-protocal&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://tools.ietf.org/html/rfc1541" target="_blank" rel="noopener">dhcp-rfc&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>data-structure-red-black-tree</title><link>https://buybyte.github.io/blog/data-structure-red-black-tree/</link><pubDate>Mon, 27 Apr 2020 08:50:28 +0800</pubDate><guid>https://buybyte.github.io/blog/data-structure-red-black-tree/</guid><description>
-&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/datastructure/2-3-tree-read-black-tree-2-3-tree.svg" alt="2-3tree rbtree" loading="lazy" />&lt;/p>
-&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
-&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>&lt;a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html" target="_blank" rel="noopener">red-black-tree-visualization&lt;/a>&lt;/li>
 &lt;/ol></description></item></channel></rss>
