@@ -959,7 +959,7 @@ title="Copy code"
 &lt;li>((ws = pred.waitStatus) == Node.SIGNAL || (ws &amp;lt;= 0 &amp;amp;&amp;amp; compareAndSetWaitStatus(pred, ws, Node.SIGNAL))) 为 true
 &lt;ol>
 &lt;li>(ws = pred.waitStatus) == Node.SIGNAL 为 true, 前驱节点的 waitStatus 为 -1&lt;/li>
-&lt;li>(ws &amp;lt;= 0 &amp;amp;&amp;amp; compareAndSetWaitStatus(pred, ws, Node.SIGNAL))
+&lt;li>(ws &amp;lt;= 0 &amp;amp;&amp;amp; compareAndSetWaitStatus(pred, ws, Node.SIGNAL)) 为 true
 &lt;ol>
 &lt;li>ws &amp;lt;= 0 为 true, 前驱节点的 waitStatus 为 0, 那就 compareAndSetWaitStatus 前驱节点的 waitStatus 为 -1&lt;/li>
 &lt;li>compareAndSetWaitStatus 返回为 true, 设置前驱节点的的 waitStatus 为 -1 成功&lt;/li>
@@ -967,7 +967,7 @@ title="Copy code"
 &lt;/li>
 &lt;/ol>
 &lt;/li>
-&lt;li>pred.thread != null 前驱节点有等待的线程&lt;/li>
+&lt;li>pred.thread != null 为 true 前驱节点有等待的线程&lt;/li>
 &lt;/ol>
 &lt;h4>shouldParkAfterFailedAcquire 分析&lt;span class="hx-absolute -hx-mt-20" id="shouldparkafterfailedacquire-分析">&lt;/span>
 &lt;a href="#shouldparkafterfailedacquire-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
