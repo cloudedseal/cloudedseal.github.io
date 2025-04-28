@@ -2835,10 +2835,12 @@ title="Copy code"
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://mp.weixin.qq.com/s/OKTW_mZnNJcRBrIFHONR3g" target="_blank" rel="noopener">你管这破玩意叫线程池&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Virtual Memory Address Explore</title><link>https://cloudedseal.github.io/blog/virtual-memory-address-explore/</link><pubDate>Sun, 22 May 2022 16:26:36 +0800</pubDate><guid>https://cloudedseal.github.io/blog/virtual-memory-address-explore/</guid><description>
-&lt;h1>virtual memory&lt;/h1>&lt;blockquote>
-&lt;p>本质是硬件支持。OS + 硬件 共同为程序提供 virtual memory。
-virtual memory ===== MMU =====&amp;gt; physical memory&lt;/p>
-&lt;/blockquote>
+&lt;h1>virtual memory 是啥？&lt;/h1>&lt;ol>
+&lt;li>本质是硬件支持。&lt;/li>
+&lt;li>virtual memory ===== MMU =====&amp;gt; physical memory&lt;/li>
+&lt;li>OS + 硬件 共同为进程提供 virtual memory 功能。所有程序的内存布局一致。&lt;/li>
+&lt;li>为了安全。&lt;/li>
+&lt;/ol>
 &lt;h1>virtual memory address space layout&lt;/h1>&lt;p>&lt;img src="https://raw.githubusercontent.com/stardustman/pictures/main/img/virtual-memory-address-space.jpg" alt="virtual-memory-address-space" loading="lazy" />&lt;/p>
 &lt;h2>代码测试&lt;span class="hx-absolute -hx-mt-20" id="代码测试">&lt;/span>
 &lt;a href="#%e4%bb%a3%e7%a0%81%e6%b5%8b%e8%af%95" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
