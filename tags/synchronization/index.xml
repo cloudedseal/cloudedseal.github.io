@@ -2,8 +2,10 @@
 &lt;h2>condition variable 是啥？&lt;span class="hx-absolute -hx-mt-20" id="condition-variable-是啥">&lt;/span>
 &lt;a href="#condition-variable-%e6%98%af%e5%95%a5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>condition variable 是啥？本质上就是一个&lt;code>状态变量&lt;/code> +&lt;code>队列&lt;/code>。现实世界中，想要进行下一步的行动，往往需要满足一定的条件(condition)。如十字路口的交通信号灯，信号灯的颜色可以视为状态变量，根据不同的状态，汽车做出不同的选择。一条马路，可以视为&lt;code>队列&lt;/code>。红灯时, 汽车就不能通过，排队等候。绿灯时，汽车才可以通过。在计算机中，同样存在这样的问题，如父进程需要等待&lt;code>子进程完成后(条件)&lt;/code>，才能继续运行。关键就是围绕&lt;code>状态变量&lt;/code>来构建。&lt;/p>
 &lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
-&lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>1.&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_wait.3p.html" target="_blank" rel="noopener">pthread_cond_wait&lt;/a>
-2.&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_signal.3p.html" target="_blank" rel="noopener">pthread_cond_signal&lt;/a>&lt;/p></description></item><item><title>cs-lock</title><link>https://cloudedseal.github.io/blog/cs-lock/</link><pubDate>Mon, 14 Dec 2020 15:20:26 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-lock/</guid><description>
+&lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_wait.3p.html" target="_blank" rel="noopener">pthread_cond_wait&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_signal.3p.html" target="_blank" rel="noopener">pthread_cond_signal&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>cs-lock</title><link>https://cloudedseal.github.io/blog/cs-lock/</link><pubDate>Mon, 14 Dec 2020 15:20:26 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-lock/</guid><description>
 &lt;h2>为啥需要 lock？&lt;span class="hx-absolute -hx-mt-20" id="为啥需要-lock">&lt;/span>
 &lt;a href="#%e4%b8%ba%e5%95%a5%e9%9c%80%e8%a6%81-lock" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>多处理器的存在&lt;/li>
