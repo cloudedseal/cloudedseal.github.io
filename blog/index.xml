@@ -695,7 +695,7 @@ title="Copy code"
 &lt;/div>
 &lt;/div>
 &lt;h1>Node 数据结构&lt;/h1>&lt;blockquote>
-&lt;p>组成双向链表之上构建等待队列&lt;/p>
+&lt;p>组成双向链表，在之上构建等待队列&lt;/p>
 &lt;/blockquote>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="w">
