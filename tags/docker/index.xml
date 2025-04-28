@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Docker</title><link>https://buybyte.github.io/tags/docker/</link><description>Recent content in Docker on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 24 Dec 2019 13:02:03 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>katacoda-what-is-a-container</title><link>https://buybyte.github.io/blog/katacoda-what-is-a-container/</link><pubDate>Tue, 24 Dec 2019 13:02:03 +0800</pubDate><guid>https://buybyte.github.io/blog/katacoda-what-is-a-container/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Docker</title><link>https://cloudedseal.github.io/tags/docker/</link><description>Recent content in Docker on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 24 Dec 2019 13:02:03 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>katacoda-what-is-a-container</title><link>https://cloudedseal.github.io/blog/katacoda-what-is-a-container/</link><pubDate>Tue, 24 Dec 2019 13:02:03 +0800</pubDate><guid>https://cloudedseal.github.io/blog/katacoda-what-is-a-container/</guid><description>
 &lt;h2>Processes&lt;span class="hx-absolute -hx-mt-20" id="processes">&lt;/span>
 &lt;a href="#processes" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>Containers are just normal Linux Processes with additional configuration applied.&lt;/p>
@@ -530,7 +530,7 @@ cap_audit_write,cap_setfcap&lt;/p>
 &lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://www.katacoda.com/courses/container-runtimes/what-is-a-container" target="_blank" rel="noopener">what is a container&lt;/a>&lt;/li>
 &lt;li>&lt;a href="http://www.ruanyifeng.com/blog/2018/11/awk.html" target="_blank" rel="noopener">awk&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>katacoda-what-is-a-container-image</title><link>https://buybyte.github.io/blog/katacoda-what-is-a-container-image/</link><pubDate>Tue, 26 Nov 2019 20:12:23 +0800</pubDate><guid>https://buybyte.github.io/blog/katacoda-what-is-a-container-image/</guid><description>
+&lt;/ol></description></item><item><title>katacoda-what-is-a-container-image</title><link>https://cloudedseal.github.io/blog/katacoda-what-is-a-container-image/</link><pubDate>Tue, 26 Nov 2019 20:12:23 +0800</pubDate><guid>https://cloudedseal.github.io/blog/katacoda-what-is-a-container-image/</guid><description>
 &lt;h2>container image&lt;span class="hx-absolute -hx-mt-20" id="container-image">&lt;/span>
 &lt;a href="#container-image" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>A container image is a tar file containing tar files. Each of the tar file is a layer. Once all tar files have been extract into the same location then you have the container&amp;rsquo;s filesystem.
@@ -881,7 +881,7 @@ title="Copy code"
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://raw.githubusercontent.com/moby/moby/a575b0b1384b2ba89b79cbd7e770fbeb616758b3/contrib/mkimage/busybox-static" target="_blank" rel="noopener">busybox-static&lt;/a>&lt;/li>
 &lt;li>&lt;a href="http://jm.taobao.org/2016/05/12/introduction-to-docker/" target="_blank" rel="noopener">docker-intro&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>docker-practice</title><link>https://buybyte.github.io/blog/docker-practice/</link><pubDate>Tue, 03 Sep 2019 14:20:16 +0800</pubDate><guid>https://buybyte.github.io/blog/docker-practice/</guid><description>
+&lt;/ol></description></item><item><title>docker-practice</title><link>https://cloudedseal.github.io/blog/docker-practice/</link><pubDate>Tue, 03 Sep 2019 14:20:16 +0800</pubDate><guid>https://cloudedseal.github.io/blog/docker-practice/</guid><description>
 &lt;blockquote>
 &lt;p>Centos7 Linux
 运行的 Docker 容器是: mssql-node-docker-demo-app&lt;/p>
@@ -1210,7 +1210,7 @@ title="Copy code"
 &lt;li>
 &lt;p>&lt;a href="https://blog.csdn.net/boling_cavalry/article/details/92846483" target="_blank" rel="noopener">docker 的 /var/run/docker.sock 参数&lt;/a>&lt;/p>
 &lt;/li>
-&lt;/ol></description></item><item><title>building-docker-image</title><link>https://buybyte.github.io/blog/katacoda-building-docker-image/</link><pubDate>Thu, 16 May 2019 17:33:01 +0800</pubDate><guid>https://buybyte.github.io/blog/katacoda-building-docker-image/</guid><description>
+&lt;/ol></description></item><item><title>building-docker-image</title><link>https://cloudedseal.github.io/blog/katacoda-building-docker-image/</link><pubDate>Thu, 16 May 2019 17:33:01 +0800</pubDate><guid>https://cloudedseal.github.io/blog/katacoda-building-docker-image/</guid><description>
 &lt;blockquote>
 &lt;p>&lt;em>&lt;strong>Docker images&lt;/strong>&lt;/em> are built based on a Dockerfile. A Dockerfile defines &lt;strong>all the steps&lt;/strong> required to create a Docker image with your application configured and ready to be run as a container. The image itself contains everything, from operating system to dependencies and configuration required to run your application.
 Having everything within the image allows you to migrate images between different environments and be confident that if it works in one environment, then it will work in another.
@@ -1355,7 +1355,7 @@ title="Copy code"
 &lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
 &lt;/button>
 &lt;/div>
-&lt;/div></description></item><item><title>deploy-static-website</title><link>https://buybyte.github.io/blog/katacoda-deploy-static-website/</link><pubDate>Thu, 16 May 2019 16:17:51 +0800</pubDate><guid>https://buybyte.github.io/blog/katacoda-deploy-static-website/</guid><description>
+&lt;/div></description></item><item><title>deploy-static-website</title><link>https://cloudedseal.github.io/blog/katacoda-deploy-static-website/</link><pubDate>Thu, 16 May 2019 16:17:51 +0800</pubDate><guid>https://cloudedseal.github.io/blog/katacoda-deploy-static-website/</guid><description>
 &lt;h1>Create a Dockerfile&lt;/h1>&lt;blockquote>
 &lt;p>Docker Images start from a base image. The base image should include the platform dependencies required by your application, for example, having the JVM or CLR installed.
 This base image is defined as an instruction in the Dockerfile. Docker Images are built based on the contents of a Dockerfile. The Dockerfile is a list of instructions describing how to deploy your application.&lt;/p>
@@ -1422,7 +1422,7 @@ title="Copy code"
 &lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
 &lt;/button>
 &lt;/div>
-&lt;/div></description></item><item><title>katacoda-deploying-first-docker-container</title><link>https://buybyte.github.io/blog/katacoda-deploying-first-docker-container/</link><pubDate>Thu, 16 May 2019 12:40:16 +0800</pubDate><guid>https://buybyte.github.io/blog/katacoda-deploying-first-docker-container/</guid><description>
+&lt;/div></description></item><item><title>katacoda-deploying-first-docker-container</title><link>https://cloudedseal.github.io/blog/katacoda-deploying-first-docker-container/</link><pubDate>Thu, 16 May 2019 12:40:16 +0800</pubDate><guid>https://cloudedseal.github.io/blog/katacoda-deploying-first-docker-container/</guid><description>
 &lt;h1>Running a container background(detached)&lt;/h1>&lt;p>&lt;strong>docker search image-name&lt;/strong>&lt;/p>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl"> docker search redis&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">

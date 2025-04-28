@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Asm</title><link>https://buybyte.github.io/tags/asm/</link><description>Recent content in Asm on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 21 Apr 2025 15:34:28 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/asm/index.xml" rel="self" type="application/rss+xml"/><item><title>Asm How Glibc Wrap Syscall</title><link>https://buybyte.github.io/blog/asm-how-glibc-wrap-syscall/</link><pubDate>Mon, 21 Apr 2025 15:34:28 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-glibc-wrap-syscall/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Asm</title><link>https://cloudedseal.github.io/tags/asm/</link><description>Recent content in Asm on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 21 Apr 2025 15:34:28 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/asm/index.xml" rel="self" type="application/rss+xml"/><item><title>Asm How Glibc Wrap Syscall</title><link>https://cloudedseal.github.io/blog/asm-how-glibc-wrap-syscall/</link><pubDate>Mon, 21 Apr 2025 15:34:28 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-glibc-wrap-syscall/</guid><description>
 &lt;blockquote>
 &lt;p>实验平台: x86_64 GNU/Linux mint22.1&lt;/p>
 &lt;/blockquote>
@@ -77,7 +77,7 @@ title="Copy code"
 &lt;a href="#result-handling" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>After the kernel finishes, the wrapper checks for errors, sets errno if needed, and returns the result. 处理返回值&lt;/p>
 &lt;h1>References&lt;/h1>&lt;ol>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/ltrace.1.html" target="_blank" rel="noopener">https://man7.org/linux/man-pages/man1/ltrace.1.html&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Asm How Java Byte Code Execute</title><link>https://buybyte.github.io/blog/asm-how-java-byte-code-execute/</link><pubDate>Wed, 05 Apr 2023 10:35:32 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-java-byte-code-execute/</guid><description>
+&lt;/ol></description></item><item><title>Asm How Java Byte Code Execute</title><link>https://cloudedseal.github.io/blog/asm-how-java-byte-code-execute/</link><pubDate>Wed, 05 Apr 2023 10:35:32 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-java-byte-code-execute/</guid><description>
 &lt;h1>jvm&lt;/h1>&lt;blockquote>
 &lt;p>jvm 是一个栈式(stack-based)虚拟计算机。啥意思，就是大多数的 opcode 的操作数在 operand stack 上，执行的结果也放在 oprand stack 上。&lt;br>
 有的 opcode 的操作数在 local variable table，如 &lt;code>iinc&lt;/code>。&lt;/p>
@@ -111,7 +111,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iconst_i" target="_blank" rel="noopener">jvms-6.5.iconst_i&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.invokestatic" target="_blank" rel="noopener">jvms-6.5.invokestatic&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.getstatic" target="_blank" rel="noopener">jvms-6.5.getstatic&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>asm-how-computer-startup</title><link>https://buybyte.github.io/blog/asm-how-computer-startup/</link><pubDate>Mon, 08 Jun 2020 08:09:12 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-computer-startup/</guid><description>
+&lt;/ol></description></item><item><title>asm-how-computer-startup</title><link>https://cloudedseal.github.io/blog/asm-how-computer-startup/</link><pubDate>Mon, 08 Jun 2020 08:09:12 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-computer-startup/</guid><description>
 &lt;p>&lt;code>x86&lt;/code> 架构计算机是如何启动的？&lt;/p>
 &lt;h2>16-bit Processors and Segmentation (1978)&lt;span class="hx-absolute -hx-mt-20" id="16-bit-processors-and-segmentation-1978">&lt;/span>
 &lt;a href="#16-bit-processors-and-segmentation-1978" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
@@ -182,7 +182,7 @@ title="Copy code"
 4. &lt;a href="https://en.wikipedia.org/wiki/System_Management_BIOS" target="_blank" rel="noopener">system-management-bios&lt;/a>
 5. &lt;a href="http://www.ruanyifeng.com/blog/2013/02/booting.html" target="_blank" rel="noopener">计算机是如何启动的？&lt;/a>
 6. &lt;a href="https://en.wikipedia.org/wiki/Master_boot_record" target="_blank" rel="noopener">多种 MBR 组织方式&lt;/a>
-7. &lt;a href="https://mp.weixin.qq.com/s/g6m_r28bvyyWIu1CAzxLdg" target="_blank" rel="noopener">计算机是怎样启动的？&lt;/a>&lt;/p></description></item><item><title>asm-how-recursion-function-execute</title><link>https://buybyte.github.io/blog/asm-how-recursion-function-execute/</link><pubDate>Sat, 06 Jul 2019 16:35:51 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-recursion-function-execute/</guid><description>
+7. &lt;a href="https://mp.weixin.qq.com/s/g6m_r28bvyyWIu1CAzxLdg" target="_blank" rel="noopener">计算机是怎样启动的？&lt;/a>&lt;/p></description></item><item><title>asm-how-recursion-function-execute</title><link>https://cloudedseal.github.io/blog/asm-how-recursion-function-execute/</link><pubDate>Sat, 06 Jul 2019 16:35:51 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-recursion-function-execute/</guid><description>
 &lt;h1>斐波那契数列&lt;/h1>&lt;h2>问题描述&lt;span class="hx-absolute -hx-mt-20" id="问题描述">&lt;/span>
 &lt;a href="#%e9%97%ae%e9%a2%98%e6%8f%8f%e8%bf%b0" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>第一个月初有一对刚诞生的兔子
@@ -568,7 +568,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://godbolt.org/" target="_blank" rel="noopener">asm-tool&lt;/a>&lt;/li>
 &lt;li>&lt;a href="http://www.ruanyifeng.com/blog/2015/04/tail-call.html" target="_blank" rel="noopener">尾调用(tail-call)之尾递归&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://mp.weixin.qq.com/s/GncAsmZ1dZKyNMOwN5-sjw" target="_blank" rel="noopener">动态规划&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>asm-clang-concepts</title><link>https://buybyte.github.io/blog/asm-clang-concepts/</link><pubDate>Tue, 25 Jun 2019 16:57:59 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-clang-concepts/</guid><description>
+&lt;/ol></description></item><item><title>asm-clang-concepts</title><link>https://cloudedseal.github.io/blog/asm-clang-concepts/</link><pubDate>Tue, 25 Jun 2019 16:57:59 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-clang-concepts/</guid><description>
 &lt;p>C 语言里的概念在 X86-64 汇编层面的分析. 汇编风格使用 AT&amp;amp;T 风格. 编译器是 gcc-x86-64-9.1&lt;/p>
 &lt;h1>指针&lt;/h1>&lt;blockquote>
 &lt;p>A &lt;code>pointer&lt;/code> is a programming language object that stores the memory address of another value located in computer memory.
@@ -1361,7 +1361,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://www.thegeekstuff.com/2012/01/advanced-c-pointers" target="_blank" rel="noopener">function pointer&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.recurse.com/blog/5-learning-c-with-gdb" target="_blank" rel="noopener">5-learning-c-with-gdb&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/483372519" target="_blank" rel="noopener">用 gdb 学 C 语言&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>asm-how-x86-64-arguments-pass</title><link>https://buybyte.github.io/blog/asm-how-x86-64-arguments-pass/</link><pubDate>Mon, 24 Jun 2019 09:52:27 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-x86-64-arguments-pass/</guid><description>
+&lt;/ol></description></item><item><title>asm-how-x86-64-arguments-pass</title><link>https://cloudedseal.github.io/blog/asm-how-x86-64-arguments-pass/</link><pubDate>Mon, 24 Jun 2019 09:52:27 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-x86-64-arguments-pass/</guid><description>
 &lt;h3>x86-64 下函数参数传递, 汇编层面分析&lt;span class="hx-absolute -hx-mt-20" id="x86-64-下函数参数传递-汇编层面分析">&lt;/span>
 &lt;a href="#x86-64-%e4%b8%8b%e5%87%bd%e6%95%b0%e5%8f%82%e6%95%b0%e4%bc%a0%e9%80%92-%e6%b1%87%e7%bc%96%e5%b1%82%e9%9d%a2%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
 &lt;p>To pass parameters to the subroutine, we put up to six of them into registers (in order: rdi, rsi, rdx, rcx, r8, r9).&lt;br>
@@ -1488,7 +1488,7 @@ rbp + 16 的原因是: 参数 a7 是 main 准备的, 属于 main 的栈帧.&lt;b
 &lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
 &lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="http://web.stanford.edu/class/cs107/guide/x86-64.html" target="_blank" rel="noopener">callee-caller&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>asm-how-x86-function-execute</title><link>https://buybyte.github.io/blog/asm-how-x86-function-execute/</link><pubDate>Tue, 28 May 2019 19:32:16 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-x86-function-execute/</guid><description>
+&lt;/ol></description></item><item><title>asm-how-x86-function-execute</title><link>https://cloudedseal.github.io/blog/asm-how-x86-function-execute/</link><pubDate>Tue, 28 May 2019 19:32:16 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-x86-function-execute/</guid><description>
 &lt;blockquote>
 &lt;p>前一阵子去看 java 虚拟机原理, 忽然痛悟到虚拟机也是机器啊, 呵呵也就是个软件而已. 看到 java 方法调用太复杂. 字节码那一套又不太熟悉, 还不如直接去看 C 编译后的汇编代码.
 目的: 搞明白 X86 架构下函数到底是怎么调用执行的.

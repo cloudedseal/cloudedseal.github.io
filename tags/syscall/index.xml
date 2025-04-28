@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Syscall</title><link>https://buybyte.github.io/tags/syscall/</link><description>Recent content in Syscall on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 21 Apr 2025 15:34:28 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/syscall/index.xml" rel="self" type="application/rss+xml"/><item><title>Asm How Glibc Wrap Syscall</title><link>https://buybyte.github.io/blog/asm-how-glibc-wrap-syscall/</link><pubDate>Mon, 21 Apr 2025 15:34:28 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-glibc-wrap-syscall/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Syscall</title><link>https://cloudedseal.github.io/tags/syscall/</link><description>Recent content in Syscall on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 21 Apr 2025 15:34:28 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/syscall/index.xml" rel="self" type="application/rss+xml"/><item><title>Asm How Glibc Wrap Syscall</title><link>https://cloudedseal.github.io/blog/asm-how-glibc-wrap-syscall/</link><pubDate>Mon, 21 Apr 2025 15:34:28 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-glibc-wrap-syscall/</guid><description>
 &lt;blockquote>
 &lt;p>实验平台: x86_64 GNU/Linux mint22.1&lt;/p>
 &lt;/blockquote>
@@ -77,7 +77,7 @@ title="Copy code"
 &lt;a href="#result-handling" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>After the kernel finishes, the wrapper checks for errors, sets errno if needed, and returns the result. 处理返回值&lt;/p>
 &lt;h1>References&lt;/h1>&lt;ol>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/ltrace.1.html" target="_blank" rel="noopener">https://man7.org/linux/man-pages/man1/ltrace.1.html&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Cmd Strace</title><link>https://buybyte.github.io/blog/cmd-strace/</link><pubDate>Sat, 19 Apr 2025 16:29:04 +0800</pubDate><guid>https://buybyte.github.io/blog/cmd-strace/</guid><description>
+&lt;/ol></description></item><item><title>Cmd Strace</title><link>https://cloudedseal.github.io/blog/cmd-strace/</link><pubDate>Sat, 19 Apr 2025 16:29:04 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cmd-strace/</guid><description>
 &lt;h1>syscall&lt;/h1>&lt;p>操作系统运行在 kernel space, 拥有整个系统的控制权。
 应用程序运行在 user space, 拥有部分权限。
 这就是隔离。

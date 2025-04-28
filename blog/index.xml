@@ -1,8 +1,8 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://buybyte.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://buybyte.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://buybyte.github.io/blog/about/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://cloudedseal.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://cloudedseal.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://cloudedseal.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Great Prompt</title><link>https://buybyte.github.io/blog/great-prompt/</link><pubDate>Mon, 28 Apr 2025 09:35:51 +0800</pubDate><guid>https://buybyte.github.io/blog/great-prompt/</guid><description>
-&lt;h1>great prompt&lt;/h1>&lt;p>我在做 XX。如果你是一位专业人士，有更好的方法和建议吗？尽可能全面。&lt;/p></description></item><item><title>Master Type System</title><link>https://buybyte.github.io/blog/master-type-system/</link><pubDate>Fri, 25 Apr 2025 11:04:51 +0800</pubDate><guid>https://buybyte.github.io/blog/master-type-system/</guid><description>
+&lt;/blockquote></description></item><item><title>Great Prompt</title><link>https://cloudedseal.github.io/blog/great-prompt/</link><pubDate>Mon, 28 Apr 2025 09:35:51 +0800</pubDate><guid>https://cloudedseal.github.io/blog/great-prompt/</guid><description>
+&lt;h1>great prompt&lt;/h1>&lt;p>我在做 XX。如果你是一位专业人士，有更好的方法和建议吗？尽可能全面。&lt;/p></description></item><item><title>Master Type System</title><link>https://cloudedseal.github.io/blog/master-type-system/</link><pubDate>Fri, 25 Apr 2025 11:04:51 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-type-system/</guid><description>
 &lt;h1>为啥需要 type system?&lt;/h1>&lt;h2>&lt;code>type&lt;/code> 就是契约&lt;span class="hx-absolute -hx-mt-20" id="type-就是契约">&lt;/span>
 &lt;a href="#type-%e5%b0%b1%e6%98%af%e5%a5%91%e7%ba%a6" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
 &lt;li>At the hardware level, the machine does not know types in the way humans or high-level programming languages do. 硬件级别就是电信号了。&lt;code>type&lt;/code> 这种概念不存在。&lt;/li>
@@ -171,7 +171,7 @@ title="Copy code"
 &lt;li>可以看到 float 类型对应的指令有 fmul&lt;/li>
 &lt;li>可以看到 long 类型对应的指令有 lmul&lt;/li>
 &lt;/ol>
-&lt;h1>总结&lt;/h1>&lt;p>Types are a tool &lt;code>for humans&lt;/code>, &lt;code>not the machine&lt;/code>. Without them, programming would require &lt;code>manually managing every bit and operation&lt;/code>, akin to writing assembly code for every program—a recipe for bugs and inefficiency&lt;/p></description></item><item><title>Linux Process State</title><link>https://buybyte.github.io/blog/linux-process-state/</link><pubDate>Tue, 22 Apr 2025 17:07:48 +0800</pubDate><guid>https://buybyte.github.io/blog/linux-process-state/</guid><description>
+&lt;h1>总结&lt;/h1>&lt;p>Types are a tool &lt;code>for humans&lt;/code>, &lt;code>not the machine&lt;/code>. Without them, programming would require &lt;code>manually managing every bit and operation&lt;/code>, akin to writing assembly code for every program—a recipe for bugs and inefficiency&lt;/p></description></item><item><title>Linux Process State</title><link>https://cloudedseal.github.io/blog/linux-process-state/</link><pubDate>Tue, 22 Apr 2025 17:07:48 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-process-state/</guid><description>
 &lt;h1>进程状态机&lt;/h1>&lt;p>最近在看南京大学&lt;a href="https://ics.nju.edu.cn/~jyy/" target="_blank" rel="noopener">蒋炎岩&lt;/a>老师的 2025 操作系统课程。里面有一句话, 计算机中的一切程序可以视为 &lt;code>state machine&lt;/code>。很有启发。进程有初始状态, CPU 这个无情的执行指令的机器执行一条指令后，程序的状态就发生了变化。&lt;/p>
 &lt;p>&lt;img src="https://raw.githubusercontent.com/buybyte/pictures/main/img/linux-process-state-machine-userspace.drawio.svg" alt="linux-process-state-machine-userspace" loading="lazy" />&lt;/p>
 &lt;h1>process state&lt;/h1>&lt;h2>Running/Runnable(R)&lt;span class="hx-absolute -hx-mt-20" id="runningrunnabler">&lt;/span>
@@ -408,7 +408,7 @@ title="Copy code"
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;p>These system calls and signals form the backbone of process lifecycle management in Linux, enabling creation, termination, synchronization, and debugging of processes.&lt;/p></description></item><item><title>Asm How Glibc Wrap Syscall</title><link>https://buybyte.github.io/blog/asm-how-glibc-wrap-syscall/</link><pubDate>Mon, 21 Apr 2025 15:34:28 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-glibc-wrap-syscall/</guid><description>
+&lt;p>These system calls and signals form the backbone of process lifecycle management in Linux, enabling creation, termination, synchronization, and debugging of processes.&lt;/p></description></item><item><title>Asm How Glibc Wrap Syscall</title><link>https://cloudedseal.github.io/blog/asm-how-glibc-wrap-syscall/</link><pubDate>Mon, 21 Apr 2025 15:34:28 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-glibc-wrap-syscall/</guid><description>
 &lt;blockquote>
 &lt;p>实验平台: x86_64 GNU/Linux mint22.1&lt;/p>
 &lt;/blockquote>
@@ -487,7 +487,7 @@ title="Copy code"
 &lt;a href="#result-handling" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>After the kernel finishes, the wrapper checks for errors, sets errno if needed, and returns the result. 处理返回值&lt;/p>
 &lt;h1>References&lt;/h1>&lt;ol>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/ltrace.1.html" target="_blank" rel="noopener">https://man7.org/linux/man-pages/man1/ltrace.1.html&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Cmd Strace</title><link>https://buybyte.github.io/blog/cmd-strace/</link><pubDate>Sat, 19 Apr 2025 16:29:04 +0800</pubDate><guid>https://buybyte.github.io/blog/cmd-strace/</guid><description>
+&lt;/ol></description></item><item><title>Cmd Strace</title><link>https://cloudedseal.github.io/blog/cmd-strace/</link><pubDate>Sat, 19 Apr 2025 16:29:04 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cmd-strace/</guid><description>
 &lt;h1>syscall&lt;/h1>&lt;p>操作系统运行在 kernel space, 拥有整个系统的控制权。
 应用程序运行在 user space, 拥有部分权限。
 这就是隔离。
@@ -537,7 +537,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://jvns.ca/strace-zine-v2.pdf" target="_blank" rel="noopener">https://jvns.ca/strace-zine-v2.pdf&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/strace.1.html" target="_blank" rel="noopener">https://man7.org/linux/man-pages/man1/strace.1.html&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://strace.io/" target="_blank" rel="noopener">https://strace.io/&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Java String Concat in Loop</title><link>https://buybyte.github.io/blog/java-string-concat-in-loop/</link><pubDate>Wed, 09 Apr 2025 10:56:10 +0800</pubDate><guid>https://buybyte.github.io/blog/java-string-concat-in-loop/</guid><description>
+&lt;/ol></description></item><item><title>Java String Concat in Loop</title><link>https://cloudedseal.github.io/blog/java-string-concat-in-loop/</link><pubDate>Wed, 09 Apr 2025 10:56:10 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-string-concat-in-loop/</guid><description>
 &lt;h1>分析环境&lt;/h1>&lt;blockquote>
 &lt;p>jdk8&lt;/p>
 &lt;/blockquote>
@@ -613,7 +613,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iinc" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iinc&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.getstatic" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.getstatic&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.invokevirtual" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.invokevirtual&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Name Id Pairs</title><link>https://buybyte.github.io/blog/name-id-pairs/</link><pubDate>Wed, 09 Apr 2025 10:16:41 +0800</pubDate><guid>https://buybyte.github.io/blog/name-id-pairs/</guid><description>
+&lt;/ol></description></item><item><title>Name Id Pairs</title><link>https://cloudedseal.github.io/blog/name-id-pairs/</link><pubDate>Wed, 09 Apr 2025 10:16:41 +0800</pubDate><guid>https://cloudedseal.github.io/blog/name-id-pairs/</guid><description>
 &lt;h1>name id pairs&lt;/h1>&lt;blockquote>
 &lt;p>对于 OS 来说，id 更重要。&lt;/p>
 &lt;/blockquote>
@@ -654,7 +654,7 @@ title="Copy code"
 &lt;td style="text-align: center">syscall number&lt;/td>
 &lt;/tr>
 &lt;/tbody>
-&lt;/table></description></item><item><title>Java Aqs</title><link>https://buybyte.github.io/blog/java-aqs/</link><pubDate>Fri, 21 Mar 2025 10:54:27 +0800</pubDate><guid>https://buybyte.github.io/blog/java-aqs/</guid><description>
+&lt;/table></description></item><item><title>Java Aqs</title><link>https://cloudedseal.github.io/blog/java-aqs/</link><pubDate>Fri, 21 Mar 2025 10:54:27 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-aqs/</guid><description>
 &lt;h1>abstract queued synchronizer 是啥？&lt;/h1>&lt;blockquote>
 &lt;p>AQS is an abstract class that provides a skeleton for &lt;code>managing thread contention&lt;/code>, &lt;code>queuing&lt;/code>, and &lt;code>state synchronization&lt;/code>.
 It uses a &lt;code>FIFO wait(sync) queue&lt;/code> to manage threads waiting for access to a shared resource and an &lt;code>atomic integer (state)&lt;/code> to track the synchronizer&amp;rsquo;s status (e.g., locked/unlocked, available permits).&lt;/p>
@@ -1148,7 +1148,7 @@ title="Copy code"
 &lt;p>&lt;img src="https://raw.githubusercontent.com/buybyte/pictures/main/img/AQS-acquireQueuedUnpark.drawio.svg" alt="acquireQueued 被 unpark 唤醒的线程继续执行的逻辑" loading="lazy" />&lt;/p>
 &lt;h1>References&lt;/h1>&lt;ol>
 &lt;li>&lt;a href="https://javadoop.com/post/AbstractQueuedSynchronizer" target="_blank" rel="noopener">https://javadoop.com/post/AbstractQueuedSynchronizer 强烈推荐&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Java User Space Schedule</title><link>https://buybyte.github.io/blog/java-user-space-schedule/</link><pubDate>Mon, 10 Mar 2025 17:13:48 +0800</pubDate><guid>https://buybyte.github.io/blog/java-user-space-schedule/</guid><description>
+&lt;/ol></description></item><item><title>Java User Space Schedule</title><link>https://cloudedseal.github.io/blog/java-user-space-schedule/</link><pubDate>Mon, 10 Mar 2025 17:13:48 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-user-space-schedule/</guid><description>
 &lt;blockquote>
 &lt;p>A user-space scheduler manages tasks or &amp;ldquo;threads&amp;rdquo; entirely within an application, without relying on the operating system (OS) scheduler. This is different from kernel-level scheduling, where the OS manages threads.
 什么是用户态调度？可以简单理解为自定义一堆任务, 由用户决定怎样执行这些任务。不涉及操作系统的进程/线程调度。&lt;/p>
@@ -1248,7 +1248,7 @@ title="Copy code"
 &lt;h3>No OS Involvement&lt;span class="hx-absolute -hx-mt-20" id="no-os-involvement">&lt;/span>
 &lt;a href="#no-os-involvement" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
 &lt;p>The OS sees only the main thread running scheduler.run().&lt;/p>
-&lt;/blockquote></description></item><item><title>Learn Llm</title><link>https://buybyte.github.io/blog/learn-llm/</link><pubDate>Mon, 17 Feb 2025 17:10:17 +0800</pubDate><guid>https://buybyte.github.io/blog/learn-llm/</guid><description>
+&lt;/blockquote></description></item><item><title>Learn Llm</title><link>https://cloudedseal.github.io/blog/learn-llm/</link><pubDate>Mon, 17 Feb 2025 17:10:17 +0800</pubDate><guid>https://cloudedseal.github.io/blog/learn-llm/</guid><description>
 &lt;h1>pre-training&lt;/h1>&lt;p>&lt;a href="https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1" target="_blank" rel="noopener">https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1&lt;/a>&lt;/p>
 &lt;p>100000 symbols(tokens)
 raw text &amp;mdash;&amp;gt;tokenization &amp;mdash;&amp;gt; token&lt;/p>
@@ -1277,7 +1277,7 @@ supervised-fine-tuning&lt;/p>
 &lt;li>&lt;a href="https://hyperbolic.xyz/" target="_blank" rel="noopener">https://hyperbolic.xyz/&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://atlas.nomic.ai/map/0ce65783-c3a9-40b5-895d-384933f50081/a7b46301-022f-45d8-bbf4-98107eabdbac" target="_blank" rel="noopener">对话数据集&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1" target="_blank" rel="noopener">互联网数据集&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Cache Miss Anomaly</title><link>https://buybyte.github.io/blog/cache-miss-anomaly/</link><pubDate>Thu, 13 Feb 2025 16:25:17 +0800</pubDate><guid>https://buybyte.github.io/blog/cache-miss-anomaly/</guid><description>
+&lt;/ol></description></item><item><title>Cache Miss Anomaly</title><link>https://cloudedseal.github.io/blog/cache-miss-anomaly/</link><pubDate>Thu, 13 Feb 2025 16:25:17 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cache-miss-anomaly/</guid><description>
 &lt;h1>缓存 miss 类型&lt;/h1>&lt;h2>compulsory miss&lt;span class="hx-absolute -hx-mt-20" id="compulsory-miss">&lt;/span>
 &lt;a href="#compulsory-miss" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>一开始缓存里啥都没有，cold-start miss&lt;/p>
@@ -1384,7 +1384,7 @@ title="Copy code"
 &lt;/div>
 &lt;h1>References&lt;/h1>&lt;ol>
 &lt;li>&lt;a href="https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf" target="_blank" rel="noopener">https://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>lsof examples</title><link>https://buybyte.github.io/blog/cmd-lsof/</link><pubDate>Fri, 10 Jan 2025 17:31:17 +0800</pubDate><guid>https://buybyte.github.io/blog/cmd-lsof/</guid><description>
+&lt;/ol></description></item><item><title>lsof examples</title><link>https://cloudedseal.github.io/blog/cmd-lsof/</link><pubDate>Fri, 10 Jan 2025 17:31:17 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cmd-lsof/</guid><description>
 &lt;h2>通用&lt;span class="hx-absolute -hx-mt-20" id="通用">&lt;/span>
 &lt;a href="#%e9%80%9a%e7%94%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>^ 表示非&lt;/li>
@@ -1472,7 +1472,7 @@ title="Copy code"
 &lt;h2>lsof &lt;code>-U&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="lsof--u">&lt;/span>
 &lt;a href="#lsof--u" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>-U(Unix domain socket)&lt;/p>
-&lt;/blockquote></description></item><item><title>Master Iptables</title><link>https://buybyte.github.io/blog/master-iptables/</link><pubDate>Tue, 07 Jan 2025 11:15:57 +0800</pubDate><guid>https://buybyte.github.io/blog/master-iptables/</guid><description>
+&lt;/blockquote></description></item><item><title>Master Iptables</title><link>https://cloudedseal.github.io/blog/master-iptables/</link><pubDate>Tue, 07 Jan 2025 11:15:57 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-iptables/</guid><description>
 &lt;h1>数据包&lt;/h1>&lt;ol>
 &lt;li>接收&lt;/li>
 &lt;li>发送&lt;/li>
@@ -1643,7 +1643,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man8/iptables-extensions.8.html" target="_blank" rel="noopener">iptables-extensions&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.linode.com/docs/guides/linux-router-and-ip-forwarding/#enable-ip-forwarding" target="_blank" rel="noopener">ip-forward&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://manned.org/iptables" target="_blank" rel="noopener">https://manned.org/iptables&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>My Source List</title><link>https://buybyte.github.io/blog/my-source-list/</link><pubDate>Mon, 06 Jan 2025 11:25:58 +0800</pubDate><guid>https://buybyte.github.io/blog/my-source-list/</guid><description>
+&lt;/ol></description></item><item><title>My Source List</title><link>https://cloudedseal.github.io/blog/my-source-list/</link><pubDate>Mon, 06 Jan 2025 11:25:58 +0800</pubDate><guid>https://cloudedseal.github.io/blog/my-source-list/</guid><description>
 &lt;ol>
 &lt;li>&lt;a href="https://arthurchiao.art/" target="_blank" rel="noopener">https://arthurchiao.art/&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://alexanderell.is/posts/" target="_blank" rel="noopener">https://alexanderell.is/posts/&lt;/a>&lt;/li>
@@ -1676,7 +1676,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://www.qiufeng.blue/" target="_blank" rel="noopener">秋风的笔记&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.zsythink.net/" target="_blank" rel="noopener">朱双印&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://shuyi.tech/" target="_blank" rel="noopener">陈树义&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Null Device</title><link>https://buybyte.github.io/blog/null-device/</link><pubDate>Fri, 03 Jan 2025 10:53:57 +0800</pubDate><guid>https://buybyte.github.io/blog/null-device/</guid><description>
+&lt;/ol></description></item><item><title>Null Device</title><link>https://cloudedseal.github.io/blog/null-device/</link><pubDate>Fri, 03 Jan 2025 10:53:57 +0800</pubDate><guid>https://cloudedseal.github.io/blog/null-device/</guid><description>
 &lt;h1>NULL device 是啥？&lt;/h1>&lt;p>The null device is a special file that &lt;code>discards&lt;/code> all data written to it, but reports that the &lt;code>write operation succeeded&lt;/code>.&lt;/p>
 &lt;h1>用在何处？&lt;/h1>&lt;blockquote>
 &lt;p>java 执行外部的命令, 但是不需要外部命令的执行结果. 直接丢弃 stdout, stderr.&lt;/p>
@@ -1724,7 +1724,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://ss64.com/nt/nul.html" target="_blank" rel="noopener">windows-NUL&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man4/null.4.html" target="_blank" rel="noopener">man7 /dev/null&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://stackoverflow.com/questions/313111/is-there-a-dev-null-on-windows" target="_blank" rel="noopener">NUL in Windows seems to be actually a virtual path in any folder&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Ipc Unix Domain Socket</title><link>https://buybyte.github.io/blog/ipc-unix-domain-socket/</link><pubDate>Tue, 23 Jul 2024 15:00:13 +0800</pubDate><guid>https://buybyte.github.io/blog/ipc-unix-domain-socket/</guid><description>
+&lt;/ol></description></item><item><title>Ipc Unix Domain Socket</title><link>https://cloudedseal.github.io/blog/ipc-unix-domain-socket/</link><pubDate>Tue, 23 Jul 2024 15:00:13 +0800</pubDate><guid>https://cloudedseal.github.io/blog/ipc-unix-domain-socket/</guid><description>
 &lt;h1>unix domain socket 是啥?&lt;/h1>&lt;blockquote>
 &lt;p>A &lt;code>Unix domain socket (UDS)&lt;/code> or &lt;code>IPC socket&lt;/code> (inter-process communication) is a data communications &lt;code>endpoint&lt;/code> for exchanging data between processes executing on the &lt;code>same&lt;/code> host operating system.
 同一台机器两个不同的进程之间交换数据，优化过的 socket。&lt;/p>
@@ -1915,7 +1915,7 @@ title="Copy code"
 &lt;h1>References&lt;/h1>&lt;ol>
 &lt;li>&lt;a href="https://github.com/kohlschutter/junixsocket" target="_blank" rel="noopener">junixsocket&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Unix_domain_socket" target="_blank" rel="noopener">Unix_domain_socket&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>My Tool Box</title><link>https://buybyte.github.io/blog/my-tool-box/</link><pubDate>Fri, 19 Apr 2024 17:31:31 +0800</pubDate><guid>https://buybyte.github.io/blog/my-tool-box/</guid><description>
+&lt;/ol></description></item><item><title>My Tool Box</title><link>https://cloudedseal.github.io/blog/my-tool-box/</link><pubDate>Fri, 19 Apr 2024 17:31:31 +0800</pubDate><guid>https://cloudedseal.github.io/blog/my-tool-box/</guid><description>
 &lt;h1>video &amp;amp; audio&lt;/h1>&lt;ol>
 &lt;li>&lt;a href="https://github.com/iawia002/lux" target="_blank" rel="noopener">lux&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://ttsmaker.com/zh-cn" target="_blank" rel="noopener">ttsmaker&lt;/a>&lt;/li>
@@ -1966,7 +1966,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://godbolt.org/" target="_blank" rel="noopener">compiler&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://exuanbo.xyz/assembler-simulator/?shareable=eJytU8Fu2zAM_RVOZ28wip0cYEDstGg7Jx1WrAUW5aDYTCNElgSJDhoU-fdR7up16w4tUOukJ75H8pF-ENhqckEUD0Jb35MoxAQ-vuqTdiLpRsdeGZjp6I06wA-rifFXK0i6nH-Da1KBJJ8JXPadB68iAW0RWkUKSK0NptBZCSDFORrj4NYF036Q4gmHPJd20CkSNL-6AZjWGUCVJ9m52iHfwTttWdrBXrfo4Pt0PkaXKTo_GaPLZ9Gplo0OXFWzVUE1hAG0HeBIQdu7UaVilWVZr5JM5fzhTxub4LqUkImsWNXS1s75sdrltF5lCX5B5ERV_VTFWDffFI0tRX5PSheLKvUtf7v5ou0kYfGenukY1yjSzo708m_6vz4M9Pe0QVLFOzBQ0hQTY4vNDvTmf_nwXkeKw-YsfkKy8G37drqYvYlgz1yAzgXkzKrzBmMGEQ02BGfaIHyBK48WTh8fP0krMrEOqHaPcxHFcnXMROMsBWcMDn8a3zb6rg-D7wlQPblpjNjxpouCQo9M4cHsrj1iK4rPmSDdYbiwbMFeGVGc5Hmeib3uvuJhrW3L5nOujTIRj8fjL4pBMxs" target="_blank" rel="noopener">assembler&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://brainfuck-visualizer.netlify.app/" target="_blank" rel="noopener">brainfuck-visualizer&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Zookeeper Transaction Log</title><link>https://buybyte.github.io/blog/zookeeper-transaction-log/</link><pubDate>Sat, 21 Oct 2023 14:19:13 +0800</pubDate><guid>https://buybyte.github.io/blog/zookeeper-transaction-log/</guid><description>
+&lt;/ol></description></item><item><title>Zookeeper Transaction Log</title><link>https://cloudedseal.github.io/blog/zookeeper-transaction-log/</link><pubDate>Sat, 21 Oct 2023 14:19:13 +0800</pubDate><guid>https://cloudedseal.github.io/blog/zookeeper-transaction-log/</guid><description>
 &lt;blockquote>
 &lt;p>分析的 zookeeper 代码版本为 3.9.1 。 &lt;br>
 zookeer 的 transaction log 为二进制文件，采用的是大端序。&lt;br>
@@ -2096,7 +2096,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://github.com/alenca/zklogtool/tree/master/zklogtool" target="_blank" rel="noopener">zklogtool&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/sharkdp/hexyl/releases" target="_blank" rel="noopener">hexyl-二进制分析工具&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://zookeeper.apache.org/doc/r3.4.8/zookeeperAdmin.html#sc_zkCommands:~:text=The%20Log%20Directory%20contains,written%20to%20that%20log." target="_blank" rel="noopener">dataLogDir&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Ipc Signal</title><link>https://buybyte.github.io/blog/ipc-signal/</link><pubDate>Tue, 11 Apr 2023 20:15:57 +0800</pubDate><guid>https://buybyte.github.io/blog/ipc-signal/</guid><description>
+&lt;/ol></description></item><item><title>Ipc Signal</title><link>https://cloudedseal.github.io/blog/ipc-signal/</link><pubDate>Tue, 11 Apr 2023 20:15:57 +0800</pubDate><guid>https://cloudedseal.github.io/blog/ipc-signal/</guid><description>
 &lt;h1>signal&lt;/h1>&lt;h2>什么是 signal&lt;span class="hx-absolute -hx-mt-20" id="什么是-signal">&lt;/span>
 &lt;a href="#%e4%bb%80%e4%b9%88%e6%98%af-signal" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>A signal can be thought of as a &lt;code>software interrupt&lt;/code>.
@@ -2436,7 +2436,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://goodyduru.github.io/os/2023/10/05/ipc-unix-signals.html" target="_blank" rel="noopener">https://goodyduru.github.io/os/2023/10/05/ipc-unix-signals.html&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/JetBrains/jdk8u_jdk/blob/94318f9185757cc33d2b8d527d36be26ac6b7582/src/share/classes/sun/misc/Signal.java#L30" target="_blank" rel="noopener">java Signal 处理实现&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://cs341.cs.illinois.edu/coursebook/index.html" target="_blank" rel="noopener">https://cs341.cs.illinois.edu/coursebook/index.html&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Asm How Java Byte Code Execute</title><link>https://buybyte.github.io/blog/asm-how-java-byte-code-execute/</link><pubDate>Wed, 05 Apr 2023 10:35:32 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-java-byte-code-execute/</guid><description>
+&lt;/ol></description></item><item><title>Asm How Java Byte Code Execute</title><link>https://cloudedseal.github.io/blog/asm-how-java-byte-code-execute/</link><pubDate>Wed, 05 Apr 2023 10:35:32 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-java-byte-code-execute/</guid><description>
 &lt;h1>jvm&lt;/h1>&lt;blockquote>
 &lt;p>jvm 是一个栈式(stack-based)虚拟计算机。啥意思，就是大多数的 opcode 的操作数在 operand stack 上，执行的结果也放在 oprand stack 上。&lt;br>
 有的 opcode 的操作数在 local variable table，如 &lt;code>iinc&lt;/code>。&lt;/p>
@@ -2470,7 +2470,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iconst_i" target="_blank" rel="noopener">jvms-6.5.iconst_i&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.invokestatic" target="_blank" rel="noopener">jvms-6.5.invokestatic&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.getstatic" target="_blank" rel="noopener">jvms-6.5.getstatic&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Java Jdk Proxy</title><link>https://buybyte.github.io/blog/java-jdk-proxy/</link><pubDate>Sun, 12 Feb 2023 19:02:31 +0800</pubDate><guid>https://buybyte.github.io/blog/java-jdk-proxy/</guid><description>
+&lt;/ol></description></item><item><title>Java Jdk Proxy</title><link>https://cloudedseal.github.io/blog/java-jdk-proxy/</link><pubDate>Sun, 12 Feb 2023 19:02:31 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-jdk-proxy/</guid><description>
 &lt;blockquote>
 &lt;p>分析环境: jdk8&lt;/p>
 &lt;/blockquote>
@@ -2691,7 +2691,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://github.com/stardustman/java-inspect" target="_blank" rel="noopener">分析所用代码&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/JetBrains/jdk8u_jdk/blob/master/src/share/classes/java/lang/reflect/Proxy.java#L560-L564" target="_blank" rel="noopener">$Proxy0&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.springcloud.io/post/2023-01/jdk-porxy-and-cglib/#gsc.tab=0" target="_blank" rel="noopener">jdk-porxy-and-cglib&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Algorithm Snowflake</title><link>https://buybyte.github.io/blog/algorithm-snowflake/</link><pubDate>Sat, 25 Jun 2022 11:43:45 +0800</pubDate><guid>https://buybyte.github.io/blog/algorithm-snowflake/</guid><description>
+&lt;/ol></description></item><item><title>Algorithm Snowflake</title><link>https://cloudedseal.github.io/blog/algorithm-snowflake/</link><pubDate>Sat, 25 Jun 2022 11:43:45 +0800</pubDate><guid>https://cloudedseal.github.io/blog/algorithm-snowflake/</guid><description>
 &lt;h1>分布式 ID&lt;/h1>&lt;p>snowflake 算法使用一个 64bits 的正整数作为 ID。64bits 正整数 layout 如下：&lt;/p>
 &lt;p>&lt;img src="https://raw.githubusercontent.com/stardustman/pictures/main/img/snowflake.jpg" alt="snowflake-i64-layout" loading="lazy" />&lt;/p>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
@@ -2806,7 +2806,7 @@ title="Copy code"
 &lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
 &lt;/button>
 &lt;/div>
-&lt;/div></description></item><item><title>Master Pki</title><link>https://buybyte.github.io/blog/master-pki/</link><pubDate>Thu, 23 Jun 2022 22:17:42 +0800</pubDate><guid>https://buybyte.github.io/blog/master-pki/</guid><description>
+&lt;/div></description></item><item><title>Master Pki</title><link>https://cloudedseal.github.io/blog/master-pki/</link><pubDate>Thu, 23 Jun 2022 22:17:42 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-pki/</guid><description>
 &lt;h1>certificate&lt;/h1>&lt;blockquote>
 &lt;p>目标：绑定 &lt;code>public key&lt;/code> 和 &lt;code>name&lt;/code>。一切围绕着这个目标来展开。&lt;/p>
 &lt;/blockquote>
@@ -2820,7 +2820,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://github.com/stardustman.keys" target="_blank" rel="noopener">github-public-key&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://geekflare.com/dns-caa-record/" target="_blank" rel="noopener">dns-caa-record&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/X.509" target="_blank" rel="noopener">X.509&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Java Thread Pool Params</title><link>https://buybyte.github.io/blog/java-thread-pool-params/</link><pubDate>Mon, 20 Jun 2022 22:47:13 +0800</pubDate><guid>https://buybyte.github.io/blog/java-thread-pool-params/</guid><description>
+&lt;/ol></description></item><item><title>Java Thread Pool Params</title><link>https://cloudedseal.github.io/blog/java-thread-pool-params/</link><pubDate>Mon, 20 Jun 2022 22:47:13 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-thread-pool-params/</guid><description>
 &lt;h2>基本策略&lt;span class="hx-absolute -hx-mt-20" id="基本策略">&lt;/span>
 &lt;a href="#%e5%9f%ba%e6%9c%ac%e7%ad%96%e7%95%a5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>关注点分离，任务提交和执行分离。&lt;/li>
@@ -2831,7 +2831,7 @@ title="Copy code"
 &lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://mp.weixin.qq.com/s/OKTW_mZnNJcRBrIFHONR3g" target="_blank" rel="noopener">你管这破玩意叫线程池&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Virtual Memory Address Explore</title><link>https://buybyte.github.io/blog/virtual-memory-address-explore/</link><pubDate>Sun, 22 May 2022 16:26:36 +0800</pubDate><guid>https://buybyte.github.io/blog/virtual-memory-address-explore/</guid><description>
+&lt;/ol></description></item><item><title>Virtual Memory Address Explore</title><link>https://cloudedseal.github.io/blog/virtual-memory-address-explore/</link><pubDate>Sun, 22 May 2022 16:26:36 +0800</pubDate><guid>https://cloudedseal.github.io/blog/virtual-memory-address-explore/</guid><description>
 &lt;h1>virtual memory address space layout&lt;/h1>&lt;p>&lt;img src="https://raw.githubusercontent.com/stardustman/pictures/main/img/virtual-memory-address-space.jpg" alt="virtual-memory-address-space" loading="lazy" />&lt;/p>
 &lt;h2>代码测试&lt;span class="hx-absolute -hx-mt-20" id="代码测试">&lt;/span>
 &lt;a href="#%e4%bb%a3%e7%a0%81%e6%b5%8b%e8%af%95" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
@@ -2989,7 +2989,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://www.baeldung.com/linux/proc-id-maps" target="_blank" rel="noopener">/proc/pid/maps&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Virtual_address_space" target="_blank" rel="noopener">virtual memory address space&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://elinux.org/images/b/b0/Introduction_to_Memory_Management_in_Linux.pdf" target="_blank" rel="noopener">Memory_Management_in_Linux&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Linux File Permissions</title><link>https://buybyte.github.io/blog/linux-file-permissions/</link><pubDate>Sat, 16 Apr 2022 17:33:29 +0800</pubDate><guid>https://buybyte.github.io/blog/linux-file-permissions/</guid><description>
+&lt;/ol></description></item><item><title>Linux File Permissions</title><link>https://cloudedseal.github.io/blog/linux-file-permissions/</link><pubDate>Sat, 16 Apr 2022 17:33:29 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-file-permissions/</guid><description>
 &lt;blockquote>
 &lt;p>最近在使用 k8s 过程中，需要给 mount 的文件配置权限。
 提起 file 的权限只想到 rwx，是不全面的,完整的权限是 rwxsStT。&lt;/p>
@@ -3144,7 +3144,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://linuxize.com/post/etc-shadow-file/" target="_blank" rel="noopener">etc-shadow-file&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.man7.org/linux/man-pages/man1/crontab.1.html" target="_blank" rel="noopener">crontab&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://linuxize.com/post/how-to-create-users-in-linux-using-the-useradd-command/" target="_blank" rel="noopener">useradd&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Githubpage Hugo Website</title><link>https://buybyte.github.io/blog/github-hugo-website/</link><pubDate>Sat, 19 Mar 2022 16:50:38 +0800</pubDate><guid>https://buybyte.github.io/blog/github-hugo-website/</guid><description>
+&lt;/ol></description></item><item><title>Githubpage Hugo Website</title><link>https://cloudedseal.github.io/blog/github-hugo-website/</link><pubDate>Sat, 19 Mar 2022 16:50:38 +0800</pubDate><guid>https://cloudedseal.github.io/blog/github-hugo-website/</guid><description>
 &lt;h1>步骤&lt;/h1>&lt;h2>安装软件&lt;span class="hx-absolute -hx-mt-20" id="安装软件">&lt;/span>
 &lt;a href="#%e5%ae%89%e8%a3%85%e8%bd%af%e4%bb%b6" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://git-scm.com/" target="_blank" rel="noopener">git&lt;/a>&lt;/li>
@@ -3310,18 +3310,18 @@ title="Copy code"
 &lt;li>&lt;a href="https://github.com/peaceiris/actions-hugo" target="_blank" rel="noopener">actions-hugo&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/peaceiris/actions-gh-pages" target="_blank" rel="noopener">actions-gh-pages&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-deploy-to-external-repository-external_repository" target="_blank" rel="noopener">deploy-to-external-repository-external_repository&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>2022-plan</title><link>https://buybyte.github.io/blog/2022-plan/</link><pubDate>Mon, 07 Feb 2022 23:32:40 +0800</pubDate><guid>https://buybyte.github.io/blog/2022-plan/</guid><description>
+&lt;/ol></description></item><item><title>2022-plan</title><link>https://cloudedseal.github.io/blog/2022-plan/</link><pubDate>Mon, 07 Feb 2022 23:32:40 +0800</pubDate><guid>https://cloudedseal.github.io/blog/2022-plan/</guid><description>
 &lt;ul>
 &lt;li>&lt;input disabled="" type="checkbox"> &lt;a href="https://www.bilibili.com/video/BV1Cx411S7HJ?p=2" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1Cx411S7HJ?p=2&lt;/a>&lt;/li>
 &lt;li>&lt;input disabled="" type="checkbox"> &lt;a href="https://see.stanford.edu/Course/CS107" target="_blank" rel="noopener">https://see.stanford.edu/Course/CS107&lt;/a>&lt;/li>
 &lt;li>&lt;input disabled="" type="checkbox"> ComputerSystem:A programer perspective Edtion3 English&lt;/li>
 &lt;li>&lt;input disabled="" type="checkbox"> rust-lang&lt;/li>
 &lt;li>&lt;input disabled="" type="checkbox"> kubernetes&lt;/li>
-&lt;/ul></description></item><item><title>asm-executable-and-linkable-format</title><link>https://buybyte.github.io/blog/asm-executable-and-linkable-format/</link><pubDate>Sat, 25 Dec 2021 19:39:41 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-executable-and-linkable-format/</guid><description>
+&lt;/ul></description></item><item><title>asm-executable-and-linkable-format</title><link>https://cloudedseal.github.io/blog/asm-executable-and-linkable-format/</link><pubDate>Sat, 25 Dec 2021 19:39:41 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-executable-and-linkable-format/</guid><description>
 &lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://github.com/xfenglu/everycodershouldknow#%E5%85%AD%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E9%93%BE%E6%8E%A5%E5%99%A8%E7%B3%BB%E5%88%97" target="_blank" rel="noopener">彻底理解连接器系列&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>js-eventloop</title><link>https://buybyte.github.io/blog/js-eventloop/</link><pubDate>Sun, 05 Dec 2021 23:24:48 +0800</pubDate><guid>https://buybyte.github.io/blog/js-eventloop/</guid><description>
+&lt;/ol></description></item><item><title>js-eventloop</title><link>https://cloudedseal.github.io/blog/js-eventloop/</link><pubDate>Sun, 05 Dec 2021 23:24:48 +0800</pubDate><guid>https://cloudedseal.github.io/blog/js-eventloop/</guid><description>
 &lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://www.digitalocean.com/community/tutorials/understanding-the-event-loop-callbacks-promises-and-async-await-in-javascript" target="_blank" rel="noopener">understanding-the-event-loop-callbacks-promises-and-async-await-in-javascript&lt;/a>&lt;/li>
@@ -3331,7 +3331,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://codewords.recurse.com/issues/one/an-introduction-to-functional-programming" target="_blank" rel="noopener">an-introduction-to-functional-programming&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://medium.com/jspoint/how-javascript-works-in-browser-and-node-ab7d0d09ac2f" target="_blank" rel="noopener">how-javascript-works-in-browser-and-node&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://developer.mozilla.org/en-US/docs/Web/API" target="_blank" rel="noopener">浏览器提供 Web Apis&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>k8s-deploy-container-using-yaml</title><link>https://buybyte.github.io/blog/k8s-deploy-container-using-yaml/</link><pubDate>Sun, 28 Nov 2021 10:18:03 +0800</pubDate><guid>https://buybyte.github.io/blog/k8s-deploy-container-using-yaml/</guid><description>
+&lt;/ol></description></item><item><title>k8s-deploy-container-using-yaml</title><link>https://cloudedseal.github.io/blog/k8s-deploy-container-using-yaml/</link><pubDate>Sun, 28 Nov 2021 10:18:03 +0800</pubDate><guid>https://cloudedseal.github.io/blog/k8s-deploy-container-using-yaml/</guid><description>
 &lt;p>kubernetes 作为一个云上的操作系统，要想充分利用，就要了解 kubernetes 提供的功能。告诉系统要搞啥，k8s 帮你搞定这一切，归根结底，不开发 k8s 就是一个 k8s 的用户，知道 k8s 能具体做啥，写好 YAML 就可以。&lt;/p>
 &lt;h2>如何在 k8s 上部署服务&lt;span class="hx-absolute -hx-mt-20" id="如何在-k8s-上部署服务">&lt;/span>
 &lt;a href="#%e5%a6%82%e4%bd%95%e5%9c%a8-k8s-%e4%b8%8a%e9%83%a8%e7%bd%b2%e6%9c%8d%e5%8a%a1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>create Deployment&lt;span class="hx-absolute -hx-mt-20" id="create-deployment">&lt;/span>
@@ -3515,7 +3515,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://www.katacoda.com/courses/kubernetes/kubectl-run-containers" target="_blank" rel="noopener">https://www.katacoda.com/courses/kubernetes/kubectl-run-containers&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html" target="_blank" rel="noopener">apiversion&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.redhat.com/en/topics/containers/what-is-kubernetes-deployment" target="_blank" rel="noopener">what is k8s deployment?&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>What-happens-type-url-into-browser-and-press-enter</title><link>https://buybyte.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</link><pubDate>Sat, 11 Sep 2021 16:21:12 +0800</pubDate><guid>https://buybyte.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</guid><description>
+&lt;/ol></description></item><item><title>What-happens-type-url-into-browser-and-press-enter</title><link>https://cloudedseal.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</link><pubDate>Sat, 11 Sep 2021 16:21:12 +0800</pubDate><guid>https://cloudedseal.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</guid><description>
 &lt;h2>dns query&lt;span class="hx-absolute -hx-mt-20" id="dns-query">&lt;/span>
 &lt;a href="#dns-query" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>get the ip of the target domain&lt;/p>
 &lt;h3>browser cache&lt;span class="hx-absolute -hx-mt-20" id="browser-cache">&lt;/span>
@@ -3541,7 +3541,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://www.zhihu.com/question/560616439/answer/2722866208" target="_blank" rel="noopener">Chrome 是怎么判断地址栏输入的东西是不是网址? 这就是第一步😂-omnibox&lt;/a>&lt;/li>
 &lt;li>&lt;a href="about:networking#dns" >firefox dns&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.fortinet.com/resources/cyberglossary/what-is-arp" target="_blank" rel="noopener">ARP&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>asm-java-jit</title><link>https://buybyte.github.io/blog/asm-java-jit/</link><pubDate>Sun, 18 Jul 2021 10:43:46 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-java-jit/</guid><description>
+&lt;/ol></description></item><item><title>asm-java-jit</title><link>https://cloudedseal.github.io/blog/asm-java-jit/</link><pubDate>Sun, 18 Jul 2021 10:43:46 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-java-jit/</guid><description>
 &lt;h2>前言&lt;span class="hx-absolute -hx-mt-20" id="前言">&lt;/span>
 &lt;a href="#%e5%89%8d%e8%a8%80" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>无论多么花里胡哨的功能，最终落地到一台计算机上，都是二进制代码。虽然 java 代码跑在 jvm 平台之上，但是 jvm 只是负责执行 java 自定义的一套 bytecode 的工具，只要能解释字节码，这个工具用什么语言写都是可以的。主流的 HotSpot 虚拟机选择的 C++。&lt;/p>
 &lt;h2>二进制代码探析&lt;span class="hx-absolute -hx-mt-20" id="二进制代码探析">&lt;/span>
@@ -3696,7 +3696,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://www.felixcloutier.com/x86/lea" target="_blank" rel="noopener">load-effective-address(lea)&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html" target="_blank" rel="noopener">java-bytecode&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://blog.csdn.net/appleyuchi/article/details/84036985" target="_blank" rel="noopener">圆圈数字等&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>java-keyword-volatile</title><link>https://buybyte.github.io/blog/java-keyword-volatile/</link><pubDate>Fri, 18 Jun 2021 14:54:23 +0800</pubDate><guid>https://buybyte.github.io/blog/java-keyword-volatile/</guid><description>
+&lt;/ol></description></item><item><title>java-keyword-volatile</title><link>https://cloudedseal.github.io/blog/java-keyword-volatile/</link><pubDate>Fri, 18 Jun 2021 14:54:23 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-keyword-volatile/</guid><description>
 &lt;h2>可见性问题&lt;span class="hx-absolute -hx-mt-20" id="可见性问题">&lt;/span>
 &lt;a href="#%e5%8f%af%e8%a7%81%e6%80%a7%e9%97%ae%e9%a2%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/java/java-volatile.svg" alt="thread stack frame" loading="lazy" />&lt;/p>
 &lt;h2>可见性问题思路&lt;span class="hx-absolute -hx-mt-20" id="可见性问题思路">&lt;/span>
@@ -3707,7 +3707,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Out-of-order_execution" target="_blank" rel="noopener">out-of-order-execution(dynamic execution)&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Instruction_scheduling" target="_blank" rel="noopener">Instruction_scheduling&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/41872203" target="_blank" rel="noopener">X86/GCC memory fence的一些见解&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>cs-semaphores</title><link>https://buybyte.github.io/blog/cs-semaphores/</link><pubDate>Tue, 25 May 2021 12:38:06 +0800</pubDate><guid>https://buybyte.github.io/blog/cs-semaphores/</guid><description/></item><item><title>asm-pointers-and-memory</title><link>https://buybyte.github.io/blog/asm-pointers-and-memory/</link><pubDate>Wed, 28 Apr 2021 16:04:36 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-pointers-and-memory/</guid><description>
+&lt;/ol></description></item><item><title>cs-semaphores</title><link>https://cloudedseal.github.io/blog/cs-semaphores/</link><pubDate>Tue, 25 May 2021 12:38:06 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-semaphores/</guid><description/></item><item><title>asm-pointers-and-memory</title><link>https://cloudedseal.github.io/blog/asm-pointers-and-memory/</link><pubDate>Wed, 28 Apr 2021 16:04:36 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-pointers-and-memory/</guid><description>
 &lt;h2>Basic Pointer&lt;span class="hx-absolute -hx-mt-20" id="basic-pointer">&lt;/span>
 &lt;a href="#basic-pointer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>为啥需要 Pointer？&lt;span class="hx-absolute -hx-mt-20" id="为啥需要-pointer">&lt;/span>
 &lt;a href="#%e4%b8%ba%e5%95%a5%e9%9c%80%e8%a6%81-pointer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
@@ -3839,12 +3839,12 @@ pointee(下级)
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man3/malloc.3.html" target="_blank" rel="noopener">malloc&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man3/free.3p.html" target="_blank" rel="noopener">free&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://godbolt.org/z/ncfo1q4M7" target="_blank" rel="noopener">square-function&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>cs-condition-variables</title><link>https://buybyte.github.io/blog/cs-condition-variables/</link><pubDate>Sun, 18 Apr 2021 20:44:09 +0800</pubDate><guid>https://buybyte.github.io/blog/cs-condition-variables/</guid><description>
+&lt;/ol></description></item><item><title>cs-condition-variables</title><link>https://cloudedseal.github.io/blog/cs-condition-variables/</link><pubDate>Sun, 18 Apr 2021 20:44:09 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-condition-variables/</guid><description>
 &lt;h2>condition variable 是啥？&lt;span class="hx-absolute -hx-mt-20" id="condition-variable-是啥">&lt;/span>
 &lt;a href="#condition-variable-%e6%98%af%e5%95%a5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>condition variable 是啥？本质上就是一个&lt;code>状态变量&lt;/code> +&lt;code>队列&lt;/code>。现实世界中，想要进行下一步的行动，往往需要满足一定的条件(condition)。如十字路口的交通信号灯，信号灯的颜色可以视为状态变量，根据不同的状态，汽车做出不同的选择。一条马路，可以视为&lt;code>队列&lt;/code>。红灯时, 汽车就不能通过，排队等候。绿灯时，汽车才可以通过。在计算机中，同样存在这样的问题，如父进程需要等待&lt;code>子进程完成后(条件)&lt;/code>，才能继续运行。关键就是围绕&lt;code>状态变量&lt;/code>来构建。&lt;/p>
 &lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
 &lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>1.&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_wait.3p.html" target="_blank" rel="noopener">pthread_cond_wait&lt;/a>
-2.&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_signal.3p.html" target="_blank" rel="noopener">pthread_cond_signal&lt;/a>&lt;/p></description></item><item><title>cs-english-words</title><link>https://buybyte.github.io/blog/cs-english-words/</link><pubDate>Mon, 28 Dec 2020 15:11:28 +0800</pubDate><guid>https://buybyte.github.io/blog/cs-english-words/</guid><description>
+2.&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_signal.3p.html" target="_blank" rel="noopener">pthread_cond_signal&lt;/a>&lt;/p></description></item><item><title>cs-english-words</title><link>https://cloudedseal.github.io/blog/cs-english-words/</link><pubDate>Mon, 28 Dec 2020 15:11:28 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-english-words/</guid><description>
 &lt;h2>a&lt;span class="hx-absolute -hx-mt-20" id="a">&lt;/span>
 &lt;a href="#a" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>association
@@ -4484,7 +4484,7 @@ balancing of factors all of which are not attainable at the same time
 &lt;a href="#w" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>x&lt;span class="hx-absolute -hx-mt-20" id="x">&lt;/span>
 &lt;a href="#x" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>y&lt;span class="hx-absolute -hx-mt-20" id="y">&lt;/span>
 &lt;a href="#y" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>z&lt;span class="hx-absolute -hx-mt-20" id="z">&lt;/span>
-&lt;a href="#z" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2></description></item><item><title>cs-lock</title><link>https://buybyte.github.io/blog/cs-lock/</link><pubDate>Mon, 14 Dec 2020 15:20:26 +0800</pubDate><guid>https://buybyte.github.io/blog/cs-lock/</guid><description>
+&lt;a href="#z" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2></description></item><item><title>cs-lock</title><link>https://cloudedseal.github.io/blog/cs-lock/</link><pubDate>Mon, 14 Dec 2020 15:20:26 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-lock/</guid><description>
 &lt;h2>为啥需要 lock？&lt;span class="hx-absolute -hx-mt-20" id="为啥需要-lock">&lt;/span>
 &lt;a href="#%e4%b8%ba%e5%95%a5%e9%9c%80%e8%a6%81-lock" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>多处理器的存在&lt;/li>
@@ -4870,7 +4870,7 @@ Thread2 和 Thread3 的优先级反转了。&lt;/p>
 &lt;li>&lt;a href="https://filippo.io/linux-syscall-table/" target="_blank" rel="noopener">system-call-table&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/sched_yield.2.html" target="_blank" rel="noopener">sched_yield&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/gettid.2.html" target="_blank" rel="noopener">gettid&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>cs-cache</title><link>https://buybyte.github.io/blog/cs-cache/</link><pubDate>Tue, 01 Dec 2020 08:40:29 +0800</pubDate><guid>https://buybyte.github.io/blog/cs-cache/</guid><description>
+&lt;/ol></description></item><item><title>cs-cache</title><link>https://cloudedseal.github.io/blog/cs-cache/</link><pubDate>Tue, 01 Dec 2020 08:40:29 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-cache/</guid><description>
 &lt;blockquote>
 &lt;p>There can be many caches &lt;code>stacked&lt;/code> on top of each other.
 Cache 可以一层一层累积。&lt;/p>
@@ -4981,14 +4981,14 @@ set = ？&lt;/li>
 &lt;li>&lt;a href="https://www.cs.princeton.edu/courses/archive/fall19/cos316/lectures/10-cpu-cache.pdf" target="_blank" rel="noopener">cos316-10-cpu-cache.pdf&lt;/a>&lt;/li>
 &lt;li>&lt;a href="http://aturing.umcs.maine.edu/~meadow/courses/cos335/Intel-CacheOverview.pdf" target="_blank" rel="noopener">cos355-Intel-CacheOverview&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/31875174" target="_blank" rel="noopener">细说Cache-L1/L2/L3/TLB&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>acknowledgement-timeout-retry-sequence-number</title><link>https://buybyte.github.io/blog/acknowledgement-timeout-retry-sequence-number/</link><pubDate>Mon, 30 Nov 2020 10:54:57 +0800</pubDate><guid>https://buybyte.github.io/blog/acknowledgement-timeout-retry-sequence-number/</guid><description>
+&lt;/ol></description></item><item><title>acknowledgement-timeout-retry-sequence-number</title><link>https://cloudedseal.github.io/blog/acknowledgement-timeout-retry-sequence-number/</link><pubDate>Mon, 30 Nov 2020 10:54:57 +0800</pubDate><guid>https://cloudedseal.github.io/blog/acknowledgement-timeout-retry-sequence-number/</guid><description>
 &lt;h3>TCP 要解决的问题&lt;span class="hx-absolute -hx-mt-20" id="tcp-要解决的问题">&lt;/span>
 &lt;a href="#tcp-%e8%a6%81%e8%a7%a3%e5%86%b3%e7%9a%84%e9%97%ae%e9%a2%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/notions_tcp.svg" alt="notions_tcp" loading="lazy" />&lt;/p>
 &lt;h2>references&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/tcp-congestion-control/" target="_blank" rel="noopener">tcp-congestion-control&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://web.cs.wpi.edu/~rek/Undergrad_Nets/B06/TCP_Congestion_Control.ppt" target="_blank" rel="noopener">tcp-congestion-control-ppt&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>data_and_metadata</title><link>https://buybyte.github.io/blog/data-and-metadata/</link><pubDate>Thu, 26 Nov 2020 16:18:52 +0800</pubDate><guid>https://buybyte.github.io/blog/data-and-metadata/</guid><description>
+&lt;/ol></description></item><item><title>data_and_metadata</title><link>https://cloudedseal.github.io/blog/data-and-metadata/</link><pubDate>Thu, 26 Nov 2020 16:18:52 +0800</pubDate><guid>https://cloudedseal.github.io/blog/data-and-metadata/</guid><description>
 &lt;blockquote>
 &lt;p>具体问题具体分析，确实非常重要。用正确的思想指导行动，才可事半功倍。
 现实中的客观问题有意思的地方在于：无论你选择看得见，还是选择看不见，它都在那里，关键在于有没有人去解决，解决的人有多大的决心。&lt;/p>
@@ -5092,7 +5092,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html" target="_blank" rel="noopener">class file format&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://mariadb.com/kb/en/innodb-row-formats-overview/" target="_blank" rel="noopener">InnoDB-row-format&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/" target="_blank" rel="noopener">TTL&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>notions_of_computer</title><link>https://buybyte.github.io/blog/notions-of-computer/</link><pubDate>Tue, 24 Nov 2020 13:25:13 +0800</pubDate><guid>https://buybyte.github.io/blog/notions-of-computer/</guid><description>
+&lt;/ol></description></item><item><title>notions_of_computer</title><link>https://cloudedseal.github.io/blog/notions-of-computer/</link><pubDate>Tue, 24 Nov 2020 13:25:13 +0800</pubDate><guid>https://cloudedseal.github.io/blog/notions-of-computer/</guid><description>
 &lt;h2>指导思想&lt;span class="hx-absolute -hx-mt-20" id="指导思想">&lt;/span>
 &lt;a href="#%e6%8c%87%e5%af%bc%e6%80%9d%e6%83%b3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>计算机是人发明的。由计算机组成的世界，其设计思想很明显要借鉴现实中的东西。正如一位伟人的著作开篇提出 &lt;code>“谁是我们的敌人？谁是我们的朋友？这个问题是革命的首要问题。中国过去一切革命斗争成效甚少，其基本原因就是因为不能团结真正的朋友，以攻击真正的敌人。”&lt;/code>那么应对计算机，什么才是计算机组织背后的指导思想呢？个人认为有三个：1. hierarchy(层级)、2：group(分组)、3：order(有序)&lt;/p>
 &lt;h3>hierarchy(层级)&lt;span class="hx-absolute -hx-mt-20" id="hierarchy层级">&lt;/span>
@@ -5174,7 +5174,7 @@ TCP 协议目的之一就是要保证计算机接收到的网络包的顺序。�
 &lt;li>&lt;a href="https://www.cloudflare.com/learning/network-layer/what-is-a-computer-port/" target="_blank" rel="noopener">what-is-a-computer-port&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/" target="_blank" rel="noopener">open-systems-interconnection-model&lt;/a>&lt;/li>
 &lt;li>&lt;a href="http://cseweb.ucsd.edu/classes/sp10/cse141/pdf/07/09_CSE141-Caching.pdf" target="_blank" rel="noopener">CSE141-Caching&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>data-structure-btree</title><link>https://buybyte.github.io/blog/data-structure-btree/</link><pubDate>Fri, 12 Jun 2020 14:11:02 +0800</pubDate><guid>https://buybyte.github.io/blog/data-structure-btree/</guid><description>
+&lt;/ol></description></item><item><title>data-structure-btree</title><link>https://cloudedseal.github.io/blog/data-structure-btree/</link><pubDate>Fri, 12 Jun 2020 14:11:02 +0800</pubDate><guid>https://cloudedseal.github.io/blog/data-structure-btree/</guid><description>
 &lt;h3>B-tree 特性&lt;span class="hx-absolute -hx-mt-20" id="b-tree-特性">&lt;/span>
 &lt;a href="#b-tree-%e7%89%b9%e6%80%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
 &lt;li>所有的 leaves 都在同一层级。&lt;/li>
@@ -5211,7 +5211,7 @@ TCP 协议目的之一就是要保证计算机接收到的网络包的顺序。�
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/introduction-of-b-tree-2/" target="_blank" rel="noopener">BTree introduction&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/insert-operation-in-b-tree/" target="_blank" rel="noopener">BTree insertion&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/delete-operation-in-b-tree/" target="_blank" rel="noopener">BTree deletion&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>asm-how-computer-startup</title><link>https://buybyte.github.io/blog/asm-how-computer-startup/</link><pubDate>Mon, 08 Jun 2020 08:09:12 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-computer-startup/</guid><description>
+&lt;/ol></description></item><item><title>asm-how-computer-startup</title><link>https://cloudedseal.github.io/blog/asm-how-computer-startup/</link><pubDate>Mon, 08 Jun 2020 08:09:12 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-computer-startup/</guid><description>
 &lt;p>&lt;code>x86&lt;/code> 架构计算机是如何启动的？&lt;/p>
 &lt;h2>16-bit Processors and Segmentation (1978)&lt;span class="hx-absolute -hx-mt-20" id="16-bit-processors-and-segmentation-1978">&lt;/span>
 &lt;a href="#16-bit-processors-and-segmentation-1978" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
@@ -5282,7 +5282,7 @@ title="Copy code"
 4. &lt;a href="https://en.wikipedia.org/wiki/System_Management_BIOS" target="_blank" rel="noopener">system-management-bios&lt;/a>
 5. &lt;a href="http://www.ruanyifeng.com/blog/2013/02/booting.html" target="_blank" rel="noopener">计算机是如何启动的？&lt;/a>
 6. &lt;a href="https://en.wikipedia.org/wiki/Master_boot_record" target="_blank" rel="noopener">多种 MBR 组织方式&lt;/a>
-7. &lt;a href="https://mp.weixin.qq.com/s/g6m_r28bvyyWIu1CAzxLdg" target="_blank" rel="noopener">计算机是怎样启动的？&lt;/a>&lt;/p></description></item><item><title>data-structure-heap</title><link>https://buybyte.github.io/blog/data-structure-heap/</link><pubDate>Mon, 18 May 2020 15:24:05 +0800</pubDate><guid>https://buybyte.github.io/blog/data-structure-heap/</guid><description>
+7. &lt;a href="https://mp.weixin.qq.com/s/g6m_r28bvyyWIu1CAzxLdg" target="_blank" rel="noopener">计算机是怎样启动的？&lt;/a>&lt;/p></description></item><item><title>data-structure-heap</title><link>https://cloudedseal.github.io/blog/data-structure-heap/</link><pubDate>Mon, 18 May 2020 15:24:05 +0800</pubDate><guid>https://cloudedseal.github.io/blog/data-structure-heap/</guid><description>
 &lt;h3>线性 or 非线性&lt;span class="hx-absolute -hx-mt-20" id="线性-or-非线性">&lt;/span>
 &lt;a href="#%e7%ba%bf%e6%80%a7-or-%e9%9d%9e%e7%ba%bf%e6%80%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>数据结构可以分为两大类：线性结构和非线性结构。线性结构典型的就是数组和链表，非线性典型就是树了。复杂的数据结构基本上都是两者的组合。&lt;/p>
 &lt;h3>binary heap&lt;span class="hx-absolute -hx-mt-20" id="binary-heap">&lt;/span>
@@ -5490,7 +5490,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://mp.weixin.qq.com/s/4hXBw7sZ-NKs_asOQxS7gA" target="_blank" rel="noopener">priority queue&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://web.cecs.pdx.edu/~sheard/course/Cs163/Doc/FullvsComplete.html" target="_blank" rel="noopener">full binary tree vs complete binary tree&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://web.cecs.pdx.edu/~sheard/course/Cs163/Doc/HeapReview.html" target="_blank" rel="noopener">heap review&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>os-banker's-algorithm</title><link>https://buybyte.github.io/blog/os-banker-s-algorithm/</link><pubDate>Wed, 13 May 2020 15:31:05 +0800</pubDate><guid>https://buybyte.github.io/blog/os-banker-s-algorithm/</guid><description>
+&lt;/ol></description></item><item><title>os-banker's-algorithm</title><link>https://cloudedseal.github.io/blog/os-banker-s-algorithm/</link><pubDate>Wed, 13 May 2020 15:31:05 +0800</pubDate><guid>https://cloudedseal.github.io/blog/os-banker-s-algorithm/</guid><description>
 &lt;h2>Banker&amp;rsquo;s Algorithm&lt;span class="hx-absolute -hx-mt-20" id="bankers-algorithm">&lt;/span>
 &lt;a href="#bankers-algorithm" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>银行家算法是什么&lt;span class="hx-absolute -hx-mt-20" id="银行家算法是什么">&lt;/span>
 &lt;a href="#%e9%93%b6%e8%a1%8c%e5%ae%b6%e7%ae%97%e6%b3%95%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>银行家&lt;/code>主要就是通过放贷来赚钱的。那最重要的问题是啥？当然是把钱借给还得起的人咯。试想，银行把钱都借给了还不起的人，那银行就完蛋了。假设有一批人（多个进程）来借钱（将要申请资源），但是银行剩下的钱满足不了任何人，那就直接拒绝借贷。当然了，有一部分已经借出的钱回收之后（回收已经分配的资源），又可以满足一批人中某些人的借贷需求。依次类推，银行可以判定能不能按照某个顺序来给这批人放贷。类似的思路延伸到计算机世界，同理。操作系统给多个进程分配资源，&lt;code>能不能找到一个顺序给这些进程分配资源，并逐渐回收资源？&lt;/code>从而满足多个进程的资源需求。采用银行家放贷和收贷的思路（这里排除利息，放多少贷，收多少钱。呵呵，哪有此种好事？）来分配和回收系统资源就是所谓的&lt;code>银行家算法&lt;/code>。&lt;/p>
@@ -5738,7 +5738,7 @@ title="Copy code"
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://zh.wikipedia.org/wiki/%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">银行家算法-wiki&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/bankers-algorithm-in-operating-system-2/" target="_blank" rel="noopener">bankers-algorithm&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>cache-replacement-policy-lru</title><link>https://buybyte.github.io/blog/cache-replacement-policy-lru/</link><pubDate>Mon, 11 May 2020 08:39:15 +0800</pubDate><guid>https://buybyte.github.io/blog/cache-replacement-policy-lru/</guid><description>
+&lt;/ol></description></item><item><title>cache-replacement-policy-lru</title><link>https://cloudedseal.github.io/blog/cache-replacement-policy-lru/</link><pubDate>Mon, 11 May 2020 08:39:15 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cache-replacement-policy-lru/</guid><description>
 &lt;h2>Cache&lt;span class="hx-absolute -hx-mt-20" id="cache">&lt;/span>
 &lt;a href="#cache" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>cache&lt;span class="hx-absolute -hx-mt-20" id="cache-1">&lt;/span>
 &lt;a href="#cache-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>为啥要有 &lt;code>Cache&lt;/code> 呢？根本原因是各种存储速度不匹配。或者为了加快某个过程，直接将多次转换的转换结果直接缓存起来，便于再次使用时直接绕开这些转换过程。典型的就是 &lt;code>MMU&lt;/code> 的地址翻译过程，直接将&lt;code>虚拟地址&lt;/code>多次转换的最后结果，也就是&lt;code>物理地址&lt;/code>，直接缓存到 &lt;code>TLB&lt;/code> 中，下次再次访问同一个虚拟地址，直接从虚拟地址拿到物理地址，绕开多次转换过程，这可不就提高了速度。&lt;code>CPU&lt;/code> 的速度比 &lt;code>Memory&lt;/code> 快得多，为了配上 &lt;code>CPU&lt;/code> 超级快的速度，也就有了 &lt;code>L1&lt;/code>，&lt;code>L2&lt;/code>，&lt;code>L3&lt;/code> cache。还有就是存储器层次结构，&lt;em>速度快，容量小&lt;/em>的存储作为&lt;em>速度慢，容量大&lt;/em>的上级缓存。&lt;/p>
@@ -6034,7 +6034,7 @@ title="Copy code"
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/lru-cache-implementation/" target="_blank" rel="noopener">least recently used&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Cache_%28computing%29" target="_blank" rel="noopener">cache wiki&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>network-dhcp</title><link>https://buybyte.github.io/blog/network-dhcp/</link><pubDate>Sat, 09 May 2020 09:36:27 +0800</pubDate><guid>https://buybyte.github.io/blog/network-dhcp/</guid><description>
+&lt;/ol></description></item><item><title>network-dhcp</title><link>https://cloudedseal.github.io/blog/network-dhcp/</link><pubDate>Sat, 09 May 2020 09:36:27 +0800</pubDate><guid>https://cloudedseal.github.io/blog/network-dhcp/</guid><description>
 &lt;h2>DHCP 步骤&lt;span class="hx-absolute -hx-mt-20" id="dhcp-步骤">&lt;/span>
 &lt;a href="#dhcp-%e6%ad%a5%e9%aa%a4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>Discover&lt;span class="hx-absolute -hx-mt-20" id="discover">&lt;/span>
 &lt;a href="#discover" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h3>Offer&lt;span class="hx-absolute -hx-mt-20" id="offer">&lt;/span>

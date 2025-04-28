@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Ipc</title><link>https://buybyte.github.io/tags/ipc/</link><description>Recent content in Ipc on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 23 Jul 2024 15:00:13 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/ipc/index.xml" rel="self" type="application/rss+xml"/><item><title>Ipc Unix Domain Socket</title><link>https://buybyte.github.io/blog/ipc-unix-domain-socket/</link><pubDate>Tue, 23 Jul 2024 15:00:13 +0800</pubDate><guid>https://buybyte.github.io/blog/ipc-unix-domain-socket/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Ipc</title><link>https://cloudedseal.github.io/tags/ipc/</link><description>Recent content in Ipc on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 23 Jul 2024 15:00:13 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/ipc/index.xml" rel="self" type="application/rss+xml"/><item><title>Ipc Unix Domain Socket</title><link>https://cloudedseal.github.io/blog/ipc-unix-domain-socket/</link><pubDate>Tue, 23 Jul 2024 15:00:13 +0800</pubDate><guid>https://cloudedseal.github.io/blog/ipc-unix-domain-socket/</guid><description>
 &lt;h1>unix domain socket 是啥?&lt;/h1>&lt;blockquote>
 &lt;p>A &lt;code>Unix domain socket (UDS)&lt;/code> or &lt;code>IPC socket&lt;/code> (inter-process communication) is a data communications &lt;code>endpoint&lt;/code> for exchanging data between processes executing on the &lt;code>same&lt;/code> host operating system.
 同一台机器两个不同的进程之间交换数据，优化过的 socket。&lt;/p>
@@ -189,7 +189,7 @@ title="Copy code"
 &lt;h1>References&lt;/h1>&lt;ol>
 &lt;li>&lt;a href="https://github.com/kohlschutter/junixsocket" target="_blank" rel="noopener">junixsocket&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Unix_domain_socket" target="_blank" rel="noopener">Unix_domain_socket&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Ipc Signal</title><link>https://buybyte.github.io/blog/ipc-signal/</link><pubDate>Tue, 11 Apr 2023 20:15:57 +0800</pubDate><guid>https://buybyte.github.io/blog/ipc-signal/</guid><description>
+&lt;/ol></description></item><item><title>Ipc Signal</title><link>https://cloudedseal.github.io/blog/ipc-signal/</link><pubDate>Tue, 11 Apr 2023 20:15:57 +0800</pubDate><guid>https://cloudedseal.github.io/blog/ipc-signal/</guid><description>
 &lt;h1>signal&lt;/h1>&lt;h2>什么是 signal&lt;span class="hx-absolute -hx-mt-20" id="什么是-signal">&lt;/span>
 &lt;a href="#%e4%bb%80%e4%b9%88%e6%98%af-signal" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>A signal can be thought of as a &lt;code>software interrupt&lt;/code>.

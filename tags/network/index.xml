@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Network</title><link>https://buybyte.github.io/tags/network/</link><description>Recent content in Network on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 11 Sep 2021 16:21:12 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/network/index.xml" rel="self" type="application/rss+xml"/><item><title>What-happens-type-url-into-browser-and-press-enter</title><link>https://buybyte.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</link><pubDate>Sat, 11 Sep 2021 16:21:12 +0800</pubDate><guid>https://buybyte.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Network</title><link>https://cloudedseal.github.io/tags/network/</link><description>Recent content in Network on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 11 Sep 2021 16:21:12 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/network/index.xml" rel="self" type="application/rss+xml"/><item><title>What-happens-type-url-into-browser-and-press-enter</title><link>https://cloudedseal.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</link><pubDate>Sat, 11 Sep 2021 16:21:12 +0800</pubDate><guid>https://cloudedseal.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</guid><description>
 &lt;h2>dns query&lt;span class="hx-absolute -hx-mt-20" id="dns-query">&lt;/span>
 &lt;a href="#dns-query" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>get the ip of the target domain&lt;/p>
 &lt;h3>browser cache&lt;span class="hx-absolute -hx-mt-20" id="browser-cache">&lt;/span>
@@ -24,7 +24,7 @@
 &lt;li>&lt;a href="https://www.zhihu.com/question/560616439/answer/2722866208" target="_blank" rel="noopener">Chrome 是怎么判断地址栏输入的东西是不是网址? 这就是第一步😂-omnibox&lt;/a>&lt;/li>
 &lt;li>&lt;a href="about:networking#dns" >firefox dns&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.fortinet.com/resources/cyberglossary/what-is-arp" target="_blank" rel="noopener">ARP&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>network-dhcp</title><link>https://buybyte.github.io/blog/network-dhcp/</link><pubDate>Sat, 09 May 2020 09:36:27 +0800</pubDate><guid>https://buybyte.github.io/blog/network-dhcp/</guid><description>
+&lt;/ol></description></item><item><title>network-dhcp</title><link>https://cloudedseal.github.io/blog/network-dhcp/</link><pubDate>Sat, 09 May 2020 09:36:27 +0800</pubDate><guid>https://cloudedseal.github.io/blog/network-dhcp/</guid><description>
 &lt;h2>DHCP 步骤&lt;span class="hx-absolute -hx-mt-20" id="dhcp-步骤">&lt;/span>
 &lt;a href="#dhcp-%e6%ad%a5%e9%aa%a4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>Discover&lt;span class="hx-absolute -hx-mt-20" id="discover">&lt;/span>
 &lt;a href="#discover" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h3>Offer&lt;span class="hx-absolute -hx-mt-20" id="offer">&lt;/span>
@@ -37,7 +37,7 @@
 &lt;li>&lt;a href="https://medium.com/@bromiley/full-packet-friday-dhcp-abbc6b7b3c77" target="_blank" rel="noopener">full-packet-friday-dhcp&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/dynamic-host-configuration-protocol-dhcp/" target="_blank" rel="noopener">dynamic-host-configuration-protocal&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://tools.ietf.org/html/rfc1541" target="_blank" rel="noopener">dhcp-rfc&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>network-dns</title><link>https://buybyte.github.io/blog/network-dns/</link><pubDate>Thu, 23 Apr 2020 10:27:04 +0800</pubDate><guid>https://buybyte.github.io/blog/network-dns/</guid><description>
+&lt;/ol></description></item><item><title>network-dns</title><link>https://cloudedseal.github.io/blog/network-dns/</link><pubDate>Thu, 23 Apr 2020 10:27:04 +0800</pubDate><guid>https://cloudedseal.github.io/blog/network-dns/</guid><description>
 &lt;blockquote>
 &lt;p>怎样学习一个新的东西，也可以按照一定的套路的。这个东西解决什么问题？这个东西怎样解决问题？
 还有没有其他方法？&lt;/p>
@@ -263,7 +263,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://github.com/ogham/dog" target="_blank" rel="noopener">dns-client-dog&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://github.com/mr-karan/doggo" target="_blank" rel="noopener">dns-client-doggo&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://dnsspeedtest.online/" target="_blank" rel="noopener">dns速度测试&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>wireshark</title><link>https://buybyte.github.io/blog/wireshark/</link><pubDate>Tue, 10 Sep 2019 09:51:07 +0800</pubDate><guid>https://buybyte.github.io/blog/wireshark/</guid><description>
+&lt;/ol></description></item><item><title>wireshark</title><link>https://cloudedseal.github.io/blog/wireshark/</link><pubDate>Tue, 10 Sep 2019 09:51:07 +0800</pubDate><guid>https://cloudedseal.github.io/blog/wireshark/</guid><description>
 &lt;h2>Wireshark Windows 配置 SSL&lt;span class="hx-absolute -hx-mt-20" id="wireshark-windows-配置-ssl">&lt;/span>
 &lt;a href="#wireshark-windows-%e9%85%8d%e7%bd%ae-ssl" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>Version 3.0.3&lt;/p>
@@ -279,7 +279,7 @@ title="Copy code"
 &lt;a href="#%e9%87%8d%e5%90%af-wireshark" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h2>过滤器查看&lt;span class="hx-absolute -hx-mt-20" id="过滤器查看">&lt;/span>
 &lt;a href="#%e8%bf%87%e6%bb%a4%e5%99%a8%e6%9f%a5%e7%9c%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>视图 -&amp;gt; 内部 -&amp;gt; 支持的协议&lt;/p>
-&lt;/blockquote></description></item><item><title>master-ip</title><link>https://buybyte.github.io/blog/master-ip/</link><pubDate>Tue, 04 Jun 2019 15:32:28 +0800</pubDate><guid>https://buybyte.github.io/blog/master-ip/</guid><description>
+&lt;/blockquote></description></item><item><title>master-ip</title><link>https://cloudedseal.github.io/blog/master-ip/</link><pubDate>Tue, 04 Jun 2019 15:32:28 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-ip/</guid><description>
 &lt;h1>Motivation&lt;/h1>&lt;p>The Internet Protocol is designed for use in interconnected systems of &lt;strong>packet-switched&lt;/strong> computer communication networks. Such a system has been called a &amp;ldquo;catenet&amp;rdquo;. The internet protocol provides for transmitting blocks of data called datagrams from sources to destinations, where sources and destinations are hosts identified by &lt;strong>fixed length addresses&lt;/strong>. The internet protocol also provides for &lt;strong>fragmentation&lt;/strong> and &lt;strong>reassembly&lt;/strong> of long datagrams, if necessary, for transmission through &amp;ldquo;small packet&amp;rdquo; networks.&lt;/p>
 &lt;blockquote>
 &lt;p>IPv4 is a connectionless protocol for use on packet-switched networks. It operates on a best effort delivery model, in that it does not guarantee delivery, nor does it assure proper sequencing or avoidance of duplicate delivery. These aspects, including data integrity, are addressed by an upper layer transport protocol, such as the Transmission Control Protocol (TCP).&lt;/p>

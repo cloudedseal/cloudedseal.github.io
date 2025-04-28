@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Git</title><link>https://buybyte.github.io/tags/git/</link><description>Recent content in Git on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 28 Dec 2019 13:15:29 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>master-git</title><link>https://buybyte.github.io/blog/master-git/</link><pubDate>Sat, 28 Dec 2019 13:15:29 +0800</pubDate><guid>https://buybyte.github.io/blog/master-git/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Git</title><link>https://cloudedseal.github.io/tags/git/</link><description>Recent content in Git on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 28 Dec 2019 13:15:29 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/git/index.xml" rel="self" type="application/rss+xml"/><item><title>master-git</title><link>https://cloudedseal.github.io/blog/master-git/</link><pubDate>Sat, 28 Dec 2019 13:15:29 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-git/</guid><description>
 &lt;h2>git init&lt;span class="hx-absolute -hx-mt-20" id="git-init">&lt;/span>
 &lt;a href="#git-init" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>Create an empty Git repository or reinitialize an existing one
@@ -1302,7 +1302,7 @@ master 分支合并到 new-branch 分支实质：&lt;/p>
 &lt;li>&lt;a href="https://learngitbranching.js.org/" target="_blank" rel="noopener">git-branch&lt;/a>&lt;/li>
 &lt;li>&lt;a href="http://marklodato.github.io/visual-git-guide/index-en.html" target="_blank" rel="noopener">visual-git-reference&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://dev.to/lydiahallie/cs-visualized-useful-git-commands-37p1" target="_blank" rel="noopener">visualized-useful-git-commands&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>git-commands</title><link>https://buybyte.github.io/blog/git-commands/</link><pubDate>Mon, 20 May 2019 22:33:03 +0800</pubDate><guid>https://buybyte.github.io/blog/git-commands/</guid><description>
+&lt;/ol></description></item><item><title>git-commands</title><link>https://cloudedseal.github.io/blog/git-commands/</link><pubDate>Mon, 20 May 2019 22:33:03 +0800</pubDate><guid>https://cloudedseal.github.io/blog/git-commands/</guid><description>
 &lt;p>git rebase -i HEAD~N&lt;/p>
 &lt;blockquote>
 &lt;p>复制提交记录&lt;/p>

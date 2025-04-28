@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Java</title><link>https://buybyte.github.io/tags/java/</link><description>Recent content in Java on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 09 Apr 2025 10:56:10 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/java/index.xml" rel="self" type="application/rss+xml"/><item><title>Java String Concat in Loop</title><link>https://buybyte.github.io/blog/java-string-concat-in-loop/</link><pubDate>Wed, 09 Apr 2025 10:56:10 +0800</pubDate><guid>https://buybyte.github.io/blog/java-string-concat-in-loop/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Java</title><link>https://cloudedseal.github.io/tags/java/</link><description>Recent content in Java on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 09 Apr 2025 10:56:10 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/java/index.xml" rel="self" type="application/rss+xml"/><item><title>Java String Concat in Loop</title><link>https://cloudedseal.github.io/blog/java-string-concat-in-loop/</link><pubDate>Wed, 09 Apr 2025 10:56:10 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-string-concat-in-loop/</guid><description>
 &lt;h1>分析环境&lt;/h1>&lt;blockquote>
 &lt;p>jdk8&lt;/p>
 &lt;/blockquote>
@@ -74,7 +74,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iinc" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iinc&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.getstatic" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.getstatic&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.invokevirtual" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.invokevirtual&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Asm How Java Byte Code Execute</title><link>https://buybyte.github.io/blog/asm-how-java-byte-code-execute/</link><pubDate>Wed, 05 Apr 2023 10:35:32 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-how-java-byte-code-execute/</guid><description>
+&lt;/ol></description></item><item><title>Asm How Java Byte Code Execute</title><link>https://cloudedseal.github.io/blog/asm-how-java-byte-code-execute/</link><pubDate>Wed, 05 Apr 2023 10:35:32 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-java-byte-code-execute/</guid><description>
 &lt;h1>jvm&lt;/h1>&lt;blockquote>
 &lt;p>jvm 是一个栈式(stack-based)虚拟计算机。啥意思，就是大多数的 opcode 的操作数在 operand stack 上，执行的结果也放在 oprand stack 上。&lt;br>
 有的 opcode 的操作数在 local variable table，如 &lt;code>iinc&lt;/code>。&lt;/p>
@@ -108,7 +108,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.iconst_i" target="_blank" rel="noopener">jvms-6.5.iconst_i&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.invokestatic" target="_blank" rel="noopener">jvms-6.5.invokestatic&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-6.html#jvms-6.5.getstatic" target="_blank" rel="noopener">jvms-6.5.getstatic&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>asm-java-jit</title><link>https://buybyte.github.io/blog/asm-java-jit/</link><pubDate>Sun, 18 Jul 2021 10:43:46 +0800</pubDate><guid>https://buybyte.github.io/blog/asm-java-jit/</guid><description>
+&lt;/ol></description></item><item><title>asm-java-jit</title><link>https://cloudedseal.github.io/blog/asm-java-jit/</link><pubDate>Sun, 18 Jul 2021 10:43:46 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-java-jit/</guid><description>
 &lt;h2>前言&lt;span class="hx-absolute -hx-mt-20" id="前言">&lt;/span>
 &lt;a href="#%e5%89%8d%e8%a8%80" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>无论多么花里胡哨的功能，最终落地到一台计算机上，都是二进制代码。虽然 java 代码跑在 jvm 平台之上，但是 jvm 只是负责执行 java 自定义的一套 bytecode 的工具，只要能解释字节码，这个工具用什么语言写都是可以的。主流的 HotSpot 虚拟机选择的 C++。&lt;/p>
 &lt;h2>二进制代码探析&lt;span class="hx-absolute -hx-mt-20" id="二进制代码探析">&lt;/span>

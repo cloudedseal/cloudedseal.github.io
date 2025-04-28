@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Data Structure</title><link>https://buybyte.github.io/tags/data-structure/</link><description>Recent content in Data Structure on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 12 Jun 2020 14:11:02 +0800</lastBuildDate><atom:link href="https://buybyte.github.io/tags/data-structure/index.xml" rel="self" type="application/rss+xml"/><item><title>data-structure-btree</title><link>https://buybyte.github.io/blog/data-structure-btree/</link><pubDate>Fri, 12 Jun 2020 14:11:02 +0800</pubDate><guid>https://buybyte.github.io/blog/data-structure-btree/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Data Structure</title><link>https://cloudedseal.github.io/tags/data-structure/</link><description>Recent content in Data Structure on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 12 Jun 2020 14:11:02 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/data-structure/index.xml" rel="self" type="application/rss+xml"/><item><title>data-structure-btree</title><link>https://cloudedseal.github.io/blog/data-structure-btree/</link><pubDate>Fri, 12 Jun 2020 14:11:02 +0800</pubDate><guid>https://cloudedseal.github.io/blog/data-structure-btree/</guid><description>
 &lt;h3>B-tree 特性&lt;span class="hx-absolute -hx-mt-20" id="b-tree-特性">&lt;/span>
 &lt;a href="#b-tree-%e7%89%b9%e6%80%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
 &lt;li>所有的 leaves 都在同一层级。&lt;/li>
@@ -35,7 +35,7 @@
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/introduction-of-b-tree-2/" target="_blank" rel="noopener">BTree introduction&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/insert-operation-in-b-tree/" target="_blank" rel="noopener">BTree insertion&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/delete-operation-in-b-tree/" target="_blank" rel="noopener">BTree deletion&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>data-structure-heap</title><link>https://buybyte.github.io/blog/data-structure-heap/</link><pubDate>Mon, 18 May 2020 15:24:05 +0800</pubDate><guid>https://buybyte.github.io/blog/data-structure-heap/</guid><description>
+&lt;/ol></description></item><item><title>data-structure-heap</title><link>https://cloudedseal.github.io/blog/data-structure-heap/</link><pubDate>Mon, 18 May 2020 15:24:05 +0800</pubDate><guid>https://cloudedseal.github.io/blog/data-structure-heap/</guid><description>
 &lt;h3>线性 or 非线性&lt;span class="hx-absolute -hx-mt-20" id="线性-or-非线性">&lt;/span>
 &lt;a href="#%e7%ba%bf%e6%80%a7-or-%e9%9d%9e%e7%ba%bf%e6%80%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>数据结构可以分为两大类：线性结构和非线性结构。线性结构典型的就是数组和链表，非线性典型就是树了。复杂的数据结构基本上都是两者的组合。&lt;/p>
 &lt;h3>binary heap&lt;span class="hx-absolute -hx-mt-20" id="binary-heap">&lt;/span>
@@ -243,12 +243,12 @@ title="Copy code"
 &lt;li>&lt;a href="https://mp.weixin.qq.com/s/4hXBw7sZ-NKs_asOQxS7gA" target="_blank" rel="noopener">priority queue&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://web.cecs.pdx.edu/~sheard/course/Cs163/Doc/FullvsComplete.html" target="_blank" rel="noopener">full binary tree vs complete binary tree&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://web.cecs.pdx.edu/~sheard/course/Cs163/Doc/HeapReview.html" target="_blank" rel="noopener">heap review&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>data-structure-red-black-tree</title><link>https://buybyte.github.io/blog/data-structure-red-black-tree/</link><pubDate>Mon, 27 Apr 2020 08:50:28 +0800</pubDate><guid>https://buybyte.github.io/blog/data-structure-red-black-tree/</guid><description>
+&lt;/ol></description></item><item><title>data-structure-red-black-tree</title><link>https://cloudedseal.github.io/blog/data-structure-red-black-tree/</link><pubDate>Mon, 27 Apr 2020 08:50:28 +0800</pubDate><guid>https://cloudedseal.github.io/blog/data-structure-red-black-tree/</guid><description>
 &lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/datastructure/2-3-tree-read-black-tree-2-3-tree.svg" alt="2-3tree rbtree" loading="lazy" />&lt;/p>
 &lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html" target="_blank" rel="noopener">red-black-tree-visualization&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>bloomfilter</title><link>https://buybyte.github.io/blog/bloomfilter/</link><pubDate>Fri, 22 Nov 2019 09:05:04 +0800</pubDate><guid>https://buybyte.github.io/blog/bloomfilter/</guid><description>
+&lt;/ol></description></item><item><title>bloomfilter</title><link>https://cloudedseal.github.io/blog/bloomfilter/</link><pubDate>Fri, 22 Nov 2019 09:05:04 +0800</pubDate><guid>https://cloudedseal.github.io/blog/bloomfilter/</guid><description>
 &lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>
