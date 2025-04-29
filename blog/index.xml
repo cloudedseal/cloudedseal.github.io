@@ -1916,7 +1916,8 @@ title="Copy code"
 &lt;li>&lt;a href="https://github.com/kohlschutter/junixsocket" target="_blank" rel="noopener">junixsocket&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Unix_domain_socket" target="_blank" rel="noopener">Unix_domain_socket&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Master Elf</title><link>https://cloudedseal.github.io/blog/master-elf/</link><pubDate>Thu, 30 May 2024 15:29:57 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-elf/</guid><description>
-&lt;h1>hello world&lt;/h1>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h2>hello world&lt;span class="hx-absolute -hx-mt-20" id="hello-world">&lt;/span>
+&lt;a href="#hello-world" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;hello world&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
@@ -1933,7 +1934,8 @@ title="Copy code"
 &lt;blockquote>
 &lt;p>gcc &amp;ndash;save-temps -o hello hello.c&lt;/p>
 &lt;/blockquote>
-&lt;h1>&lt;strong>What is ELF?&lt;/strong>&lt;/h1>&lt;p>ELF (Executable and Linkable Format) is a &lt;strong>standardized binary format&lt;/strong> for storing compiled programs, libraries, and other binaries on Unix-like systems (e.g., Linux). It defines how machine code, data, symbols, relocation information, and metadata are organized in files like:&lt;/p>
+&lt;h2>&lt;strong>What is ELF?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="what-is-elf">&lt;/span>
+&lt;a href="#what-is-elf" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>ELF (Executable and Linkable Format) is a &lt;strong>standardized binary format&lt;/strong> for storing compiled programs, libraries, and other binaries on Unix-like systems (e.g., Linux). It defines how machine code, data, symbols, relocation information, and metadata are organized in files like:&lt;/p>
 &lt;ul>
 &lt;li>Executables (&lt;code>./hello&lt;/code>)&lt;/li>
 &lt;li>Object files (&lt;code>hello.o&lt;/code>)&lt;/li>
@@ -1941,14 +1943,15 @@ title="Copy code"
 &lt;li>Core dumps&lt;/li>
 &lt;/ul>
 &lt;hr>
-&lt;h1>&lt;strong>ELF File Structure&lt;/strong>&lt;/h1>&lt;p>An ELF file has two primary views:&lt;/p>
-&lt;h2>&lt;strong>Linking View (Sections)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="linking-view-sections">&lt;/span>
-&lt;a href="#linking-view-sections" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;h2>&lt;strong>ELF File Structure&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="elf-file-structure">&lt;/span>
+&lt;a href="#elf-file-structure" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>An ELF file has two primary views:&lt;/p>
+&lt;h3>&lt;strong>Linking View (Sections)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="linking-view-sections">&lt;/span>
+&lt;a href="#linking-view-sections" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
 &lt;li>Used during &lt;code>compilation/linking&lt;/code> to combine object files.&lt;/li>
 &lt;li>Contains &lt;strong>section headers&lt;/strong> describing discrete parts of the file.&lt;/li>
 &lt;/ul>
-&lt;h2>&lt;strong>Execution View (Segments)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="execution-view-segments">&lt;/span>
-&lt;a href="#execution-view-segments" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;h3>&lt;strong>Execution View (Segments)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="execution-view-segments">&lt;/span>
+&lt;a href="#execution-view-segments" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
 &lt;li>Used at &lt;code>runtime&lt;/code> to load the program into memory.&lt;/li>
 &lt;li>Contains &lt;strong>program headers&lt;/strong> mapping sections to memory segments.&lt;/li>
 &lt;/ul>
@@ -2104,9 +2107,9 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h2>segment LOAD 理解&lt;span class="hx-absolute -hx-mt-20" id="segment-load-理解">&lt;/span>
-&lt;a href="#segment-load-%e7%90%86%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>&lt;strong>Explanation of the Two Lines in the &lt;code>LOAD&lt;/code> Segment&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="explanation-of-the-two-lines-in-the">&lt;/span>
-&lt;a href="#explanation-of-the-two-lines-in-the" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Here’s a breakdown of the two lines from the &lt;code>LOAD&lt;/code> segment in your &lt;code>readelf -l hello&lt;/code> output:&lt;/p>
+&lt;h3>segment LOAD 理解&lt;span class="hx-absolute -hx-mt-20" id="segment-load-理解">&lt;/span>
+&lt;a href="#segment-load-%e7%90%86%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>&lt;strong>Explanation of the Two Lines in the &lt;code>LOAD&lt;/code> Segment&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="explanation-of-the-two-lines-in-the">&lt;/span>
+&lt;a href="#explanation-of-the-two-lines-in-the" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Here’s a breakdown of the two lines from the &lt;code>LOAD&lt;/code> segment in your &lt;code>readelf -l hello&lt;/code> output:&lt;/p>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;pre>&lt;code>LOAD 0x0000000000000000 0x0000000000000000 0x0000000000000000
 0x0000000000000628 0x0000000000000628 R 0x1000&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
@@ -2120,8 +2123,8 @@ title="Copy code"
 &lt;/div>
 &lt;/div>
 &lt;hr>
-&lt;h3>&lt;strong>Line-by-Line Breakdown&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="line-by-line-breakdown">&lt;/span>
-&lt;a href="#line-by-line-breakdown" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;table>
+&lt;h4>&lt;strong>Line-by-Line Breakdown&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="line-by-line-breakdown">&lt;/span>
+&lt;a href="#line-by-line-breakdown" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;table>
 &lt;thead>
 &lt;tr>
 &lt;th>Field&lt;/th>
@@ -2133,7 +2136,7 @@ title="Copy code"
 &lt;tr>
 &lt;td>&lt;strong>Type&lt;/strong>&lt;/td>
 &lt;td>&lt;code>LOAD&lt;/code>&lt;/td>
-&lt;td>This segment is loaded into memory during execution.&lt;/td>
+&lt;td>This segment is &lt;code>loaded&lt;/code> into memory during execution.&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;strong>Offset&lt;/strong>&lt;/td>
@@ -2143,22 +2146,22 @@ title="Copy code"
 &lt;tr>
 &lt;td>&lt;strong>VirtAddr&lt;/strong>&lt;/td>
 &lt;td>&lt;code>0x0000000000000000&lt;/code>&lt;/td>
-&lt;td>Virtual memory address where this segment is mapped (position-independent; resolved at runtime).&lt;/td>
+&lt;td>&lt;code>Virtual memory address&lt;/code> where this segment is mapped (position-independent; resolved at runtime).&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;strong>PhysAddr&lt;/strong>&lt;/td>
 &lt;td>&lt;code>0x0000000000000000&lt;/code>&lt;/td>
-&lt;td>Physical memory address (ignored for executables; used in firmware).&lt;/td>
+&lt;td>&lt;code>Physical memory address&lt;/code> (ignored for executables; used in firmware).&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;strong>FileSiz&lt;/strong>&lt;/td>
 &lt;td>&lt;code>0x0000000000000628&lt;/code> (1576 bytes)&lt;/td>
-&lt;td>Size of the segment in the file.&lt;/td>
+&lt;td>&lt;code>Size&lt;/code> of the segment in the file.&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;strong>MemSiz&lt;/strong>&lt;/td>
 &lt;td>&lt;code>0x0000000000000628&lt;/code> (1576 bytes)&lt;/td>
-&lt;td>Size of the segment in memory (same as &lt;code>FileSiz&lt;/code>; no zero-filled padding).&lt;/td>
+&lt;td>&lt;code>Size&lt;/code> of the segment in memory (same as &lt;code>FileSiz&lt;/code>; no zero-filled padding).&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>&lt;strong>Flags&lt;/strong>&lt;/td>
@@ -2168,13 +2171,13 @@ title="Copy code"
 &lt;tr>
 &lt;td>&lt;strong>Align&lt;/strong>&lt;/td>
 &lt;td>&lt;code>0x1000&lt;/code> (4096 bytes)&lt;/td>
-&lt;td>Alignment requirement (must be page-aligned in memory).&lt;/td>
+&lt;td>Alignment requirement (must be &lt;code>page-aligned&lt;/code> in memory).&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
 &lt;hr>
-&lt;h3>&lt;strong>Purpose of This Segment&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="purpose-of-this-segment">&lt;/span>
-&lt;a href="#purpose-of-this-segment" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>This &lt;code>LOAD&lt;/code> segment maps &lt;strong>read-only metadata&lt;/strong> into memory, including:&lt;/p>
+&lt;h4>&lt;strong>Purpose of This Segment&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="purpose-of-this-segment">&lt;/span>
+&lt;a href="#purpose-of-this-segment" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>This &lt;code>LOAD&lt;/code> segment maps &lt;strong>read-only metadata&lt;/strong> into memory, including:&lt;/p>
 &lt;ul>
 &lt;li>&lt;strong>&lt;code>.interp&lt;/code>&lt;/strong>: Path to the dynamic linker (&lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code>).&lt;/li>
 &lt;li>&lt;strong>&lt;code>.note.gnu.build-id&lt;/code>&lt;/strong>: Unique identifier for debugging.&lt;/li>
@@ -2183,8 +2186,8 @@ title="Copy code"
 &lt;/ul>
 &lt;p>It is critical for &lt;strong>dynamic linking&lt;/strong> and &lt;strong>runtime symbol resolution&lt;/strong>.&lt;/p>
 &lt;hr>
-&lt;h3>&lt;strong>Why Are &lt;code>VirtAddr&lt;/code> and &lt;code>PhysAddr&lt;/code> Zero?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="why-are">&lt;/span>
-&lt;a href="#why-are" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;h4>&lt;strong>Why Are &lt;code>VirtAddr&lt;/code> and &lt;code>PhysAddr&lt;/code> Zero?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="why-are">&lt;/span>
+&lt;a href="#why-are" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
 &lt;li>&lt;strong>Position-Independent Executable (PIE)&lt;/strong>:&lt;br>
 The binary is compiled as &lt;code>DYN&lt;/code> (shared object style), allowing the OS to load it at a &lt;strong>randomized base address&lt;/strong> (ASLR).
 &lt;ul>
@@ -2194,16 +2197,16 @@ The binary is compiled as &lt;code>DYN&lt;/code> (shared object style), allowing
 &lt;/li>
 &lt;/ul>
 &lt;hr>
-&lt;h3>&lt;strong>Security Implications&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="security-implications">&lt;/span>
-&lt;a href="#security-implications" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;h4>&lt;strong>Security Implications&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="security-implications">&lt;/span>
+&lt;a href="#security-implications" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
 &lt;li>&lt;strong>No Write or Execute Permissions&lt;/strong>:&lt;br>
 The &lt;code>R&lt;/code> flag ensures this segment is &lt;strong>read-only&lt;/strong>, protecting metadata from tampering.&lt;/li>
 &lt;li>&lt;strong>Alignment (&lt;code>0x1000&lt;/code>)&lt;/strong>:&lt;br>
 Ensures the segment starts at a &lt;strong>page boundary&lt;/strong> (4KB), satisfying memory protection requirements.&lt;/li>
 &lt;/ul>
 &lt;hr>
-&lt;h3>&lt;strong>Example Mapping in Memory&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example-mapping-in-memory">&lt;/span>
-&lt;a href="#example-mapping-in-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>At runtime, the OS maps this segment as follows:&lt;/p>
+&lt;h4>&lt;strong>Example Mapping in Memory&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example-mapping-in-memory">&lt;/span>
+&lt;a href="#example-mapping-in-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>At runtime, the OS maps this segment as follows:&lt;/p>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;pre>&lt;code>Virtual Address Range Permissions Purpose
 [BASE_ADDR] R .interp, .note.gnu.build-id, .gnu.hash, .dynsym, etc.
@@ -2218,13 +2221,13 @@ title="Copy code"
 &lt;/div>
 &lt;/div>
 &lt;hr>
-&lt;h3>&lt;strong>Key Takeaways&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="key-takeaways">&lt;/span>
-&lt;a href="#key-takeaways" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;h4>&lt;strong>Key Takeaways&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="key-takeaways">&lt;/span>
+&lt;a href="#key-takeaways" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ol>
 &lt;li>&lt;strong>Metadata Storage&lt;/strong>: Contains essential runtime data for dynamic linking.&lt;/li>
 &lt;li>&lt;strong>ASLR Compatibility&lt;/strong>: Position-independent addressing enhances security.&lt;/li>
 &lt;li>&lt;strong>Read-Only Protection&lt;/strong>: Prevents accidental or malicious modification of critical data.&lt;/li>
 &lt;/ol>
-&lt;p>&amp;ndash;&lt;/p>
+&lt;hr>
 &lt;h3>&lt;strong>Sections&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="sections">&lt;/span>
 &lt;a href="#sections" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Use &lt;code>readelf -S hello&lt;/code> to list sections:&lt;/p>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
@@ -2284,15 +2287,15 @@ title="Copy code"
 &lt;h3>&lt;strong>Kernel Loads Segments into Memory&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="kernel-loads-segments-into-memory">&lt;/span>
 &lt;a href="#kernel-loads-segments-into-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Using the &lt;strong>program headers&lt;/strong>, the kernel:&lt;/p>
 &lt;ul>
-&lt;li>Maps &lt;code>.text&lt;/code> (code) to executable memory.&lt;/li>
-&lt;li>Maps &lt;code>.data&lt;/code> and &lt;code>.bss&lt;/code> to writable memory.&lt;/li>
+&lt;li>Maps &lt;code>.text&lt;/code> (code) to &lt;code>executable memory&lt;/code>.&lt;/li>
+&lt;li>Maps &lt;code>.data&lt;/code> and &lt;code>.bss&lt;/code> to &lt;code>writable memory&lt;/code>.&lt;/li>
 &lt;li>Sets up the &lt;strong>stack&lt;/strong> and environment variables.&lt;/li>
-&lt;li>If there’s a &lt;code>INTERP&lt;/code> segment, loads the dynamic linker (e.g., &lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code>).&lt;/li>
+&lt;li>If there’s a &lt;code>INTERP&lt;/code> segment, loads the &lt;code>dynamic linker&lt;/code> (e.g., &lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code>).&lt;/li>
 &lt;/ul>
 &lt;h3>&lt;strong>Dynamic Linking (if needed)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="dynamic-linking-if-needed">&lt;/span>
 &lt;a href="#dynamic-linking-if-needed" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>If the program uses shared libraries:&lt;/p>
 &lt;ul>
-&lt;li>The kernel transfers control to the dynamic linker.&lt;/li>
+&lt;li>The kernel &lt;code>transfers control&lt;/code> to the dynamic linker.&lt;/li>
 &lt;li>The linker resolves dependencies (e.g., &lt;code>libc.so.6&lt;/code>), loads libraries, and relocates addresses.&lt;/li>
 &lt;/ul>
 &lt;h3>&lt;strong>Start Execution&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="start-execution">&lt;/span>
@@ -2301,8 +2304,8 @@ title="Copy code"
 &lt;li>For C programs, this is typically &lt;code>_start&lt;/code> (in &lt;code>crt1.o&lt;/code>), which initializes the C runtime, calls &lt;code>main()&lt;/code>, and exits cleanly.&lt;/li>
 &lt;/ul>
 &lt;hr>
-&lt;h3>&lt;strong>Example: Full Flow for &lt;code>hello&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example-full-flow-for">&lt;/span>
-&lt;a href="#example-full-flow-for" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h2>&lt;strong>Example: Full Flow for &lt;code>hello&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example-full-flow-for">&lt;/span>
+&lt;a href="#example-full-flow-for" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ gcc -o hello hello.c &lt;span class="c1"># Compiles to ELF executable&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
 &lt;button
 class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
@@ -2313,8 +2316,8 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h4>&lt;strong>File Type&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="file-type">&lt;/span>
-&lt;a href="#file-type" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>&lt;strong>File Type&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="file-type">&lt;/span>
+&lt;a href="#file-type" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl"> file hello
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> hello: ELF 64-bit LSB pie executable, x86-64, version &lt;span class="m">1&lt;/span> &lt;span class="o">(&lt;/span>SYSV&lt;span class="o">)&lt;/span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID&lt;span class="o">[&lt;/span>sha1&lt;span class="o">]=&lt;/span>ce69e228b62365b698bac3bf837cb1c5668a8079, &lt;span class="k">for&lt;/span> GNU/Linux 3.2.0, not stripped
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
@@ -2331,8 +2334,8 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h4>&lt;strong>Entry Point&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="entry-point">&lt;/span>
-&lt;a href="#entry-point" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>&lt;strong>Entry Point&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="entry-point">&lt;/span>
+&lt;a href="#entry-point" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ readelf -h hello &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;Entry point&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Entry point address: 0x1060&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
 &lt;button
@@ -2344,8 +2347,8 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h4>&lt;strong>Execution Steps&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="execution-steps">&lt;/span>
-&lt;a href="#execution-steps" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;h3>&lt;strong>Execution Steps&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="execution-steps">&lt;/span>
+&lt;a href="#execution-steps" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
 &lt;li>Kernel maps the &lt;code>.text&lt;/code> segment to &lt;code>0x401000&lt;/code>.&lt;/li>
 &lt;li>Starts executing &lt;code>_start&lt;/code> (&lt;code>assembler&lt;/code> boilerplate).&lt;/li>
 &lt;li>Calls &lt;code>__libc_start_main()&lt;/code> (glibc initialization).&lt;/li>
