@@ -2120,8 +2120,8 @@ title="Copy code"
 &lt;/div>
 &lt;/div>
 &lt;hr>
-&lt;h4>&lt;strong>Line-by-Line Breakdown&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="line-by-line-breakdown">&lt;/span>
-&lt;a href="#line-by-line-breakdown" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;table>
+&lt;h3>&lt;strong>Line-by-Line Breakdown&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="line-by-line-breakdown">&lt;/span>
+&lt;a href="#line-by-line-breakdown" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;table>
 &lt;thead>
 &lt;tr>
 &lt;th>Field&lt;/th>
