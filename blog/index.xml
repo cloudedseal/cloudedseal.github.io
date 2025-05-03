@@ -1999,6 +1999,489 @@ Final executable &lt;code>hello&lt;/code> is created.&lt;/p>
 &lt;li>&lt;strong>Preprocessing + Parsing&lt;/strong>: Handled by &lt;code>cc1&lt;/code>.&lt;/li>
 &lt;li>&lt;strong>Assembly&lt;/strong>: Done by &lt;code>as&lt;/code>.&lt;/li>
 &lt;li>&lt;strong>Linking&lt;/strong>: Orchestrated by &lt;code>collect2&lt;/code> → &lt;code>ld&lt;/code>.&lt;/li>
+&lt;/ol></description></item><item><title>Master Elf</title><link>https://cloudedseal.github.io/blog/master-elf/</link><pubDate>Mon, 28 Apr 2025 15:29:57 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-elf/</guid><description>
+&lt;h2>hello world&lt;span class="hx-absolute -hx-mt-20" id="hello-world">&lt;/span>
+&lt;a href="#hello-world" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;hello world&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>gcc &amp;ndash;save-temps -o hello hello.c&lt;/p>
+&lt;/blockquote>
+&lt;h2>&lt;strong>What is ELF?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="what-is-elf">&lt;/span>
+&lt;a href="#what-is-elf" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>ELF (Executable and Linkable Format) is a &lt;strong>standardized binary format&lt;/strong> for storing compiled programs, libraries, and other binaries on Unix-like systems (e.g., Linux). It defines how machine code, data, symbols, relocation information, and metadata are organized in files like:&lt;/p>
+&lt;ul>
+&lt;li>Executables (&lt;code>./hello&lt;/code>)&lt;/li>
+&lt;li>Object files (&lt;code>hello.o&lt;/code>)&lt;/li>
+&lt;li>Shared libraries (&lt;code>.so&lt;/code>)&lt;/li>
+&lt;li>Core dumps&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2>&lt;strong>ELF File Structure&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="elf-file-structure">&lt;/span>
+&lt;a href="#elf-file-structure" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>An ELF file has two primary views:&lt;/p>
+&lt;h3>&lt;strong>Linking View (Sections)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="linking-view-sections">&lt;/span>
+&lt;a href="#linking-view-sections" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>Used during &lt;code>compilation/linking&lt;/code> to combine object files.&lt;/li>
+&lt;li>Contains &lt;strong>section headers&lt;/strong> describing discrete parts of the file.&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Execution View (Segments)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="execution-view-segments">&lt;/span>
+&lt;a href="#execution-view-segments" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>Used at &lt;code>runtime&lt;/code> to load the program into memory.&lt;/li>
+&lt;li>Contains &lt;strong>program headers&lt;/strong> mapping sections to memory segments.&lt;/li>
+&lt;/ul>
+&lt;h2>Key Components&lt;span class="hx-absolute -hx-mt-20" id="key-components">&lt;/span>
+&lt;a href="#key-components" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Component&lt;/th>
+&lt;th>Purpose&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>ELF Header&lt;/strong>&lt;/td>
+&lt;td>Metadata about the file (architecture, type, entry point, etc.).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Program Headers&lt;/strong>&lt;/td>
+&lt;td>Describe how to map segments to memory (used by the OS at runtime).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Section Headers&lt;/strong>&lt;/td>
+&lt;td>List all sections (code, data, symbols, relocations, debug info, etc.).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Sections&lt;/strong>&lt;/td>
+&lt;td>Logical units like &lt;code>.text&lt;/code> (code), &lt;code>.data&lt;/code> (initialized variables), etc.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Segments&lt;/strong>&lt;/td>
+&lt;td>Physical chunks mapped into memory (e.g., &lt;code>LOAD&lt;/code>, &lt;code>DYNAMIC&lt;/code>, &lt;code>STACK&lt;/code>).&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h2>&lt;strong>ELF File Layout&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="elf-file-layout">&lt;/span>
+&lt;a href="#elf-file-layout" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>&amp;#43;---------------------&amp;#43;
+| ELF Header | ← Fixed-size metadata at file offset 0
+&amp;#43;---------------------&amp;#43;
+| Program Headers | ← Describes segments (for runtime)
+&amp;#43;---------------------&amp;#43;
+| Section 1 (.text) | ← Machine code
+&amp;#43;---------------------&amp;#43;
+| Section 2 (.data) | ← Initialized global/static variables
+&amp;#43;---------------------&amp;#43;
+| ... |
+&amp;#43;---------------------&amp;#43;
+| Section Headers | ← Table listing all sections
+&amp;#43;---------------------&amp;#43;&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;hr>
+&lt;h2>&lt;strong>Key ELf Concepts&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="key-elf-concepts">&lt;/span>
+&lt;a href="#key-elf-concepts" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>&lt;strong>ELF Header&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="elf-header">&lt;/span>
+&lt;a href="#elf-header" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Use &lt;code>readelf -h hello&lt;/code> to see:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ELF Header:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Magic: 7f &lt;span class="m">45&lt;/span> 4c &lt;span class="m">46&lt;/span> &lt;span class="m">02&lt;/span> &lt;span class="m">01&lt;/span> &lt;span class="m">01&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Class: ELF64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Data: 2&lt;span class="err">&amp;#39;&lt;/span>s complement, little endian
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Version: &lt;span class="m">1&lt;/span> &lt;span class="o">(&lt;/span>current&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> OS/ABI: UNIX - System V
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ABI Version: &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Type: DYN &lt;span class="o">(&lt;/span>Position-Independent Executable file&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Machine: Advanced Micro Devices X86-64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Version: 0x1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Entry point address: 0x1060
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Start of program headers: &lt;span class="m">64&lt;/span> &lt;span class="o">(&lt;/span>bytes into file&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Start of section headers: &lt;span class="m">13976&lt;/span> &lt;span class="o">(&lt;/span>bytes into file&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Flags: 0x0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Size of this header: &lt;span class="m">64&lt;/span> &lt;span class="o">(&lt;/span>bytes&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Size of program headers: &lt;span class="m">56&lt;/span> &lt;span class="o">(&lt;/span>bytes&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Number of program headers: &lt;span class="m">13&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Size of section headers: &lt;span class="m">64&lt;/span> &lt;span class="o">(&lt;/span>bytes&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Number of section headers: &lt;span class="m">31&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Section header string table index: &lt;span class="m">30&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>&lt;strong>Program Headers (Segments)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="program-headers-segments">&lt;/span>
+&lt;a href="#program-headers-segments" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Use &lt;code>readelf -l hello&lt;/code> to see:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Elf file &lt;span class="nb">type&lt;/span> is DYN &lt;span class="o">(&lt;/span>Position-Independent Executable file&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Entry point 0x1060
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">There are &lt;span class="m">13&lt;/span> program headers, starting at offset &lt;span class="m">64&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Program Headers:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Type Offset VirtAddr PhysAddr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> FileSiz MemSiz Flags Align
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> PHDR 0x0000000000000040 0x0000000000000040 0x0000000000000040
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x00000000000002d8 0x00000000000002d8 R 0x8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> INTERP 0x0000000000000318 0x0000000000000318 0x0000000000000318
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x000000000000001c 0x000000000000001c R 0x1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[&lt;/span>Requesting program interpreter: /lib64/ld-linux-x86-64.so.2&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> LOAD 0x0000000000000000 0x0000000000000000 0x0000000000000000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000628 0x0000000000000628 R 0x1000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> LOAD 0x0000000000001000 0x0000000000001000 0x0000000000001000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000175 0x0000000000000175 R E 0x1000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> LOAD 0x0000000000002000 0x0000000000002000 0x0000000000002000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x00000000000000f4 0x00000000000000f4 R 0x1000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> LOAD 0x0000000000002db8 0x0000000000003db8 0x0000000000003db8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000258 0x0000000000000260 RW 0x1000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> DYNAMIC 0x0000000000002dc8 0x0000000000003dc8 0x0000000000003dc8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x00000000000001f0 0x00000000000001f0 RW 0x8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> NOTE 0x0000000000000338 0x0000000000000338 0x0000000000000338
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000030 0x0000000000000030 R 0x8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> NOTE 0x0000000000000368 0x0000000000000368 0x0000000000000368
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000044 0x0000000000000044 R 0x4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> GNU_PROPERTY 0x0000000000000338 0x0000000000000338 0x0000000000000338
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000030 0x0000000000000030 R 0x8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> GNU_EH_FRAME 0x0000000000002010 0x0000000000002010 0x0000000000002010
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000034 0x0000000000000034 R 0x4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> GNU_STACK 0x0000000000000000 0x0000000000000000 0x0000000000000000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000000 0x0000000000000000 RW 0x10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> GNU_RELRO 0x0000000000002db8 0x0000000000003db8 0x0000000000003db8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000248 0x0000000000000248 R 0x1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Section to Segment mapping:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Segment Sections...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">00&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">01&lt;/span> .interp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">02&lt;/span> .interp .note.gnu.property .note.gnu.build-id .note.ABI-tag .gnu.hash .dynsym .dynstr .gnu.version .gnu.version_r .rela.dyn .rela.plt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">03&lt;/span> .init .plt .plt.got .plt.sec .text .fini
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">04&lt;/span> .rodata .eh_frame_hdr .eh_frame
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">05&lt;/span> .init_array .fini_array .dynamic .got .data .bss
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">06&lt;/span> .dynamic
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">07&lt;/span> .note.gnu.property
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">08&lt;/span> .note.gnu.build-id .note.ABI-tag
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">09&lt;/span> .note.gnu.property
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">10&lt;/span> .eh_frame_hdr
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">11&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">12&lt;/span> .init_array .fini_array .dynamic .got &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>segment LOAD 理解&lt;span class="hx-absolute -hx-mt-20" id="segment-load-理解">&lt;/span>
+&lt;a href="#segment-load-%e7%90%86%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>&lt;strong>Explanation of the Two Lines in the &lt;code>LOAD&lt;/code> Segment&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="explanation-of-the-two-lines-in-the">&lt;/span>
+&lt;a href="#explanation-of-the-two-lines-in-the" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Here’s a breakdown of the two lines from the &lt;code>LOAD&lt;/code> segment in your &lt;code>readelf -l hello&lt;/code> output:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>LOAD 0x0000000000000000 0x0000000000000000 0x0000000000000000
+0x0000000000000628 0x0000000000000628 R 0x1000&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;hr>
+&lt;h4>&lt;strong>Line-by-Line Breakdown&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="line-by-line-breakdown">&lt;/span>
+&lt;a href="#line-by-line-breakdown" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Field&lt;/th>
+&lt;th>Value&lt;/th>
+&lt;th>Meaning&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>Type&lt;/strong>&lt;/td>
+&lt;td>&lt;code>LOAD&lt;/code>&lt;/td>
+&lt;td>This segment is &lt;code>loaded&lt;/code> into memory during execution.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Offset&lt;/strong>&lt;/td>
+&lt;td>&lt;code>0x0000000000000000&lt;/code>&lt;/td>
+&lt;td>Start of this segment in the file (offset 0 bytes from the file start).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>VirtAddr&lt;/strong>&lt;/td>
+&lt;td>&lt;code>0x0000000000000000&lt;/code>&lt;/td>
+&lt;td>&lt;code>Virtual memory address&lt;/code> where this segment is mapped (position-independent; resolved at runtime).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>PhysAddr&lt;/strong>&lt;/td>
+&lt;td>&lt;code>0x0000000000000000&lt;/code>&lt;/td>
+&lt;td>&lt;code>Physical memory address&lt;/code> (ignored for executables; used in firmware).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>FileSiz&lt;/strong>&lt;/td>
+&lt;td>&lt;code>0x0000000000000628&lt;/code> (1576 bytes)&lt;/td>
+&lt;td>&lt;code>Size&lt;/code> of the segment in the file.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>MemSiz&lt;/strong>&lt;/td>
+&lt;td>&lt;code>0x0000000000000628&lt;/code> (1576 bytes)&lt;/td>
+&lt;td>&lt;code>Size&lt;/code> of the segment in memory (same as &lt;code>FileSiz&lt;/code>; no zero-filled padding).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Flags&lt;/strong>&lt;/td>
+&lt;td>&lt;code>R&lt;/code>&lt;/td>
+&lt;td>Segment is &lt;strong>read-only&lt;/strong>.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Align&lt;/strong>&lt;/td>
+&lt;td>&lt;code>0x1000&lt;/code> (4096 bytes)&lt;/td>
+&lt;td>Alignment requirement (must be &lt;code>page-aligned&lt;/code> in memory).&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h4>&lt;strong>Purpose of This Segment&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="purpose-of-this-segment">&lt;/span>
+&lt;a href="#purpose-of-this-segment" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>This &lt;code>LOAD&lt;/code> segment maps &lt;strong>read-only metadata&lt;/strong> into memory, including:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>&lt;code>.interp&lt;/code>&lt;/strong>: Path to the dynamic linker (&lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>&lt;code>.note.gnu.build-id&lt;/code>&lt;/strong>: Unique identifier for debugging.&lt;/li>
+&lt;li>&lt;strong>&lt;code>.gnu.hash&lt;/code>, &lt;code>.dynsym&lt;/code>, &lt;code>.dynstr&lt;/code>&lt;/strong>: Dynamic symbol table and hashing for efficient symbol resolution.&lt;/li>
+&lt;li>&lt;strong>Relocation tables&lt;/strong>: Used by the dynamic linker to adjust addresses at runtime.&lt;/li>
+&lt;/ul>
+&lt;p>It is critical for &lt;strong>dynamic linking&lt;/strong> and &lt;strong>runtime symbol resolution&lt;/strong>.&lt;/p>
+&lt;hr>
+&lt;h4>&lt;strong>Why Are &lt;code>VirtAddr&lt;/code> and &lt;code>PhysAddr&lt;/code> Zero?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="why-are">&lt;/span>
+&lt;a href="#why-are" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>&lt;strong>Position-Independent Executable (PIE)&lt;/strong>:&lt;br>
+The binary is compiled as &lt;code>DYN&lt;/code> (shared object style), allowing the OS to load it at a &lt;strong>randomized base address&lt;/strong> (ASLR).
+&lt;ul>
+&lt;li>At runtime, the OS chooses a base address (e.g., &lt;code>0x555555554000&lt;/code>), and all segments are mapped relative to this base.&lt;/li>
+&lt;li>&lt;code>VirtAddr = 0&lt;/code> means the segment’s virtual address is calculated as &lt;code>base + offset&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h4>&lt;strong>Security Implications&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="security-implications">&lt;/span>
+&lt;a href="#security-implications" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>&lt;strong>No Write or Execute Permissions&lt;/strong>:&lt;br>
+The &lt;code>R&lt;/code> flag ensures this segment is &lt;strong>read-only&lt;/strong>, protecting metadata from tampering.&lt;/li>
+&lt;li>&lt;strong>Alignment (&lt;code>0x1000&lt;/code>)&lt;/strong>:&lt;br>
+Ensures the segment starts at a &lt;strong>page boundary&lt;/strong> (4KB), satisfying memory protection requirements.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h4>&lt;strong>Example Mapping in Memory&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example-mapping-in-memory">&lt;/span>
+&lt;a href="#example-mapping-in-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>At runtime, the OS maps this segment as follows:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>Virtual Address Range Permissions Purpose
+[BASE_ADDR] R .interp, .note.gnu.build-id, .gnu.hash, .dynsym, etc.
+[BASE_ADDR &amp;#43; 0x628] ... Next segment starts here.&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;hr>
+&lt;h4>&lt;strong>Key Takeaways&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="key-takeaways">&lt;/span>
+&lt;a href="#key-takeaways" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ol>
+&lt;li>&lt;strong>Metadata Storage&lt;/strong>: Contains essential runtime data for dynamic linking.&lt;/li>
+&lt;li>&lt;strong>ASLR Compatibility&lt;/strong>: Position-independent addressing enhances security.&lt;/li>
+&lt;li>&lt;strong>Read-Only Protection&lt;/strong>: Prevents accidental or malicious modification of critical data.&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h3>&lt;strong>Sections&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="sections">&lt;/span>
+&lt;a href="#sections" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Use &lt;code>readelf -S hello&lt;/code> to list sections:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Section Headers:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[&lt;/span>Nr&lt;span class="o">]&lt;/span> Name Type Address Offset
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Size EntSize Flags Link Info Align
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[&lt;/span> 0&lt;span class="o">]&lt;/span> NULL &lt;span class="m">0000000000000000&lt;/span> &lt;span class="m">00000000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[&lt;/span> 1&lt;span class="o">]&lt;/span> .text PROGBITS &lt;span class="m">0000000000401000&lt;/span> &lt;span class="m">00001000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 00000000000001b2 &lt;span class="m">0000000000000000&lt;/span> AX &lt;span class="m">0&lt;/span> &lt;span class="m">0&lt;/span> &lt;span class="m">16&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ...&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;code>.text&lt;/code>: Executable code.&lt;/li>
+&lt;li>&lt;code>.rodata&lt;/code>: Read-only constants (e.g., strings).&lt;/li>
+&lt;li>&lt;code>.plt/.got&lt;/code>: Dynamic linking stubs.&lt;/li>
+&lt;li>&lt;code>.symtab&lt;/code>: Symbol table for debugging/linking.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2>&lt;strong>How Does ELF Work?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="how-does-elf-work">&lt;/span>
+&lt;a href="#how-does-elf-work" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;strong>Compilation&lt;/strong>:&lt;br>
+GCC generates an ELF object file (&lt;code>hello.o&lt;/code>) with sections like &lt;code>.text&lt;/code>, &lt;code>.data&lt;/code>, and &lt;code>.symtab&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>Linking&lt;/strong>:&lt;br>
+The linker (&lt;code>ld&lt;/code>) merges sections from multiple object files, resolves symbols, and creates an executable ELF file with program headers.&lt;/li>
+&lt;li>&lt;strong>Execution&lt;/strong>:&lt;br>
+The OS loads the executable using the program headers to map memory regions and execute code.&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h2>&lt;strong>What Does the OS Do When Running &lt;code>./hello&lt;/code>?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="what-does-the-os-do-when-running">&lt;/span>
+&lt;a href="#what-does-the-os-do-when-running" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Here’s the lifecycle from command line to execution:&lt;/p>
+&lt;h3>&lt;strong>User Runs the Command&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="user-runs-the-command">&lt;/span>
+&lt;a href="#user-runs-the-command" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">./hello&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>The shell calls &lt;code>execve(&amp;quot;./hello&amp;quot;, ...)&lt;/code>, which triggers the kernel to load the ELF file.&lt;/p>
+&lt;h3>&lt;strong>Kernel Reads the ELF Header&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="kernel-reads-the-elf-header">&lt;/span>
+&lt;a href="#kernel-reads-the-elf-header" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>Checks the magic number (&lt;code>\x7fELF&lt;/code>) to confirm it’s an ELF file.&lt;/li>
+&lt;li>Parses the ELF header to determine architecture (e.g., x86-64).&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Kernel Loads Segments into Memory&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="kernel-loads-segments-into-memory">&lt;/span>
+&lt;a href="#kernel-loads-segments-into-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Using the &lt;strong>program headers&lt;/strong>, the kernel:&lt;/p>
+&lt;ul>
+&lt;li>Maps &lt;code>.text&lt;/code> (code) to &lt;code>executable memory&lt;/code>.&lt;/li>
+&lt;li>Maps &lt;code>.data&lt;/code> and &lt;code>.bss&lt;/code> to &lt;code>writable memory&lt;/code>.&lt;/li>
+&lt;li>Sets up the &lt;strong>stack&lt;/strong> and environment variables.&lt;/li>
+&lt;li>If there’s a &lt;code>INTERP&lt;/code> segment, loads the &lt;code>dynamic linker&lt;/code> (e.g., &lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Dynamic Linking (if needed)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="dynamic-linking-if-needed">&lt;/span>
+&lt;a href="#dynamic-linking-if-needed" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>If the program uses shared libraries:&lt;/p>
+&lt;ul>
+&lt;li>The kernel &lt;code>transfers control&lt;/code> to the dynamic linker.&lt;/li>
+&lt;li>The linker resolves dependencies (e.g., &lt;code>libc.so.6&lt;/code>), loads libraries, and relocates addresses.&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Start Execution&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="start-execution">&lt;/span>
+&lt;a href="#start-execution" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>The kernel jumps to the &lt;strong>entry point&lt;/strong> specified in the ELF header (&lt;code>Entry point address&lt;/code>).&lt;/li>
+&lt;li>For C programs, this is typically &lt;code>_start&lt;/code> (in &lt;code>crt1.o&lt;/code>), which initializes the C runtime, calls &lt;code>main()&lt;/code>, and exits cleanly.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2>&lt;strong>Example: Full Flow for &lt;code>hello&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example-full-flow-for">&lt;/span>
+&lt;a href="#example-full-flow-for" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ gcc -o hello hello.c &lt;span class="c1"># Compiles to ELF executable&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>&lt;strong>File Type&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="file-type">&lt;/span>
+&lt;a href="#file-type" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl"> file hello
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> hello: ELF 64-bit LSB pie executable, x86-64, version &lt;span class="m">1&lt;/span> &lt;span class="o">(&lt;/span>SYSV&lt;span class="o">)&lt;/span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID&lt;span class="o">[&lt;/span>sha1&lt;span class="o">]=&lt;/span>ce69e228b62365b698bac3bf837cb1c5668a8079, &lt;span class="k">for&lt;/span> GNU/Linux 3.2.0, not stripped
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ldd hello
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> linux-vdso.so.1 &lt;span class="o">(&lt;/span>0x00007fffdd6be000&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> libc.so.6 &lt;span class="o">=&lt;/span>&amp;gt; /lib/x86_64-linux-gnu/libc.so.6 &lt;span class="o">(&lt;/span>0x00007cdea5a00000&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /lib64/ld-linux-x86-64.so.2 &lt;span class="o">(&lt;/span>0x00007cdea5db7000&lt;span class="o">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>&lt;strong>Entry Point&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="entry-point">&lt;/span>
+&lt;a href="#entry-point" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ readelf -h hello &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;Entry point&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Entry point address: 0x1060&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>&lt;strong>Execution Steps&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="execution-steps">&lt;/span>
+&lt;a href="#execution-steps" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>Kernel maps the &lt;code>.text&lt;/code> segment to &lt;code>0x401000&lt;/code>.&lt;/li>
+&lt;li>Starts executing &lt;code>_start&lt;/code> (&lt;code>assembler&lt;/code> boilerplate).&lt;/li>
+&lt;li>Calls &lt;code>__libc_start_main()&lt;/code> (glibc initialization).&lt;/li>
+&lt;li>Invokes &lt;code>main()&lt;/code> → prints &lt;code>&amp;quot;Hello, world!&amp;quot;&lt;/code>.&lt;/li>
+&lt;li>Returns to the kernel via &lt;code>exit(0)&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3>&lt;strong>Tools to Inspect ELF Files&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="tools-to-inspect-elf-files">&lt;/span>
+&lt;a href="#tools-to-inspect-elf-files" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Tool&lt;/th>
+&lt;th>Purpose&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>readelf&lt;/code>&lt;/td>
+&lt;td>Analyze headers, sections, symbols.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>objdump&lt;/code>&lt;/td>
+&lt;td>Disassemble code, view relocations.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>nm&lt;/code>&lt;/td>
+&lt;td>List symbols (functions/variables).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>gdb&lt;/code>&lt;/td>
+&lt;td>Debug and inspect memory layout.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>strings&lt;/code>&lt;/td>
+&lt;td>Extract human-readable strings.&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;hr>
+&lt;h3>&lt;strong>Summary Workflow&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="summary-workflow">&lt;/span>
+&lt;a href="#summary-workflow" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>&lt;strong>Source Code&lt;/strong> → &lt;code>gcc -c&lt;/code> → &lt;strong>ELF Object File&lt;/strong> (&lt;code>hello.o&lt;/code>)&lt;/li>
+&lt;li>&lt;strong>Object Files&lt;/strong> → &lt;code>ld&lt;/code> → &lt;strong>ELF Executable&lt;/strong> (&lt;code>hello&lt;/code>)&lt;/li>
+&lt;li>&lt;strong>OS Loads ELF&lt;/strong> → Maps Memory Segments → Resolves Dependencies → Executes Code&lt;/li>
+&lt;/ol>
+&lt;p>By understanding ELF, you gain insight into how software interacts with hardware, memory, and the operating system at the lowest level.&lt;/p>
+&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://www.lurklurk.org/linkers/linkers.html" target="_blank" rel="noopener">linkers&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Linker_%28computing%29" target="_blank" rel="noopener">wiki-linker&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Great Prompt</title><link>https://cloudedseal.github.io/blog/great-prompt/</link><pubDate>Mon, 28 Apr 2025 09:35:51 +0800</pubDate><guid>https://cloudedseal.github.io/blog/great-prompt/</guid><description>
 &lt;h1>great prompt&lt;/h1>&lt;p>我在做 XX。如果你是一位专业人士，有更好的方法和建议吗？尽可能全面。&lt;/p></description></item><item><title>Master Type System</title><link>https://cloudedseal.github.io/blog/master-type-system/</link><pubDate>Fri, 25 Apr 2025 11:04:51 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-type-system/</guid><description>
 &lt;h1>为啥需要 type system?&lt;/h1>&lt;h2>&lt;code>type&lt;/code> 就是契约&lt;span class="hx-absolute -hx-mt-20" id="type-就是契约">&lt;/span>
@@ -3913,489 +4396,6 @@ title="Copy code"
 &lt;h1>References&lt;/h1>&lt;ol>
 &lt;li>&lt;a href="https://github.com/kohlschutter/junixsocket" target="_blank" rel="noopener">junixsocket&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Unix_domain_socket" target="_blank" rel="noopener">Unix_domain_socket&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Master Elf</title><link>https://cloudedseal.github.io/blog/master-elf/</link><pubDate>Thu, 30 May 2024 15:29:57 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-elf/</guid><description>
-&lt;h2>hello world&lt;span class="hx-absolute -hx-mt-20" id="hello-world">&lt;/span>
-&lt;a href="#hello-world" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;hello world&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;blockquote>
-&lt;p>gcc &amp;ndash;save-temps -o hello hello.c&lt;/p>
-&lt;/blockquote>
-&lt;h2>&lt;strong>What is ELF?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="what-is-elf">&lt;/span>
-&lt;a href="#what-is-elf" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>ELF (Executable and Linkable Format) is a &lt;strong>standardized binary format&lt;/strong> for storing compiled programs, libraries, and other binaries on Unix-like systems (e.g., Linux). It defines how machine code, data, symbols, relocation information, and metadata are organized in files like:&lt;/p>
-&lt;ul>
-&lt;li>Executables (&lt;code>./hello&lt;/code>)&lt;/li>
-&lt;li>Object files (&lt;code>hello.o&lt;/code>)&lt;/li>
-&lt;li>Shared libraries (&lt;code>.so&lt;/code>)&lt;/li>
-&lt;li>Core dumps&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2>&lt;strong>ELF File Structure&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="elf-file-structure">&lt;/span>
-&lt;a href="#elf-file-structure" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>An ELF file has two primary views:&lt;/p>
-&lt;h3>&lt;strong>Linking View (Sections)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="linking-view-sections">&lt;/span>
-&lt;a href="#linking-view-sections" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
-&lt;li>Used during &lt;code>compilation/linking&lt;/code> to combine object files.&lt;/li>
-&lt;li>Contains &lt;strong>section headers&lt;/strong> describing discrete parts of the file.&lt;/li>
-&lt;/ul>
-&lt;h3>&lt;strong>Execution View (Segments)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="execution-view-segments">&lt;/span>
-&lt;a href="#execution-view-segments" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
-&lt;li>Used at &lt;code>runtime&lt;/code> to load the program into memory.&lt;/li>
-&lt;li>Contains &lt;strong>program headers&lt;/strong> mapping sections to memory segments.&lt;/li>
-&lt;/ul>
-&lt;h2>Key Components&lt;span class="hx-absolute -hx-mt-20" id="key-components">&lt;/span>
-&lt;a href="#key-components" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Component&lt;/th>
-&lt;th>Purpose&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>&lt;strong>ELF Header&lt;/strong>&lt;/td>
-&lt;td>Metadata about the file (architecture, type, entry point, etc.).&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>Program Headers&lt;/strong>&lt;/td>
-&lt;td>Describe how to map segments to memory (used by the OS at runtime).&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>Section Headers&lt;/strong>&lt;/td>
-&lt;td>List all sections (code, data, symbols, relocations, debug info, etc.).&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>Sections&lt;/strong>&lt;/td>
-&lt;td>Logical units like &lt;code>.text&lt;/code> (code), &lt;code>.data&lt;/code> (initialized variables), etc.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>Segments&lt;/strong>&lt;/td>
-&lt;td>Physical chunks mapped into memory (e.g., &lt;code>LOAD&lt;/code>, &lt;code>DYNAMIC&lt;/code>, &lt;code>STACK&lt;/code>).&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;hr>
-&lt;h2>&lt;strong>ELF File Layout&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="elf-file-layout">&lt;/span>
-&lt;a href="#elf-file-layout" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;pre>&lt;code>&amp;#43;---------------------&amp;#43;
-| ELF Header | ← Fixed-size metadata at file offset 0
-&amp;#43;---------------------&amp;#43;
-| Program Headers | ← Describes segments (for runtime)
-&amp;#43;---------------------&amp;#43;
-| Section 1 (.text) | ← Machine code
-&amp;#43;---------------------&amp;#43;
-| Section 2 (.data) | ← Initialized global/static variables
-&amp;#43;---------------------&amp;#43;
-| ... |
-&amp;#43;---------------------&amp;#43;
-| Section Headers | ← Table listing all sections
-&amp;#43;---------------------&amp;#43;&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;hr>
-&lt;h2>&lt;strong>Key ELf Concepts&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="key-elf-concepts">&lt;/span>
-&lt;a href="#key-elf-concepts" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>&lt;strong>ELF Header&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="elf-header">&lt;/span>
-&lt;a href="#elf-header" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Use &lt;code>readelf -h hello&lt;/code> to see:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ELF Header:
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Magic: 7f &lt;span class="m">45&lt;/span> 4c &lt;span class="m">46&lt;/span> &lt;span class="m">02&lt;/span> &lt;span class="m">01&lt;/span> &lt;span class="m">01&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span> &lt;span class="m">00&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Class: ELF64
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Data: 2&lt;span class="err">&amp;#39;&lt;/span>s complement, little endian
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Version: &lt;span class="m">1&lt;/span> &lt;span class="o">(&lt;/span>current&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> OS/ABI: UNIX - System V
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ABI Version: &lt;span class="m">0&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Type: DYN &lt;span class="o">(&lt;/span>Position-Independent Executable file&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Machine: Advanced Micro Devices X86-64
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Version: 0x1
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Entry point address: 0x1060
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Start of program headers: &lt;span class="m">64&lt;/span> &lt;span class="o">(&lt;/span>bytes into file&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Start of section headers: &lt;span class="m">13976&lt;/span> &lt;span class="o">(&lt;/span>bytes into file&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Flags: 0x0
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Size of this header: &lt;span class="m">64&lt;/span> &lt;span class="o">(&lt;/span>bytes&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Size of program headers: &lt;span class="m">56&lt;/span> &lt;span class="o">(&lt;/span>bytes&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Number of program headers: &lt;span class="m">13&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Size of section headers: &lt;span class="m">64&lt;/span> &lt;span class="o">(&lt;/span>bytes&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Number of section headers: &lt;span class="m">31&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Section header string table index: &lt;span class="m">30&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>&lt;strong>Program Headers (Segments)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="program-headers-segments">&lt;/span>
-&lt;a href="#program-headers-segments" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Use &lt;code>readelf -l hello&lt;/code> to see:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Elf file &lt;span class="nb">type&lt;/span> is DYN &lt;span class="o">(&lt;/span>Position-Independent Executable file&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Entry point 0x1060
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">There are &lt;span class="m">13&lt;/span> program headers, starting at offset &lt;span class="m">64&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Program Headers:
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Type Offset VirtAddr PhysAddr
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> FileSiz MemSiz Flags Align
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> PHDR 0x0000000000000040 0x0000000000000040 0x0000000000000040
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x00000000000002d8 0x00000000000002d8 R 0x8
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> INTERP 0x0000000000000318 0x0000000000000318 0x0000000000000318
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x000000000000001c 0x000000000000001c R 0x1
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[&lt;/span>Requesting program interpreter: /lib64/ld-linux-x86-64.so.2&lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> LOAD 0x0000000000000000 0x0000000000000000 0x0000000000000000
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000628 0x0000000000000628 R 0x1000
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> LOAD 0x0000000000001000 0x0000000000001000 0x0000000000001000
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000175 0x0000000000000175 R E 0x1000
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> LOAD 0x0000000000002000 0x0000000000002000 0x0000000000002000
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x00000000000000f4 0x00000000000000f4 R 0x1000
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> LOAD 0x0000000000002db8 0x0000000000003db8 0x0000000000003db8
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000258 0x0000000000000260 RW 0x1000
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> DYNAMIC 0x0000000000002dc8 0x0000000000003dc8 0x0000000000003dc8
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x00000000000001f0 0x00000000000001f0 RW 0x8
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> NOTE 0x0000000000000338 0x0000000000000338 0x0000000000000338
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000030 0x0000000000000030 R 0x8
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> NOTE 0x0000000000000368 0x0000000000000368 0x0000000000000368
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000044 0x0000000000000044 R 0x4
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> GNU_PROPERTY 0x0000000000000338 0x0000000000000338 0x0000000000000338
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000030 0x0000000000000030 R 0x8
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> GNU_EH_FRAME 0x0000000000002010 0x0000000000002010 0x0000000000002010
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000034 0x0000000000000034 R 0x4
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> GNU_STACK 0x0000000000000000 0x0000000000000000 0x0000000000000000
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000000 0x0000000000000000 RW 0x10
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> GNU_RELRO 0x0000000000002db8 0x0000000000003db8 0x0000000000003db8
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000000248 0x0000000000000248 R 0x1
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Section to Segment mapping:
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Segment Sections...
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">00&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">01&lt;/span> .interp
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">02&lt;/span> .interp .note.gnu.property .note.gnu.build-id .note.ABI-tag .gnu.hash .dynsym .dynstr .gnu.version .gnu.version_r .rela.dyn .rela.plt
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">03&lt;/span> .init .plt .plt.got .plt.sec .text .fini
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">04&lt;/span> .rodata .eh_frame_hdr .eh_frame
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">05&lt;/span> .init_array .fini_array .dynamic .got .data .bss
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">06&lt;/span> .dynamic
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">07&lt;/span> .note.gnu.property
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">08&lt;/span> .note.gnu.build-id .note.ABI-tag
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">09&lt;/span> .note.gnu.property
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">10&lt;/span> .eh_frame_hdr
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">11&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">12&lt;/span> .init_array .fini_array .dynamic .got &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>segment LOAD 理解&lt;span class="hx-absolute -hx-mt-20" id="segment-load-理解">&lt;/span>
-&lt;a href="#segment-load-%e7%90%86%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>&lt;strong>Explanation of the Two Lines in the &lt;code>LOAD&lt;/code> Segment&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="explanation-of-the-two-lines-in-the">&lt;/span>
-&lt;a href="#explanation-of-the-two-lines-in-the" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>Here’s a breakdown of the two lines from the &lt;code>LOAD&lt;/code> segment in your &lt;code>readelf -l hello&lt;/code> output:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;pre>&lt;code>LOAD 0x0000000000000000 0x0000000000000000 0x0000000000000000
-0x0000000000000628 0x0000000000000628 R 0x1000&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;hr>
-&lt;h4>&lt;strong>Line-by-Line Breakdown&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="line-by-line-breakdown">&lt;/span>
-&lt;a href="#line-by-line-breakdown" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Field&lt;/th>
-&lt;th>Value&lt;/th>
-&lt;th>Meaning&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>&lt;strong>Type&lt;/strong>&lt;/td>
-&lt;td>&lt;code>LOAD&lt;/code>&lt;/td>
-&lt;td>This segment is &lt;code>loaded&lt;/code> into memory during execution.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>Offset&lt;/strong>&lt;/td>
-&lt;td>&lt;code>0x0000000000000000&lt;/code>&lt;/td>
-&lt;td>Start of this segment in the file (offset 0 bytes from the file start).&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>VirtAddr&lt;/strong>&lt;/td>
-&lt;td>&lt;code>0x0000000000000000&lt;/code>&lt;/td>
-&lt;td>&lt;code>Virtual memory address&lt;/code> where this segment is mapped (position-independent; resolved at runtime).&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>PhysAddr&lt;/strong>&lt;/td>
-&lt;td>&lt;code>0x0000000000000000&lt;/code>&lt;/td>
-&lt;td>&lt;code>Physical memory address&lt;/code> (ignored for executables; used in firmware).&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>FileSiz&lt;/strong>&lt;/td>
-&lt;td>&lt;code>0x0000000000000628&lt;/code> (1576 bytes)&lt;/td>
-&lt;td>&lt;code>Size&lt;/code> of the segment in the file.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>MemSiz&lt;/strong>&lt;/td>
-&lt;td>&lt;code>0x0000000000000628&lt;/code> (1576 bytes)&lt;/td>
-&lt;td>&lt;code>Size&lt;/code> of the segment in memory (same as &lt;code>FileSiz&lt;/code>; no zero-filled padding).&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>Flags&lt;/strong>&lt;/td>
-&lt;td>&lt;code>R&lt;/code>&lt;/td>
-&lt;td>Segment is &lt;strong>read-only&lt;/strong>.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;strong>Align&lt;/strong>&lt;/td>
-&lt;td>&lt;code>0x1000&lt;/code> (4096 bytes)&lt;/td>
-&lt;td>Alignment requirement (must be &lt;code>page-aligned&lt;/code> in memory).&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;hr>
-&lt;h4>&lt;strong>Purpose of This Segment&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="purpose-of-this-segment">&lt;/span>
-&lt;a href="#purpose-of-this-segment" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>This &lt;code>LOAD&lt;/code> segment maps &lt;strong>read-only metadata&lt;/strong> into memory, including:&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>&lt;code>.interp&lt;/code>&lt;/strong>: Path to the dynamic linker (&lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code>).&lt;/li>
-&lt;li>&lt;strong>&lt;code>.note.gnu.build-id&lt;/code>&lt;/strong>: Unique identifier for debugging.&lt;/li>
-&lt;li>&lt;strong>&lt;code>.gnu.hash&lt;/code>, &lt;code>.dynsym&lt;/code>, &lt;code>.dynstr&lt;/code>&lt;/strong>: Dynamic symbol table and hashing for efficient symbol resolution.&lt;/li>
-&lt;li>&lt;strong>Relocation tables&lt;/strong>: Used by the dynamic linker to adjust addresses at runtime.&lt;/li>
-&lt;/ul>
-&lt;p>It is critical for &lt;strong>dynamic linking&lt;/strong> and &lt;strong>runtime symbol resolution&lt;/strong>.&lt;/p>
-&lt;hr>
-&lt;h4>&lt;strong>Why Are &lt;code>VirtAddr&lt;/code> and &lt;code>PhysAddr&lt;/code> Zero?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="why-are">&lt;/span>
-&lt;a href="#why-are" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>&lt;strong>Position-Independent Executable (PIE)&lt;/strong>:&lt;br>
-The binary is compiled as &lt;code>DYN&lt;/code> (shared object style), allowing the OS to load it at a &lt;strong>randomized base address&lt;/strong> (ASLR).
-&lt;ul>
-&lt;li>At runtime, the OS chooses a base address (e.g., &lt;code>0x555555554000&lt;/code>), and all segments are mapped relative to this base.&lt;/li>
-&lt;li>&lt;code>VirtAddr = 0&lt;/code> means the segment’s virtual address is calculated as &lt;code>base + offset&lt;/code>.&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h4>&lt;strong>Security Implications&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="security-implications">&lt;/span>
-&lt;a href="#security-implications" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>&lt;strong>No Write or Execute Permissions&lt;/strong>:&lt;br>
-The &lt;code>R&lt;/code> flag ensures this segment is &lt;strong>read-only&lt;/strong>, protecting metadata from tampering.&lt;/li>
-&lt;li>&lt;strong>Alignment (&lt;code>0x1000&lt;/code>)&lt;/strong>:&lt;br>
-Ensures the segment starts at a &lt;strong>page boundary&lt;/strong> (4KB), satisfying memory protection requirements.&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h4>&lt;strong>Example Mapping in Memory&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example-mapping-in-memory">&lt;/span>
-&lt;a href="#example-mapping-in-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>At runtime, the OS maps this segment as follows:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;pre>&lt;code>Virtual Address Range Permissions Purpose
-[BASE_ADDR] R .interp, .note.gnu.build-id, .gnu.hash, .dynsym, etc.
-[BASE_ADDR &amp;#43; 0x628] ... Next segment starts here.&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;hr>
-&lt;h4>&lt;strong>Key Takeaways&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="key-takeaways">&lt;/span>
-&lt;a href="#key-takeaways" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ol>
-&lt;li>&lt;strong>Metadata Storage&lt;/strong>: Contains essential runtime data for dynamic linking.&lt;/li>
-&lt;li>&lt;strong>ASLR Compatibility&lt;/strong>: Position-independent addressing enhances security.&lt;/li>
-&lt;li>&lt;strong>Read-Only Protection&lt;/strong>: Prevents accidental or malicious modification of critical data.&lt;/li>
-&lt;/ol>
-&lt;hr>
-&lt;h3>&lt;strong>Sections&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="sections">&lt;/span>
-&lt;a href="#sections" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Use &lt;code>readelf -S hello&lt;/code> to list sections:&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Section Headers:
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[&lt;/span>Nr&lt;span class="o">]&lt;/span> Name Type Address Offset
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Size EntSize Flags Link Info Align
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[&lt;/span> 0&lt;span class="o">]&lt;/span> NULL &lt;span class="m">0000000000000000&lt;/span> &lt;span class="m">00000000&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[&lt;/span> 1&lt;span class="o">]&lt;/span> .text PROGBITS &lt;span class="m">0000000000401000&lt;/span> &lt;span class="m">00001000&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 00000000000001b2 &lt;span class="m">0000000000000000&lt;/span> AX &lt;span class="m">0&lt;/span> &lt;span class="m">0&lt;/span> &lt;span class="m">16&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ...&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;ul>
-&lt;li>&lt;code>.text&lt;/code>: Executable code.&lt;/li>
-&lt;li>&lt;code>.rodata&lt;/code>: Read-only constants (e.g., strings).&lt;/li>
-&lt;li>&lt;code>.plt/.got&lt;/code>: Dynamic linking stubs.&lt;/li>
-&lt;li>&lt;code>.symtab&lt;/code>: Symbol table for debugging/linking.&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2>&lt;strong>How Does ELF Work?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="how-does-elf-work">&lt;/span>
-&lt;a href="#how-does-elf-work" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>&lt;strong>Compilation&lt;/strong>:&lt;br>
-GCC generates an ELF object file (&lt;code>hello.o&lt;/code>) with sections like &lt;code>.text&lt;/code>, &lt;code>.data&lt;/code>, and &lt;code>.symtab&lt;/code>.&lt;/li>
-&lt;li>&lt;strong>Linking&lt;/strong>:&lt;br>
-The linker (&lt;code>ld&lt;/code>) merges sections from multiple object files, resolves symbols, and creates an executable ELF file with program headers.&lt;/li>
-&lt;li>&lt;strong>Execution&lt;/strong>:&lt;br>
-The OS loads the executable using the program headers to map memory regions and execute code.&lt;/li>
-&lt;/ol>
-&lt;hr>
-&lt;h2>&lt;strong>What Does the OS Do When Running &lt;code>./hello&lt;/code>?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="what-does-the-os-do-when-running">&lt;/span>
-&lt;a href="#what-does-the-os-do-when-running" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Here’s the lifecycle from command line to execution:&lt;/p>
-&lt;h3>&lt;strong>User Runs the Command&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="user-runs-the-command">&lt;/span>
-&lt;a href="#user-runs-the-command" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">./hello&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>The shell calls &lt;code>execve(&amp;quot;./hello&amp;quot;, ...)&lt;/code>, which triggers the kernel to load the ELF file.&lt;/p>
-&lt;h3>&lt;strong>Kernel Reads the ELF Header&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="kernel-reads-the-elf-header">&lt;/span>
-&lt;a href="#kernel-reads-the-elf-header" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
-&lt;li>Checks the magic number (&lt;code>\x7fELF&lt;/code>) to confirm it’s an ELF file.&lt;/li>
-&lt;li>Parses the ELF header to determine architecture (e.g., x86-64).&lt;/li>
-&lt;/ul>
-&lt;h3>&lt;strong>Kernel Loads Segments into Memory&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="kernel-loads-segments-into-memory">&lt;/span>
-&lt;a href="#kernel-loads-segments-into-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Using the &lt;strong>program headers&lt;/strong>, the kernel:&lt;/p>
-&lt;ul>
-&lt;li>Maps &lt;code>.text&lt;/code> (code) to &lt;code>executable memory&lt;/code>.&lt;/li>
-&lt;li>Maps &lt;code>.data&lt;/code> and &lt;code>.bss&lt;/code> to &lt;code>writable memory&lt;/code>.&lt;/li>
-&lt;li>Sets up the &lt;strong>stack&lt;/strong> and environment variables.&lt;/li>
-&lt;li>If there’s a &lt;code>INTERP&lt;/code> segment, loads the &lt;code>dynamic linker&lt;/code> (e.g., &lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code>).&lt;/li>
-&lt;/ul>
-&lt;h3>&lt;strong>Dynamic Linking (if needed)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="dynamic-linking-if-needed">&lt;/span>
-&lt;a href="#dynamic-linking-if-needed" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>If the program uses shared libraries:&lt;/p>
-&lt;ul>
-&lt;li>The kernel &lt;code>transfers control&lt;/code> to the dynamic linker.&lt;/li>
-&lt;li>The linker resolves dependencies (e.g., &lt;code>libc.so.6&lt;/code>), loads libraries, and relocates addresses.&lt;/li>
-&lt;/ul>
-&lt;h3>&lt;strong>Start Execution&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="start-execution">&lt;/span>
-&lt;a href="#start-execution" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
-&lt;li>The kernel jumps to the &lt;strong>entry point&lt;/strong> specified in the ELF header (&lt;code>Entry point address&lt;/code>).&lt;/li>
-&lt;li>For C programs, this is typically &lt;code>_start&lt;/code> (in &lt;code>crt1.o&lt;/code>), which initializes the C runtime, calls &lt;code>main()&lt;/code>, and exits cleanly.&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h2>&lt;strong>Example: Full Flow for &lt;code>hello&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example-full-flow-for">&lt;/span>
-&lt;a href="#example-full-flow-for" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ gcc -o hello hello.c &lt;span class="c1"># Compiles to ELF executable&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>&lt;strong>File Type&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="file-type">&lt;/span>
-&lt;a href="#file-type" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl"> file hello
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> hello: ELF 64-bit LSB pie executable, x86-64, version &lt;span class="m">1&lt;/span> &lt;span class="o">(&lt;/span>SYSV&lt;span class="o">)&lt;/span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID&lt;span class="o">[&lt;/span>sha1&lt;span class="o">]=&lt;/span>ce69e228b62365b698bac3bf837cb1c5668a8079, &lt;span class="k">for&lt;/span> GNU/Linux 3.2.0, not stripped
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ldd hello
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> linux-vdso.so.1 &lt;span class="o">(&lt;/span>0x00007fffdd6be000&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> libc.so.6 &lt;span class="o">=&lt;/span>&amp;gt; /lib/x86_64-linux-gnu/libc.so.6 &lt;span class="o">(&lt;/span>0x00007cdea5a00000&lt;span class="o">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /lib64/ld-linux-x86-64.so.2 &lt;span class="o">(&lt;/span>0x00007cdea5db7000&lt;span class="o">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>&lt;strong>Entry Point&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="entry-point">&lt;/span>
-&lt;a href="#entry-point" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">$ readelf -h hello &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;Entry point&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Entry point address: 0x1060&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>&lt;strong>Execution Steps&lt;/strong>:&lt;span class="hx-absolute -hx-mt-20" id="execution-steps">&lt;/span>
-&lt;a href="#execution-steps" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
-&lt;li>Kernel maps the &lt;code>.text&lt;/code> segment to &lt;code>0x401000&lt;/code>.&lt;/li>
-&lt;li>Starts executing &lt;code>_start&lt;/code> (&lt;code>assembler&lt;/code> boilerplate).&lt;/li>
-&lt;li>Calls &lt;code>__libc_start_main()&lt;/code> (glibc initialization).&lt;/li>
-&lt;li>Invokes &lt;code>main()&lt;/code> → prints &lt;code>&amp;quot;Hello, world!&amp;quot;&lt;/code>.&lt;/li>
-&lt;li>Returns to the kernel via &lt;code>exit(0)&lt;/code>.&lt;/li>
-&lt;/ul>
-&lt;hr>
-&lt;h3>&lt;strong>Tools to Inspect ELF Files&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="tools-to-inspect-elf-files">&lt;/span>
-&lt;a href="#tools-to-inspect-elf-files" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Tool&lt;/th>
-&lt;th>Purpose&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>&lt;code>readelf&lt;/code>&lt;/td>
-&lt;td>Analyze headers, sections, symbols.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;code>objdump&lt;/code>&lt;/td>
-&lt;td>Disassemble code, view relocations.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;code>nm&lt;/code>&lt;/td>
-&lt;td>List symbols (functions/variables).&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;code>gdb&lt;/code>&lt;/td>
-&lt;td>Debug and inspect memory layout.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;code>strings&lt;/code>&lt;/td>
-&lt;td>Extract human-readable strings.&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;hr>
-&lt;h3>&lt;strong>Summary Workflow&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="summary-workflow">&lt;/span>
-&lt;a href="#summary-workflow" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
-&lt;li>&lt;strong>Source Code&lt;/strong> → &lt;code>gcc -c&lt;/code> → &lt;strong>ELF Object File&lt;/strong> (&lt;code>hello.o&lt;/code>)&lt;/li>
-&lt;li>&lt;strong>Object Files&lt;/strong> → &lt;code>ld&lt;/code> → &lt;strong>ELF Executable&lt;/strong> (&lt;code>hello&lt;/code>)&lt;/li>
-&lt;li>&lt;strong>OS Loads ELF&lt;/strong> → Maps Memory Segments → Resolves Dependencies → Executes Code&lt;/li>
-&lt;/ol>
-&lt;p>By understanding ELF, you gain insight into how software interacts with hardware, memory, and the operating system at the lowest level.&lt;/p>
-&lt;h1>References&lt;/h1>&lt;ol>
-&lt;li>&lt;a href="https://www.lurklurk.org/linkers/linkers.html" target="_blank" rel="noopener">linkers&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Linker_%28computing%29" target="_blank" rel="noopener">wiki-linker&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>My Tool Box</title><link>https://cloudedseal.github.io/blog/my-tool-box/</link><pubDate>Fri, 19 Apr 2024 17:31:31 +0800</pubDate><guid>https://cloudedseal.github.io/blog/my-tool-box/</guid><description>
 &lt;h1>video &amp;amp; audio&lt;/h1>&lt;ol>
 &lt;li>&lt;a href="https://github.com/iawia002/lux" target="_blank" rel="noopener">lux&lt;/a>&lt;/li>
