@@ -1,7 +1,859 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://cloudedseal.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://cloudedseal.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://cloudedseal.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Master Elf Sections</title><link>https://cloudedseal.github.io/blog/master-elf-sections/</link><pubDate>Wed, 30 Apr 2025 10:48:42 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-elf-sections/</guid><description>
+&lt;/blockquote></description></item><item><title>Asm Dynamic Linker</title><link>https://cloudedseal.github.io/blog/asm-dynamic-linker/</link><pubDate>Sun, 04 May 2025 09:04:18 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-dynamic-linker/</guid><description>
+&lt;h2>&lt;strong>dynamic linker&lt;/strong> 简介&lt;span class="hx-absolute -hx-mt-20" id="dynamic-linker-简介">&lt;/span>
+&lt;a href="#dynamic-linker-%e7%ae%80%e4%bb%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;strong>dynamic linker&lt;/strong> (also called the &lt;strong>dynamic loader&lt;/strong>) &lt;strong>is a shared object&lt;/strong> (&lt;code>*.so&lt;/code> file) on Linux systems. It plays a critical role in the execution of dynamically linked programs.&lt;/p>
+&lt;h2>&lt;strong>What Is the Dynamic Linker?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="what-is-the-dynamic-linker">&lt;/span>
+&lt;a href="#what-is-the-dynamic-linker" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The dynamic linker is a special shared library responsible for:&lt;/p>
+&lt;ul>
+&lt;li>Loading the program&amp;rsquo;s dependencies (shared libraries like &lt;code>libc.so.6&lt;/code>).&lt;/li>
+&lt;li>Resolving symbols (e.g., function addresses like &lt;code>printf&lt;/code>).&lt;/li>
+&lt;li>Performing relocations (adjusting addresses for shared libraries).&lt;/li>
+&lt;li>Invoking constructors/destructors (via &lt;code>.init_array&lt;/code> and &lt;code>.fini_array&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;p>On Linux, the dynamic linker is typically named:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>&lt;code>ld-linux.so.2&lt;/code>&lt;/strong> (for 32-bit x86).&lt;/li>
+&lt;li>&lt;strong>&lt;code>ld-linux-x86-64.so.2&lt;/code>&lt;/strong> (for 64-bit x86_64).&lt;/li>
+&lt;li>&lt;strong>&lt;code>ld-linux-aarch64.so.1&lt;/code>&lt;/strong> (for ARM64).&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Why Is the Dynamic Linker a Shared Object?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="why-is-the-dynamic-linker-a-shared-object">&lt;/span>
+&lt;a href="#why-is-the-dynamic-linker-a-shared-object" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Efficiency:&lt;/strong> It avoids duplicating the linker code in every executable.&lt;/li>
+&lt;li>&lt;strong>Reusability:&lt;/strong> All dynamically linked programs share the same dynamic linker.&lt;/li>
+&lt;li>&lt;strong>Maintainability:&lt;/strong> Updates to the dynamic linker (e.g., security fixes) apply to all programs.&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>先有鸡先有蛋问题&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="先有鸡先有蛋问题">&lt;/span>
+&lt;a href="#%e5%85%88%e6%9c%89%e9%b8%a1%e5%85%88%e6%9c%89%e8%9b%8b%e9%97%ae%e9%a2%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>The dynamic linker itself must be a &lt;code>shared object&lt;/code>, but it is responsible for loading shared libraries. 动态链接器本身就是共享库&lt;/li>
+&lt;li>To resolve this, the kernel &lt;code>directly loads&lt;/code> the dynamic linker (&lt;code>ld-linux-*.so&lt;/code>) into memory when starting a program. The dynamic linker then loads the rest of the dependencies (like &lt;code>libc.so.6&lt;/code>) 内核直接负责装载 dynamic linker 这个共享库, 再由 dynamic linker 装载其他依赖&lt;/li>
+&lt;/ul>
+&lt;h2>demo 二进制文件查看&lt;span class="hx-absolute -hx-mt-20" id="demo-二进制文件查看">&lt;/span>
+&lt;a href="#demo-%e4%ba%8c%e8%bf%9b%e5%88%b6%e6%96%87%e4%bb%b6%e6%9f%a5%e7%9c%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>&lt;code>demo&lt;/code> 中动态链接器查看&lt;span class="hx-absolute -hx-mt-20" id="demo-中动态链接器查看">&lt;/span>
+&lt;a href="#demo-%e4%b8%ad%e5%8a%a8%e6%80%81%e9%93%be%e6%8e%a5%e5%99%a8%e6%9f%a5%e7%9c%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>readelf -l demo&lt;/code> (look for the &lt;code>INTERP&lt;/code> segment)&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">readelf -l demo &lt;span class="p">|&lt;/span> grep -A &lt;span class="m">2&lt;/span> INTERP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> INTERP 0x0000000000000318 0x0000000000000318 0x0000000000000318
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x000000000000001c 0x000000000000001c R 0x1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[&lt;/span>Requesting program interpreter: /lib64/ld-linux-x86-64.so.2&lt;span class="o">]&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>This path (&lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code>) is stored in the &lt;strong>&lt;code>.interp&lt;/code> section&lt;/strong> of the ELF file. 其中还有一个字符串结束符号 0x00。可以看到 &lt;strong>&lt;code>.interp&lt;/code> section&lt;/strong> 长度为 0x1c 一共 28bytes。&lt;/p>
+&lt;h3>file 查看 demo 信息&lt;span class="hx-absolute -hx-mt-20" id="file-查看-demo-信息">&lt;/span>
+&lt;a href="#file-%e6%9f%a5%e7%9c%8b-demo-%e4%bf%a1%e6%81%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">file demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">demo: ELF 64-bit LSB pie executable, x86-64, version &lt;span class="m">1&lt;/span> &lt;span class="o">(&lt;/span>SYSV&lt;span class="o">)&lt;/span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID&lt;span class="o">[&lt;/span>sha1&lt;span class="o">]=&lt;/span>6fd65349be456b41544a47b67df68fa7968c3f4f, &lt;span class="k">for&lt;/span> GNU/Linux 3.2.0, with debug_info, not stripped&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>Dynamic Linker VS Regular Shared Libraries&lt;span class="hx-absolute -hx-mt-20" id="dynamic-linker-vs-regular-shared-libraries">&lt;/span>
+&lt;a href="#dynamic-linker-vs-regular-shared-libraries" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Feature&lt;/th>
+&lt;th>Dynamic Linker (&lt;code>ld-linux-*.so&lt;/code>)&lt;/th>
+&lt;th>Regular Shared Library (e.g., &lt;code>libc.so.6&lt;/code>)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>Loaded by&lt;/strong>&lt;/td>
+&lt;td>Kernel (directly)&lt;/td>
+&lt;td>Dynamic linker&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Purpose&lt;/strong>&lt;/td>
+&lt;td>Load and link shared libraries&lt;/td>
+&lt;td>Provide runtime functionality&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Dependencies&lt;/strong>&lt;/td>
+&lt;td>None (self-contained)&lt;/td>
+&lt;td>May depend on other shared libraries&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Entry Point&lt;/strong>&lt;/td>
+&lt;td>Called by kernel&lt;/td>
+&lt;td>Called by dynamic linker&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2>&lt;strong>How Dynamic Linker Works?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="how-dynamic-linker-works">&lt;/span>
+&lt;a href="#how-dynamic-linker-works" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>&lt;strong>Step 1: Kernel Loads the Executable&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="step-1-kernel-loads-the-executable">&lt;/span>
+&lt;a href="#step-1-kernel-loads-the-executable" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>The kernel reads the ELF header of &lt;code>demo&lt;/code> and sees the &lt;code>INTERP&lt;/code> segment pointing to &lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code>.&lt;/li>
+&lt;li>The kernel &lt;strong>loads the dynamic linker itself&lt;/strong> into memory.&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Step 2: Dynamic Linker Takes Over&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="step-2-dynamic-linker-takes-over">&lt;/span>
+&lt;a href="#step-2-dynamic-linker-takes-over" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>The kernel transfers control to the dynamic linker&amp;rsquo;s entry point.&lt;/li>
+&lt;li>The dynamic linker:
+&lt;ol>
+&lt;li>Parses the executable&amp;rsquo;s &lt;code>.dynamic&lt;/code> section to find dependencies (e.g., &lt;code>libc.so.6&lt;/code>).&lt;/li>
+&lt;li>Loads these shared libraries into memory.&lt;/li>
+&lt;li>Resolves symbols (e.g., &lt;code>printf&lt;/code> in &lt;code>libc&lt;/code>).&lt;/li>
+&lt;li>Applies relocations (fixes addresses in &lt;code>.got&lt;/code> and &lt;code>.plt&lt;/code>).&lt;/li>
+&lt;li>Calls constructor functions (e.g., &lt;code>initialize()&lt;/code> in &lt;code>.init_array&lt;/code>).&lt;/li>
+&lt;li>Transfers control to the program&amp;rsquo;s &lt;code>main()&lt;/code>.&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;code>gdb&lt;/code> 运行 &lt;code>demo&lt;/code> 验证 &lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code> 先装载&lt;span class="hx-absolute -hx-mt-20" id="gdb-运行-demo-验证-lib64ld-linux-x86-64so2-先装载">&lt;/span>
+&lt;a href="#gdb-%e8%bf%90%e8%a1%8c-demo-%e9%aa%8c%e8%af%81-lib64ld-linux-x86-64so2-%e5%85%88%e8%a3%85%e8%bd%bd" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">gdb ./demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reading symbols from ./demo...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> &lt;span class="nb">break&lt;/span> _start
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Breakpoint &lt;span class="m">1&lt;/span> at 0x1080
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> info program
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The program being debugged is not being run.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> c
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The program is not being run.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Starting program: /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Breakpoint 1.2, 0x00007ffff7fe4540 in _start &lt;span class="o">()&lt;/span> from /lib64/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> info program
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Last stopped &lt;span class="k">for&lt;/span> thread &lt;span class="m">1&lt;/span> &lt;span class="o">(&lt;/span>process 50955&lt;span class="o">)&lt;/span>.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using the running image of child process 50955.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Program stopped at 0x7ffff7fe4540.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">It stopped at breakpoint 1.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Type &lt;span class="s2">&amp;#34;info stack&amp;#34;&lt;/span> or &lt;span class="s2">&amp;#34;info registers&amp;#34;&lt;/span> &lt;span class="k">for&lt;/span> more information.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> info proc mappings
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">process &lt;span class="m">50955&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Mapped address spaces:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Start Addr End Addr Size Offset Perms objfile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x555555554000 0x555555555000 0x1000 0x0 r--p /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x555555555000 0x555555556000 0x1000 0x1000 r-xp /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x555555556000 0x555555557000 0x1000 0x2000 r--p /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x555555557000 0x555555559000 0x2000 0x2000 rw-p /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7fbf000 0x7ffff7fc3000 0x4000 0x0 r--p &lt;span class="o">[&lt;/span>vvar&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7fc3000 0x7ffff7fc5000 0x2000 0x0 r-xp &lt;span class="o">[&lt;/span>vdso&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7fc5000 0x7ffff7fc6000 0x1000 0x0 r--p /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7fc6000 0x7ffff7ff1000 0x2b000 0x1000 r-xp /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7ff1000 0x7ffff7ffb000 0xa000 0x2c000 r--p /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7ffb000 0x7ffff7fff000 0x4000 0x36000 rw-p /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffffffde000 0x7ffffffff000 0x21000 0x0 rw-p &lt;span class="o">[&lt;/span>stack&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0xffffffffff600000 0xffffffffff601000 0x1000 0x0 --xp &lt;span class="o">[&lt;/span>vsyscall&lt;span class="o">]&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol>
+&lt;li>&lt;code>break _start&lt;/code> 打断点&lt;/li>
+&lt;li>run 运行&lt;/li>
+&lt;li>info proc mappings 查看内存映射
+&lt;ul>
+&lt;li>&lt;code>/home/yang/elf-demo/demo&lt;/code> 可执行文件&lt;/li>
+&lt;li>&lt;code>/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2&lt;/code> 动态链接器在 main 运行之前已被加载&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ls -l /lib64/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">lrwxrwxrwx &lt;span class="m">1&lt;/span> root root &lt;span class="m">44&lt;/span> Jan &lt;span class="m">29&lt;/span> 01:07 /lib64/ld-linux-x86-64.so.2 -&amp;gt; ../lib/x86_64-linux-gnu/ld-linux-x86-64.so.2&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>&lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code> 装载其他依赖&lt;span class="hx-absolute -hx-mt-20" id="lib64ld-linux-x86-64so2-装载其他依赖">&lt;/span>
+&lt;a href="#lib64ld-linux-x86-64so2-%e8%a3%85%e8%bd%bd%e5%85%b6%e4%bb%96%e4%be%9d%e8%b5%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ol>
+&lt;li>ldd 查看 demo 依赖&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ldd demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> linux-vdso.so.1 &lt;span class="o">(&lt;/span>0x00007fffac3dc000&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> libc.so.6 &lt;span class="o">=&lt;/span>&amp;gt; /lib/x86_64-linux-gnu/libc.so.6 &lt;span class="o">(&lt;/span>0x00007be167000000&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> /lib64/ld-linux-x86-64.so.2 &lt;span class="o">(&lt;/span>0x00007be1672c1000&lt;span class="o">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol start="2">
+&lt;li>gdb &lt;code>initialize&lt;/code> 处打断点&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> bt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#0 initialize () at demo.c:27&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#1 0x00007ffff7c2a304 in call_init (env=&amp;lt;optimized out&amp;gt;, argv=0x7fffffffdc48, argc=1) at ../csu/libc-start.c:145&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#2 __libc_start_main_impl (main=0x5555555551ed &amp;lt;main&amp;gt;, argc=1, argv=0x7fffffffdc48, init=&amp;lt;optimized out&amp;gt;, fini=&amp;lt;optimized out&amp;gt;, rtld_fini=&amp;lt;optimized out&amp;gt;, &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">stack_end&lt;/span>&lt;span class="o">=&lt;/span>0x7fffffffdc38&lt;span class="o">)&lt;/span> at ../csu/libc-start.c:347
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#3 0x00005555555550a5 in _start ()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> info proc mappings
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">process &lt;span class="m">50955&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Mapped address spaces:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Start Addr End Addr Size Offset Perms objfile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x555555554000 0x555555555000 0x1000 0x0 r--p /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x555555555000 0x555555556000 0x1000 0x1000 r-xp /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x555555556000 0x555555557000 0x1000 0x2000 r--p /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x555555557000 0x555555558000 0x1000 0x2000 r--p /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x555555558000 0x555555559000 0x1000 0x3000 rw-p /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7c00000 0x7ffff7c28000 0x28000 0x0 r--p /usr/lib/x86_64-linux-gnu/libc.so.6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7c28000 0x7ffff7db0000 0x188000 0x28000 r-xp /usr/lib/x86_64-linux-gnu/libc.so.6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7db0000 0x7ffff7dff000 0x4f000 0x1b0000 r--p /usr/lib/x86_64-linux-gnu/libc.so.6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7dff000 0x7ffff7e03000 0x4000 0x1fe000 r--p /usr/lib/x86_64-linux-gnu/libc.so.6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x7ffff7e03000 0x7ffff7e05000 0x2000 0x202000 rw-p /usr/lib/x86_64-linux-gnu/libc.so.6&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol>
+&lt;li>&lt;code>/usr/lib/x86_64-linux-gnu/libc.so.6&lt;/code> 这就是由 &lt;code>/lib64/ld-linux-x86-64.so.2&lt;/code> 装载的依赖的动态库&lt;/li>
+&lt;/ol>
+&lt;h3>&lt;strong>Step 3: Lazy Binding&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="step-3-lazy-binding">&lt;/span>
+&lt;a href="#step-3-lazy-binding" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>Lazy binding means that the actual address of &lt;code>printf&lt;/code> isn&amp;rsquo;t resolved until the first time it&amp;rsquo;s called.&lt;/p>
+&lt;/blockquote>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>function call → PLT → GOT → resolver → dynamic linker resolves symbol → GOT updated
+→ future calls jump directly to the resolved address.
+This is lazy binding.&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>When a function like &lt;code>printf&lt;/code> is called for the first time:&lt;/li>
+&lt;li>The PLT entry jumps to the GOT.&lt;/li>
+&lt;li>The GOT initially points to &lt;code>resolver code&lt;/code> in the dynamic linker.&lt;/li>
+&lt;li>The resolver resolves the symbol (e.g., finds &lt;code>printf&lt;/code> in &lt;code>libc&lt;/code>) and updates the GOT.&lt;/li>
+&lt;li>Subsequent calls jump directly to the resolved address.&lt;/li>
+&lt;/ul>
+&lt;h2>dynamic linker 启用环境变量观察过程&lt;span class="hx-absolute -hx-mt-20" id="dynamic-linker-启用环境变量观察过程">&lt;/span>
+&lt;a href="#dynamic-linker-%e5%90%af%e7%94%a8%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e8%a7%82%e5%af%9f%e8%bf%87%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>LD_DEBUG 环境变量&lt;span class="hx-absolute -hx-mt-20" id="ld_debug-环境变量">&lt;/span>
+&lt;a href="#ld_debug-%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">LD_DEBUG&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nb">help&lt;/span> ./demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Valid options &lt;span class="k">for&lt;/span> the LD_DEBUG environment variable are:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> libs display library search paths
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> reloc display relocation processing
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> files display progress &lt;span class="k">for&lt;/span> input file
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> symbols display symbol table processing
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bindings display information about symbol binding
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> versions display version dependencies
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> scopes display scope information
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> all all previous options combined
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> statistics display relocation statistics
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> unused determined unused DSOs
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">help&lt;/span> display this &lt;span class="nb">help&lt;/span> message and &lt;span class="nb">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">To direct the debugging output into a file instead of standard output
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">a filename can be specified using the LD_DEBUG_OUTPUT environment variable.&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>&lt;code>LD_DEBUG=libs ./demo 分析&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="ld_debuglibs-demo-分析">&lt;/span>
+&lt;a href="#ld_debuglibs-demo-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The &lt;code>LD_DEBUG=libs&lt;/code> output provides a detailed view of how the dynamic linker (&lt;code>ld.so&lt;/code>) loads and initializes shared libraries for your &lt;code>demo&lt;/code> executable.&lt;/p>
+&lt;h3>&lt;strong>1. Library Search and Loading&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-library-search-and-loading">&lt;/span>
+&lt;a href="#1-library-search-and-loading" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">4039: find &lt;span class="nv">library&lt;/span>&lt;span class="o">=&lt;/span>libc.so.6 &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> searching
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">4039: search &lt;span class="nv">cache&lt;/span>&lt;span class="o">=&lt;/span>/etc/ld.so.cache
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">4039: trying &lt;span class="nv">file&lt;/span>&lt;span class="o">=&lt;/span>/lib/x86_64-linux-gnu/libc.so.6&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: The dynamic linker searches for required shared libraries (&lt;code>libc.so.6&lt;/code> in this case).&lt;/li>
+&lt;li>&lt;strong>Process&lt;/strong>:
+&lt;ul>
+&lt;li>It first checks the precomputed cache file &lt;code>/etc/ld.so.cache&lt;/code> for efficiency.&lt;/li>
+&lt;li>Then it directly tries the filesystem path &lt;code>/lib/x86_64-linux-gnu/libc.so.6&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Result&lt;/strong>: &lt;code>libc.so.6&lt;/code> (the standard C library) is loaded into memory.&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>2. Initialization of Libraries&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="2-initialization-of-libraries">&lt;/span>
+&lt;a href="#2-initialization-of-libraries" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">4039: calling init: /lib64/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">4039: calling init: /lib/x86_64-linux-gnu/libc.so.6&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: Run initialization code for shared libraries.&lt;/li>
+&lt;li>&lt;strong>Order&lt;/strong>:
+&lt;ol>
+&lt;li>&lt;strong>Dynamic Linker (&lt;code>ld-linux-x86-64.so.2&lt;/code>)&lt;/strong>: Initializes internal structures (e.g., GOT/PLT setup).&lt;/li>
+&lt;li>&lt;strong>&lt;code>libc.so.6&lt;/code>&lt;/strong>: Initializes the C library (e.g., stdio, threading, heap).&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>3. Program Initialization&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="3-program-initialization">&lt;/span>
+&lt;a href="#3-program-initialization" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">4039: initialize program: ./demo&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: Execute constructor functions (marked with &lt;code>__attribute__((constructor))&lt;/code>) before &lt;code>main()&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>In Your Code&lt;/strong>:
+&lt;ul>
+&lt;li>The &lt;code>initialize()&lt;/code> function is called here, printing &lt;code>&amp;quot;Initializing...\n&amp;quot;&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>4. Transfer Control to Program&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="4-transfer-control-to-program">&lt;/span>
+&lt;a href="#4-transfer-control-to-program" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">4039: transferring control: ./demo&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: Jump to the program’s &lt;code>main()&lt;/code> function.&lt;/li>
+&lt;li>&lt;strong>Output&lt;/strong>:
+&lt;ul>
+&lt;li>&lt;code>Global Data: 42&lt;/code> (from &lt;code>global_data&lt;/code> in &lt;code>.data&lt;/code>)&lt;/li>
+&lt;li>&lt;code>Global BSS: 0&lt;/code> (from &lt;code>global_bss&lt;/code> in &lt;code>.bss&lt;/code>, zero-initialized)&lt;/li>
+&lt;li>&lt;code>Local Static: 100&lt;/code> (from &lt;code>local_static&lt;/code> in &lt;code>.data&lt;/code>)&lt;/li>
+&lt;li>&lt;code>Hello from .rodata!&lt;/code> (from &lt;code>message&lt;/code> in &lt;code>.rodata&lt;/code>)&lt;/li>
+&lt;li>&lt;code>Counter: 1&lt;/code>, &lt;code>Counter: 2&lt;/code>, &lt;code>Counter: 3&lt;/code> (from &lt;code>counter()&lt;/code> with static &lt;code>count&lt;/code> in &lt;code>.bss&lt;/code>)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>5. Finalization&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="5-finalization">&lt;/span>
+&lt;a href="#5-finalization" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">4039: calling fini: &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">4039: Finalizing...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">4039: calling fini: /lib/x86_64-linux-gnu/libc.so.6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">4039: calling fini: /lib64/ld-linux-x86-64.so.2&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: Run destructor functions (marked with &lt;code>__attribute__((destructor))&lt;/code>) after &lt;code>main()&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>Order&lt;/strong>:
+&lt;ol>
+&lt;li>&lt;strong>Program Destructors&lt;/strong>:
+&lt;ul>
+&lt;li>The &lt;code>finalize()&lt;/code> function is called, printing &lt;code>&amp;quot;Finalizing...\n&amp;quot;&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Library Destructors&lt;/strong>:
+&lt;ul>
+&lt;li>&lt;code>libc.so.6&lt;/code>: Cleans up C library resources.&lt;/li>
+&lt;li>&lt;code>ld-linux-x86-64.so.2&lt;/code>: Cleans up dynamic linking infrastructure.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Key Observations&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="key-observations">&lt;/span>
+&lt;a href="#key-observations" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Initialization Order&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Libraries are initialized &lt;strong>depth-first&lt;/strong>, starting from dependencies (e.g., &lt;code>libc&lt;/code>) and moving to the main executable.&lt;/li>
+&lt;li>Constructors run &lt;strong>after&lt;/strong> all libraries are loaded but &lt;strong>before&lt;/strong> &lt;code>main()&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Finalization Order&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Destructors run &lt;strong>in reverse order&lt;/strong> of initialization:
+&lt;ul>
+&lt;li>Program destructors first (&lt;code>finalize()&lt;/code>), then library destructors (&lt;code>libc&lt;/code>, &lt;code>ld-linux&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Dynamic Linker Role&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Manages the entire lifecycle:
+&lt;ul>
+&lt;li>&lt;strong>Loading&lt;/strong>: Resolves symbols and maps libraries into memory.&lt;/li>
+&lt;li>&lt;strong>Relocation&lt;/strong>: Adjusts addresses for position-independent code (PIC).&lt;/li>
+&lt;li>&lt;strong>Initialization/Finalization&lt;/strong>: Ensures proper setup/teardown of libraries and code.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Symbol Resolution&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Symbols like &lt;code>printf&lt;/code> are resolved via &lt;code>.plt&lt;/code>/&lt;code>.got&lt;/code> (lazy binding unless &lt;code>BIND_NOW&lt;/code> is set).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3>&lt;strong>Why This Matters&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="why-this-matters">&lt;/span>
+&lt;a href="#why-this-matters" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Debugging&lt;/strong>: Helps identify missing libraries, symbol conflicts, or initialization issues.&lt;/li>
+&lt;li>&lt;strong>Performance&lt;/strong>: Reveals overhead from lazy vs. eager binding (&lt;code>LD_BIND_NOW&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>Security&lt;/strong>: Shows how libraries are loaded and validated (e.g., &lt;code>PIE&lt;/code>, &lt;code>RELRO&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;h2>LD_DEBUG=files ./demo 分析&lt;span class="hx-absolute -hx-mt-20" id="ld_debugfiles-demo-分析">&lt;/span>
+&lt;a href="#ld_debugfiles-demo-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">LD_DEBUG&lt;/span>&lt;span class="o">=&lt;/span>files ./demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: &lt;span class="nv">file&lt;/span>&lt;span class="o">=&lt;/span>libc.so.6 &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> needed by ./demo &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: &lt;span class="nv">file&lt;/span>&lt;span class="o">=&lt;/span>libc.so.6 &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> generating link map
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: dynamic: 0x000073f09de02940 base: 0x000073f09dc00000 size: 0x0000000000211d90
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: entry: 0x000073f09dc2a390 phdr: 0x000073f09dc00040 phnum: &lt;span class="m">14&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: calling init: /lib64/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: calling init: /lib/x86_64-linux-gnu/libc.so.6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: initialize program: ./demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Initializing...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: transferring control: ./demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Global Data: &lt;span class="m">42&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Global BSS: &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Local Static: &lt;span class="m">100&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Hello from .rodata!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Counter: &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Counter: &lt;span class="m">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Counter: &lt;span class="m">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: calling fini: &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Finalizing...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: calling fini: /lib/x86_64-linux-gnu/libc.so.6 &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266: calling fini: /lib64/ld-linux-x86-64.so.2 &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4266:&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>&lt;strong>Library File Resolution&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="library-file-resolution">&lt;/span>
+&lt;a href="#library-file-resolution" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">4266: &lt;span class="nv">file&lt;/span>&lt;span class="o">=&lt;/span>libc.so.6 &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> needed by ./demo &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">4266: &lt;span class="nv">file&lt;/span>&lt;span class="o">=&lt;/span>libc.so.6 &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> generating link map&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: The dynamic linker resolves dependencies listed in the &lt;code>.dynamic&lt;/code> section (e.g., &lt;code>NEEDED&lt;/code> entries like &lt;code>libc.so.6&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>Link Map&lt;/strong>:
+&lt;ul>
+&lt;li>A &lt;code>link_map&lt;/code> structure is created to track metadata for each loaded library.&lt;/li>
+&lt;li>&lt;strong>Fields&lt;/strong>:
+&lt;ul>
+&lt;li>&lt;code>dynamic&lt;/code>: Pointer to the &lt;code>.dynamic&lt;/code> section of &lt;code>libc.so.6&lt;/code> (used for symbol resolution).&lt;/li>
+&lt;li>&lt;code>base&lt;/code>: Load address in memory (&lt;code>0x000073f09dc00000&lt;/code>).&lt;/li>
+&lt;li>&lt;code>size&lt;/code>: Size of the mapped library (&lt;code>0x211d90&lt;/code> bytes).&lt;/li>
+&lt;li>&lt;code>entry&lt;/code>: Entry point (start address of &lt;code>libc.so.6&lt;/code>).&lt;/li>
+&lt;li>&lt;code>phdr&lt;/code>: Pointer to program headers (used to load segments into memory).&lt;/li>
+&lt;li>&lt;code>phnum&lt;/code>: Number of program headers (&lt;code>14&lt;/code> in this case).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2>&lt;strong>LD_DEBUG=reloc ./demo 分析&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="ld_">&lt;/span>
+&lt;a href="#ld_" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The &lt;code>LD_DEBUG=reloc ./demo&lt;/code> output reveals how the &lt;strong>dynamic linker&lt;/strong> processes &lt;strong>relocations&lt;/strong> during program execution. Relocations are adjustments made to addresses in the binary and shared libraries when they&amp;rsquo;re loaded into memory (due to &lt;strong>Position-Independent Code (PIC)&lt;/strong> and &lt;strong>Address Space Layout Randomization (ASLR)&lt;/strong>). Let’s break down the key steps:&lt;/p>
+&lt;h3>&lt;strong>1. Relocation Processing&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-relocation-processing">&lt;/span>
+&lt;a href="#1-relocation-processing" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">5881: relocation processing: /lib/x86_64-linux-gnu/libc.so.6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">5881: relocation processing: ./demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">5881: relocation processing: /lib64/ld-linux-x86-64.so.2&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Purpose&lt;/strong>: The dynamic linker resolves &lt;strong>symbol addresses&lt;/strong> in the following order:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>&lt;code>libc.so.6&lt;/code>&lt;/strong>: Adjusts addresses for symbols like &lt;code>printf&lt;/code>, &lt;code>exit&lt;/code>, and global variables.&lt;/li>
+&lt;li>&lt;strong>&lt;code>./demo&lt;/code>&lt;/strong>: Fixes up addresses for global/static variables (e.g., &lt;code>global_data&lt;/code>, &lt;code>global_bss&lt;/code>, &lt;code>local_static&lt;/code>) and PLT/GOT entries.&lt;/li>
+&lt;li>&lt;strong>&lt;code>ld-linux-x86-64.so.2&lt;/code>&lt;/strong>: Adjusts internal addresses for the dynamic linker itself.&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>What Happens During Relocation?&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>The dynamic linker reads &lt;strong>relocation sections&lt;/strong> like &lt;code>.rela.dyn&lt;/code> (for global variables) and &lt;code>.rela.plt&lt;/code> (for function calls) to update addresses.&lt;/li>
+&lt;li>For example:
+&lt;ul>
+&lt;li>A &lt;code>R_X86_64_GLOB_DAT&lt;/code> relocation updates the GOT entry for &lt;code>printf&lt;/code> to point to its address in &lt;code>libc.so.6&lt;/code>.&lt;/li>
+&lt;li>A &lt;code>R_X86_64_RELATIVE&lt;/code> relocation adjusts addresses in &lt;code>./demo&lt;/code> based on its load address (ASLR).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>2. Initialization of Libraries&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="2-initialization-of-libraries-1">&lt;/span>
+&lt;a href="#2-initialization-of-libraries-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">5881: calling init: /lib64/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">5881: calling init: /lib/x86_64-linux-gnu/libc.so.6&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: Run initialization code for shared libraries after relocations are applied.&lt;/li>
+&lt;li>&lt;strong>Order&lt;/strong>:
+&lt;ol>
+&lt;li>&lt;strong>Dynamic Linker (&lt;code>ld-linux&lt;/code>)&lt;/strong>: Initializes internal structures (e.g., GOT/PLT setup).&lt;/li>
+&lt;li>&lt;strong>&lt;code>libc.so.6&lt;/code>&lt;/strong>: Initializes the C library (e.g., stdio, heap).&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>3. Program Initialization&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="3-program-initialization-1">&lt;/span>
+&lt;a href="#3-program-initialization-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">5881: initialize program: ./demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Initializing...&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: Execute constructor functions (marked with &lt;code>__attribute__((constructor))&lt;/code>) before &lt;code>main()&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>In Your Code&lt;/strong>:
+&lt;ul>
+&lt;li>The &lt;code>initialize()&lt;/code> function is called here, printing &lt;code>&amp;quot;Initializing...\n&amp;quot;&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>4. Transfer Control to Program&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="4-transfer-control-to-program-1">&lt;/span>
+&lt;a href="#4-transfer-control-to-program-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">5881: transferring control: ./demo&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Purpose&lt;/strong>: Jump to the program’s &lt;code>main()&lt;/code> function.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Output&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Global Data: 42&lt;/code> (from &lt;code>global_data&lt;/code> in &lt;code>.data&lt;/code>)&lt;/li>
+&lt;li>&lt;code>Global BSS: 0&lt;/code> (from &lt;code>global_bss&lt;/code> in &lt;code>.bss&lt;/code>, zero-initialized)&lt;/li>
+&lt;li>&lt;code>Local Static: 100&lt;/code> (from &lt;code>local_static&lt;/code> in &lt;code>.data&lt;/code>)&lt;/li>
+&lt;li>&lt;code>Hello from .rodata!&lt;/code> (from &lt;code>message&lt;/code> in &lt;code>.rodata&lt;/code>)&lt;/li>
+&lt;li>&lt;code>Counter: 1&lt;/code>, &lt;code>Counter: 2&lt;/code>, &lt;code>Counter: 3&lt;/code> (from &lt;code>counter()&lt;/code> with static &lt;code>count&lt;/code> in &lt;code>.bss&lt;/code>)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Relocation Details&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Static Variables&lt;/strong>: Addresses of &lt;code>global_data&lt;/code>, &lt;code>global_bss&lt;/code>, and &lt;code>local_static&lt;/code> are resolved via &lt;code>.rela.dyn&lt;/code> relocations.&lt;/li>
+&lt;li>&lt;strong>Function Calls&lt;/strong>: &lt;code>printf&lt;/code> is resolved via &lt;code>.rela.plt&lt;/code> relocations using the &lt;strong>PLT/GOT mechanism&lt;/strong>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>5. Finalization&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="5-finalization-1">&lt;/span>
+&lt;a href="#5-finalization-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">5881: calling fini: &lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Finalizing...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">5881: calling fini: /lib/x86_64-linux-gnu/libc.so.6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">5881: calling fini: /lib64/ld-linux-x86-64.so.2&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: Run destructor functions (marked with &lt;code>__attribute__((destructor))&lt;/code>) after &lt;code>main()&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>Order&lt;/strong>:
+&lt;ol>
+&lt;li>&lt;strong>Program Destructors&lt;/strong>:
+&lt;ul>
+&lt;li>The &lt;code>finalize()&lt;/code> function is called, printing &lt;code>&amp;quot;Finalizing...\n&amp;quot;&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Library Destructors&lt;/strong>:
+&lt;ul>
+&lt;li>&lt;code>libc.so.6&lt;/code>: Cleans up C library resources.&lt;/li>
+&lt;li>&lt;code>ld-linux-x86-64.so.2&lt;/code>: Cleans up dynamic linking infrastructure.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Key Concepts in Relocation&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="key-concepts-in-relocation">&lt;/span>
+&lt;a href="#key-concepts-in-relocation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Why Relocation Is Needed&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Shared libraries are compiled as &lt;strong>position-independent code (PIC)&lt;/strong> to support ASLR.&lt;/li>
+&lt;li>At runtime, the dynamic linker adjusts addresses to match the actual load address in memory.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Types of Relocations&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>&lt;code>R_X86_64_RELATIVE&lt;/code>&lt;/strong>: Adjusts addresses relative to the library’s base address (e.g., for &lt;code>./demo&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>&lt;code>R_X86_64_GLOB_DAT&lt;/code>&lt;/strong>: Updates GOT entries for global symbols (e.g., &lt;code>printf&lt;/code> in &lt;code>libc.so.6&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>&lt;code>R_X86_64_JUMP_SLOT&lt;/code>&lt;/strong>: Updates PLT entries for lazy binding (e.g., resolving &lt;code>printf&lt;/code> on first call).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Sections Involved&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>.rela.dyn&lt;/code>: Relocations for global variables and data.&lt;/li>
+&lt;li>&lt;code>.rela.plt&lt;/code>: Relocations for function calls (lazy binding).&lt;/li>
+&lt;li>&lt;code>.got&lt;/code>: Global Offset Table (stores resolved addresses for variables/functions).&lt;/li>
+&lt;li>&lt;code>.plt&lt;/code>: Procedure Linkage Table (trampolines for lazy symbol resolution).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3>&lt;strong>Example: Resolving &lt;code>printf&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example-resolving">&lt;/span>
+&lt;a href="#example-resolving" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Initial Call&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>printf&lt;/code> in &lt;code>main()&lt;/code> jumps to &lt;code>.plt&lt;/code>, which then jumps to &lt;code>.got&lt;/code>.&lt;/li>
+&lt;li>If unresolved, &lt;code>.got&lt;/code> redirects to the dynamic linker.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Dynamic Linker&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Uses &lt;code>.rela.plt&lt;/code> to find the symbol index for &lt;code>printf&lt;/code>.&lt;/li>
+&lt;li>Looks up &lt;code>printf&lt;/code> in &lt;code>libc.so.6&lt;/code> using &lt;code>.gnu.hash&lt;/code> and &lt;code>.dynsym&lt;/code>.&lt;/li>
+&lt;li>Updates the &lt;code>.got&lt;/code> entry with &lt;code>printf&lt;/code>’s runtime address.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Subsequent Calls&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Directly use the resolved address in &lt;code>.got&lt;/code> (no dynamic linker needed).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3>&lt;strong>Summary&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="summary">&lt;/span>
+&lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Relocation ensures&lt;/strong> that addresses in the binary and shared libraries are adjusted at runtime to work with ASLR and PIC.&lt;/li>
+&lt;li>&lt;strong>Dynamic linker processes&lt;/strong> relocations in &lt;code>.rela.dyn&lt;/code> (variables) and &lt;code>.rela.plt&lt;/code> (functions) to resolve symbols like &lt;code>printf&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>Constructors/destructors&lt;/strong> (&lt;code>initialize&lt;/code>/&lt;code>finalize&lt;/code>) are handled via &lt;code>.init_array&lt;/code>/&lt;code>.fini_array&lt;/code> after relocations are applied.&lt;/li>
+&lt;/ul>
+&lt;h2>&lt;code>printf&lt;/code> 重定位分析&lt;span class="hx-absolute -hx-mt-20" id="printf-重定位分析">&lt;/span>
+&lt;a href="#printf-%e9%87%8d%e5%ae%9a%e4%bd%8d%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>gcc -g -no-pie -o demo demo.c&lt;/li>
+&lt;li>查看重定位信息&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl"> readelf -r demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Relocation section &lt;span class="s1">&amp;#39;.rela.dyn&amp;#39;&lt;/span> at offset 0x4d8 contains &lt;span class="m">2&lt;/span> entries:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Offset Info Type Sym. Value Sym. Name + Addend
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000403fd8 &lt;span class="m">000100000006&lt;/span> R_X86_64_GLOB_DAT &lt;span class="m">0000000000000000&lt;/span> __libc_start_main@GLIBC_2.34 + &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000403fe0 &lt;span class="m">000400000006&lt;/span> R_X86_64_GLOB_DAT &lt;span class="m">0000000000000000&lt;/span> __gmon_start__ + &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Relocation section &lt;span class="s1">&amp;#39;.rela.plt&amp;#39;&lt;/span> at offset 0x508 contains &lt;span class="m">2&lt;/span> entries:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Offset Info Type Sym. Value Sym. Name + Addend
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">000000404000&lt;/span> &lt;span class="m">000200000007&lt;/span> R_X86_64_JUMP_SLO &lt;span class="m">0000000000000000&lt;/span> puts@GLIBC_2.2.5 + &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">000000404008&lt;/span> &lt;span class="m">000300000007&lt;/span> R_X86_64_JUMP_SLO &lt;span class="m">0000000000000000&lt;/span> printf@GLIBC_2.2.5 + &lt;span class="m">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>0x000000404008 就是 &lt;code>printf&lt;/code> 在文件中偏移量&lt;/p>
+&lt;/blockquote>
+&lt;ol start="3">
+&lt;li>gdb ./demo 分析&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Reading symbols from ./demo...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> &lt;span class="nb">break&lt;/span> _start
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Breakpoint &lt;span class="m">1&lt;/span> at 0x401070
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> &lt;span class="nb">break&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">break&lt;/span> break-range
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Starting program: /home/yang/elf-demo/demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Breakpoint 1.2, 0x00007ffff7fe4540 in _start &lt;span class="o">()&lt;/span> from /lib64/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> &lt;span class="nb">break&lt;/span> _dl_runtime_resolve_xsave
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">_dl_runtime_resolve_xsave _dl_runtime_resolve_xsavec
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> &lt;span class="nb">break&lt;/span> _dl_runtime_resolve_xsave
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Breakpoint &lt;span class="m">2&lt;/span> at 0x7ffff7fda220: file ../sysdeps/x86_64/dl-trampoline.h, line 71.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> info sharedlibrary
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">From To Syms Read Shared Object Library
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0x00007ffff7fc6000 0x00007ffff7ff0195 Yes /lib64/ld-linux-x86-64.so.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> dis
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">disable disassemble disconnect display
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> disassemble &lt;span class="nb">printf&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Dump of assembler code &lt;span class="k">for&lt;/span> &lt;span class="k">function&lt;/span> printf@plt:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000401060 &amp;lt;+0&amp;gt;: endbr64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x0000000000401064 &amp;lt;+4&amp;gt;: jmp *0x2f9e&lt;span class="o">(&lt;/span>%rip&lt;span class="o">)&lt;/span> &lt;span class="c1"># 0x404008 &amp;lt;printf@got.plt&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 0x000000000040106a &amp;lt;+10&amp;gt;: nopw 0x0&lt;span class="o">(&lt;/span>%rax,%rax,1&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">End of assembler dump.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> x/xg 0x404008
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0x404008 &amp;lt;printf@got.plt&amp;gt;: 0x0000000000401040 &lt;span class="c1"># 重定位前的地址&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> info stack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#0 0x00007ffff7fe4540 in _start () from /lib64/ld-linux-x86-64.so.2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#1 0x0000000000000001 in ?? ()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#2 0x00007fffffffe1a9 in ?? ()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#3 0x0000000000000000 in ?? ()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> &lt;span class="nb">break&lt;/span> print_message
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Breakpoint &lt;span class="m">3&lt;/span> at 0x4011c8: file demo.c, line 32.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> &lt;span class="k">continue&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Continuing.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>Thread debugging using libthread_db enabled&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using host libthread_db library &lt;span class="s2">&amp;#34;/lib/x86_64-linux-gnu/libthread_db.so.1&amp;#34;&lt;/span>.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Breakpoint 1.1, 0x0000000000401070 in _start &lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> &lt;span class="k">continue&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Continuing.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Initializing...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Global Data: &lt;span class="m">42&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Global BSS: &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Local Static: &lt;span class="m">100&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Breakpoint 3, print_message &lt;span class="o">()&lt;/span> at demo.c:32
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">32 printf&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;%s\n&amp;#34;&lt;/span>, message&lt;span class="o">)&lt;/span>&lt;span class="p">;&lt;/span> // Uses PLT/GOT &lt;span class="k">for&lt;/span> &lt;span class="nb">printf&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> x/xg 0x404008
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0x404008 &amp;lt;printf@got.plt&amp;gt;: 0x00007ffff7c600f0 &lt;span class="c1"># 重定位后的地址&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>gdb&lt;span class="o">)&lt;/span> info stack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#0 print_message () at demo.c:32&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#1 0x0000000000401244 in main () at demo.c:43&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>&lt;strong>dynamic linker 总结&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="dynamic-linker-总结">&lt;/span>
+&lt;a href="#dynamic-linker-%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>The dynamic linker (&lt;code>ld-linux-*.so&lt;/code>) is a &lt;strong>shared object&lt;/strong> that the kernel loads directly.&lt;/li>
+&lt;li>It bootstraps the loading of all other shared libraries and manages symbol resolution.&lt;/li>
+&lt;li>Without it, dynamically linked programs (like most C programs using &lt;code>glibc&lt;/code>) would not work.&lt;/li>
+&lt;/ul>
+&lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
+&lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man8/ld.so.8.html" target="_blank" rel="noopener">dynamic-linker&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Master Elf Sections</title><link>https://cloudedseal.github.io/blog/master-elf-sections/</link><pubDate>Wed, 30 Apr 2025 10:48:42 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-elf-sections/</guid><description>
 &lt;blockquote>
 &lt;p>分析环境 mint21&lt;/p>
 &lt;/blockquote>
@@ -7774,212 +8626,4 @@ title="Copy code"
 4. &lt;a href="https://en.wikipedia.org/wiki/System_Management_BIOS" target="_blank" rel="noopener">system-management-bios&lt;/a>
 5. &lt;a href="http://www.ruanyifeng.com/blog/2013/02/booting.html" target="_blank" rel="noopener">计算机是如何启动的？&lt;/a>
 6. &lt;a href="https://en.wikipedia.org/wiki/Master_boot_record" target="_blank" rel="noopener">多种 MBR 组织方式&lt;/a>
-7. &lt;a href="https://mp.weixin.qq.com/s/g6m_r28bvyyWIu1CAzxLdg" target="_blank" rel="noopener">计算机是怎样启动的？&lt;/a>&lt;/p></description></item><item><title>data-structure-heap</title><link>https://cloudedseal.github.io/blog/data-structure-heap/</link><pubDate>Mon, 18 May 2020 15:24:05 +0800</pubDate><guid>https://cloudedseal.github.io/blog/data-structure-heap/</guid><description>
-&lt;h3>线性 or 非线性&lt;span class="hx-absolute -hx-mt-20" id="线性-or-非线性">&lt;/span>
-&lt;a href="#%e7%ba%bf%e6%80%a7-or-%e9%9d%9e%e7%ba%bf%e6%80%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>数据结构可以分为两大类：线性结构和非线性结构。线性结构典型的就是数组和链表，非线性典型就是树了。复杂的数据结构基本上都是两者的组合。&lt;/p>
-&lt;h3>binary heap&lt;span class="hx-absolute -hx-mt-20" id="binary-heap">&lt;/span>
-&lt;a href="#binary-heap" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>二叉堆本质上就是个完全二叉树。但是却用数组来表示。为啥呢？因为数组的下标之间有关系，可以表示二叉树节点之间的层级关系。因为是 &lt;code>完全二叉树&lt;/code>，这就保证了一维展开就是一个下标连续的数组，数组通过下标操作起来相当简洁。堆顶(root)也就是数组第一个元素 &lt;code>array[0]&lt;/code>，是最小元素，就是小顶堆。反之，大顶堆。&lt;/p>
-&lt;h3>堆的自我调整&lt;span class="hx-absolute -hx-mt-20" id="堆的自我调整">&lt;/span>
-&lt;a href="#%e5%a0%86%e7%9a%84%e8%87%aa%e6%88%91%e8%b0%83%e6%95%b4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>插入节点&lt;span class="hx-absolute -hx-mt-20" id="插入节点">&lt;/span>
-&lt;a href="#%e6%8f%92%e5%85%a5%e8%8a%82%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>新节点放在数组最后，然后对该节点进行上浮操作。&lt;/p>
-&lt;h4>删除节点&lt;span class="hx-absolute -hx-mt-20" id="删除节点">&lt;/span>
-&lt;a href="#%e5%88%a0%e9%99%a4%e8%8a%82%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>删除堆顶元素，最后一个节点放在堆顶，对此时的堆顶进行下沉操作。&lt;/p>
-&lt;h4>构建二叉堆&lt;span class="hx-absolute -hx-mt-20" id="构建二叉堆">&lt;/span>
-&lt;a href="#%e6%9e%84%e5%bb%ba%e4%ba%8c%e5%8f%89%e5%a0%86" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>所有的非叶子节点进行上浮操作。&lt;/p>
-&lt;h4>二叉堆自我调整图解&lt;span class="hx-absolute -hx-mt-20" id="二叉堆自我调整图解">&lt;/span>
-&lt;a href="#%e4%ba%8c%e5%8f%89%e5%a0%86%e8%87%aa%e6%88%91%e8%b0%83%e6%95%b4%e5%9b%be%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/binary-heap.svg" alt="binary-heap" loading="lazy" /> #(二叉堆的自我调整)&lt;/p>
-&lt;h4>代码实现&lt;span class="hx-absolute -hx-mt-20" id="代码实现">&lt;/span>
-&lt;a href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">java.util.Arrays&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">HeapOperator&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 自下而上，上浮&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">upAdjust&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 最后一个节点&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">length&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 最后一个非叶子节点&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">while&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 自上而下，下沉&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">downAdjust&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">length&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">while&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">length&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 有右节点，且右节点小于左节点&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">length&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">buildHeap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">length&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">--&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">downAdjust&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">length&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">heapSort&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 先构建一个小顶堆，得到一个最小值。&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// i 为 parentIndex，左右子节点分别是 2 * i + 1, 2 * i + 2&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">length&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">--&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">downAdjust&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">length&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 堆顶和目前堆的最后一个节点交换，重新构建堆。&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">length&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">--&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">downAdjust&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">3&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">6&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">5&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">7&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">8&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">9&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">10&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">};&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">upAdjust&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Arrays&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">toString&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">));&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">7&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">3&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">10&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">5&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">8&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">9&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">6&lt;/span>&lt;span class="p">};&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">buildHeap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array2&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Arrays&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">toString&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array2&lt;/span>&lt;span class="p">));&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array3&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">7&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">3&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">10&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">5&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">8&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">9&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">6&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">100&lt;/span>&lt;span class="p">};&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">heapSort&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array3&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Arrays&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">toString&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">array3&lt;/span>&lt;span class="p">));&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>优先级队列&lt;span class="hx-absolute -hx-mt-20" id="优先级队列">&lt;/span>
-&lt;a href="#%e4%bc%98%e5%85%88%e7%ba%a7%e9%98%9f%e5%88%97" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>不要被&lt;code>队列&lt;/code>二字带偏，优先级队列的重点在优先级上。比如线程有优先级，优先级大的先执行。运算符也是有优先级的。怎样来实现这种优先级呢？用 &lt;code>堆&lt;/code> 就可以。这里使用小顶堆，堆顶就是最小值，这里带入优先级的概念，值越小优先级越大。那么，从堆顶拿出来的节点就是优先级最大的，剩余的节点重新构造成小顶堆，保证堆顶是最小值。&lt;/p>
-&lt;h4>代码实现&lt;span class="hx-absolute -hx-mt-20" id="代码实现-1">&lt;/span>
-&lt;a href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;code>大顶堆&lt;/code>实现优先队列。每次只取最大值，取出一个堆顶，剩余节点重新构建大顶堆。&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">java.util.Arrays&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">PriorityQueue&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">PriorityQueue&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">array&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">32&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">enQueue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">length&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">resize&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="o">++]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">upAdjust&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">deQueue&lt;/span>&lt;span class="p">(){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">heapTop&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[--&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">downAdjust&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">heapTop&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">resize&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">doubleSize&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;&amp;lt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">array&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Arrays&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">copyOf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">array&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">doubleSize&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 自下而上&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">upAdjust&lt;/span>&lt;span class="p">(){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 拿到最后一个节点&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">size&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 最后一个非叶子节点&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">while&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 自上而下&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">downAdjust&lt;/span>&lt;span class="p">(){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">while&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// 有右节点，且右节点大于左节点。拿到两个子节点的最大值。&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;gt;=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">childIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">array&lt;/span>&lt;span class="o">[&lt;/span>&lt;span class="n">parentIndex&lt;/span>&lt;span class="o">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">){&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">PriorityQueue&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">priorityQueue&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">PriorityQueue&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">priorityQueue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">enQueue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">30&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">priorityQueue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">enQueue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">100&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">priorityQueue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">enQueue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">50&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">priorityQueue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">enQueue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">300&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">priorityQueue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">enQueue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">130&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">priorityQueue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">enQueue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">430&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">priorityQueue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">deQueue&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">priorityQueue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">deQueue&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">priorityQueue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">deQueue&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
-&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
-&lt;li>&lt;a href="https://visualgo.net/zh/heap" target="_blank" rel="noopener">visual heap&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://mp.weixin.qq.com/s/cq2EhVtOTzTVpNpLDXfeJg" target="_blank" rel="noopener">binary heap&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://mp.weixin.qq.com/s/8Bid1naBLtEjPoP-R4HkBg" target="_blank" rel="noopener">heap sort&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://mp.weixin.qq.com/s/4hXBw7sZ-NKs_asOQxS7gA" target="_blank" rel="noopener">priority queue&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://web.cecs.pdx.edu/~sheard/course/Cs163/Doc/FullvsComplete.html" target="_blank" rel="noopener">full binary tree vs complete binary tree&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://web.cecs.pdx.edu/~sheard/course/Cs163/Doc/HeapReview.html" target="_blank" rel="noopener">heap review&lt;/a>&lt;/li>
-&lt;/ol></description></item></channel></rss>
+7. &lt;a href="https://mp.weixin.qq.com/s/g6m_r28bvyyWIu1CAzxLdg" target="_blank" rel="noopener">计算机是怎样启动的？&lt;/a>&lt;/p></description></item></channel></rss>
