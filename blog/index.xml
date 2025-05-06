@@ -1,7 +1,414 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://cloudedseal.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://cloudedseal.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://cloudedseal.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Asm Dynamic Linker</title><link>https://cloudedseal.github.io/blog/asm-dynamic-linker/</link><pubDate>Sun, 04 May 2025 09:04:18 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-dynamic-linker/</guid><description>
+&lt;/blockquote></description></item><item><title>Syscall Futex</title><link>https://cloudedseal.github.io/blog/syscall-futex/</link><pubDate>Mon, 05 May 2025 17:45:55 +0800</pubDate><guid>https://cloudedseal.github.io/blog/syscall-futex/</guid><description>
+&lt;p>&lt;strong>Futex (Fast Userspace Mutex)&lt;/strong>&lt;/p>
+&lt;p>A &lt;strong>futex&lt;/strong> is a Linux kernel system call that provides a fast and efficient mechanism for implementing &lt;code>user-space synchronization&lt;/code> primitives, such as mutexes, semaphores, and condition variables. It &lt;code>minimizes&lt;/code> kernel involvement &lt;code>in uncontended cases&lt;/code>, reducing overhead by handling synchronization in userspace when possible.&lt;/p>
+&lt;blockquote>
+&lt;p>Futexes split synchronization into &lt;strong>user-space atomics&lt;/strong> (fast) and &lt;strong>kernel-assisted blocking&lt;/strong> (slow), optimizing for the common case. The boundary is enforced by hardware (CPU modes) and the need for kernel-managed resources (scheduling, interrupts).&lt;/p>
+&lt;/blockquote>
+&lt;h2>&lt;strong>How Futex Works?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="how-futex-works">&lt;/span>
+&lt;a href="#how-futex-works" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>没有竞争，CAS 后直接获取锁，不涉及到 syscall&lt;/li>
+&lt;li>有竞争, futex_wait 让线程 sleep, 等待其他线程 futex_wake 唤醒&lt;/li>
+&lt;/ol>
+&lt;p>大多数时候是没有竞争的，所以就减少了内核的干预。&lt;/p>
+&lt;h3>&lt;strong>futex 设计原则&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="futex-设计原则">&lt;/span>
+&lt;a href="#futex-%e8%ae%be%e8%ae%a1%e5%8e%9f%e5%88%99" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>&lt;strong>Avoid Kernel Calls When Possible&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="avoid-kernel-calls-when-possible">&lt;/span>
+&lt;a href="#avoid-kernel-calls-when-possible" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>Use &lt;code>atomic operations&lt;/code> for &lt;code>uncontended cases&lt;/code> (fast path).&lt;/li>
+&lt;li>Only call the kernel when blocking is required (slow path).&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;strong>Kernel as a Backstop&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="kernel-as-a-backstop">&lt;/span>
+&lt;a href="#kernel-as-a-backstop" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>The kernel handles complex tasks like:
+&lt;ul>
+&lt;li>Managing wait queues.&lt;/li>
+&lt;li>Guaranteeing fairness/priority in thread wakeup.&lt;/li>
+&lt;li>Handling signals/interrupts during blocking.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;strong>Spurious Wakeups&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="spurious-wakeups">&lt;/span>
+&lt;a href="#spurious-wakeups" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>The kernel may wake threads even if the futex value hasn’t changed (e.g., due to &lt;code>signals&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>User-space must &lt;code>recheck&lt;/code> the futex value&lt;/strong> after wakeup (e.g., loop in &lt;code>lock()&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>为啥需要减少内核的干预?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="为啥需要减少内核的干预">&lt;/span>
+&lt;a href="#%e4%b8%ba%e5%95%a5%e9%9c%80%e8%a6%81%e5%87%8f%e5%b0%91%e5%86%85%e6%a0%b8%e7%9a%84%e5%b9%b2%e9%a2%84" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Kernel calls (system calls) are &lt;strong>expensive&lt;/strong> compared to user-space operations.&lt;/p>
+&lt;h4>&lt;strong>Context Switch Overhead&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="context-switch-overhead">&lt;/span>
+&lt;a href="#context-switch-overhead" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>When a thread enters the kernel (e.g., via &lt;code>syscall&lt;/code>), the CPU must:
+&lt;ul>
+&lt;li>Save user-space registers. 保存用户空间寄存器&lt;/li>
+&lt;li>Switch to kernel mode (privileged CPU state). CPU 模式切换到特权模式&lt;/li>
+&lt;li>Run kernel code (e.g., scheduler, wait queues). 执行内核代码，比如调度器&lt;/li>
+&lt;li>Restore user-space state afterward. 恢复用户空间寄存器&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>This process takes &lt;strong>hundreds to thousands of CPU cycles&lt;/strong>, adding latency.&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;strong>Scalability&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="scalability">&lt;/span>
+&lt;a href="#scalability" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>Frequent kernel calls create contention in the &lt;code>kernel’s internal data structures&lt;/code> (e.g., locks for process/thread management).&lt;/li>
+&lt;li>Kernel resources are shared &lt;code>across all processes&lt;/code>, so overuse hurts overall system performance. 所有进程共享内核资源&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;strong>Fast-Path Optimization&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="fast-path-optimization">&lt;/span>
+&lt;a href="#fast-path-optimization" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>Most synchronization operations (e.g., locking a mutex) are &lt;strong>uncontended&lt;/strong> (no other thread holds the lock).&lt;/li>
+&lt;li>Handling these cases purely in user-space avoids kernel interaction entirely.&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;strong>User Space and Kernel 边界&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="user-space-and-kernel-边界">&lt;/span>
+&lt;a href="#user-space-and-kernel-%e8%be%b9%e7%95%8c" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>The boundary is defined by &lt;strong>CPU privilege levels&lt;/strong> and the need for kernel-managed resources:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;strong>User Space&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Kernel Space&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Runs in unprivileged CPU mode (ring 3).&lt;/td>
+&lt;td>Runs in privileged CPU mode (ring 0).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Directly manipulates user memory.&lt;/td>
+&lt;td>Manages hardware, interrupts, scheduling.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Uses atomic CPU instructions (e.g., &lt;code>cmpxchg&lt;/code>).&lt;/td>
+&lt;td>Uses system calls (e.g., &lt;code>futex&lt;/code>, &lt;code>sched_yield&lt;/code>).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Handles &amp;ldquo;fast path&amp;rdquo; (uncontended case).&lt;/td>
+&lt;td>Manages &amp;ldquo;slow path&amp;rdquo; (blocking/waking threads).&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2>&lt;strong>Futex: Balancing User/Kernel Responsibilities&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="futex-balancing-userkernel-responsibilities">&lt;/span>
+&lt;a href="#futex-balancing-userkernel-responsibilities" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;code>futex&lt;/code> 横跨 user/kernel 两个空间&lt;/p>
+&lt;h3>&lt;strong>User-Space Fast Path (No Contention)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="user-space-fast-path-no-contention">&lt;/span>
+&lt;a href="#user-space-fast-path-no-contention" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Atomic Compare-and-Swap (CAS):&lt;/strong>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">atomic_compare_exchange_strong&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">futex&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// Pure user-space
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>If the lock is free (&lt;code>futex == 0&lt;/code>), the thread acquires it &lt;strong>without involving the kernel&lt;/strong>.&lt;/li>
+&lt;li>This is a single CPU instruction (e.g., &lt;code>lock cmpxchg&lt;/code> on x86), blazing fast.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Kernel Slow Path (Contention)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="kernel-slow-path-contention">&lt;/span>
+&lt;a href="#kernel-slow-path-contention" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>&lt;strong>Blocking with &lt;code>FUTEX_WAIT&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="blocking-with">&lt;/span>
+&lt;a href="#blocking-with" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">syscall&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">SYS_futex&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">futex&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">FUTEX_WAIT&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">...);&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>If the lock is held (&lt;code>futex == 1&lt;/code>), the thread asks the kernel to &lt;strong>block it&lt;/strong> until the lock is freed.&lt;/li>
+&lt;li>The kernel adds the thread to a &lt;code>wait queue&lt;/code> and &lt;code>schedules other threads&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;strong>Waking with &lt;code>FUTEX_WAKE&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="waking-with">&lt;/span>
+&lt;a href="#waking-with" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">syscall&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">SYS_futex&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">futex&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">FUTEX_WAKE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">...);&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;code>On unlock&lt;/code>, the kernel &lt;code>wakes&lt;/code> one blocked thread.&lt;/li>
+&lt;li>This involves &lt;code>scheduler&lt;/code> logic (kernel responsibility).&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Futex 主要操作&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="futex-主要操作">&lt;/span>
+&lt;a href="#futex-%e4%b8%bb%e8%a6%81%e6%93%8d%e4%bd%9c" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>&lt;code>FUTEX_WAIT&lt;/code>&lt;/strong>: Puts the calling thread to &lt;code>sleep&lt;/code> if the futex word matches the expected value.&lt;/li>
+&lt;/ul>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code> If *uaddr == val, the thread goes to sleep (blocks).
+If *uaddr != val, the call returns immediately with EAGAIN.
+If a timeout is set, the thread may also wake up due to timeout (ETIMEDOUT).&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>&lt;code>FUTEX_WAKE&lt;/code>&lt;/strong>: Wakes up a specified number of threads waiting on the futex.&lt;/li>
+&lt;li>&lt;strong>&lt;code>FUTEX_WAIT_BITSET&lt;/code> / &lt;code>FUTEX_WAKE_BITSET&lt;/code>&lt;/strong>: Advanced operations for conditional waits using bitmasks (e.g., for condition variables).&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>工作流程示例&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="工作流程示例">&lt;/span>
+&lt;a href="#%e5%b7%a5%e4%bd%9c%e6%b5%81%e7%a8%8b%e7%a4%ba%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Thread A acquires the lock:&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>CAS succeeds in user space (&lt;code>futex&lt;/code> becomes 1).&lt;/li>
+&lt;li>No kernel interaction.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Thread B tries to acquire the lock:&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>CAS fails (futex is 1).&lt;/li>
+&lt;li>Calls &lt;code>FUTEX_WAIT&lt;/code> to block (kernel involvement).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Thread A releases the lock:&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Sets &lt;code>futex&lt;/code> to 0 (user space).&lt;/li>
+&lt;li>Calls &lt;code>FUTEX_WAKE&lt;/code> to unblock Thread B (kernel).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3>&lt;strong>Why This Matters in Practice?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="why-this-matters-in-practice">&lt;/span>
+&lt;a href="#why-this-matters-in-practice" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Performance:&lt;/strong> A futex-based mutex can be &lt;strong>10–100x faster&lt;/strong> than a traditional kernel-only mutex under low contention.&lt;/li>
+&lt;li>&lt;strong>Scalability:&lt;/strong> Reduces kernel lock contention in highly parallel workloads (e.g., databases, game engines).&lt;/li>
+&lt;li>&lt;strong>Flexibility:&lt;/strong> User-space can implement custom synchronization logic (e.g., adaptive mutexes, read/write locks).&lt;/li>
+&lt;/ul>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Core Concept&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>A &lt;strong>futex word&lt;/strong> (a 32-bit integer in shared memory) acts as the synchronization variable. 和平台无关, 都是 32bit&lt;/li>
+&lt;li>Threads use atomic operations (e.g., compare-and-swap) to manipulate this word in userspace.&lt;/li>
+&lt;li>Kernel intervention occurs &lt;strong>only during contention&lt;/strong> (e.g., when a thread must wait).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Acquiring a Lock (&lt;code>Uncontended Case&lt;/code>)&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>A thread attempts to atomically set the futex word from &lt;code>0&lt;/code> (unlocked) to &lt;code>1&lt;/code> (locked).&lt;/li>
+&lt;li>If successful, the lock is acquired without a system call.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Acquiring a Lock (&lt;code>Contended Case&lt;/code>)&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>If the lock is already held (&lt;code>futex_word == 1&lt;/code>), the thread calls &lt;code>futex_wait(&amp;amp;futex_word, 1)&lt;/code> to block.&lt;/li>
+&lt;li>The kernel checks if the futex word is still &lt;code>1&lt;/code> and puts the thread to sleep, avoiding race conditions.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Releasing a Lock&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>The thread sets the futex word back to &lt;code>0&lt;/code> atomically.&lt;/li>
+&lt;li>It then calls &lt;code>futex_wake(&amp;amp;futex_word, 1)&lt;/code> to wake up one waiting thread.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Handling Spurious Wakeups&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>After waking, threads &lt;strong>re-check&lt;/strong> the futex word to ensure the lock is available before proceeding.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3>&lt;strong>例子理解&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="例子理解">&lt;/span>
+&lt;a href="#%e4%be%8b%e5%ad%90%e7%90%86%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">futex_demo.c&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;linux/futex.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;sys/syscall.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;unistd.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;pthread.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Futex word (shared between threads)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">futex_var&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 0 = unlocked, 1 = locked
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Wrapper for futex_wait syscall
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">void&lt;/span> &lt;span class="nf">futex_wait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">uaddr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">val&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">syscall&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">SYS_futex&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">uaddr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">FUTEX_WAIT&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">val&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Wrapper for futex_wake syscall
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">void&lt;/span> &lt;span class="nf">futex_wake&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">uaddr&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">syscall&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">SYS_futex&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">uaddr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">FUTEX_WAKE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Thread function with custom sleep time
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="nf">thread_func&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">arg&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">sleep_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">arg&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// Cast void* to int*
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Try to acquire lock (using GCC atomic compare-and-swap)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">expected&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="nf">__sync_bool_compare_and_swap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">futex_var&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Contended case: wait for wakeups
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Thread %lu acquired the lock failed&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nf">pthread_self&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">futex_wait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">futex_var&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Critical section (simulate work with custom sleep)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Thread %lu acquired the lock success, sleeping for %d seconds&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">pthread_self&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="n">sleep_time&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">sleep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sleep_time&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// Customizable sleep duration
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Release lock
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">futex_var&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">futex_wake&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">futex_var&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Define sleep durations for each thread
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">sleep1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// First thread sleeps for 1 second
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">sleep2&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// Second thread sleeps for 3 seconds
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">sleep3&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Create threads
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">pthread_t&lt;/span> &lt;span class="n">t1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">t2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">t3&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%p&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">futex_var&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">pthread_create&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">t1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">thread_func&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">sleep1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">pthread_create&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">t2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">thread_func&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">sleep2&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">pthread_create&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">t3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">thread_func&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">sleep3&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Wait for threads to finish
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">pthread_join&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">pthread_join&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">pthread_join&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>gcc -g -pthread -std=gnu11 futex_demo.c -o futex_demo&lt;/p>
+&lt;/blockquote>
+&lt;h2>&lt;strong>什么是 Spurious Wakeup?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="什么是-spurious-wakeup">&lt;/span>
+&lt;a href="#%e4%bb%80%e4%b9%88%e6%98%af-spurious-wakeup" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>A &lt;strong>spurious wakeup&lt;/strong> occurs when a thread waiting on a synchronization primitive (e.g., a condition variable, futex, or semaphore) &lt;strong>wakes up without being explicitly signaled or broadcasted&lt;/strong>. This means the thread resumes execution even though no other thread modified the condition it was waiting for.&lt;/p>
+&lt;p>Spurious wakeups are &lt;strong>not errors&lt;/strong> in the system.
+they are a design trade-off in low-level synchronization mechanisms like futexes to &lt;strong>avoid unnecessary overhead&lt;/strong> in kernel-space implementations.&lt;/p>
+&lt;h3>&lt;strong>为啥需要 spurious Wakeups?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="为啥需要-spurious-wakeups">&lt;/span>
+&lt;a href="#%e4%b8%ba%e5%95%a5%e9%9c%80%e8%a6%81-spurious-wakeups" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>spurious wakeups are allowed for &lt;strong>performance and implementation efficiency&lt;/strong>, particularly in systems like Linux futexes.&lt;/p>
+&lt;p>为了性能和高效的实现需要 spurious wakeups&lt;/p>
+&lt;h4>1. &lt;strong>Kernel Optimization&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-kernel-optimization">&lt;/span>
+&lt;a href="#1-kernel-optimization" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>The Linux kernel uses shared data structures (e.g., wait queues) for threads waiting on a futex. If multiple threads are waiting on the same futex word, the kernel may wake up &lt;strong>more than one thread&lt;/strong> (even if only one is needed) to reduce contention and latency.&lt;/li>
+&lt;li>This avoids the overhead of tracking exactly which thread should wake up.&lt;/li>
+&lt;/ul>
+&lt;h4>2. &lt;strong>Signal Handling&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="2-signal-handling">&lt;/span>
+&lt;a href="#2-signal-handling" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>A thread waiting on a futex may be interrupted by a &lt;strong>signal&lt;/strong> (e.g., &lt;code>SIGINT&lt;/code>, &lt;code>SIGALRM&lt;/code>). The kernel wakes up the thread to handle the signal, even if the futex condition hasn’t changed.&lt;/li>
+&lt;/ul>
+&lt;h4>3. &lt;strong>Hardware/Architecture Constraints&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="3-hardwarearchitecture-constraints">&lt;/span>
+&lt;a href="#3-hardwarearchitecture-constraints" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>Some architectures or hardware may not guarantee atomicity between checking the condition and sleeping, leading to race conditions that require re-checking after waking.&lt;/li>
+&lt;/ul>
+&lt;h2>&lt;strong>什么情况会发生 Spurious Wakeups?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="什么情况会发生-spurious-wakeups">&lt;/span>
+&lt;a href="#%e4%bb%80%e4%b9%88%e6%83%85%e5%86%b5%e4%bc%9a%e5%8f%91%e7%94%9f-spurious-wakeups" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Scenario&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;strong>Multiple Waiters&lt;/strong>&lt;/td>
+&lt;td>When many threads wait on the same futex, the kernel may wake multiple threads (e.g., via &lt;code>FUTEX_WAKE&lt;/code>) even if only one is needed.&lt;br/> 多个等待同一个 futex 的线程, 被 os 一并唤醒, 但最终只有一个获取 futex&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Signal Interruption&lt;/strong>&lt;/td>
+&lt;td>A thread is interrupted by a signal (e.g., Ctrl+C), causing it to wake up prematurely.&lt;br> 虽然进程 sleep 了, 但是仍可以被 os 唤醒处理信号&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Timeout Expiration&lt;/strong>&lt;/td>
+&lt;td>If a timeout is set (e.g., &lt;code>FUTEX_WAIT_BITSET&lt;/code> with a timeout), the thread may wake up due to the timeout, even if the condition hasn’t changed.&lt;br/> 设置了超时, 超时后可以被 os 唤醒&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;strong>Kernel Preemption&lt;/strong>&lt;/td>
+&lt;td>In high-load scenarios, the kernel may preempt a waiting thread for scheduling reasons. &lt;br/> 被 os 抢占调度唤醒&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3>&lt;strong>如何处理 Spurious Wakeups?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="如何处理-spurious-wakeups">&lt;/span>
+&lt;a href="#%e5%a6%82%e4%bd%95%e5%a4%84%e7%90%86-spurious-wakeups" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>To handle spurious wakeups correctly, &lt;strong>always re-check the condition&lt;/strong> after waking up. This is a fundamental rule in concurrent programming.&lt;/p>
+&lt;h4>&lt;strong>例子1 重新检查条件&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="例子1-重新检查条件">&lt;/span>
+&lt;a href="#%e4%be%8b%e5%ad%901-%e9%87%8d%e6%96%b0%e6%a3%80%e6%9f%a5%e6%9d%a1%e4%bb%b6" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Shared futex word (0 = unlocked, 1 = locked)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">futex_var&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Thread attempts to acquire the lock
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="nf">__sync_bool_compare_and_swap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">futex_var&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Wait for wakeups if futex_var is still 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">futex_wait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">futex_var&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>Here’s what happens:&lt;/p>
+&lt;ol>
+&lt;li>If &lt;code>futex_wait&lt;/code> returns due to a spurious wakeup, the thread &lt;strong>re-checks the condition&lt;/strong> (&lt;code>futex_var == 1&lt;/code>) in the loop.&lt;/li>
+&lt;li>If the condition is still true, the thread calls &lt;code>futex_wait&lt;/code> again.&lt;/li>
+&lt;li>If the condition is now false (e.g., another thread released the lock), the thread proceeds.&lt;/li>
+&lt;/ol>
+&lt;h4>&lt;strong>例子2 重新检查条件&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="例子2-重新检查条件">&lt;/span>
+&lt;a href="#%e4%be%8b%e5%ad%902-%e9%87%8d%e6%96%b0%e6%a3%80%e6%9f%a5%e6%9d%a1%e4%bb%b6" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="nf">pthread_mutex_lock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">mutex&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="n">condition_met&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">pthread_cond_wait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">cond&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">mutex&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// Releases mutex, waits for signal
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Re-check condition here (spurious wakeups handled by the loop)
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="nf">pthread_mutex_unlock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">mutex&lt;/span>&lt;span class="p">);&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>The &lt;code>while&lt;/code> loop ensures that spurious wakeups are harmless.&lt;/p>
+&lt;h3>&lt;strong>Why Not Prevent Spurious Wakeups?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="why-not-prevent-spurious-wakeups">&lt;/span>
+&lt;a href="#why-not-prevent-spurious-wakeups" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Preventing spurious wakeups would require &lt;strong>strict guarantees&lt;/strong> from the kernel or library, which could introduce significant overhead. For example:&lt;/p>
+&lt;ul>
+&lt;li>Tracking exactly which thread should wake up (e.g., via a queue).&lt;/li>
+&lt;li>Adding memory barriers or locks to ensure atomicity between checking and sleeping.&lt;/li>
+&lt;/ul>
+&lt;p>By allowing spurious wakeups, systems like futexes remain lightweight and scalable for high-performance applications.&lt;/p></description></item><item><title>Asm Dynamic Linker</title><link>https://cloudedseal.github.io/blog/asm-dynamic-linker/</link><pubDate>Sun, 04 May 2025 09:04:18 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-dynamic-linker/</guid><description>
 &lt;h2>&lt;strong>dynamic linker&lt;/strong> 简介&lt;span class="hx-absolute -hx-mt-20" id="dynamic-linker-简介">&lt;/span>
 &lt;a href="#dynamic-linker-%e7%ae%80%e4%bb%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;strong>dynamic linker&lt;/strong> (also called the &lt;strong>dynamic loader&lt;/strong>) &lt;strong>is a shared object&lt;/strong> (&lt;code>*.so&lt;/code> file) on Linux systems. It plays a critical role in the execution of dynamically linked programs.&lt;/p>
 &lt;h2>&lt;strong>What Is the Dynamic Linker?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="what-is-the-dynamic-linker">&lt;/span>
@@ -9883,75 +10290,4 @@ TCP 协议目的之一就是要保证计算机接收到的网络包的顺序。�
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/introduction-of-b-tree-2/" target="_blank" rel="noopener">BTree introduction&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/insert-operation-in-b-tree/" target="_blank" rel="noopener">BTree insertion&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/delete-operation-in-b-tree/" target="_blank" rel="noopener">BTree deletion&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>asm-how-computer-startup</title><link>https://cloudedseal.github.io/blog/asm-how-computer-startup/</link><pubDate>Mon, 08 Jun 2020 08:09:12 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-how-computer-startup/</guid><description>
-&lt;p>&lt;code>x86&lt;/code> 架构计算机是如何启动的？&lt;/p>
-&lt;h2>16-bit Processors and Segmentation (1978)&lt;span class="hx-absolute -hx-mt-20" id="16-bit-processors-and-segmentation-1978">&lt;/span>
-&lt;a href="#16-bit-processors-and-segmentation-1978" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
-&lt;p>The IA-32 architecture family was preceded by &lt;code>16-bit processors&lt;/code>, the 8086 and 8088. The 8086 has &lt;code>16-bit registers&lt;/code> and a &lt;code>16-bit external data bus&lt;/code>, with &lt;code>20-bit addressing giving a 1-MByte address space&lt;/code>. The 8088 is similar to the 8086 except it has an 8-bit external data bus.
-The 8086/8088 introduced &lt;code>segmentation&lt;/code> to the IA-32 architecture. With segmentation, a &lt;code>16-bit segment register&lt;/code> contains a pointer to &lt;code>a memory segment of up to 64 KBytes&lt;/code>. Using &lt;code>four&lt;/code> segment registers at a time, 8086/8088 processors are able to address up to 256 KBytes &lt;code>without&lt;/code> switching between segments. The 20-bit addresses that can be formed using a segment register and an additional 16-bit pointer provide a total address range of 1 MByte.&lt;/p>
-&lt;/blockquote>
-&lt;p>8086 是整个 intel 系列处理器的老祖宗。所有后续的一系列处理器都兼容 8086。唉，这就是路径依赖啊。这是一个 16-bit 的处理器。寄存器也是 16-bit 的。but 却能寻址 20-bit 的地址空间，也就是 1M 的内存。怎样在 16-bit 的处理器上实现呢？很简单，将 1M 的空间分成多个 64K 的 segment。那怎样用 16-bit 的寄存器表示 20-bit 的地址呢？也很简单，用 2 个 16-bit 的寄存器组合得来的(register1,register2)。那怎样组合的呢？&lt;code>address = register1 &amp;lt;&amp;lt; 4 + register2&lt;/code>。将 register1 &amp;laquo; 4 和 register2 用一个 20-bit 的加法器就能得到内存地址。这种方式就是所谓的 &lt;code>real address mode&lt;/code>。也即是拿到的是真正的内存地址。x86 架构的计算机启动时会先进入 real address mode。&lt;/p>
-&lt;h2>计算机启动前置知识&lt;span class="hx-absolute -hx-mt-20" id="计算机启动前置知识">&lt;/span>
-&lt;a href="#%e8%ae%a1%e7%ae%97%e6%9c%ba%e5%90%af%e5%8a%a8%e5%89%8d%e7%bd%ae%e7%9f%a5%e8%af%86" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>CPU 工作方式是: 从&lt;code>内存&lt;/code>中取指、执行。&lt;/li>
-&lt;li>内存是存储数据的地方，给出一个内存地址，可以得到该处的数据。&lt;/li>
-&lt;li>CPU 从内存哪里取指令，由 &lt;code>instruction pointer&lt;/code> 这个寄存器的值决定。这个值不断 +1，或者跳转(jump) 到某处。real address mode 下由 CS:IP 组合决定。&lt;/li>
-&lt;/ol>
-&lt;h2>BIOS&lt;span class="hx-absolute -hx-mt-20" id="bios">&lt;/span>
-&lt;a href="#bios" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>BIOS 是啥&lt;span class="hx-absolute -hx-mt-20" id="bios-是啥">&lt;/span>
-&lt;a href="#bios-%e6%98%af%e5%95%a5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;code>BIOS&lt;/code> 是啥呢？一个软件而已。不像我们平时在 PC 上使用如 &lt;code>QQ&lt;/code> 等软件是安装在硬盘上的。BIOS 安装在 ROM 中。这个软件干啥的呢？帮助计算机启动，开机时检测整个机器的硬件。计算机启动需要运行软件，软件运行需要计算机先启动。咳咳，成了先有鸡还是先有蛋了，这怎么行？所以需要 BIOS 这个在硬件上的软件来帮助，破除这种依赖。&lt;/p>
-&lt;h3>BIOS 大小&lt;span class="hx-absolute -hx-mt-20" id="bios-大小">&lt;/span>
-&lt;a href="#bios-%e5%a4%a7%e5%b0%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>通过 &lt;code>dmidecode&lt;/code> 这个命令来查看。也就是读取 BIOS 的信息。&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">root@aliyun:~# dmidecode -t bios -q &lt;span class="c1"># 方法一&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">BIOS Information
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Vendor: SeaBIOS
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Version: 8c24b4c
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Release Date: 04/01/2014
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Address: 0xE8000
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Runtime Size: &lt;span class="m">96&lt;/span> kB
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ROM Size: &lt;span class="m">64&lt;/span> kB --- ROM Size，在此可以看到，BIOS 大小为 64K。
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Characteristics:
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> BIOS characteristics not supported
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Targeted content distribution is supported
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> BIOS Revision: 0.0
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:~# &lt;span class="nb">cd&lt;/span> /sys/class/dmi/id/ &lt;span class="c1"># 方法二&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">root@aliyun:id# ls
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bios_date chassis_serial modalias product_serial sys_vendor
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bios_vendor chassis_type power product_uuid uevent
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bios_version chassis_vendor product_family product_version
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">chassis_asset_tag chassis_version product_name subsystem&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h2>x86 架构计算机启动流程&lt;span class="hx-absolute -hx-mt-20" id="x86-架构计算机启动流程">&lt;/span>
-&lt;a href="#x86-%e6%9e%b6%e6%9e%84%e8%ae%a1%e7%ae%97%e6%9c%ba%e5%90%af%e5%8a%a8%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/real-address-mode-how-computer-startup.svg" alt="real address mode 1M 内存布局" loading="lazy" /> #(real address mode 1M 内存布局)&lt;/p>
-&lt;ol>
-&lt;li>
-&lt;p>如上图所示，当按下 &lt;code>power on&lt;/code> 之后，此时的 CPU 处于 real address mode。由硬件负责将 &lt;code>BIOS 64K&lt;/code> 的内容加载到 &lt;code>0xF0000 到 0xFFFFF&lt;/code>(64K 内存)。并将 &lt;code>CS(code segment) 置为 0xF000&lt;/code>，&lt;code>IP(instruction pointer) 置为 0xFFF0&lt;/code>。组合起来的内存地址 &lt;code>PC&lt;/code> 就是 0xFFFF0。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>此时 CPU 从 &lt;code>PC = 0xFFFF0&lt;/code> 处开始取指、执行。那么从 &lt;code>0xFFFF0 到 0xFFFFF&lt;/code> 只有 16Bytes。空间太小了，能放啥呢？但是可以跳到其他地方去执行啊。不错，这里存放的有一条指令是 &lt;code>jmp far f000:e05b&lt;/code>, 组合起来就是 &lt;code>0xfe05b&lt;/code>。注意这个地址可是在 &lt;code>0xF0000 到 0xFFFFF&lt;/code> 范围之内，也就是这条指令跳转到 &lt;code>BIOS 内部的代码&lt;/code>去执行。从 0xFE05B 到 0xFFFF0 将近 8K 内存，代码不少。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>此时 CPU 从 &lt;code>PC = 0xfe05b&lt;/code> 开始取值、执行。具体干啥呢？就是执行所谓的开机自检。检查计算机硬件。同时去找启动扇区，那什么才是启动扇区呢？若 0 盘 0 道 1 扇区最后两个字节分别是 0x55,0xaa，那就是启动区。很像 java class 文件中的魔数，就是标记一下。同时将找到的启动扇区(512Bytes) 复制到内存 &lt;code>0x7C00 到 0x7DFF&lt;/code>(512Bytes) 处。最后会将 &lt;code>CS 置为 0x0000， IP 置为 0x7C00&lt;/code>，组合起来就是 &lt;code>0x7C00&lt;/code>。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>此时 CPU 从 &lt;code>PC = 0x7C00&lt;/code> 开始取值、执行。具体干啥呢？这就是开发人员可以决定的了。在启动扇区上可以是加载 OS Kernel 的代码，硬盘分区，boot loader 等。&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
-&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>1.&lt;a href="http://dewkumar.blogspot.com/2012/01/what-is-org-origin-directive-in.html" target="_blank" rel="noopener">x86-ORG&lt;/a>
-2. &lt;a href="https://superuser.com/questions/806226/how-to-see-rom-size" target="_blank" rel="noopener">how-to-see-rom-size&lt;/a>
-3. &lt;a href="http://smilejay.com/2013/02/bios-info-dmidecode/" target="_blank" rel="noopener">bios-info-dmidecode&lt;/a>
-4. &lt;a href="https://en.wikipedia.org/wiki/System_Management_BIOS" target="_blank" rel="noopener">system-management-bios&lt;/a>
-5. &lt;a href="http://www.ruanyifeng.com/blog/2013/02/booting.html" target="_blank" rel="noopener">计算机是如何启动的？&lt;/a>
-6. &lt;a href="https://en.wikipedia.org/wiki/Master_boot_record" target="_blank" rel="noopener">多种 MBR 组织方式&lt;/a>
-7. &lt;a href="https://mp.weixin.qq.com/s/g6m_r28bvyyWIu1CAzxLdg" target="_blank" rel="noopener">计算机是怎样启动的？&lt;/a>&lt;/p></description></item></channel></rss>
+&lt;/ol></description></item></channel></rss>
