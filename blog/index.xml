@@ -3214,6 +3214,7 @@ Dynamic linker writes &lt;code>libc&lt;/code>&amp;rsquo;s &lt;code>printf&lt;/co
 &lt;li>一个 ELF 文件有多种 view。&lt;/li>
 &lt;li>从 linking 视角来理解 sections 到底是如何工作的。&lt;/li>
 &lt;li>源代码的各个不同的部分编译后都被放到了哪个 section。&lt;/li>
+&lt;li>本文主要分析 rodata text data bss 这 4 个 section。&lt;/li>
 &lt;/ol>
 &lt;h2>示例代码&lt;span class="hx-absolute -hx-mt-20" id="示例代码">&lt;/span>
 &lt;a href="#%e7%a4%ba%e4%be%8b%e4%bb%a3%e7%a0%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
@@ -4957,8 +4958,8 @@ title="Copy code"
 &lt;li>&lt;strong>&lt;code>__abi_tag&lt;/code>&lt;/strong> adds 4 bytes to &lt;code>.rodata&lt;/code>.&lt;/li>
 &lt;li>&lt;strong>Null terminators&lt;/strong> add 7 bytes (1 per string).&lt;/li>
 &lt;/ul>
-&lt;h2>data、rodata、text&lt;span class="hx-absolute -hx-mt-20" id="datarodatatext">&lt;/span>
-&lt;a href="#datarodatatext" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;h2>data、bss、rodata、text&lt;span class="hx-absolute -hx-mt-20" id="databssrodatatext">&lt;/span>
+&lt;a href="#databssrodatatext" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>data、rodata、text 在 demo 中位置关系&lt;/p>
 &lt;/blockquote>
 &lt;p>&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/demo-elf-sections-part1.drawio.svg" alt="data、rodata、text" loading="lazy" />&lt;/p></description></item><item><title>Gcc Compile C Prog</title><link>https://cloudedseal.github.io/blog/gcc-compile-c-prog/</link><pubDate>Tue, 29 Apr 2025 17:25:37 +0800</pubDate><guid>https://cloudedseal.github.io/blog/gcc-compile-c-prog/</guid><description>
