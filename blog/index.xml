@@ -1,7 +1,479 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://cloudedseal.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://cloudedseal.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://cloudedseal.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Java Thread</title><link>https://cloudedseal.github.io/blog/java-thread/</link><pubDate>Tue, 06 May 2025 15:11:27 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-thread/</guid><description>
+&lt;/blockquote></description></item><item><title>Master Dns Resolve Steps</title><link>https://cloudedseal.github.io/blog/master-dns-resolve-steps/</link><pubDate>Fri, 23 May 2025 11:55:31 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-dns-resolve-steps/</guid><description>
+&lt;blockquote>
+&lt;p>分析环境 mint21&lt;/p>
+&lt;/blockquote>
+&lt;h2>linux 上 DNS 解析流程&lt;span class="hx-absolute -hx-mt-20" id="linux-上-dns-解析流程">&lt;/span>
+&lt;a href="#linux-%e4%b8%8a-dns-%e8%a7%a3%e6%9e%90%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>以 ping -c 1 baidu.com 为例&lt;/li>
+&lt;li>&lt;a href="https://github.com/cloudedseal/underlayer/blob/main/dns-resolve-expore/ping.log.9762" target="_blank" rel="noopener">ping strace 日志&lt;/a>，分析 ping 如何拿到 baidu.com 的 IP, 向目标 IP 发送 IMCP&lt;/li>
+&lt;/ul>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo strace -f -o ping.log -e &lt;span class="nv">trace&lt;/span>&lt;span class="o">=&lt;/span>execve,access,openat,socket,connect,newfstatat,sendmmsg,recvfrom,sendto,recvmsg,write ping -c &lt;span class="m">1&lt;/span> baidu.com&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>&lt;strong>Start the &lt;code>ping&lt;/code> Process&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="start-the">&lt;/span>
+&lt;a href="#start-the" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">execve&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;/usr/bin/ping&amp;#34;&lt;/span>, &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;ping&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;-c&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;baidu.com&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>, 0x7ffce9f3de88 /* &lt;span class="m">26&lt;/span> vars */&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The &lt;code>ping&lt;/code> command begins execution.&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Load Required Libraries&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="load-required-libraries">&lt;/span>
+&lt;a href="#load-required-libraries" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">openat&lt;span class="o">(&lt;/span>AT_FDCWD, &lt;span class="s2">&amp;#34;/lib/x86_64-linux-gnu/libc.so.6&amp;#34;&lt;/span>, O_RDONLY&lt;span class="p">|&lt;/span>O_CLOEXEC&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">openat&lt;span class="o">(&lt;/span>AT_FDCWD, &lt;span class="s2">&amp;#34;/lib/x86_64-linux-gnu/libidn2.so.0&amp;#34;&lt;/span>, O_RDONLY&lt;span class="p">|&lt;/span>O_CLOEXEC&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">3&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>Libraries like &lt;code>libc&lt;/code> (C standard library) and &lt;code>libidn2&lt;/code> (Internationalized Domain Names) are loaded for DNS resolution and string handling. 处理国际化, 非英文字母的域名&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Check for &lt;code>nscd&lt;/code> (Name Service Cache Daemon)&lt;/strong> 检查缓存&lt;span class="hx-absolute -hx-mt-20" id="check-for--检查缓存">&lt;/span>
+&lt;a href="#check-for--%e6%a3%80%e6%9f%a5%e7%bc%93%e5%ad%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">connect&lt;span class="o">(&lt;/span>5, &lt;span class="o">{&lt;/span>&lt;span class="nv">sa_family&lt;/span>&lt;span class="o">=&lt;/span>AF_UNIX, &lt;span class="nv">sun_path&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;/var/run/nscd/socket&amp;#34;&lt;/span>&lt;span class="o">}&lt;/span>, 110&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> -1 ENOENT &lt;span class="o">(&lt;/span>No such file or directory&lt;span class="o">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The system tries to use &lt;code>nscd&lt;/code> for cached DNS lookups but fails because &lt;code>/var/run/nscd/socket&lt;/code> does not exist. This means caching is disabled or &lt;code>nscd&lt;/code> is not running.&lt;/li>
+&lt;li>查看 &lt;code>nscd&lt;/code> DNS 缓存, 这个服务默认没有安装&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Read &lt;code>/etc/nsswitch.conf&lt;/code>&lt;/strong> 获取 DNS 解析服务顺序&lt;span class="hx-absolute -hx-mt-20" id="read--获取-dns-解析服务顺序">&lt;/span>
+&lt;a href="#read--%e8%8e%b7%e5%8f%96-dns-%e8%a7%a3%e6%9e%90%e6%9c%8d%e5%8a%a1%e9%a1%ba%e5%ba%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">openat&lt;span class="o">(&lt;/span>AT_FDCWD, &lt;span class="s2">&amp;#34;/etc/nsswitch.conf&amp;#34;&lt;/span>, O_RDONLY&lt;span class="p">|&lt;/span>O_CLOEXEC&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">5&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The system reads the &lt;strong>Name Service Switch (NSS)&lt;/strong> configuration.&lt;/li>
+&lt;li>This file defines the &lt;code>order of name resolution services&lt;/code> (e.g., &lt;code>files&lt;/code> for &lt;code>/etc/hosts&lt;/code>, &lt;code>dns&lt;/code> for DNS).&lt;/li>
+&lt;li>定义了 DNS 解析服务的顺序&lt;/li>
+&lt;/ul>
+&lt;h4>/etc/nsswitch.conf 内容&lt;span class="hx-absolute -hx-mt-20" id="etcnsswitchconf-内容">&lt;/span>
+&lt;a href="#etcnsswitchconf-%e5%86%85%e5%ae%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># /etc/nsswitch.conf&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Example configuration of GNU Name Service Switch functionality.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># If you have the `glibc-doc-reference&amp;#39; and `info&amp;#39; packages installed, try:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># `info libc &amp;#34;Name Service Switch&amp;#34;&amp;#39; for information about this file.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">passwd: files systemd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">group: files systemd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">shadow: files systemd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gshadow: files systemd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hosts: files mdns4_minimal &lt;span class="o">[&lt;/span>&lt;span class="nv">NOTFOUND&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="o">]&lt;/span> dns myhostname
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">networks: files
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">protocols: db files
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">services: db files
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ethers: db files
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rpc: db files
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">netgroup: nis&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h5>1. &lt;strong>&lt;code>hosts:&lt;/code> Line&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-hosts">&lt;/span>
+&lt;a href="#1-hosts" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">hosts: files mdns4_minimal &lt;span class="o">[&lt;/span>&lt;span class="nv">NOTFOUND&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="o">]&lt;/span> dns myhostname&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;strong>Order of resolution-DNS 解析核心逻辑&lt;/strong>:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>&lt;code>files&lt;/code>&lt;/strong>: Check &lt;code>/etc/hosts&lt;/code> first (static hostname-to-IP mappings).&lt;/li>
+&lt;li>&lt;strong>&lt;code>mdns4_minimal&lt;/code>&lt;/strong>: Use multicast DNS (mDNS) for &lt;code>.local&lt;/code> names &lt;strong>IPv4-only&lt;/strong> (common for local network devices).
+&lt;ul>
+&lt;li>&lt;code>[NOTFOUND=return]&lt;/code>: If mDNS returns &amp;ldquo;not found,&amp;rdquo; stop here and don’t proceed to &lt;code>dns&lt;/code> or &lt;code>myhostname&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>&lt;code>dns&lt;/code>&lt;/strong>: Use DNS (configured in &lt;code>/etc/resolv.conf&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>&lt;code>myhostname&lt;/code>&lt;/strong>: Resolve the local machine’s hostname to its IP addresses (loopback and network interfaces).&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Implications&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>For regular domains (e.g., &lt;code>baidu.com&lt;/code>)&lt;/strong>: mDNS is skipped (since it’s not &lt;code>.local&lt;/code>), so DNS is used directly.&lt;/li>
+&lt;li>&lt;strong>For &lt;code>.local&lt;/code> names&lt;/strong>: mDNS is prioritized, and DNS is ignored if mDNS fails.&lt;/li>
+&lt;li>&lt;strong>Security&lt;/strong>: Prevents DNS fallback for mDNS queries, avoiding potential conflicts.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h5>2. &lt;strong>&lt;code>passwd&lt;/code>, &lt;code>group&lt;/code>, &lt;code>shadow&lt;/code> Lines&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="2-passwd">&lt;/span>
+&lt;a href="#2-passwd" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">passwd: files systemd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">group: files systemd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">shadow: files systemd&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Sources&lt;/strong>:
+&lt;ul>
+&lt;li>&lt;strong>&lt;code>files&lt;/code>&lt;/strong>: Read from &lt;code>/etc/passwd&lt;/code>, &lt;code>/etc/group&lt;/code>, and &lt;code>/etc/shadow&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>&lt;code>systemd&lt;/code>&lt;/strong>: Integrates with &lt;code>systemd&lt;/code> for dynamic users (e.g., containerized services or transient users).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Use Case&lt;/strong>: Ensures compatibility with modern systems using &lt;code>systemd&lt;/code>-managed users (e.g., Docker containers).&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h5>3. &lt;strong>&lt;code>netgroup&lt;/code> Line&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="3-netgroup">&lt;/span>
+&lt;a href="#3-netgroup" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">netgroup: nis&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>NIS (Network Information Service)&lt;/strong>: Legacy protocol for centralized user/group management.&lt;/li>
+&lt;li>&lt;strong>Warning&lt;/strong>: NIS is insecure (plaintext communication). If unused, consider removing this line to avoid unnecessary risks.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h4>&lt;strong>How This Affects DNS Resolution?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="how-this-affects-dns-resolution">&lt;/span>
+&lt;a href="#how-this-affects-dns-resolution" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h5>1. &lt;strong>DNS Lookup Path&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-dns-lookup-path">&lt;/span>
+&lt;a href="#1-dns-lookup-path" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ul>
+&lt;li>For &lt;code>baidu.com&lt;/code> (non-&lt;code>.local&lt;/code> domain):
+&lt;ol>
+&lt;li>Check &lt;code>/etc/hosts&lt;/code> → No match.&lt;/li>
+&lt;li>Skip &lt;code>mdns4_minimal&lt;/code> (not relevant for &lt;code>baidu.com&lt;/code>).&lt;/li>
+&lt;li>Query DNS via &lt;code>systemd-resolved&lt;/code> (uses &lt;code>/etc/resolv.conf&lt;/code>).&lt;/li>
+&lt;li>Fallback to &lt;code>myhostname&lt;/code> only if DNS fails (unlikely).&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h5>2. &lt;strong>&lt;code>/etc/resolv.conf&lt;/code> Integration&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="2-etcresolvconf">&lt;/span>
+&lt;a href="#2-etcresolvconf" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ul>
+&lt;li>The &lt;code>dns&lt;/code> source uses settings from &lt;code>/etc/resolv.conf&lt;/code> (e.g., &lt;code>nameserver 127.0.0.53&lt;/code> for &lt;code>systemd-resolved&lt;/code>).&lt;/li>
+&lt;li>&lt;code>systemd-resolved&lt;/code> acts as a local DNS stub resolver, handling:
+&lt;ul>
+&lt;li>DNSSEC validation.&lt;/li>
+&lt;li>Caching.&lt;/li>
+&lt;li>Split DNS (for VPNs).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3>&lt;strong>Check &lt;code>/etc/hosts&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="check">&lt;/span>
+&lt;a href="#check" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">openat&lt;span class="o">(&lt;/span>AT_FDCWD, &lt;span class="s2">&amp;#34;/etc/hosts&amp;#34;&lt;/span>, O_RDONLY&lt;span class="p">|&lt;/span>O_CLOEXEC&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">5&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The system checks &lt;code>/etc/hosts&lt;/code> for a static entry for &lt;code>baidu.com&lt;/code>.&lt;/li>
+&lt;li>If found, it skips DNS. No match is found here.&lt;/li>
+&lt;li>在这个文件里寻找目标域名的 IP, 找到之后返回&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Read &lt;code>/etc/resolv.conf&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="read">&lt;/span>
+&lt;a href="#read" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">openat&lt;span class="o">(&lt;/span>AT_FDCWD, &lt;span class="s2">&amp;#34;/etc/resolv.conf&amp;#34;&lt;/span>, O_RDONLY&lt;span class="p">|&lt;/span>O_CLOEXEC&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">5&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>读取 DNS 解析器配置文件, 真正的配置在 /run/systemd/resolve/stub-resolv.conf&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>dynamic DNS configuration file managed by &lt;code>systemd-resolved&lt;/code>, the local DNS stub resolver.&lt;/li>
+&lt;li>It serves as the system&amp;rsquo;s &lt;strong>primary DNS resolver&lt;/strong> configuration, ensuring applications route DNS queries through systemd-resolved for features like &lt;code>caching&lt;/code>, &lt;code>DNSSEC validation&lt;/code>, and &lt;code>split DNS&lt;/code> (e.g., for VPNs).&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;strong>&lt;code>systemd-resolved&lt;/code>&lt;/strong> local DNS stub resolver&lt;span class="hx-absolute -hx-mt-20" id="systemd-resolved-local-dns-stub-resolver">&lt;/span>
+&lt;a href="#systemd-resolved-local-dns-stub-resolver" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">systemctl status systemd-resolved.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">● systemd-resolved.service - Network Name Resolution
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Loaded: loaded &lt;span class="o">(&lt;/span>/usr/lib/systemd/system/systemd-resolved.service&lt;span class="p">;&lt;/span> enabled&lt;span class="p">;&lt;/span> preset: enabled&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Active: active &lt;span class="o">(&lt;/span>running&lt;span class="o">)&lt;/span> since Sat 2025-05-24 15:09:18 CST&lt;span class="p">;&lt;/span> 58min ago
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Docs: man:systemd-resolved.service&lt;span class="o">(&lt;/span>8&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> man:org.freedesktop.resolve1&lt;span class="o">(&lt;/span>5&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> https://www.freedesktop.org/wiki/Software/systemd/writing-network-configuration-managers
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> https://www.freedesktop.org/wiki/Software/systemd/writing-resolver-clients
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Main PID: &lt;span class="m">622&lt;/span> &lt;span class="o">(&lt;/span>systemd-resolve&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Status: &lt;span class="s2">&amp;#34;Processing requests...&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Tasks: &lt;span class="m">1&lt;/span> &lt;span class="o">(&lt;/span>limit: 4545&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Memory: 7.5M &lt;span class="o">(&lt;/span>peak: 8.0M&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> CPU: 269ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> CGroup: /system.slice/systemd-resolved.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> └─622 /usr/lib/systemd/systemd-resolved&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>/etc/resolv.conf 内容&lt;span class="hx-absolute -hx-mt-20" id="etcresolvconf-内容">&lt;/span>
+&lt;a href="#etcresolvconf-%e5%86%85%e5%ae%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Run &amp;#34;resolvectl status&amp;#34; to see details about the uplink DNS servers&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># currently in use.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Third party programs should typically not access this file directly, but only&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># through the symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># different way, replace this symlink by a static file or a different symlink.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># See man:systemd-resolved.service(8) for details about the supported modes of&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># operation for /etc/resolv.conf.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nameserver 127.0.0.53
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">options edns0 trust-ad
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">search localdomain&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h5>1. &lt;strong>&lt;code>nameserver 127.0.0.53&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-nameserver-1270053">&lt;/span>
+&lt;a href="#1-nameserver-1270053" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: All DNS queries from applications are sent to this &lt;strong>local DNS stub resolver&lt;/strong>.
+&lt;ul>
+&lt;li>&lt;code>127.0.0.53&lt;/code> is a special &lt;code>loopback address&lt;/code> used exclusively by &lt;code>systemd-resolved&lt;/code>.&lt;/li>
+&lt;li>The resolver listens on this address to handle queries from applications.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Why Not a Public DNS Server?&lt;/strong>
+&lt;ul>
+&lt;li>Applications &lt;code>don't communicate directly&lt;/code> with public DNS servers (e.g., &lt;code>8.8.8.8&lt;/code>). Instead, they send queries to &lt;code>127.0.0.53&lt;/code>, and &lt;code>systemd-resolved&lt;/code> forwards them to upstream DNS servers configured elsewhere.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h5>2. &lt;strong>&lt;code>options edns0 trust-ad&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="2-options-edns0-trust-ad">&lt;/span>
+&lt;a href="#2-options-edns0-trust-ad" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ul>
+&lt;li>&lt;strong>&lt;code>edns0&lt;/code>&lt;/strong>:
+&lt;ul>
+&lt;li>Enables &lt;strong>EDNS(0)&lt;/strong> (Extension Mechanisms for DNS), allowing larger UDP packets (up to 4096 bytes instead of 512 bytes).&lt;/li>
+&lt;li>Required for DNSSEC and modern DNS features like DNS over TLS (DoT).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>&lt;code>trust-ad&lt;/code>&lt;/strong>:
+&lt;ul>
+&lt;li>Tells the resolver to trust the &lt;strong>AD (Authentic Data)&lt;/strong> bit in DNS responses.&lt;/li>
+&lt;li>When DNSSEC validation is enabled, &lt;code>systemd-resolved&lt;/code> validates DNS responses and sets the AD bit if valid. This option ensures applications trust the resolver&amp;rsquo;s validation results.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h5>3. &lt;strong>&lt;code>search localdomain&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="3-search-localdomain">&lt;/span>
+&lt;a href="#3-search-localdomain" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ul>
+&lt;li>&lt;strong>Purpose&lt;/strong>: Defines the &lt;strong>search domain&lt;/strong> for unqualified hostnames (e.g., resolving &lt;code>myhost&lt;/code> to &lt;code>myhost.localdomain&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>Behavior&lt;/strong>:
+&lt;ul>
+&lt;li>If you run &lt;code>ping myhost&lt;/code>, the resolver will attempt:
+&lt;ol>
+&lt;li>&lt;code>myhost&lt;/code>&lt;/li>
+&lt;li>&lt;code>myhost.localdomain&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Avoids needing to type full FQDNs (Fully Qualified Domain Names) in local networks.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Query DNS via &lt;code>systemd-resolved&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="query-dns-via">&lt;/span>
+&lt;a href="#query-dns-via" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">socket&lt;span class="o">(&lt;/span>AF_INET, SOCK_DGRAM&lt;span class="p">|&lt;/span>SOCK_CLOEXEC&lt;span class="p">|&lt;/span>SOCK_NONBLOCK, IPPROTO_IP&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">5&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">connect&lt;span class="o">(&lt;/span>5, &lt;span class="o">{&lt;/span>&lt;span class="nv">sa_family&lt;/span>&lt;span class="o">=&lt;/span>AF_INET, &lt;span class="nv">sin_port&lt;/span>&lt;span class="o">=&lt;/span>htons&lt;span class="o">(&lt;/span>53&lt;span class="o">)&lt;/span>, &lt;span class="nv">sin_addr&lt;/span>&lt;span class="o">=&lt;/span>inet_addr&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;127.0.0.53&amp;#34;&lt;/span>&lt;span class="o">)}&lt;/span>, 16&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sendmmsg&lt;span class="o">(&lt;/span>5, &lt;span class="o">[{&lt;/span>&lt;span class="nv">msg_hdr&lt;/span>&lt;span class="o">={&lt;/span>...&lt;span class="o">}&lt;/span>, &lt;span class="nv">msg_len&lt;/span>&lt;span class="o">=&lt;/span>38&lt;span class="o">}&lt;/span>, ...&lt;span class="o">]&lt;/span>, 2, MSG_NOSIGNAL&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">2&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>A UDP socket is created to communicate with the DNS resolver (&lt;code>127.0.0.53:53&lt;/code>).&lt;/li>
+&lt;li>Two DNS queries are sent:
+&lt;ul>
+&lt;li>&lt;strong>A record query&lt;/strong> (IPv4 address) for &lt;code>baidu.com&lt;/code>.&lt;/li>
+&lt;li>&lt;strong>AAAA record query&lt;/strong> (IPv6 address) for &lt;code>baidu.com&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;strong>Uplink DNS Servers&lt;/strong> 上游的 DNS 服务器&lt;span class="hx-absolute -hx-mt-20" id="uplink-dns-servers-上游的-dns-服务器">&lt;/span>
+&lt;a href="#uplink-dns-servers-%e4%b8%8a%e6%b8%b8%e7%9a%84-dns-%e6%9c%8d%e5%8a%a1%e5%99%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>Uplink DNS Servers is external DNS servers that local DNS resolver &lt;code>forwards&lt;/code> queries to for resolution&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>The actual upstream DNS servers (e.g., your ISP&amp;rsquo;s DNS or &lt;code>1.1.1.1&lt;/code>)
+&lt;ol>
+&lt;li>&lt;code>/etc/systemd/resolved.conf&lt;/code> (static configuration).&lt;/li>
+&lt;li>Dynamically via &lt;code>DHCP&lt;/code> or &lt;code>VPN managers&lt;/code> (e.g., NetworkManager).&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h4>查看 Uplink DNS 解析器信息&lt;span class="hx-absolute -hx-mt-20" id="查看-uplink-dns-解析器信息">&lt;/span>
+&lt;a href="#%e6%9f%a5%e7%9c%8b-uplink-dns-%e8%a7%a3%e6%9e%90%e5%99%a8%e4%bf%a1%e6%81%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">resolvectl status
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Global
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Protocols: -LLMNR -mDNS -DNSOverTLS &lt;span class="nv">DNSSEC&lt;/span>&lt;span class="o">=&lt;/span>no/unsupported
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> resolv.conf mode: stub
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Link &lt;span class="m">2&lt;/span> &lt;span class="o">(&lt;/span>ens33&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Current Scopes: DNS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Protocols: +DefaultRoute -LLMNR -mDNS -DNSOverTLS &lt;span class="nv">DNSSEC&lt;/span>&lt;span class="o">=&lt;/span>no/unsupported
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Current DNS Server: 172.16.222.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> DNS Servers: 172.16.222.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> DNS Domain: localdomain&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>&lt;strong>Receive DNS Responses&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="receive-dns-responses">&lt;/span>
+&lt;a href="#receive-dns-responses" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">recvfrom&lt;span class="o">(&lt;/span>5, &lt;span class="s2">&amp;#34;\266L\201\200\0\1\0\2\0\0\0\1\5baidu\3com\0\0\1\0\1\300\f\0\1\0...&amp;#34;&lt;/span>, 2048, 0, ...&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">70&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">recvfrom&lt;span class="o">(&lt;/span>5, &lt;span class="s2">&amp;#34;\261e\201\200\0\1\0\0\0\1\0\1\5baidu\3com\0\0\34\0\1\300\f\0\6\0...&amp;#34;&lt;/span>, 65536, 0, ...&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">81&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The DNS resolver returns:
+&lt;ul>
+&lt;li>&lt;strong>A record&lt;/strong>: &lt;code>39.156.66.10&lt;/code> (IPv4 address for &lt;code>baidu.com&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>AAAA record&lt;/strong>: &lt;code>2400:cb00:2048:1::681b:8093&lt;/code> (IPv6 address, but not shown in &lt;code>strace&lt;/code> output).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>The &lt;code>ping&lt;/code> command uses the IPv4 address &lt;code>39.156.66.10&lt;/code> for the ICMP echo request.&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Final Output&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="final-output">&lt;/span>
+&lt;a href="#final-output" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">write&lt;span class="o">(&lt;/span>1, &lt;span class="s2">&amp;#34;PING baidu.com (39.156.66.10) 56&amp;#34;&lt;/span>..., 52&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">52&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The resolved IP address is printed, and &lt;code>ping&lt;/code> sends an ICMP packet to &lt;code>39.156.66.10&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3>&lt;strong>Key Files and Services Involved&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="key-files-and-services-involved">&lt;/span>
+&lt;a href="#key-files-and-services-involved" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>&lt;strong>&lt;code>/etc/nsswitch.conf&lt;/code>&lt;/strong>:
+&lt;ul>
+&lt;li>Controls the order of name resolution (e.g., &lt;code>files&lt;/code> → &lt;code>dns&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>&lt;code>/etc/resolv.conf&lt;/code>&lt;/strong>:
+&lt;ul>
+&lt;li>Specifies DNS servers (e.g., &lt;code>127.0.0.53&lt;/code> for &lt;code>systemd-resolved&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>&lt;code>systemd-resolved&lt;/code>&lt;/strong>:
+&lt;ul>
+&lt;li>A local DNS stub resolver that handles queries and caches results.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>&lt;code>/etc/hosts&lt;/code>&lt;/strong>:
+&lt;ul>
+&lt;li>Static hostname-to-IP mappings (bypasses DNS if a match exists).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.man7.org/linux/man-pages/man8/systemd-resolved.service.8.html" target="_blank" rel="noopener">systemd-resolved.service&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man5/nsswitch.conf.5.html" target="_blank" rel="noopener">nsswitch.conf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man5/gai.conf.5.html" target="_blank" rel="noopener">gai.conf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man5/resolv.conf.5.html" target="_blank" rel="noopener">resolv.conf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.man7.org/linux/man-pages/man1/resolvectl.1.html" target="_blank" rel="noopener">resolvectl&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Java Thread</title><link>https://cloudedseal.github.io/blog/java-thread/</link><pubDate>Tue, 06 May 2025 15:11:27 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-thread/</guid><description>
 &lt;h2>java 的线程由 os scheduler 负责调度&lt;span class="hx-absolute -hx-mt-20" id="java-的线程由-os-scheduler-负责调度">&lt;/span>
 &lt;a href="#java-%e7%9a%84%e7%ba%bf%e7%a8%8b%e7%94%b1-os-scheduler-%e8%b4%9f%e8%b4%a3%e8%b0%83%e5%ba%a6" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Java thread scheduling is &lt;strong>primarily managed by the operating system (OS) scheduler&lt;/strong>, but the Java Virtual Machine (JVM) and the application code can &lt;code>influence&lt;/code> thread behavior in several ways.&lt;/p>
 &lt;ul>
@@ -10789,86 +11261,4 @@ title="Copy code"
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html" target="_blank" rel="noopener">class file format&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://mariadb.com/kb/en/innodb-row-formats-overview/" target="_blank" rel="noopener">InnoDB-row-format&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/" target="_blank" rel="noopener">TTL&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>notions_of_computer</title><link>https://cloudedseal.github.io/blog/notions-of-computer/</link><pubDate>Tue, 24 Nov 2020 13:25:13 +0800</pubDate><guid>https://cloudedseal.github.io/blog/notions-of-computer/</guid><description>
-&lt;h2>指导思想&lt;span class="hx-absolute -hx-mt-20" id="指导思想">&lt;/span>
-&lt;a href="#%e6%8c%87%e5%af%bc%e6%80%9d%e6%83%b3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>计算机是人发明的。由计算机组成的世界，其设计思想很明显要借鉴现实中的东西。正如一位伟人的著作开篇提出 &lt;code>“谁是我们的敌人？谁是我们的朋友？这个问题是革命的首要问题。中国过去一切革命斗争成效甚少，其基本原因就是因为不能团结真正的朋友，以攻击真正的敌人。”&lt;/code>那么应对计算机，什么才是计算机组织背后的指导思想呢？个人认为有三个：1. hierarchy(层级)、2：group(分组)、3：order(有序)&lt;/p>
-&lt;h3>hierarchy(层级)&lt;span class="hx-absolute -hx-mt-20" id="hierarchy层级">&lt;/span>
-&lt;a href="#hierarchy%e5%b1%82%e7%ba%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;em>hierarchy&lt;/em> 在这里也可以理解成等级。层级结构最重要的一点就是最顶层在哪？用 &lt;code>tree&lt;/code> 理解就是，&lt;code>root&lt;/code> 在哪？这个信息整个层级都要知道。哈哈，是不是挺像皇帝。😄&lt;/p>
-&lt;h4>面对数量庞大的相同事物，怎样管理呢？用什么组织方式呢？&lt;span class="hx-absolute -hx-mt-20" id="面对数量庞大的相同事物怎样管理呢用什么组织方式呢">&lt;/span>
-&lt;a href="#%e9%9d%a2%e5%af%b9%e6%95%b0%e9%87%8f%e5%ba%9e%e5%a4%a7%e7%9a%84%e7%9b%b8%e5%90%8c%e4%ba%8b%e7%89%a9%e6%80%8e%e6%a0%b7%e7%ae%a1%e7%90%86%e5%91%a2%e7%94%a8%e4%bb%80%e4%b9%88%e7%bb%84%e7%bb%87%e6%96%b9%e5%bc%8f%e5%91%a2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>这里的数量庞大要是成千上万的。比如中国有十几亿人口、中国有 960 万平方公里的土地，等等。首先简述一下历史上的经验，比如西周，采用分封制。天子、诸侯、卿、士、平民等所有人组成一个金字塔形状。每一个层级的人&lt;code>权力大小不同&lt;/code>、&lt;code>承担的责任和义务也不同&lt;/code>。对于土地则是封邦建国。分封制可以对人口、土地等进行有效的统治。更直观的理解就是形成稳定的阶级。到这是不是立刻就能想到由于每种存储的&lt;code>价格&lt;/code>、&lt;code>速度&lt;/code>、&lt;code>容量&lt;/code>不同，应用在哪个地方也不同。也是组织成一个层级结构来构成整个计算机的存储系统。&lt;/p>
-&lt;p>从数学的角度分析就是：用&lt;code>对数的方式&lt;/code>搞定数量庞大的事物的管理。不管数量多庞大，用对数搞一下，数量立刻就降下来。比如 log&lt;sub>2&lt;/sub>4294967296 = 32。对数的发明、解析几何的创立和微积分的建立是17世纪数学的三大成就。&lt;/p>
-&lt;h5>域名组织方式&lt;span class="hx-absolute -hx-mt-20" id="域名组织方式">&lt;/span>
-&lt;a href="#%e5%9f%9f%e5%90%8d%e7%bb%84%e7%bb%87%e6%96%b9%e5%bc%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;blockquote>
-&lt;p>In 2017, 330.6 million domain names had been registered.
-2017 年已经有 33 多亿的注册域名了。&lt;/p>
-&lt;/blockquote>
-&lt;p>如果让你组织数量如此庞大的域名，你该怎样组织呢？没错，也是组织成层级结构，来管理数量如此庞大的域名。一开始的解决方法是直接把域名信息放在 /etc/hosts 文件，随着域名增多，单独的一个文件没法满足要求，数量太多了嘛，放在一个文件，且不论能不能全部存储，查找都是一个大问题。&lt;/p>
-&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/dns-root-server.png" alt="domain-name-hierarchy" loading="lazy" />&lt;/p>
-&lt;h5>IP 分配管理方式&lt;span class="hx-absolute -hx-mt-20" id="ip-分配管理方式">&lt;/span>
-&lt;a href="#ip-%e5%88%86%e9%85%8d%e7%ae%a1%e7%90%86%e6%96%b9%e5%bc%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>IP Addresses are &lt;code>unique identifiers&lt;/code> used to determine who is who on the Internet.
-IP 地址是一个 32bit 的无符号整数。范围是 [0,2^32-1], 一共有 4294967296 个整数。将近 43 亿个 ip 地址(这里不考虑公网、私网)该怎样分配使用呢？由 &lt;a href="https://www.iana.org/numbers" target="_blank" rel="noopener">Internet Assigned Numbers Authority (IANA)&lt;/a> 负责协调管理所有 IP，同时负责分配自治系统号(Autonomous System number)。&lt;/p>
-&lt;blockquote>
-&lt;p>Both IPv4 and IPv6 addresses are generally assigned in a &lt;code>hierarchical manner&lt;/code>. Users are assigned IP addresses by &lt;code>Internet service providers (ISPs)&lt;/code>. ISPs obtain allocations of IP addresses from a &lt;code>local Internet registry (LIR&lt;/code>) or &lt;code>National Internet Registry (NIR)&lt;/code>, or from their appropriate &lt;code>Regional Internet Registry (RIR)&lt;/code>:&lt;/p>
-&lt;/blockquote>
-&lt;p>数量庞大的 IP 地址怎样分配管理呢？组成层级结构。通过一级一级&lt;code>委托&lt;/code>，管理数量庞大的 IP 地址。&lt;/p>
-&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/IP_AS_Number.svg" alt="地址分配管理" loading="lazy" />&lt;/p>
-&lt;h5>文件组织方式&lt;span class="hx-absolute -hx-mt-20" id="文件组织方式">&lt;/span>
-&lt;a href="#%e6%96%87%e4%bb%b6%e7%bb%84%e7%bb%87%e6%96%b9%e5%bc%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/file_system_hierarchy.png" alt="file system hierarchy" loading="lazy" />&lt;/p>
-&lt;h4>不同性质的事物，怎样组织呢？&lt;span class="hx-absolute -hx-mt-20" id="不同性质的事物怎样组织呢">&lt;/span>
-&lt;a href="#%e4%b8%8d%e5%90%8c%e6%80%a7%e8%b4%a8%e7%9a%84%e4%ba%8b%e7%89%a9%e6%80%8e%e6%a0%b7%e7%bb%84%e7%bb%87%e5%91%a2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;h5>memory hierarchy&lt;span class="hx-absolute -hx-mt-20" id="memory-hierarchy">&lt;/span>
-&lt;a href="#memory-hierarchy" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/ComputerMemoryHierarchy.svg" alt="ComputerMemoryHierarchy" loading="lazy" />&lt;/p>
-&lt;h5>Typical memory hierarchy&lt;span class="hx-absolute -hx-mt-20" id="typical-memory-hierarchy">&lt;/span>
-&lt;a href="#typical-memory-hierarchy" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/typical-memory-hierarchy.png" alt=" typical-memory-hierarchy " loading="lazy" />&lt;/p>
-&lt;h5>OSI 参考模型&lt;span class="hx-absolute -hx-mt-20" id="osi-参考模型">&lt;/span>
-&lt;a href="#osi-%e5%8f%82%e8%80%83%e6%a8%a1%e5%9e%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>网络每一层，功能不同。&lt;/p>
-&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/network-layer.svg" alt="OSI VS TCP/IP" loading="lazy" />&lt;/p>
-&lt;h3>group(分组)&lt;span class="hx-absolute -hx-mt-20" id="group分组">&lt;/span>
-&lt;a href="#group%e5%88%86%e7%bb%84" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>体量庞大的东西的基层组织。&lt;/p>
-&lt;ol>
-&lt;li>可视为层级结构的最底层。block、page、packet、fragment、set&lt;/li>
-&lt;li>也可以视为不同的模块。module、segment、section&lt;/li>
-&lt;li>也可以理解成分类。sort&lt;/li>
-&lt;/ol>
-&lt;h4>域名&lt;span class="hx-absolute -hx-mt-20" id="域名">&lt;/span>
-&lt;a href="#%e5%9f%9f%e5%90%8d" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>对域名来说一个分组可以理解成一个&lt;code>一级域名&lt;/code>下的所有域名。如 &lt;code>org&lt;/code>下的域名。当然也可以理解成一个 &lt;code>二级域名&lt;/code>下的所有域名。如 &lt;code>google.com&lt;/code> 下 Google 家所有的域名。依次类推。可以看出，同种事物进行层级组织，本身就是在进行分组。&lt;/p>
-&lt;h4>IP 地址&lt;span class="hx-absolute -hx-mt-20" id="ip-地址">&lt;/span>
-&lt;a href="#ip-%e5%9c%b0%e5%9d%80" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
-&lt;p>An autonomous system (AS) is a very large network or group of networks with a single routing policy. Each AS is assigned a unique ASN, which is a number that identifies the AS.&lt;/p>
-&lt;/blockquote>
-&lt;p>没错。IP 地址也是通过一个一个的实体来管理使用的，一个实体就是一个自治系统。(autonomous system)。比如中国移动这个运营商的 AS Number 是 &lt;a href="https://ipinfo.io/AS56041" target="_blank" rel="noopener">56041&lt;/a>，管理一系列 IP 地址。再比如 Apple 的 AS Number 是 &lt;a href="https://ipinfo.io/AS714" target="_blank" rel="noopener">714&lt;/a>。&lt;/p>
-&lt;h4>Internet Protocol&lt;span class="hx-absolute -hx-mt-20" id="internet-protocol">&lt;/span>
-&lt;a href="#internet-protocol" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
-&lt;p>Data traversing the Internet is &lt;code>divided into&lt;/code> smaller pieces, called &lt;code>packets&lt;/code>. IP information is attached to &lt;code>each packet&lt;/code>, and this information helps &lt;code>routers&lt;/code> to send packets to the right place.&lt;/p>
-&lt;/blockquote>
-&lt;p>通过网络发送大量的信息，也是拆分成一个个 &lt;code>packet&lt;/code>。这里也可以理解成分组。&lt;/p>
-&lt;h4>文件系统&lt;span class="hx-absolute -hx-mt-20" id="文件系统">&lt;/span>
-&lt;a href="#%e6%96%87%e4%bb%b6%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>文件系统管理磁盘空间。磁盘空间划分为一个个相同大小的 Block。一个扇区是 512Bytes，这可以视为一个分组。&lt;/p>
-&lt;h4>网络流量&lt;span class="hx-absolute -hx-mt-20" id="网络流量">&lt;/span>
-&lt;a href="#%e7%bd%91%e7%bb%9c%e6%b5%81%e9%87%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
-&lt;p>Ports are virtual places within an operating system where network connections start and end. They help computers sort the &lt;code>network traffic&lt;/code> they receive.&lt;/p>
-&lt;/blockquote>
-&lt;p>计算机从网络上接收的 packet 怎样判定哪一个是接收者呢？对网络流量分类就行。怎样分类呢？用端口号，不同的接收者，接收不同端口的流量。&lt;/p>
-&lt;h4>subnet&lt;span class="hx-absolute -hx-mt-20" id="subnet">&lt;/span>
-&lt;a href="#subnet" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
-&lt;p>Think of the Internet as a network of networks: computers are connected to each other within networks, and these networks connect to other networks. This enables these computers to connect with other computers both near and far.
-A network is a group of two or more connected computing devices.&lt;/p>
-&lt;/blockquote>
-&lt;p>划分子网，也是在分组。&lt;/p>
-&lt;h3>order(顺序)&lt;span class="hx-absolute -hx-mt-20" id="order顺序">&lt;/span>
-&lt;a href="#order%e9%a1%ba%e5%ba%8f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>顺序、分支、循环。顺序就是程序三大结构之一。没有秩序的世界是混乱的，啥事也做不成。
-TCP 协议目的之一就是要保证计算机接收到的网络包的顺序。怎样保证顺序呢？非常简单，为每一个 Byte 编号就行。&lt;/p>
-&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
-&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>&lt;a href="https://www.geeksforgeeks.org/memory-hierarchy-design-and-its-characteristics/" target="_blank" rel="noopener">memory-hierarchy&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.cloudflare.com/learning/dns/glossary/what-is-a-domain-name/" target="_blank" rel="noopener">what-is-a-domain-name&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.cloudflare.com/learning/dns/glossary/dns-root-server/" target="_blank" rel="noopener">dns-root-server&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.iana.org/numbers" target="_blank" rel="noopener">ip number resources&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://tools.ietf.org/html/rfc7020" target="_blank" rel="noopener">The Internet Numbers Registry System&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard" target="_blank" rel="noopener">Filesystem_Hierarchy_Standard&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.pathname.com/fhs/2.2/" target="_blank" rel="noopener">Filesystem Hierarchy Standard List&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.cloudflare.com/learning/network-layer/what-is-the-network-layer/" target="_blank" rel="noopener">network-layer&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.cloudflare.com/learning/network-layer/internet-protocol/" target="_blank" rel="noopener">internet-protocol&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.cloudflare.com/learning/network-layer/what-is-a-computer-port/" target="_blank" rel="noopener">what-is-a-computer-port&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/" target="_blank" rel="noopener">open-systems-interconnection-model&lt;/a>&lt;/li>
-&lt;li>&lt;a href="http://cseweb.ucsd.edu/classes/sp10/cse141/pdf/07/09_CSE141-Caching.pdf" target="_blank" rel="noopener">CSE141-Caching&lt;/a>&lt;/li>
 &lt;/ol></description></item></channel></rss>
