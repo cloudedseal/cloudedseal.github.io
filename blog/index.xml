@@ -370,9 +370,9 @@ title="Copy code"
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h4>&lt;strong>Uplink DNS Servers&lt;/strong> 上游的 DNS 服务器&lt;span class="hx-absolute -hx-mt-20" id="uplink-dns-servers-上游的-dns-服务器">&lt;/span>
-&lt;a href="#uplink-dns-servers-%e4%b8%8a%e6%b8%b8%e7%9a%84-dns-%e6%9c%8d%e5%8a%a1%e5%99%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
-&lt;p>Uplink DNS Servers is external DNS servers that local DNS resolver &lt;code>forwards&lt;/code> queries to for resolution&lt;/p>
+&lt;h4>&lt;strong>upstream DNS servers&lt;/strong> 上游的 DNS 服务器&lt;span class="hx-absolute -hx-mt-20" id="upstream-dns-servers-上游的-dns-服务器">&lt;/span>
+&lt;a href="#upstream-dns-servers-%e4%b8%8a%e6%b8%b8%e7%9a%84-dns-%e6%9c%8d%e5%8a%a1%e5%99%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;p>upstream DNS servers is external DNS servers that local DNS resolver &lt;code>forwards&lt;/code> queries to for resolution&lt;/p>
 &lt;/blockquote>
 &lt;ul>
 &lt;li>The actual upstream DNS servers (e.g., your ISP&amp;rsquo;s DNS or &lt;code>1.1.1.1&lt;/code>)
@@ -382,8 +382,8 @@ title="Copy code"
 &lt;/ol>
 &lt;/li>
 &lt;/ul>
-&lt;h4>查看 Uplink DNS 解析器信息&lt;span class="hx-absolute -hx-mt-20" id="查看-uplink-dns-解析器信息">&lt;/span>
-&lt;a href="#%e6%9f%a5%e7%9c%8b-uplink-dns-%e8%a7%a3%e6%9e%90%e5%99%a8%e4%bf%a1%e6%81%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h4>查看 upstream DNS 解析器信息&lt;span class="hx-absolute -hx-mt-20" id="查看-upstream-dns-解析器信息">&lt;/span>
+&lt;a href="#%e6%9f%a5%e7%9c%8b-upstream-dns-%e8%a7%a3%e6%9e%90%e5%99%a8%e4%bf%a1%e6%81%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">resolvectl status
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Global
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Protocols: -LLMNR -mDNS -DNSOverTLS &lt;span class="nv">DNSSEC&lt;/span>&lt;span class="o">=&lt;/span>no/unsupported
@@ -404,6 +404,9 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
+&lt;blockquote>
+&lt;p>注意 resolv.conf mode: stub&lt;/p>
+&lt;/blockquote>
 &lt;h3>&lt;strong>Receive DNS Responses&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="receive-dns-responses">&lt;/span>
 &lt;a href="#receive-dns-responses" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">recvfrom&lt;span class="o">(&lt;/span>5, &lt;span class="s2">&amp;#34;\266L\201\200\0\1\0\2\0\0\0\1\5baidu\3com\0\0\1\0\1\300\f\0\1\0...&amp;#34;&lt;/span>, 2048, 0, ...&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">70&lt;/span>
@@ -473,6 +476,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man5/gai.conf.5.html" target="_blank" rel="noopener">gai.conf&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man5/resolv.conf.5.html" target="_blank" rel="noopener">resolv.conf&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.man7.org/linux/man-pages/man1/resolvectl.1.html" target="_blank" rel="noopener">resolvectl&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://wiki.archlinux.org/title/Systemd-resolved" target="_blank" rel="noopener">Systemd-resolved&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Java Thread</title><link>https://cloudedseal.github.io/blog/java-thread/</link><pubDate>Tue, 06 May 2025 15:11:27 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-thread/</guid><description>
 &lt;h2>java 的线程由 os scheduler 负责调度&lt;span class="hx-absolute -hx-mt-20" id="java-的线程由-os-scheduler-负责调度">&lt;/span>
 &lt;a href="#java-%e7%9a%84%e7%ba%bf%e7%a8%8b%e7%94%b1-os-scheduler-%e8%b4%9f%e8%b4%a3%e8%b0%83%e5%ba%a6" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Java thread scheduling is &lt;strong>primarily managed by the operating system (OS) scheduler&lt;/strong>, but the Java Virtual Machine (JVM) and the application code can &lt;code>influence&lt;/code> thread behavior in several ways.&lt;/p>
