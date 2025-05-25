@@ -8,7 +8,7 @@
 &lt;h2>linux 上 DNS 解析流程&lt;span class="hx-absolute -hx-mt-20" id="linux-上-dns-解析流程">&lt;/span>
 &lt;a href="#linux-%e4%b8%8a-dns-%e8%a7%a3%e6%9e%90%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
 &lt;li>以 ping -c 1 baidu.com 为例&lt;/li>
-&lt;li>&lt;a href="https://github.com/cloudedseal/underlayer/blob/main/dns-resolve-expore/ping.log.9762" target="_blank" rel="noopener">ping strace 日志&lt;/a>，分析 ping 如何拿到 baidu.com 的 IP, 向目标 IP 发送 IMCP&lt;/li>
+&lt;li>&lt;a href="https://github.com/cloudedseal/underlayer/blob/main/dns-resolve-expore/ping.log.9762" target="_blank" rel="noopener">ping strace 日志&lt;/a>，分析 ping 如何拿到 baidu.com 的 IP, 向目标 IP 发送 ICMP&lt;/li>
 &lt;/ul>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo strace -f -o ping.log -e &lt;span class="nv">trace&lt;/span>&lt;span class="o">=&lt;/span>execve,access,openat,socket,connect,newfstatat,sendmmsg,recvfrom,sendto,recvmsg,write ping -c &lt;span class="m">1&lt;/span> baidu.com&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
