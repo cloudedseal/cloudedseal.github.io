@@ -1,7 +1,402 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://cloudedseal.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://cloudedseal.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://cloudedseal.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Master Dns Resolve Steps</title><link>https://cloudedseal.github.io/blog/master-dns-resolve-steps/</link><pubDate>Fri, 23 May 2025 11:55:31 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-dns-resolve-steps/</guid><description>
+&lt;/blockquote></description></item><item><title>Master Linux Pipe</title><link>https://cloudedseal.github.io/blog/master-linux-pipe/</link><pubDate>Sun, 25 May 2025 18:26:01 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-linux-pipe/</guid><description>
+&lt;h2>file descriptor&lt;span class="hx-absolute -hx-mt-20" id="file-descriptor">&lt;/span>
+&lt;a href="#file-descriptor" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>A file descriptor, or FD, is a positive integer that refers to an input/output source. 指向 I/O 源,不关心具体的源是什么, 这就是抽象&lt;/p>
+&lt;/blockquote>
+&lt;p>所谓 I/O redirection 不过是对制定的 FD 复制而已&lt;/p>
+&lt;h2>&lt;code>sh&lt;/code> 系统调用追踪&lt;span class="hx-absolute -hx-mt-20" id="sh-系统调用追踪">&lt;/span>
+&lt;a href="#sh-%e7%b3%bb%e7%bb%9f%e8%b0%83%e7%94%a8%e8%bf%bd%e8%b8%aa" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>shell pipeline 流程&lt;span class="hx-absolute -hx-mt-20" id="shell-pipeline-流程">&lt;/span>
+&lt;a href="#shell-pipeline-%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;strong>complete lifecycle of a shell pipeline&lt;/strong> (&lt;code>cat /etc/passwd | wc -l&lt;/code>) executed via &lt;code>sh&lt;/code>.&lt;/p>
+&lt;ul>
+&lt;li>✅ &lt;code>pipe2()&lt;/code> (pipe creation, kernel managed buffer)&lt;/li>
+&lt;li>✅ &lt;code>clone()&lt;/code> (Linux process creation, replaces &lt;code>fork()&lt;/code>)&lt;/li>
+&lt;li>✅ &lt;code>dup2()&lt;/code> (redirects stdin/stdout)&lt;/li>
+&lt;li>✅ &lt;code>execve()&lt;/code> (runs &lt;code>cat&lt;/code> and &lt;code>wc -l&lt;/code>)&lt;/li>
+&lt;/ul>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">strace -f -tt -s &lt;span class="m">1000&lt;/span> -o pipe.log -e &lt;span class="nv">trace&lt;/span>&lt;span class="o">=&lt;/span>pipe2,clone,execve,dup2,close sh -c &lt;span class="s1">&amp;#39;cat /etc/passwd | wc -l&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.436915 execve&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;/usr/bin/sh&amp;#34;&lt;/span>, &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;sh&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;-c&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;cat /etc/passwd | wc -l&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>, 0x7ffcc4e072a0 /* &lt;span class="m">65&lt;/span> vars */&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.446359 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.452650 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.471471 pipe2&lt;span class="o">([&lt;/span>3, 4&lt;span class="o">]&lt;/span>, 0&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.472226 clone&lt;span class="o">(&lt;/span>&lt;span class="nv">child_stack&lt;/span>&lt;span class="o">=&lt;/span>NULL, &lt;span class="nv">flags&lt;/span>&lt;span class="o">=&lt;/span>CLONE_CHILD_CLEARTID&lt;span class="p">|&lt;/span>CLONE_CHILD_SETTID&lt;span class="p">|&lt;/span>SIGCHLD, &lt;span class="nv">child_tidptr&lt;/span>&lt;span class="o">=&lt;/span>0x77cc40b30a10&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">27641&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.474244 close&lt;span class="o">(&lt;/span>4&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.474851 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.475308 dup2&lt;span class="o">(&lt;/span>4, 1&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.475737 close&lt;span class="o">(&lt;/span>4&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.476204 execve&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;/usr/bin/cat&amp;#34;&lt;/span>, &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;cat&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;/etc/passwd&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>, 0x6292fba9d0f8 /* &lt;span class="m">65&lt;/span> vars */ &amp;lt;unfinished ...&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.477420 clone&lt;span class="o">(&lt;/span>&lt;span class="nv">child_stack&lt;/span>&lt;span class="o">=&lt;/span>NULL, &lt;span class="nv">flags&lt;/span>&lt;span class="o">=&lt;/span>CLONE_CHILD_CLEARTID&lt;span class="p">|&lt;/span>CLONE_CHILD_SETTID&lt;span class="p">|&lt;/span>SIGCHLD &amp;lt;unfinished ...&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.477659 &amp;lt;... execve resumed&amp;gt;&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.478608 &amp;lt;... clone resumed&amp;gt;, &lt;span class="nv">child_tidptr&lt;/span>&lt;span class="o">=&lt;/span>0x77cc40b30a10&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">27642&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.479006 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.480741 close&lt;span class="o">(&lt;/span>-1 &amp;lt;unfinished ...&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.480811 dup2&lt;span class="o">(&lt;/span>3, 0&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.481370 &amp;lt;... close resumed&amp;gt;&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> -1 EBADF &lt;span class="o">(&lt;/span>Bad file descriptor&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.482849 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.483297 execve&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;/usr/bin/wc&amp;#34;&lt;/span>, &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;wc&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;-l&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>, 0x6292fba9d128 /* &lt;span class="m">65&lt;/span> vars */&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.486693 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.487874 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.491607 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.494576 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.500190 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.502045 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.504291 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.507177 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.515626 close&lt;span class="o">(&lt;/span>3&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.516854 close&lt;span class="o">(&lt;/span>1&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.517974 close&lt;span class="o">(&lt;/span>2&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.519465 close&lt;span class="o">(&lt;/span>&lt;span class="m">0&lt;/span> &amp;lt;unfinished ...&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.519562 +++ exited with &lt;span class="m">0&lt;/span> +++
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.519778 &amp;lt;... close resumed&amp;gt;&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.520356 close&lt;span class="o">(&lt;/span>&lt;span class="m">1&lt;/span> &amp;lt;unfinished ...&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.520949 --- SIGCHLD &lt;span class="o">{&lt;/span>&lt;span class="nv">si_signo&lt;/span>&lt;span class="o">=&lt;/span>SIGCHLD, &lt;span class="nv">si_code&lt;/span>&lt;span class="o">=&lt;/span>CLD_EXITED, &lt;span class="nv">si_pid&lt;/span>&lt;span class="o">=&lt;/span>27641, &lt;span class="nv">si_uid&lt;/span>&lt;span class="o">=&lt;/span>1000, &lt;span class="nv">si_status&lt;/span>&lt;span class="o">=&lt;/span>0, &lt;span class="nv">si_utime&lt;/span>&lt;span class="o">=&lt;/span>0, &lt;span class="nv">si_stime&lt;/span>&lt;span class="o">=&lt;/span>0&lt;span class="o">}&lt;/span> ---
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.521080 &amp;lt;... close resumed&amp;gt;&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.521383 close&lt;span class="o">(&lt;/span>2&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.523033 +++ exited with &lt;span class="m">0&lt;/span> +++
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.523476 --- SIGCHLD &lt;span class="o">{&lt;/span>&lt;span class="nv">si_signo&lt;/span>&lt;span class="o">=&lt;/span>SIGCHLD, &lt;span class="nv">si_code&lt;/span>&lt;span class="o">=&lt;/span>CLD_EXITED, &lt;span class="nv">si_pid&lt;/span>&lt;span class="o">=&lt;/span>27642, &lt;span class="nv">si_uid&lt;/span>&lt;span class="o">=&lt;/span>1000, &lt;span class="nv">si_status&lt;/span>&lt;span class="o">=&lt;/span>0, &lt;span class="nv">si_utime&lt;/span>&lt;span class="o">=&lt;/span>0, &lt;span class="nv">si_stime&lt;/span>&lt;span class="o">=&lt;/span>0&lt;span class="o">}&lt;/span> ---
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.527449 +++ exited with &lt;span class="m">0&lt;/span> +++&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>strace 过滤&lt;span class="hx-absolute -hx-mt-20" id="strace-过滤">&lt;/span>
+&lt;a href="#strace-%e8%bf%87%e6%bb%a4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">grep -E &lt;span class="s1">&amp;#39;pipe2|clone|dup2|execve&amp;#39;&lt;/span> pipe.log
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.436915 execve&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;/usr/bin/sh&amp;#34;&lt;/span>, &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;sh&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;-c&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;cat /etc/passwd | wc -l&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>, 0x7ffcc4e072a0 /* &lt;span class="m">65&lt;/span> vars */&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.471471 pipe2&lt;span class="o">([&lt;/span>3, 4&lt;span class="o">]&lt;/span>, 0&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.472226 clone&lt;span class="o">(&lt;/span>&lt;span class="nv">child_stack&lt;/span>&lt;span class="o">=&lt;/span>NULL, &lt;span class="nv">flags&lt;/span>&lt;span class="o">=&lt;/span>CLONE_CHILD_CLEARTID&lt;span class="p">|&lt;/span>CLONE_CHILD_SETTID&lt;span class="p">|&lt;/span>SIGCHLD, &lt;span class="nv">child_tidptr&lt;/span>&lt;span class="o">=&lt;/span>0x77cc40b30a10&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">27641&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.475308 dup2&lt;span class="o">(&lt;/span>4, 1&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.476204 execve&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;/usr/bin/cat&amp;#34;&lt;/span>, &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;cat&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;/etc/passwd&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>, 0x6292fba9d0f8 /* &lt;span class="m">65&lt;/span> vars */ &amp;lt;unfinished ...&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.477420 clone&lt;span class="o">(&lt;/span>&lt;span class="nv">child_stack&lt;/span>&lt;span class="o">=&lt;/span>NULL, &lt;span class="nv">flags&lt;/span>&lt;span class="o">=&lt;/span>CLONE_CHILD_CLEARTID&lt;span class="p">|&lt;/span>CLONE_CHILD_SETTID&lt;span class="p">|&lt;/span>SIGCHLD &amp;lt;unfinished ...&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27641&lt;/span> 13:23:49.477659 &amp;lt;... execve resumed&amp;gt;&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27640&lt;/span> 13:23:49.478608 &amp;lt;... clone resumed&amp;gt;, &lt;span class="nv">child_tidptr&lt;/span>&lt;span class="o">=&lt;/span>0x77cc40b30a10&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">27642&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.480811 dup2&lt;span class="o">(&lt;/span>3, 0&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="m">27642&lt;/span> 13:23:49.483297 execve&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;/usr/bin/wc&amp;#34;&lt;/span>, &lt;span class="o">[&lt;/span>&lt;span class="s2">&amp;#34;wc&amp;#34;&lt;/span>, &lt;span class="s2">&amp;#34;-l&amp;#34;&lt;/span>&lt;span class="o">]&lt;/span>, 0x6292fba9d128 /* &lt;span class="m">65&lt;/span> vars */&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h4>进程 ID&lt;span class="hx-absolute -hx-mt-20" id="进程-id">&lt;/span>
+&lt;a href="#%e8%bf%9b%e7%a8%8b-id" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>&lt;strong>Parent Shell (sh)&lt;/strong>: PID &lt;code>27640&lt;/code>&lt;/li>
+&lt;li>&lt;strong>Child 1 (&lt;code>cat&lt;/code>)&lt;/strong>: PID &lt;code>27641&lt;/code>&lt;/li>
+&lt;li>&lt;strong>Child 2 (&lt;code>wc&lt;/code>)&lt;/strong>: PID &lt;code>27642&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>数据流向&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="数据流向">&lt;/span>
+&lt;a href="#%e6%95%b0%e6%8d%ae%e6%b5%81%e5%90%91" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Pipe Setup&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>pipe2([3,4])&lt;/code> creates a communication channel:
+&lt;ul>
+&lt;li>&lt;code>3&lt;/code>: &lt;strong>Read&lt;/strong> end (used by &lt;code>wc&lt;/code>)&lt;/li>
+&lt;li>&lt;code>4&lt;/code>: &lt;strong>Write&lt;/strong> end (used by &lt;code>cat&lt;/code>)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Child 1 (&lt;code>cat&lt;/code>)&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>dup2(4, 1)&lt;/code> → Redirects &lt;code>cat&lt;/code>&amp;rsquo;s stdout to the pipe.&lt;/li>
+&lt;li>&lt;code>execve(&amp;quot;cat&amp;quot;, ...)&lt;/code> → &lt;code>cat&lt;/code> writes &lt;code>/etc/passwd&lt;/code> to the pipe.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Child 2 (&lt;code>wc&lt;/code>)&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>dup2(3, 0)&lt;/code> → Redirects &lt;code>wc&lt;/code>&amp;rsquo;s stdin to the pipe.&lt;/li>
+&lt;li>&lt;code>execve(&amp;quot;wc&amp;quot;, ...)&lt;/code> → &lt;code>wc&lt;/code> reads from the pipe and counts lines.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Parent Cleanup&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Closes both ends of the pipe (&lt;code>close(3)&lt;/code> and &lt;code>close(4)&lt;/code>) to prevent resource leaks.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3>&lt;strong>数据流可视化&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="数据流可视化">&lt;/span>
+&lt;a href="#%e6%95%b0%e6%8d%ae%e6%b5%81%e5%8f%af%e8%a7%86%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>&amp;#43;-------------------&amp;#43;
+| Parent Shell |
+| (PID 27640) |
+&amp;#43;-------------------&amp;#43;
+|
+| 🔵 pipe2([3,4], 0)
+▼
+&amp;#43;-------------------&amp;#43;
+| Pipe: |
+| Read: FD 3 |
+| Write: FD 4 |
+&amp;#43;-------------------&amp;#43;
+|
+| 🟢 clone(SIGCHLD) → PID 27641
+| 🟢 clone(SIGCHLD) → PID 27642
+▼
+&amp;#43;-------------------&amp;#43; &amp;#43;-------------------&amp;#43;
+| Child 27641 (cat) | | Child 27642 (wc) |
+&amp;#43;-------------------&amp;#43; &amp;#43;-------------------&amp;#43;
+| 🟡 dup2(4, 1) | | 🟡 dup2(3, 0) |
+| 🔴 close(4) | | 🔴 close(3) |
+| 🟠 execve(&amp;#34;cat&amp;#34;) | | 🟠 execve(&amp;#34;wc&amp;#34;) |
+| → Writes to pipe | | → Reads from pipe |
+&amp;#43;-------------------&amp;#43; &amp;#43;-------------------&amp;#43;
+| ↑
+| |
+&amp;#43;--------------------------&amp;#43;
+Data flow via pipe&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>pipeline 流程详细分析&lt;span class="hx-absolute -hx-mt-20" id="pipeline-流程详细分析">&lt;/span>
+&lt;a href="#pipeline-%e6%b5%81%e7%a8%8b%e8%af%a6%e7%bb%86%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>✅ Step 1: Pipe Creation&lt;span class="hx-absolute -hx-mt-20" id="-step-1-pipe-creation">&lt;/span>
+&lt;a href="#-step-1-pipe-creation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27640&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.471471&lt;/span> &lt;span class="nf">pipe2&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The parent shell creates a pipe with two file descriptors:
+&lt;ul>
+&lt;li>&lt;code>3&lt;/code>: Read end (for &lt;code>wc&lt;/code>)&lt;/li>
+&lt;li>&lt;code>4&lt;/code>: Write end (for &lt;code>cat&lt;/code>)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>pipe2()&lt;/code> is a modern variant of &lt;code>pipe()&lt;/code> that supports flags. Here, no flags are set (&lt;code>0&lt;/code>), so it behaves like &lt;code>pipe()&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3>✅ Step 2: Forking Child Processes&lt;span class="hx-absolute -hx-mt-20" id="-step-2-forking-child-processes">&lt;/span>
+&lt;a href="#-step-2-forking-child-processes" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>First Child (PID &lt;code>27641&lt;/code>) – runs &lt;code>cat&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="first-child-pid-27641--runs-cat">&lt;/span>
+&lt;a href="#first-child-pid-27641--runs-cat" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27640&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.472226&lt;/span> &lt;span class="nf">clone&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">child_stack&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">flags&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">CLONE_CHILD_CLEARTID&lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="n">CLONE_CHILD_SETTID&lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="n">SIGCHLD&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">...)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">27641&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The parent shell uses &lt;code>clone()&lt;/code> to create a child process.&lt;/li>
+&lt;li>This is how &lt;code>fork()&lt;/code> is implemented in modern &lt;code>glibc&lt;/code> — via &lt;code>clone()&lt;/code> with &lt;code>SIGCHLD&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h4>Second Child (PID &lt;code>27642&lt;/code>) – runs &lt;code>wc -l&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="second-child-pid-27642--runs-wc--l">&lt;/span>
+&lt;a href="#second-child-pid-27642--runs-wc--l" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27640&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.478608&lt;/span> &lt;span class="nf">clone&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">child_stack&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="nb">NULL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">flags&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">CLONE_CHILD_CLEARTID&lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="n">CLONE_CHILD_SETTID&lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="n">SIGCHLD&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">...)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">27642&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The parent shell creates a second child process.&lt;/li>
+&lt;li>Again, this is a &lt;code>fork()&lt;/code> under the hood.&lt;/li>
+&lt;/ul>
+&lt;h3>✅ Step 3: Redirecting File Descriptors&lt;span class="hx-absolute -hx-mt-20" id="-step-3-redirecting-file-descriptors">&lt;/span>
+&lt;a href="#-step-3-redirecting-file-descriptors" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>First Child (PID &lt;code>27641&lt;/code>) – &lt;code>cat&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="first-child-pid-27641--cat">&lt;/span>
+&lt;a href="#first-child-pid-27641--cat" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27641&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.475308&lt;/span> &lt;span class="nf">dup2&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27641&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.475737&lt;/span> &lt;span class="nf">close&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>Redirects stdout (&lt;code>FD 1&lt;/code>) to the write end of the pipe (&lt;code>FD 4&lt;/code>).&lt;/li>
+&lt;li>Closes the redundant &lt;code>FD 4&lt;/code> after duplication.&lt;/li>
+&lt;/ul>
+&lt;h4>Second Child (PID &lt;code>27642&lt;/code>) – &lt;code>wc&lt;/code>&lt;span class="hx-absolute -hx-mt-20" id="second-child-pid-27642--wc">&lt;/span>
+&lt;a href="#second-child-pid-27642--wc" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27642&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.480811&lt;/span> &lt;span class="nf">dup2&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27642&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.482849&lt;/span> &lt;span class="nf">close&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>Redirects stdin (&lt;code>FD 0&lt;/code>) to the read end of the pipe (&lt;code>FD 3&lt;/code>).&lt;/li>
+&lt;li>Closes the redundant &lt;code>FD 3&lt;/code> after duplication.&lt;/li>
+&lt;/ul>
+&lt;h3>✅ Step 4: Executing Commands&lt;span class="hx-absolute -hx-mt-20" id="-step-4-executing-commands">&lt;/span>
+&lt;a href="#-step-4-executing-commands" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>&lt;code>cat&lt;/code> Process (PID &lt;code>27641&lt;/code>)&lt;span class="hx-absolute -hx-mt-20" id="cat-process-pid-27641">&lt;/span>
+&lt;a href="#cat-process-pid-27641" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27641&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.476204&lt;/span> &lt;span class="nf">execve&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;/usr/bin/cat&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;cat&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;/etc/passwd&amp;#34;&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="p">...)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>Replaces child process with &lt;code>cat /etc/passwd&lt;/code>.&lt;/li>
+&lt;li>Now &lt;code>cat&lt;/code> writes its output to the pipe.&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;code>wc&lt;/code> Process (PID &lt;code>27642&lt;/code>)&lt;span class="hx-absolute -hx-mt-20" id="wc-process-pid-27642">&lt;/span>
+&lt;a href="#wc-process-pid-27642" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27642&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.483297&lt;/span> &lt;span class="nf">execve&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;/usr/bin/wc&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;wc&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;-l&amp;#34;&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="p">...)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>Replaces child process with &lt;code>wc -l&lt;/code>.&lt;/li>
+&lt;li>Now &lt;code>wc&lt;/code> reads input from the pipe and counts lines.&lt;/li>
+&lt;/ul>
+&lt;h3>✅ Step 5: Parent Shell Cleanup&lt;span class="hx-absolute -hx-mt-20" id="-step-5-parent-shell-cleanup">&lt;/span>
+&lt;a href="#-step-5-parent-shell-cleanup" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27640&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.474244&lt;/span> &lt;span class="nf">close&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27640&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.479006&lt;/span> &lt;span class="nf">close&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>The parent shell closes both ends of the pipe.&lt;/li>
+&lt;li>This ensures the reader (&lt;code>wc&lt;/code>) knows when the writer (&lt;code>cat&lt;/code>) has finished (when all writers have closed the pipe).&lt;/li>
+&lt;/ul>
+&lt;h3>✅ Step 6: Process Exit&lt;span class="hx-absolute -hx-mt-20" id="-step-6-process-exit">&lt;/span>
+&lt;a href="#-step-6-process-exit" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Both child processes exit cleanly:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">pid&lt;/span> &lt;span class="mi">27641&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+++&lt;/span> &lt;span class="n">exited&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">+++&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">pid&lt;/span> &lt;span class="mi">27642&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+++&lt;/span> &lt;span class="n">exited&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">+++&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>And finally, the parent shell exits:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">pid&lt;/span> &lt;span class="mi">27640&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">+++&lt;/span> &lt;span class="n">exited&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">+++&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>涉及系统调用总结&lt;span class="hx-absolute -hx-mt-20" id="涉及系统调用总结">&lt;/span>
+&lt;a href="#%e6%b6%89%e5%8f%8a%e7%b3%bb%e7%bb%9f%e8%b0%83%e7%94%a8%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>PID&lt;/th>
+&lt;th>Action&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>27640&lt;/td>
+&lt;td>&lt;code>pipe2([3, 4], 0)&lt;/code>&lt;/td>
+&lt;td>Creates pipe&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>27640&lt;/td>
+&lt;td>&lt;code>clone(...)&lt;/code>&lt;/td>
+&lt;td>Forks first child (PID 27641)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>27640&lt;/td>
+&lt;td>&lt;code>clone(...)&lt;/code>&lt;/td>
+&lt;td>Forks second child (PID 27642)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>27641&lt;/td>
+&lt;td>&lt;code>dup2(4, 1)&lt;/code>&lt;/td>
+&lt;td>Redirects stdout to pipe write end&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>27642&lt;/td>
+&lt;td>&lt;code>dup2(3, 0)&lt;/code>&lt;/td>
+&lt;td>Redirects stdin to pipe read end&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>27641&lt;/td>
+&lt;td>&lt;code>execve(&amp;quot;cat&amp;quot;, ...)&lt;/code>&lt;/td>
+&lt;td>Replaces child with &lt;code>cat&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>27642&lt;/td>
+&lt;td>&lt;code>execve(&amp;quot;wc&amp;quot;, ...)&lt;/code>&lt;/td>
+&lt;td>Replaces child with &lt;code>wc -l&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>27640&lt;/td>
+&lt;td>&lt;code>wait()&lt;/code>&lt;/td>
+&lt;td>Waits for both children to finish&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://thoughtbot.com/blog/input-output-redirection-in-the-shell" target="_blank" rel="noopener">IO redirection in shell&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/clone.2.html" target="_blank" rel="noopener">sys-call-clone&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/dup.2.html" target="_blank" rel="noopener">sys-call-dup2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/pipe2.2.html" target="_blank" rel="noopener">sys-call-pipe2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/execve.2.html" target="_blank" rel="noopener">sys-call-execve&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://chat.qwen.ai/c/83ce0a69-a113-4a13-89c4-9a50ce806806" target="_blank" rel="noopener">supported by qwen&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Master Dns Resolve Steps</title><link>https://cloudedseal.github.io/blog/master-dns-resolve-steps/</link><pubDate>Fri, 23 May 2025 11:55:31 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-dns-resolve-steps/</guid><description>
 &lt;blockquote>
 &lt;p>分析环境 mint21&lt;/p>
 &lt;/blockquote>
@@ -11181,108 +11576,4 @@ set = ？&lt;/li>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://www.geeksforgeeks.org/tcp-congestion-control/" target="_blank" rel="noopener">tcp-congestion-control&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://web.cs.wpi.edu/~rek/Undergrad_Nets/B06/TCP_Congestion_Control.ppt" target="_blank" rel="noopener">tcp-congestion-control-ppt&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>data_and_metadata</title><link>https://cloudedseal.github.io/blog/data-and-metadata/</link><pubDate>Thu, 26 Nov 2020 16:18:52 +0800</pubDate><guid>https://cloudedseal.github.io/blog/data-and-metadata/</guid><description>
-&lt;blockquote>
-&lt;p>具体问题具体分析，确实非常重要。用正确的思想指导行动，才可事半功倍。
-现实中的客观问题有意思的地方在于：无论你选择看得见，还是选择看不见，它都在那里，关键在于有没有人去解决，解决的人有多大的决心。&lt;/p>
-&lt;/blockquote>
-&lt;h2>data vs metadata&lt;span class="hx-absolute -hx-mt-20" id="data-vs-metadata">&lt;/span>
-&lt;a href="#data-vs-metadata" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
-&lt;p>Metadata is &amp;ldquo;data that provides information about other data&amp;rdquo;. In other words, it is &amp;ldquo;&lt;code>data about data&lt;/code>&amp;rdquo;.
-正如这个世上的人，无论承认与否，分为两类：统治者与被统治者。数据也不可避免的被分为两种：metadata 和 data。&lt;code>数据的数据&lt;/code>和&lt;code>数据&lt;/code>。两者相辅相成。&lt;/p>
-&lt;/blockquote>
-&lt;h3>physical&lt;span class="hx-absolute -hx-mt-20" id="physical">&lt;/span>
-&lt;a href="#physical" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>data 数据(被统治者)
-metadata 元数据(统治者)
-正如如果被统治者都没有了，那也谈不上统治者。在一个个实体确实存在的情况下，如果没有数据，那也谈不上元数据。&lt;/p>
-&lt;h3>logical&lt;span class="hx-absolute -hx-mt-20" id="logical">&lt;/span>
-&lt;a href="#logical" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>有时没有实体的存在但是也可以在&lt;code>逻辑上&lt;/code>划分 data 和 Metadata 的。比如网络中的流量。仅仅是用户真正的数据吗？不，其实还有路由器之间的流量, 这部分流量对于整个网络系统的正常运行，不可缺少。&lt;/p>
-&lt;p>The control plane is the part of a network that controls &lt;code>how data is forwarded&lt;/code>, while the data plane is the actual forwarding process.
-那么网络流量就可以在逻辑上（也就是虚拟的）划分为：
-control plane 控制平面（视为 Metadata）
-data/forward plane 数据平面（视为 data）
-从这个角度来理解，metadata 有控制数据的意思，控制真正的用户数据如何转发。虽然大家都是同一种事物(都是数据包)，但是又不是平等的事物。咳咳，换成人类，似乎也说得过去。&lt;/p>
-&lt;h3>structural metadata&lt;span class="hx-absolute -hx-mt-20" id="structural-metadata">&lt;/span>
-&lt;a href="#structural-metadata" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>这种结构性的 metadata 相当于一份说明书，来说明哪一个位置的数据是什么数据。&lt;/p>
-&lt;h4>java class format&lt;span class="hx-absolute -hx-mt-20" id="java-class-format">&lt;/span>
-&lt;a href="#java-class-format" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
-&lt;p>Java 代码经过编译，可以的到一个 .class 文件。&lt;/p>
-&lt;/blockquote>
-&lt;h5>Hello.java&lt;span class="hx-absolute -hx-mt-20" id="hellojava">&lt;/span>
-&lt;a href="#hellojava" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">Hello&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Hello, World&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h5>Hello.class&lt;span class="hx-absolute -hx-mt-20" id="helloclass">&lt;/span>
-&lt;a href="#helloclass" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">root@aliyun:java# xxd Hello.class
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000000: cafe babe &lt;span class="m">0000&lt;/span> &lt;span class="m">0034&lt;/span> 001d 0a00 &lt;span class="m">0600&lt;/span> 0f09 .......4........
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000010: &lt;span class="m">0010&lt;/span> &lt;span class="m">0011&lt;/span> &lt;span class="m">0800&lt;/span> 120a &lt;span class="m">0013&lt;/span> &lt;span class="m">0014&lt;/span> &lt;span class="m">0700&lt;/span> &lt;span class="m">1507&lt;/span> ................
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000020: &lt;span class="m">0016&lt;/span> &lt;span class="m">0100&lt;/span> 063c 696e &lt;span class="m">6974&lt;/span> 3e01 &lt;span class="m">0003&lt;/span> &lt;span class="m">2829&lt;/span> .....&amp;lt;init&amp;gt;...&lt;span class="o">()&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000030: &lt;span class="m">5601&lt;/span> &lt;span class="m">0004&lt;/span> 436f &lt;span class="m">6465&lt;/span> &lt;span class="m">0100&lt;/span> 0f4c 696e 654e V...Code...LineN
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000040: 756d &lt;span class="m">6265&lt;/span> &lt;span class="m">7254&lt;/span> &lt;span class="m">6162&lt;/span> 6c65 &lt;span class="m">0100&lt;/span> 046d &lt;span class="m">6169&lt;/span> umberTable...mai
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000050: 6e01 &lt;span class="m">0016&lt;/span> 285b 4c6a &lt;span class="m">6176&lt;/span> 612f 6c61 6e67 n...&lt;span class="o">([&lt;/span>Ljava/lang
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000060: 2f53 &lt;span class="m">7472&lt;/span> 696e 673b &lt;span class="m">2956&lt;/span> &lt;span class="m">0100&lt;/span> 0a53 6f75 /String&lt;span class="p">;&lt;/span>&lt;span class="o">)&lt;/span>V...Sou
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000070: &lt;span class="m">7263&lt;/span> &lt;span class="m">6546&lt;/span> 696c &lt;span class="m">6501&lt;/span> 000a &lt;span class="m">4865&lt;/span> 6c6c 6f2e rceFile...Hello.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000080: 6a61 &lt;span class="m">7661&lt;/span> 0c00 &lt;span class="m">0700&lt;/span> &lt;span class="m">0807&lt;/span> &lt;span class="m">0017&lt;/span> 0c00 &lt;span class="m">1800&lt;/span> java............
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000090: &lt;span class="m">1901&lt;/span> 000c &lt;span class="m">4865&lt;/span> 6c6c 6f2c &lt;span class="m">2057&lt;/span> 6f72 6c64 ....Hello, World
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000a0: &lt;span class="m">0700&lt;/span> 1a0c 001b 001c &lt;span class="m">0100&lt;/span> &lt;span class="m">0548&lt;/span> 656c 6c6f ...........Hello
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000b0: &lt;span class="m">0100&lt;/span> 106a &lt;span class="m">6176&lt;/span> 612f 6c61 6e67 2f4f 626a ...java/lang/Obj
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000c0: &lt;span class="m">6563&lt;/span> &lt;span class="m">7401&lt;/span> &lt;span class="m">0010&lt;/span> 6a61 &lt;span class="m">7661&lt;/span> 2f6c 616e 672f ect...java/lang/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000d0: &lt;span class="m">5379&lt;/span> &lt;span class="m">7374&lt;/span> 656d &lt;span class="m">0100&lt;/span> 036f &lt;span class="m">7574&lt;/span> &lt;span class="m">0100&lt;/span> 154c System...out...L
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000e0: 6a61 &lt;span class="m">7661&lt;/span> 2f69 6f2f &lt;span class="m">5072&lt;/span> 696e &lt;span class="m">7453&lt;/span> &lt;span class="m">7472&lt;/span> java/io/PrintStr
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">000000f0: &lt;span class="m">6561&lt;/span> 6d3b &lt;span class="m">0100&lt;/span> 136a &lt;span class="m">6176&lt;/span> 612f 696f 2f50 eam&lt;span class="p">;&lt;/span>...java/io/P
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000100: &lt;span class="m">7269&lt;/span> 6e74 &lt;span class="m">5374&lt;/span> &lt;span class="m">7265&lt;/span> 616d &lt;span class="m">0100&lt;/span> &lt;span class="m">0770&lt;/span> &lt;span class="m">7269&lt;/span> rintStream...pri
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000110: 6e74 6c6e &lt;span class="m">0100&lt;/span> &lt;span class="m">1528&lt;/span> 4c6a &lt;span class="m">6176&lt;/span> 612f 6c61 ntln...&lt;span class="o">(&lt;/span>Ljava/la
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000120: 6e67 2f53 &lt;span class="m">7472&lt;/span> 696e 673b &lt;span class="m">2956&lt;/span> &lt;span class="m">0021&lt;/span> &lt;span class="m">0005&lt;/span> ng/String&lt;span class="p">;&lt;/span>&lt;span class="o">)&lt;/span>V.!..
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000130: &lt;span class="m">0006&lt;/span> &lt;span class="m">0000&lt;/span> &lt;span class="m">0000&lt;/span> &lt;span class="m">0002&lt;/span> &lt;span class="m">0001&lt;/span> &lt;span class="m">0007&lt;/span> &lt;span class="m">0008&lt;/span> &lt;span class="m">0001&lt;/span> ................
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000140: &lt;span class="m">0009&lt;/span> &lt;span class="m">0000&lt;/span> 001d &lt;span class="m">0001&lt;/span> &lt;span class="m">0001&lt;/span> &lt;span class="m">0000&lt;/span> &lt;span class="m">0005&lt;/span> 2ab7 ..............*.
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000150: &lt;span class="m">0001&lt;/span> b100 &lt;span class="m">0000&lt;/span> &lt;span class="m">0100&lt;/span> 0a00 &lt;span class="m">0000&lt;/span> &lt;span class="m">0600&lt;/span> &lt;span class="m">0100&lt;/span> ................
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000160: &lt;span class="m">0000&lt;/span> &lt;span class="m">0100&lt;/span> &lt;span class="m">0900&lt;/span> 0b00 0c00 &lt;span class="m">0100&lt;/span> &lt;span class="m">0900&lt;/span> &lt;span class="m">0000&lt;/span> ................
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000170: &lt;span class="m">2500&lt;/span> &lt;span class="m">0200&lt;/span> &lt;span class="m">0100&lt;/span> &lt;span class="m">0000&lt;/span> 09b2 &lt;span class="m">0002&lt;/span> &lt;span class="m">1203&lt;/span> b600 %...............
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000180: 04b1 &lt;span class="m">0000&lt;/span> &lt;span class="m">0001&lt;/span> 000a &lt;span class="m">0000&lt;/span> 000a &lt;span class="m">0002&lt;/span> &lt;span class="m">0000&lt;/span> ................
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">00000190: &lt;span class="m">0003&lt;/span> &lt;span class="m">0008&lt;/span> &lt;span class="m">0004&lt;/span> &lt;span class="m">0001&lt;/span> 000d &lt;span class="m">0000&lt;/span> &lt;span class="m">0002&lt;/span> 000e ................&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h4>Hello.class 怎样解析的？&lt;span class="hx-absolute -hx-mt-20" id="helloclass-怎样解析的">&lt;/span>
-&lt;a href="#helloclass-%e6%80%8e%e6%a0%b7%e8%a7%a3%e6%9e%90%e7%9a%84" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>如果丢给我一个 .class 文件，其他啥也没有。我也看不懂。但是由于 &lt;code>class file format&lt;/code> 的存在，只要足够耐心，自己也可以解析出 .class 是怎样的。这里的 &lt;a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html" target="_blank" rel="noopener">class format&lt;/a> 就是 Metadata。没有这个格式说明，谁也弄不明白这一堆二进制的 0 和 1 是啥意思。&lt;/p>
-&lt;h4>IP header&lt;span class="hx-absolute -hx-mt-20" id="ip-header">&lt;/span>
-&lt;a href="#ip-header" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>IP 这个协议是用来将不同局域网组成互联网的。既然通信是双向的，要知道发送者的 IP，接收者的 IP，IP 包的总大小，IP Header 的大小，这个 IP 包能跨越多少路由器(&lt;a href="https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/" target="_blank" rel="noopener">TTL&lt;/a>)，使用的 IP 协议版本，是哪一个上层协议在使用 IP 协议，IP 包是否切分了，切分后怎样组装，校验整个 IP 包在传输过程中是否发生了错误等信息。记在哪里呢？IP header，这个 IP header 就是 Metadata。这些也可理解成控制数据。&lt;/p>
-&lt;h4>TCP header&lt;span class="hx-absolute -hx-mt-20" id="tcp-header">&lt;/span>
-&lt;a href="#tcp-header" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>TCP 传输层的协议。用来保证数据不丢失且按照发送顺序到达目的地。
-怎样保证顺序呢？对每一个字节编号(sequence number)。
-怎样保证数据不丢失呢？确认机制(ack)。
-怎样找到目的地呢？一个在网络上的计算机，可能同时运行许多程序，如打开浏览器，在线听歌，在线编辑文档等等。用端口号(port number)。
-同时，怎样知道接收方现在接收网络包的大小呢？用窗口(window size)。
-怎样能知道网络包传输过程是否发生了错误？用校验和(checksum)。
-这些信息都存在哪里了呢？TCP header 里。这就是 Metadata。也可理解成控制数据。&lt;/p>
-&lt;h4>InnoDB row format&lt;span class="hx-absolute -hx-mt-20" id="innodb-row-format">&lt;/span>
-&lt;a href="#innodb-row-format" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>InnoDB 存储表是按行存储的。这只是逻辑上的说法。真正的数据存储是要落到磁盘上的。对于每一行，字段是不是空的，定长还是变长，变长字段的长度，该列的主键，这行数据是哪一个事务操作的，这些记录的相关日志都记在哪里了呢？
-不错。这其实也是有相应的说明的。而且，InnoDB 提供了不同的 &lt;a href="https://mariadb.com/kb/en/innodb-row-formats-overview/" target="_blank" rel="noopener">row format&lt;/a>。对用户的每一行来说，该行的 row format 就是 Metadata。当然这就是描述（或者说是控制）该行用户数据的。&lt;/p>
-&lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
-&lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Metadata" target="_blank" rel="noopener">Metadata&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://dataedo.com/kb/data-glossary/what-is-metadata" target="_blank" rel="noopener">what-is-metadata&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.cloudflare.com/learning/network-layer/what-is-the-control-plane/" target="_blank" rel="noopener">what-is-the-control-plane&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html" target="_blank" rel="noopener">class file format&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://mariadb.com/kb/en/innodb-row-formats-overview/" target="_blank" rel="noopener">InnoDB-row-format&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/" target="_blank" rel="noopener">TTL&lt;/a>&lt;/li>
 &lt;/ol></description></item></channel></rss>
