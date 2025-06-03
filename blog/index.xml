@@ -400,11 +400,11 @@ title="Copy code"
 &lt;blockquote>
 &lt;p>分析环境 mint21&lt;/p>
 &lt;/blockquote>
-&lt;h2>目标以及总结&lt;span class="hx-absolute -hx-mt-20" id="目标以及总结">&lt;/span>
-&lt;a href="#%e7%9b%ae%e6%a0%87%e4%bb%a5%e5%8f%8a%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>弄懂在本机向外部的 DNS server 发出查询之前, 在本机的查询逻辑是什么&lt;/li>
-&lt;li>&lt;code>/etc/nsswitch.conf&lt;/code> 的 hosts 配置本机 DNS 服务查询的顺序, 即 &lt;code>/etc/hosts&lt;/code> 文件等&lt;/li>
-&lt;li>&lt;code>systemd-resolved&lt;/code> 传说中的 DNS stub dns resolver&lt;/li>
+&lt;h2>本文目标以及总结&lt;span class="hx-absolute -hx-mt-20" id="本文目标以及总结">&lt;/span>
+&lt;a href="#%e6%9c%ac%e6%96%87%e7%9b%ae%e6%a0%87%e4%bb%a5%e5%8f%8a%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>弄懂在本机向外部的 DNS server 发出查询之前, 在本机的查询步骤是什么？&lt;/li>
+&lt;li>&lt;code>/etc/nsswitch.conf&lt;/code> 的 &lt;code>hosts&lt;/code> 配置本机 DNS 服务查询的顺序, 即 &lt;code>/etc/hosts&lt;/code> 文件等&lt;/li>
+&lt;li>&lt;code>systemd-resolved&lt;/code> 就是传说中的 DNS &lt;code>stub&lt;/code> dns resolver&lt;/li>
 &lt;/ol>
 &lt;h2>linux 上 DNS 解析流程&lt;span class="hx-absolute -hx-mt-20" id="linux-上-dns-解析流程">&lt;/span>
 &lt;a href="#linux-%e4%b8%8a-dns-%e8%a7%a3%e6%9e%90%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
