@@ -6,12 +6,12 @@
 &lt;a href="#file-descriptor" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>A file descriptor, or FD, is a positive integer that refers to an input/output source. 指向 I/O 源,不关心具体的源是什么, 这就是抽象&lt;/p>
 &lt;/blockquote>
-&lt;p>所谓 I/O redirection 不过是对制定的 FD 复制而已&lt;/p>
+&lt;p>所谓 I/O redirection 不过是对指定的 FD 复制而已&lt;/p>
 &lt;h2>&lt;code>sh&lt;/code> 系统调用追踪&lt;span class="hx-absolute -hx-mt-20" id="sh-系统调用追踪">&lt;/span>
 &lt;a href="#sh-%e7%b3%bb%e7%bb%9f%e8%b0%83%e7%94%a8%e8%bf%bd%e8%b8%aa" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>shell pipeline 流程&lt;span class="hx-absolute -hx-mt-20" id="shell-pipeline-流程">&lt;/span>
 &lt;a href="#shell-pipeline-%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;strong>complete lifecycle of a shell pipeline&lt;/strong> (&lt;code>cat /etc/passwd | wc -l&lt;/code>) executed via &lt;code>sh&lt;/code>.&lt;/p>
 &lt;ul>
-&lt;li>✅ &lt;code>pipe2()&lt;/code> (pipe creation, kernel managed buffer)&lt;/li>
+&lt;li>✅ &lt;code>pipe2()&lt;/code> (pipe creation, kernel managed buffer, pipe[0] read pipe[1] write)&lt;/li>
 &lt;li>✅ &lt;code>clone()&lt;/code> (Linux process creation, replaces &lt;code>fork()&lt;/code>)&lt;/li>
 &lt;li>✅ &lt;code>dup2()&lt;/code> (redirects stdin/stdout)&lt;/li>
 &lt;li>✅ &lt;code>execve()&lt;/code> (runs &lt;code>cat&lt;/code> and &lt;code>wc -l&lt;/code>)&lt;/li>
