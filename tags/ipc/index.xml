@@ -263,7 +263,7 @@ Signals are various notifications sent to a process in order to notify it of var
 &lt;td style="text-align: left">Yes&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">9 &lt;code>SIGKILL&lt;/code>&lt;/td>
+&lt;td style="text-align: left">9 &lt;strong>SIGKILL&lt;/strong>&lt;/td>
 &lt;td style="text-align: left">Terminate&lt;/td>
 &lt;td style="text-align: left">Forced-process termination&lt;/td>
 &lt;td style="text-align: left">Yes&lt;/td>
@@ -323,7 +323,7 @@ Signals are various notifications sent to a process in order to notify it of var
 &lt;td style="text-align: left">Yes&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">19 &lt;code>SIGSTOP&lt;/code>&lt;/td>
+&lt;td style="text-align: left">19 &lt;strong>SIGSTOP&lt;/strong>&lt;/td>
 &lt;td style="text-align: left">Stop&lt;/td>
 &lt;td style="text-align: left">Stop process execution, Ctrl-Z&lt;/td>
 &lt;td style="text-align: left">Yes&lt;/td>
