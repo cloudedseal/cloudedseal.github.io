@@ -860,7 +860,8 @@ title="Copy code"
 &lt;/div>
 &lt;/div>
 &lt;blockquote>
-&lt;p>注意 resolv.conf mode: stub&lt;/p>
+&lt;p>注意 resolv.conf mode: stub
+Current DNS Server 就是上游的 DNS 服务器&lt;/p>
 &lt;/blockquote>
 &lt;h3>7. &lt;strong>Receive DNS Responses&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="7-receive-dns-responses">&lt;/span>
 &lt;a href="#7-receive-dns-responses" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
