@@ -445,6 +445,7 @@ title="Copy code"
 &lt;a href="#%e6%9c%ac%e6%96%87%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;code>/etc/nsswitch.conf&lt;/code> 的 &lt;code>hosts&lt;/code> 配置本机 DNS 服务查询的顺序, 即 &lt;code>/etc/hosts&lt;/code> 文件等&lt;/li>
 &lt;li>&lt;code>systemd-resolved&lt;/code> 就是传说中的 DNS &lt;code>stub&lt;/code> dns resolver&lt;/li>
+&lt;li>由 stub dns resolver 发起的查询就是传说中的&lt;code>递归查询&lt;/code>&lt;/li>
 &lt;/ol>
 &lt;h2>linux 上 DNS 解析流程&lt;span class="hx-absolute -hx-mt-20" id="linux-上-dns-解析流程">&lt;/span>
 &lt;a href="#linux-%e4%b8%8a-dns-%e8%a7%a3%e6%9e%90%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
