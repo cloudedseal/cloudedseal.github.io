@@ -8147,7 +8147,7 @@ title="Copy code"
 &lt;p>A user-space scheduler manages tasks or &amp;ldquo;threads&amp;rdquo; entirely within an application, without relying on the operating system (OS) scheduler. This is different from kernel-level scheduling, where the OS manages threads.
 什么是用户态调度？可以简单理解为自定义一堆任务, 由用户决定怎样执行这些任务。不涉及操作系统的进程/线程调度。&lt;/p>
 &lt;/blockquote>
-&lt;h1>举例理解&lt;/h1>&lt;h2>Task 自定义的任务&lt;span class="hx-absolute -hx-mt-20" id="task-自定义的任务">&lt;/span>
+&lt;h2>Task 自定义的任务&lt;span class="hx-absolute -hx-mt-20" id="task-自定义的任务">&lt;/span>
 &lt;a href="#task-%e8%87%aa%e5%ae%9a%e4%b9%89%e7%9a%84%e4%bb%bb%e5%8a%a1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">Task&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
