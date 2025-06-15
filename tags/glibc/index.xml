@@ -2,7 +2,8 @@
 &lt;blockquote>
 &lt;p>实验平台: x86_64 GNU/Linux mint22.1&lt;/p>
 &lt;/blockquote>
-&lt;h1>使用 &lt;code>glibc&lt;/code> 的函数&lt;/h1>&lt;p>write1.c&lt;/p>
+&lt;h2>使用 &lt;code>glibc&lt;/code> 的函数&lt;span class="hx-absolute -hx-mt-20" id="使用-glibc-的函数">&lt;/span>
+&lt;a href="#%e4%bd%bf%e7%94%a8-glibc-%e7%9a%84%e5%87%bd%e6%95%b0" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>write1.c&lt;/p>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;unistd.h&amp;gt;&lt;/span>&lt;span class="cp">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>
@@ -24,7 +25,8 @@ title="Copy code"
 &lt;li>gcc -o write1 write1.c&lt;/li>
 &lt;li>使用 &lt;code>ltrace ./write1&lt;/code> 查看调用了 write 库函数&lt;/li>
 &lt;/ol>
-&lt;h1>不使用 glibc 的函数&lt;/h1>&lt;p>write2.c&lt;/p>
+&lt;h2>不使用 glibc 的函数&lt;span class="hx-absolute -hx-mt-20" id="不使用-glibc-的函数">&lt;/span>
+&lt;a href="#%e4%b8%8d%e4%bd%bf%e7%94%a8-glibc-%e7%9a%84%e5%87%bd%e6%95%b0" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>write2.c&lt;/p>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;errno.h&amp;gt;&lt;/span>&lt;span class="cp">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;syscall.h&amp;gt;&lt;/span>&lt;span class="cp">
@@ -67,14 +69,16 @@ title="Copy code"
 &lt;li>gcc -o write2 write2.c&lt;/li>
 &lt;li>使用 &lt;code>ltrace ./write2&lt;/code> 查看没有调用 write 库函数&lt;/li>
 &lt;/ol>
-&lt;h1>How glibc Wraps System Calls​​&lt;/h1>&lt;h2>​System Call Number​​&lt;span class="hx-absolute -hx-mt-20" id="system-call-number">&lt;/span>
-&lt;a href="#system-call-number" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>Each system call (e.g., write, read) is assigned a &lt;code>unique number&lt;/code> (e.g., __NR_write). 要使用哪一个 syscall&lt;/p>
-&lt;h2>Argument Setup​​&lt;span class="hx-absolute -hx-mt-20" id="argument-setup">&lt;/span>
-&lt;a href="#argument-setup" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The wrapper loads the system call number and arguments into specific registers (architecture-dependent). 设置 syscall 的参数&lt;/p>
-&lt;h2>​Kernel Transition​​&lt;span class="hx-absolute -hx-mt-20" id="kernel-transition">&lt;/span>
-&lt;a href="#kernel-transition" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The wrapper uses an instruction like syscall (x86-64) to switch to kernel mode. 进入 kernel mode&lt;/p>
-&lt;h2>Result Handling​​&lt;span class="hx-absolute -hx-mt-20" id="result-handling">&lt;/span>
-&lt;a href="#result-handling" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>After the kernel finishes, the wrapper checks for errors, sets errno if needed, and returns the result. 处理返回值&lt;/p>
-&lt;h1>References&lt;/h1>&lt;ol>
+&lt;h2>How glibc Wraps System Calls​​&lt;span class="hx-absolute -hx-mt-20" id="how-glibc-wraps-system-calls">&lt;/span>
+&lt;a href="#how-glibc-wraps-system-calls" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>​System Call Number​​&lt;span class="hx-absolute -hx-mt-20" id="system-call-number">&lt;/span>
+&lt;a href="#system-call-number" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>Each system call (e.g., write, read) is assigned a &lt;code>unique number&lt;/code> (e.g., __NR_write). 要使用哪一个 syscall&lt;/p>
+&lt;h3>Argument Setup​​&lt;span class="hx-absolute -hx-mt-20" id="argument-setup">&lt;/span>
+&lt;a href="#argument-setup" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>The wrapper loads the system call number and arguments into specific registers (architecture-dependent). 设置 syscall 的参数&lt;/p>
+&lt;h3>​Kernel Transition​​&lt;span class="hx-absolute -hx-mt-20" id="kernel-transition">&lt;/span>
+&lt;a href="#kernel-transition" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>The wrapper uses an instruction like syscall (x86-64) to switch to kernel mode. 进入 kernel mode&lt;/p>
+&lt;h3>Result Handling​​&lt;span class="hx-absolute -hx-mt-20" id="result-handling">&lt;/span>
+&lt;a href="#result-handling" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>After the kernel finishes, the wrapper checks for errors, sets errno if needed, and returns the result. 处理返回值&lt;/p>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man1/ltrace.1.html" target="_blank" rel="noopener">https://man7.org/linux/man-pages/man1/ltrace.1.html&lt;/a>&lt;/li>
 &lt;/ol></description></item></channel></rss>
