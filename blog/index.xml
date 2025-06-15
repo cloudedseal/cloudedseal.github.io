@@ -7252,8 +7252,8 @@ title="Copy code"
 &lt;li>ps aux | grep zombie&lt;/li>
 &lt;/ol>
 &lt;h2>system calls changing process state on Linux&lt;span class="hx-absolute -hx-mt-20" id="system-calls-changing-process-state-on-linux">&lt;/span>
-&lt;a href="#system-calls-changing-process-state-on-linux" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>&lt;code>fork()&lt;/code> 复制状态机器&lt;span class="hx-absolute -hx-mt-20" id="fork-复制状态机器">&lt;/span>
-&lt;a href="#fork-%e5%a4%8d%e5%88%b6%e7%8a%b6%e6%80%81%e6%9c%ba%e5%99%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>• Purpose: Creates a new child process by duplicating the parent process.&lt;/p>
+&lt;a href="#system-calls-changing-process-state-on-linux" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>&lt;code>fork()&lt;/code> 复制状态机器(快照)&lt;span class="hx-absolute -hx-mt-20" id="fork-复制状态机器快照">&lt;/span>
+&lt;a href="#fork-%e5%a4%8d%e5%88%b6%e7%8a%b6%e6%80%81%e6%9c%ba%e5%99%a8%e5%bf%ab%e7%85%a7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>• Purpose: Creates a new child process by duplicating the parent process.&lt;/p>
 &lt;p>• State Change: The child starts in the ready/runnable state (waiting for CPU time).&lt;/p>
 &lt;p>• Parameters: None.&lt;/p>
 &lt;p>• Return Value:&lt;/p>
