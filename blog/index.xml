@@ -8671,8 +8671,13 @@ title="Copy code"
 &lt;li>&lt;a href="https://www.zsythink.net/" target="_blank" rel="noopener">朱双印&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://shuyi.tech/" target="_blank" rel="noopener">陈树义&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Null Device</title><link>https://cloudedseal.github.io/blog/null-device/</link><pubDate>Fri, 03 Jan 2025 10:53:57 +0800</pubDate><guid>https://cloudedseal.github.io/blog/null-device/</guid><description>
-&lt;h1>NULL device 是啥？&lt;/h1>&lt;p>The null device is a special file that &lt;code>discards&lt;/code> all data written to it, but reports that the &lt;code>write operation succeeded&lt;/code>.&lt;/p>
-&lt;h1>用在何处？&lt;/h1>&lt;blockquote>
+&lt;h2>NULL device 是啥？&lt;span class="hx-absolute -hx-mt-20" id="null-device-是啥">&lt;/span>
+&lt;a href="#null-device-%e6%98%af%e5%95%a5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The null device is a special file that &lt;code>discards&lt;/code> all data written to it, but reports that the &lt;code>write operation succeeded&lt;/code>.&lt;/p>
+&lt;blockquote>
+&lt;p>一个特殊的文件，丢弃所有写入的内容，但是返回写成功。&lt;/p>
+&lt;/blockquote>
+&lt;h2>用在何处？&lt;span class="hx-absolute -hx-mt-20" id="用在何处">&lt;/span>
+&lt;a href="#%e7%94%a8%e5%9c%a8%e4%bd%95%e5%a4%84" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>java 执行外部的命令, 但是不需要外部命令的执行结果. 直接丢弃 stdout, stderr.&lt;/p>
 &lt;/blockquote>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
