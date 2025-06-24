@@ -152,7 +152,7 @@ if you miss in one you try in the “lower level cache” Lower level, mean high
 第 4 次 partition [1, 2, 3, 4, 5, 6, 8, 7] returned index is: 4
 第 5 次 partition [1, 2, 3, 4, 5, 6, 8, 7] returned index is: 5
 第 6 次 partition [1, 2, 3, 4, 5, 6, 7, 8] returned index is: 7
-After:: [1, 2, 3, 4, 5, 6, 7, 8] partition 逻辑图解</p><p class="hx-opacity-80 hx-mt-1 hx-leading-7"><a class="hx-text-[color:hsl(var(--primary-hue),100%,50%)] hx-underline hx-underline-offset-2 hx-decoration-from-font" href=/blog/algorithm-quick-sort/>Read more →</a></p><p class="hx-opacity-50 hx-text-sm hx-mt-4 hx-leading-7">April 14, 2020</p></div><div class=hx-mb-10><h3><a style=color:inherit;text-decoration:none class="hx-block hx-font-semibold hx-mt-8 hx-text-2xl" href=/blog/algorithm-merge-sort/>algorithm-merge-sort</a></h3><p class="hx-opacity-50 hx-text-sm hx-leading-7"><a class="hx-inline-block hx-mr-2">#algorithm</a><a class="hx-inline-block hx-mr-2">#sort</a></p><p class="hx-opacity-80 hx-mt-4 hx-leading-7">merge sort merge sort C code #include &lt;stdio.h>
+After:: [1, 2, 3, 4, 5, 6, 7, 8] partition 逻辑图解</p><p class="hx-opacity-80 hx-mt-1 hx-leading-7"><a class="hx-text-[color:hsl(var(--primary-hue),100%,50%)] hx-underline hx-underline-offset-2 hx-decoration-from-font" href=/blog/algorithm-quick-sort/>Read more →</a></p><p class="hx-opacity-50 hx-text-sm hx-mt-4 hx-leading-7">April 14, 2020</p></div><div class=hx-mb-10><h3><a style=color:inherit;text-decoration:none class="hx-block hx-font-semibold hx-mt-8 hx-text-2xl" href=/blog/algorithm-merge-sort/>algorithm-merge-sort</a></h3><p class="hx-opacity-50 hx-text-sm hx-leading-7"><a class="hx-inline-block hx-mr-2">#algorithm</a><a class="hx-inline-block hx-mr-2">#sort</a></p><p class="hx-opacity-80 hx-mt-4 hx-leading-7">merge sort 思路和二分查找类似。都是一半一半的解决。 先 merge 左一半，再 merge 右一半。左右两部分处理逻辑一致。 最终左右两部分，merge 后就是排序最终结果。 merge sort C code #include &lt;stdio.h>
 void merge(int* array, int start, int mid, int end){
 // start = 0
 // mid = 3
@@ -185,9 +185,9 @@ array[i + start] = tempArray[i]; // 3,9,5,7
 void mergeSort(int* array, int start, int end){
 if(start &lt; end){
 int mid = (start + end) / 2;
-mergeSort(array, start, mid); // mergeSort_L(array, start, mid);
-mergeSort(array, mid+1, end); // mergeSort_R(array, mid+1, end);
-merge(array, start, mid, end);
+mergeSort(array, start, mid); // mergeSort_L(array, start, mid); 先 merge 左一半
+mergeSort(array, mid+1, end); // mergeSort_R(array, mid+1, end); 再 merge 右一半
+merge(array, start, mid, end); // 最终左右两部分，merge 后就是排序最终结果。
 }
 }
 int main(){
