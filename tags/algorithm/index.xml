@@ -1066,11 +1066,13 @@ title="Copy code"
 &lt;h3>栈帧调用图解分析&lt;span class="hx-absolute -hx-mt-20" id="栈帧调用图解分析">&lt;/span>
 &lt;a href="#%e6%a0%88%e5%b8%a7%e8%b0%83%e7%94%a8%e5%9b%be%e8%a7%a3%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/merge-sort-stack-frame-analysis.svg" alt="merge-sort-stack-frame-analysi" loading="lazy" />&lt;/p>
 &lt;blockquote>
-&lt;p>栈帧图分析
-mergeSort_L 对应的是左半侧的 merge。mid 为红色
-mergeSort_R 对应的是右半侧的 merge。mid 为蓝色
-merge 对应的是最下层的浅绿色，绿色，深绿色&lt;/p>
+&lt;p>栈帧图分析&lt;/p>
 &lt;/blockquote>
+&lt;ol>
+&lt;li>mergeSort_L 对应的是左半侧的 merge。mid 为红色&lt;/li>
+&lt;li>mergeSort_R 对应的是右半侧的 merge。mid 为蓝色&lt;/li>
+&lt;li>merge 对应的是最下层的浅绿色，绿色，深绿色&lt;/li>
+&lt;/ol>
 &lt;h3>array 归并顺序图解分析&lt;span class="hx-absolute -hx-mt-20" id="array-归并顺序图解分析">&lt;/span>
 &lt;a href="#array-%e5%bd%92%e5%b9%b6%e9%a1%ba%e5%ba%8f%e5%9b%be%e8%a7%a3%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/merge-sort-analysis.svg" alt="merge-sort-analysis" loading="lazy" />&lt;/p>
 &lt;blockquote>
