@@ -385,6 +385,11 @@ The lifetime of a particular thing is the period of time that it lasts. 某事�
 Refers to the distance between a base address (starting memory location) and a specific address&lt;/p>
 &lt;/blockquote>
 &lt;/li>
+&lt;li>object
+&lt;blockquote>
+&lt;p>An object is anything that has a fixed shape or form, that you can &lt;code>touch or see&lt;/code>, and that is &lt;code>not alive&lt;/code>. 可触或可见的非生命体&lt;/p>
+&lt;/blockquote>
+&lt;/li>
 &lt;/ol>
 &lt;h2>p&lt;span class="hx-absolute -hx-mt-20" id="p">&lt;/span>
 &lt;a href="#p" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
