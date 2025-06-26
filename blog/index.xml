@@ -1,7 +1,191 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://cloudedseal.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://cloudedseal.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://cloudedseal.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Linux Io Model</title><link>https://cloudedseal.github.io/blog/linux-io-model/</link><pubDate>Thu, 29 May 2025 15:44:41 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-io-model/</guid><description>
+&lt;/blockquote></description></item><item><title>Java String</title><link>https://cloudedseal.github.io/blog/java-string/</link><pubDate>Wed, 25 Jun 2025 10:40:29 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-string/</guid><description>
+&lt;blockquote>
+&lt;p>起因：需要通过 JNI 调用外部程序。传 String 类型的数据，对使用的 java 字符串使用的字符集不清晰。&lt;/p>
+&lt;/blockquote>
+&lt;h2>字符集用在哪？&lt;span class="hx-absolute -hx-mt-20" id="字符集用在哪">&lt;/span>
+&lt;a href="#%e5%ad%97%e7%ac%a6%e9%9b%86%e7%94%a8%e5%9c%a8%e5%93%aa" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>java 源代码&lt;span class="hx-absolute -hx-mt-20" id="java-源代码">&lt;/span>
+&lt;a href="#java-%e6%ba%90%e4%bb%a3%e7%a0%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>javac 编译&lt;code>源代码&lt;/code>(文本文件)时可以指定源代码使用的字符集&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">javac -encoding &amp;lt;encoding&amp;gt; Specify character encoding used by &lt;span class="nb">source&lt;/span> files&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>java 字节码文件中的字符串存储&lt;span class="hx-absolute -hx-mt-20" id="java-字节码文件中的字符串存储">&lt;/span>
+&lt;a href="#java-%e5%ad%97%e8%8a%82%e7%a0%81%e6%96%87%e4%bb%b6%e4%b8%ad%e7%9a%84%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%ad%98%e5%82%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>常量字符串比如 &lt;code>emoji&lt;/code> String s = &amp;ldquo;🤣&amp;rdquo; 使用的是 &lt;a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.7" target="_blank" rel="noopener">modified UTF-8&lt;/a>&lt;/p>
+&lt;h3>java 字符串内部表示&lt;span class="hx-absolute -hx-mt-20" id="java-字符串内部表示">&lt;/span>
+&lt;a href="#java-%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%86%85%e9%83%a8%e8%a1%a8%e7%a4%ba" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>所有 String 对象、常量字符串内部存储使用的是 &lt;code>UTF-16&lt;/code>&lt;/p>
+&lt;h2>默认的字符集&lt;span class="hx-absolute -hx-mt-20" id="默认的字符集">&lt;/span>
+&lt;a href="#%e9%bb%98%e8%ae%a4%e7%9a%84%e5%ad%97%e7%ac%a6%e9%9b%86" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;code>defaultCharset&lt;/code> 在 jvm 启动时使用 &lt;code>file.encoding&lt;/code> 设置。&lt;/li>
+&lt;li>&lt;code>file.encoding&lt;/code> 启动时不指定，使用 OS 的默认字符集。&lt;/li>
+&lt;li>所有使用字符集的地方，不指定，使用的就是默认的字符集。
+&lt;ul>
+&lt;li>String.getBytes()&lt;/li>
+&lt;li>OutputStreamWritter() 构造方法&lt;/li>
+&lt;li>InputStreamReader() 构造方法&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">Charset.java&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Charset&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">defaultCharset&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">defaultCharset&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">==&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">synchronized&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Charset&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">class&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">csn&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">AccessController&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">doPrivileged&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">GetPropertyAction&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;file.encoding&amp;#34;&lt;/span>&lt;span class="p">));&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Charset&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">cs&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">lookup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">csn&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cs&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">!=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">defaultCharset&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">cs&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">else&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">defaultCharset&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">forName&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;UTF-8&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">defaultCharset&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>Unicode&lt;span class="hx-absolute -hx-mt-20" id="unicode">&lt;/span>
+&lt;a href="#unicode" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>unicode 规定了每个字符对应的码点。然而，这里所说的“字符” character 实际上并非完全等价于人们看起来的一个字或符号。对于部分语言文字、 emoji 符号，需要连续使用多个码点来表示一个不可分解的&lt;code>文字元素&lt;/code>。&lt;/li>
+&lt;li>unicode 一共分为 17 个 &lt;a href="https://en.wikipedia.org/wiki/Code_point#In_character_encoding" target="_blank" rel="noopener">plane&lt;/a>, 一个 plane 有 65536 (= 2^16) code points. 一共有 1114112 个 codepoint&lt;/li>
+&lt;li>In Java, Strings are internally represented using UTF-16 , which means:
+&lt;ul>
+&lt;li>&lt;code>Basic Multilingual Plane (BMP)&lt;/code> characters (U+0000 to U+FFFF) are represented as &lt;code>a single char&lt;/code> (16 bits).&lt;/li>
+&lt;li>&lt;code>Supplementary Plane (SP)&lt;/code> characters (U+10000 to U+10FFFF, such as most emojis) are represented as a surrogate pair : &lt;code>two char&lt;/code> values (high surrogate + low surrogate).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2>重新审视 java String API&lt;span class="hx-absolute -hx-mt-20" id="重新审视-java-string-api">&lt;/span>
+&lt;a href="#%e9%87%8d%e6%96%b0%e5%ae%a1%e8%a7%86-java-string-api" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>String(byte bytes[], Charset charset) 构造方法&lt;span class="hx-absolute -hx-mt-20" id="stringbyte-bytes-charset-charset-构造方法">&lt;/span>
+&lt;a href="#stringbyte-bytes-charset-charset-%e6%9e%84%e9%80%a0%e6%96%b9%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">String&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">byte&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">bytes&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Charset&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">charset&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">bytes&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">bytes&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">length&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">charset&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>将 byte[] 数组用指定的字符集 charset 解码，最终 java 内部使用 &lt;code>UTF-16&lt;/code> char[] 表示这个字符串&lt;/p>
+&lt;h3>string.length&lt;span class="hx-absolute -hx-mt-20" id="stringlength">&lt;/span>
+&lt;a href="#stringlength" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>返回的 UTF-16 &lt;code>Unicode code unit(2Bytes)&lt;/code> 的个数。
+&lt;a href="https://github.com/cloudedseal/java-examples/blob/main/snippet/src/main/java/charset/UnicodeTest.java" target="_blank" rel="noopener">测试代码&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;ol>
+&lt;li>比如英文字母 &lt;a href="https://symbl.cc/en/0065/" target="_blank" rel="noopener">e(0x65)&lt;/a> 位于 &lt;code>BMP&lt;/code> 使用 1 个编码单元，长度为 1&lt;/li>
+&lt;li>比如 &lt;a href="https://symbl.cc/en/6C49/" target="_blank" rel="noopener">汉(0x6c49)&lt;/a> 位于 &lt;code>BMP&lt;/code> 使用 1 个编码单元，长度为 1&lt;/li>
+&lt;li>比如 &lt;a href="https://symbl.cc/en/1F923-rolling-on-the-floor-laughing-rofl-emoji/" target="_blank" rel="noopener">🤣(0x1f923)&lt;/a>位于 &lt;code>SP&lt;/code> 使用 2 个编码单元，长度为 2。称之为 &lt;code>surrogate pairs&lt;/code>&lt;/li>
+&lt;li>比如 &lt;code>👨‍👩‍👧‍👦&lt;/code> 这个 &lt;code>family-emoji&lt;/code> 符号(字素)，它包含有 7 个码点，分别是（十六进制） U+1F468 U+200D U+1F469 U+200D U+1F467 U+200D U+1F466。这五个码点连续出现时，就展示为这个 emoji 符号。这种人们看起来不应被分解的文字或符号整体，称为“字素” grapheme （在 unicode 中也被称为“扩展字素簇” extended grapheme cluster ）。长度为 11 = 2 + 1 + 2 + 1 + 2 + 1 + 2
+&lt;ol>
+&lt;li>Code Point: &lt;a href="https://symbl.cc/en/1F468-man-emoji/" target="_blank" rel="noopener">1F468&lt;/a> &lt;code>man-emoji&lt;/code> 位于 &lt;code>SP&lt;/code> 使用 2 个编码单元，长度为 2&lt;/li>
+&lt;li>Code Point: &lt;a href="https://symbl.cc/en/200D/" target="_blank" rel="noopener">200D&lt;/a> &lt;code>Zero Width Joiner&lt;/code> 位于 &lt;code>BMP&lt;/code> 使用 1 个编码单元，长度为 1&lt;/li>
+&lt;li>Code Point: &lt;a href="https://symbl.cc/en/1F469-woman-emoji/" target="_blank" rel="noopener">1F469&lt;/a> &lt;code>woman-emoji&lt;/code> 位于 &lt;code>SP&lt;/code> 使用 2 个编码单元，长度为 2&lt;/li>
+&lt;li>Code Point: &lt;a href="https://symbl.cc/en/200D/" target="_blank" rel="noopener">200D&lt;/a> &lt;code>Zero Width Joiner&lt;/code> 位于 &lt;code>BMP&lt;/code> 使用 1 个编码单元，长度为 1&lt;/li>
+&lt;li>Code Point: &lt;a href="https://symbl.cc/en/1F467-girl-emoji/" target="_blank" rel="noopener">1F467&lt;/a> &lt;code>girl-emoji&lt;/code> 位于 &lt;code>SP&lt;/code> 使用 2 个编码单元，长度为 2&lt;/li>
+&lt;li>Code Point: &lt;a href="https://symbl.cc/en/200D/" target="_blank" rel="noopener">200D&lt;/a> &lt;code>Zero Width Joiner&lt;/code>位于 &lt;code>BMP&lt;/code> 使用 1 个编码单元，长度为 1&lt;/li>
+&lt;li>Code Point: &lt;a href="https://symbl.cc/en/1F466-boy-emoji/" target="_blank" rel="noopener">1F466&lt;/a> &lt;code>boy-emoji&lt;/code> 位于 &lt;code>SP&lt;/code> 使用 2 个编码单元，长度为 2&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;h2>📌 &lt;strong>Java APIs Affected by UTF-16 Internals&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="-java-apis-affected-by-utf-16-internals">&lt;/span>
+&lt;a href="#-java-apis-affected-by-utf-16-internals" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>API&lt;/th>
+&lt;th>Behavior with UTF-16&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>length()&lt;/td>
+&lt;td>Returns number of 16-bit &lt;code>char&lt;/code>s (not Unicode code points)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>charAt(int)&lt;/td>
+&lt;td>Returns a single &lt;code>char&lt;/code> (may be part of a surrogate pair)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>codePointAt(int)&lt;/td>
+&lt;td>Returns the full Unicode code point (handles surrogate pairs)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>codePointCount(int, int)&lt;/td>
+&lt;td>Returns the number of Unicode code points in a range&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>substring(int, int)&lt;/td>
+&lt;td>May split surrogate pairs if not handled carefully&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>toCharArray()&lt;/td>
+&lt;td>Returns raw 16-bit &lt;code>char&lt;/code>s (may include surrogate pairs)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>String(char[])&lt;/td>
+&lt;td>Constructs a &lt;code>String&lt;/code> from 16-bit &lt;code>char&lt;/code>s (must include full surrogate pairs)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>getBytes(Charset)&lt;/td>
+&lt;td>Encodes the &lt;code>String&lt;/code> to bytes in the specified charset (e.g., UTF-8, UTF-16)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>new String(byte[], Charset)&lt;/td>
+&lt;td>Decodes bytes to a &lt;code>String&lt;/code> using the specified charset&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Pattern/Matcher&lt;/td>
+&lt;td>Regular expressions can match code points using &lt;code>\X&lt;/code> or &lt;code>Pattern.UNICODE_CHARACTER_CLASS&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Normalizer&lt;/td>
+&lt;td>Normalizes Unicode text (e.g., combining characters)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Character class&lt;/td>
+&lt;td>Provides utilities to handle surrogate pairs (e.g., &lt;code>isHighSurrogate&lt;/code>, &lt;code>isLowSurrogate&lt;/code>)&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2>JNI String 类型数据怎么传更好?&lt;span class="hx-absolute -hx-mt-20" id="jni-string-类型数据怎么传更好">&lt;/span>
+&lt;a href="#jni-string-%e7%b1%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e6%80%8e%e4%b9%88%e4%bc%a0%e6%9b%b4%e5%a5%bd" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>直接使用 String#getBytes(charset) 传指定字符集的字节数组更好。&lt;/li>
+&lt;/ol>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://symbl.cc/en/unicode-table/" target="_blank" rel="noopener">unicode-table&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://symbl.cc/en/unicode/blocks/cjk-unified-ideographs/" target="_blank" rel="noopener">unicode-table-CJK&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.unicode.org/glossary/#code_unit" target="_blank" rel="noopener">code_unit 最少比特来表示一个编码单元&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.unicode.org/glossary/#code_point" target="_blank" rel="noopener">code_point-表中的坐标(一维、二维、三维&amp;hellip;)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.unicode.org/glossary/#grapheme" target="_blank" rel="noopener">grapheme-字素不完全等于字符&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/UTF-16" target="_blank" rel="noopener">UTF-16&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.7" target="_blank" rel="noopener">java 常量字符串&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/nio/cs/" target="_blank" rel="noopener">unicode-编码解码&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/openjdk/jdk/blob/master/src/java.base/share/classes/sun/nio/cs/UTF_8.java" target="_blank" rel="noopener">UTF-8&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/functions.html#GetStringUTFChars" target="_blank" rel="noopener">JNI-GetStringUTFChars(modified UTF-8 encoding)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://symbl.cc/cn/0000/" target="_blank" rel="noopener">unicode-NULL&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU5MDExNDE5MA==&amp;amp;action=getalbum&amp;amp;album_id=3270895673529450496&amp;amp;subscene=159&amp;amp;subscene=126&amp;amp;scenenote=https%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzU5MDExNDE5MA%3D%3D%26mid%3D2247483840%26idx%3D1%26sn%3Db3e8b10ceec3a68f37132511ab86199b%26chksm%3Dfcb044d993201ba9f9c86af082898b4d9fd186d1200596a144b4d582b013950db23c8d0ec6ba%26scene%3D126%26sessionid%3D1750901842%23rd&amp;amp;nolastread=1#wechat_redirect" target="_blank" rel="noopener">字体排印学的乱麻梳理&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://hsivonen.fi/string-length/" target="_blank" rel="noopener">string.length&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Linux Io Model</title><link>https://cloudedseal.github.io/blog/linux-io-model/</link><pubDate>Thu, 29 May 2025 15:44:41 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-io-model/</guid><description>
 &lt;h2>用户空间获取数据前提是什么?&lt;span class="hx-absolute -hx-mt-20" id="用户空间获取数据前提是什么">&lt;/span>
 &lt;a href="#%e7%94%a8%e6%88%b7%e7%a9%ba%e9%97%b4%e8%8e%b7%e5%8f%96%e6%95%b0%e6%8d%ae%e5%89%8d%e6%8f%90%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>数据准备阶段
@@ -11514,390 +11698,4 @@ balancing of factors all of which are not attainable at the same time
 If you yield something that you have control of or responsibility for, you allow someone else to have control or responsibility for it 自愿让出&lt;/li>
 &lt;/ol>
 &lt;h2>z&lt;span class="hx-absolute -hx-mt-20" id="z">&lt;/span>
-&lt;a href="#z" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2></description></item><item><title>cs-lock</title><link>https://cloudedseal.github.io/blog/cs-lock/</link><pubDate>Mon, 14 Dec 2020 15:20:26 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-lock/</guid><description>
-&lt;h2>为啥需要 lock？&lt;span class="hx-absolute -hx-mt-20" id="为啥需要-lock">&lt;/span>
-&lt;a href="#%e4%b8%ba%e5%95%a5%e9%9c%80%e8%a6%81-lock" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>多处理器的存在&lt;/li>
-&lt;li>中断的存在&lt;/li>
-&lt;/ol>
-&lt;h2>lock 是啥？&lt;span class="hx-absolute -hx-mt-20" id="lock-是啥">&lt;/span>
-&lt;a href="#lock-%e6%98%af%e5%95%a5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>lock 本质上是一个变量。变量本质上是一块内存。归根结底，lock 就是一块内存，用这块内存来保证线程的原子性。锁有两种状态：&lt;/p>
-&lt;ol>
-&lt;li>被占用&lt;/li>
-&lt;li>空闲&lt;/li>
-&lt;/ol>
-&lt;h2>critical section&lt;span class="hx-absolute -hx-mt-20" id="critical-section">&lt;/span>
-&lt;a href="#critical-section" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl"> &lt;span class="n">balance&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">balance&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>在多线程环境下，这段代码执行有问题。如何保证任意时刻，只有一个线程在执行这段代码呢？用 lock，获取这个锁之后，才可以执行这段代码，这段代码执行完毕后，释放这个锁。没有获取锁的线程，无法执行这段代码。也可以认为通过 lock 来&lt;code>监视&lt;/code>这段代码任意时刻只能有一个线程执行。不错，monitor 本质上也是一个锁。&lt;/p>
-&lt;h2>如何评估估锁&lt;span class="hx-absolute -hx-mt-20" id="如何评估估锁">&lt;/span>
-&lt;a href="#%e5%a6%82%e4%bd%95%e8%af%84%e4%bc%b0%e4%bc%b0%e9%94%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>mutual exclusion&lt;span class="hx-absolute -hx-mt-20" id="mutual-exclusion">&lt;/span>
-&lt;a href="#mutual-exclusion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>锁，提供互斥功能。&lt;/p>
-&lt;h3>fairless&lt;span class="hx-absolute -hx-mt-20" id="fairless">&lt;/span>
-&lt;a href="#fairless" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>是否会有线程饥饿&lt;/p>
-&lt;h3>performance&lt;span class="hx-absolute -hx-mt-20" id="performance">&lt;/span>
-&lt;a href="#performance" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h2>构建 Lock&lt;span class="hx-absolute -hx-mt-20" id="构建-lock">&lt;/span>
-&lt;a href="#%e6%9e%84%e5%bb%ba-lock" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>控制中断&lt;span class="hx-absolute -hx-mt-20" id="控制中断">&lt;/span>
-&lt;a href="#%e6%8e%a7%e5%88%b6%e4%b8%ad%e6%96%ad" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">lock&lt;/span>&lt;span class="p">(){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">disableInterrupts&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">// 关闭中断
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">unlock&lt;/span>&lt;span class="p">(){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">enableInterrputs&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">// 开启中断
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;blockquote>
-&lt;p>对于单处理器，可以直接来关闭中断、开启中断的方式来实现线程的原子性。
-关闭、开启中断的指令是特权指令。&lt;/p>
-&lt;/blockquote>
-&lt;h4>优点&lt;span class="hx-absolute -hx-mt-20" id="优点">&lt;/span>
-&lt;a href="#%e4%bc%98%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>实现简单、便于理解。在关闭中断的情况下，可以保证线程的执行不会被打断。&lt;/p>
-&lt;h4>缺点&lt;span class="hx-absolute -hx-mt-20" id="缺点">&lt;/span>
-&lt;a href="#%e7%bc%ba%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ol>
-&lt;li>需要特权指令。可能被滥用。若一个程序关闭中断后，执行死循环，那么就霸占了 CPU，想要解决这个问题，就只好重启了。&lt;/li>
-&lt;li>在多核的处理器上，关闭中断没有用。因为其他线程可以在其他处理器上运行，也可以进入临界区。&lt;/li>
-&lt;li>可能会丢失其他的中断信号。一直在处理这个中断，没空搭理其他的中断请求。&lt;/li>
-&lt;li>低效。处理中断还是很麻烦的。&lt;/li>
-&lt;/ol>
-&lt;h3>失败的尝试，只用 Loads/Stores&lt;span class="hx-absolute -hx-mt-20" id="失败的尝试只用-loadsstores">&lt;/span>
-&lt;a href="#%e5%a4%b1%e8%b4%a5%e7%9a%84%e5%b0%9d%e8%af%95%e5%8f%aa%e7%94%a8-loadsstores" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="n">__lock_t&lt;/span>&lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">flag&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// lock 状态
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="kt">lock_t&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">init&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">mutex&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 0 -&amp;gt; lock is available
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// 1 -&amp;gt; held
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">mutex&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">lock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">mutex&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mutex&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">){&lt;/span> &lt;span class="c1">// 检测锁是否被占用(L1)
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">;&lt;/span> &lt;span class="c1">// spin-wait(do noting)(L2)
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mutex&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 获取锁(L3)
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">unlock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">mutex&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mutex&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 释放锁(U1)
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h4>Loads/Stores 分析&lt;span class="hx-absolute -hx-mt-20" id="loadsstores-分析">&lt;/span>
-&lt;a href="#loadsstores-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/sync/ostep-lock-1.svg" alt="简单的 flag, Loads/Store" loading="lazy" />&lt;/p>
-&lt;ol>
-&lt;li>上图可见，由于中断的存在，在1.检测锁是否被占用 2.获取锁 这两个步骤之间，可能被打断，这样两个线程都获取了这个锁。&lt;code>这不符合锁的基本功能，没有提供互斥&lt;/code>。无法保证临界区，任意时刻只有一个线程在执行。&lt;/li>
-&lt;li>如果一个线程 T1 已经获取了锁，另外一个线程 T2 在获取锁时，会在 L1 处不停的判断锁的状态，这就是在 L1 处 Spin，这就是所谓的 Spin Lock。&lt;/li>
-&lt;/ol>
-&lt;h3>test-and-set(atomic exchange) 构建锁&lt;span class="hx-absolute -hx-mt-20" id="test-and-setatomic-exchange-构建锁">&lt;/span>
-&lt;a href="#test-and-setatomic-exchange-%e6%9e%84%e5%bb%ba%e9%94%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>因为只是简单的 Loads/Stores(Reads/Writes) 不能构建出 Lock。所以引入和支持构建 Lock 的 test-and-set 指令。在 x86 下，指令是 &lt;a href="https://www.felixcloutier.com/x86/xchg" target="_blank" rel="noopener">xchg&lt;/a>。Exchanges the contents of the destination (first) and source (second) operands. The operands can be &lt;code>two general-purpose registers&lt;/code> or a &lt;code>register and a memory location&lt;/code>. If a memory operand is referenced, the processor’s locking protocol is automatically implemented for the duration of the exchange operation, &lt;code>regardless of the presence or absence of the LOCK prefix or of the value of the IOPL&lt;/code>. 用 &lt;code>xchg&lt;/code> 原子交换来实现。&lt;/p>
-&lt;h4>C 语言表示 test-and-set 语义&lt;span class="hx-absolute -hx-mt-20" id="c-语言表示-test-and-set-语义">&lt;/span>
-&lt;a href="#c-%e8%af%ad%e8%a8%80%e8%a1%a8%e7%a4%ba-test-and-set-%e8%af%ad%e4%b9%89" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">TestAndSet&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">old_ptr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">new&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">old&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">old_ptr&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// fetch old value at old_ptr, Read
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">old_ptr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">new&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// store ’new’ into old_ptr, Write
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">old&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// return the old value
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h4>test-and-set 构建锁&lt;span class="hx-absolute -hx-mt-20" id="test-and-set-构建锁">&lt;/span>
-&lt;a href="#test-and-set-%e6%9e%84%e5%bb%ba%e9%94%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="n">__lock_t&lt;/span>&lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">flag&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// lock 状态
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="kt">lock_t&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">init&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 0 -&amp;gt; lock is available
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// 1 -&amp;gt; held
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">lock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">TestAndSet&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">){&lt;/span> &lt;span class="c1">// 检测锁是否被占用,同时将 flag 设置为 1(L1)
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">;&lt;/span> &lt;span class="c1">// spin-wait(do noting)(L2)
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">unlock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 释放锁(U1)
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h4>test-and-set spin-lock 分析&lt;span class="hx-absolute -hx-mt-20" id="test-and-set-spin-lock-分析">&lt;/span>
-&lt;a href="#test-and-set-spin-lock-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/sync/ostep-lock-test-and-set.svg" alt="test-and-set-spin-lock" loading="lazy" />&lt;/p>
-&lt;h5>correctness&lt;span class="hx-absolute -hx-mt-20" id="correctness">&lt;/span>
-&lt;a href="#correctness" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>由上图分析可知，test-and-set 这个 spin lock 提供了 mutual exclusion，这是锁的基本功能。&lt;/p>
-&lt;h5>fairness&lt;span class="hx-absolute -hx-mt-20" id="fairness">&lt;/span>
-&lt;a href="#fairness" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>spin lock 不是公平的，可能导致线程饥饿。&lt;/p>
-&lt;h5>performance&lt;span class="hx-absolute -hx-mt-20" id="performance-1">&lt;/span>
-&lt;a href="#performance-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;h6>单处理器&lt;span class="hx-absolute -hx-mt-20" id="单处理器">&lt;/span>
-&lt;a href="#%e5%8d%95%e5%a4%84%e7%90%86%e5%99%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h6>&lt;p>对于 spin lock，假定有 N 个线程，其中有一个线程已经持有的这个锁。其余 N - 1 个线程来获取这个锁，当调度器调度一个线程获取锁时，会在时间片(T)内一直死循环判定 TestAndSet 的返回值，直到时间片消耗完，线程切出。会浪费 (N - 1) * T 这么多时间。&lt;/p>
-&lt;h6>多处理器&lt;span class="hx-absolute -hx-mt-20" id="多处理器">&lt;/span>
-&lt;a href="#%e5%a4%9a%e5%a4%84%e7%90%86%e5%99%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h6>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/sync/ostem-lock-multi-core-contend-spin-lock.svg" alt="多核处理器-spin-lock" loading="lazy" />&lt;/p>
-&lt;p>由图可知，在多处理器环境中，若 critical section 很短，在 Thread1 释放这个锁后，其余的线程是可以获取这个锁的。耗时并不长。&lt;/p>
-&lt;h3>Compare-And-Swap(Exchange) 构建锁&lt;span class="hx-absolute -hx-mt-20" id="compare-and-swapexchange-构建锁">&lt;/span>
-&lt;a href="#compare-and-swapexchange-%e6%9e%84%e5%bb%ba%e9%94%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>C 语言表示 Compare-And-Swap 语义&lt;span class="hx-absolute -hx-mt-20" id="c-语言表示-compare-and-swap-语义">&lt;/span>
-&lt;a href="#c-%e8%af%ad%e8%a8%80%e8%a1%a8%e7%a4%ba-compare-and-swap-%e8%af%ad%e4%b9%89" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">CompareAndSwap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">expected&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">new&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">original&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">original&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">expected&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">*&lt;/span>&lt;span class="n">ptr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">new&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">original&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h4>Compare-And-Swap 构建锁&lt;span class="hx-absolute -hx-mt-20" id="compare-and-swap-构建锁">&lt;/span>
-&lt;a href="#compare-and-swap-%e6%9e%84%e5%bb%ba%e9%94%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="n">__lock_t&lt;/span>&lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">flag&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// lock 状态
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="kt">lock_t&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">init&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 0 -&amp;gt; lock is available
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// 1 -&amp;gt; held
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">lock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">CompareAndSwap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">){&lt;/span> &lt;span class="c1">// 检测锁是否被占用
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">;&lt;/span> &lt;span class="c1">// spin-wait(do noting)(L2)
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">unlock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 释放锁(U1)
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h5>x86-version of compare-and-swap&lt;span class="hx-absolute -hx-mt-20" id="x86-version-of-compare-and-swap">&lt;/span>
-&lt;a href="#x86-version-of-compare-and-swap" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">char&lt;/span> &lt;span class="nf">compare_and_swap&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">old&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">new&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">unsigned&lt;/span> &lt;span class="kt">char&lt;/span> &lt;span class="n">ret&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Note that sete sets a ’byte’ not the word
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">__asm__&lt;/span> &lt;span class="nf">__volatile__&lt;/span> &lt;span class="p">(&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s">&amp;#34; lock&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span> &lt;span class="c1">// 保证原子性
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="s">&amp;#34; cmpxchgl %2,%1&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span> &lt;span class="c1">// cmpxchgl new, *ptr, %rax = old，The ZF flag is set if the values in the destination operand and register AL, AX, or EAX are equal; otherwise it is cleared.
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="s">&amp;#34; sete %0&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span> &lt;span class="c1">// ZF = 0
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="s">&amp;#34;=q&amp;#34;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">ret&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="s">&amp;#34;=m&amp;#34;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">// output 0,1
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="s">&amp;#34;r&amp;#34;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">new&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="s">&amp;#34;m&amp;#34;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="s">&amp;#34;a&amp;#34;&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">old&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">// input 2,3,4
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="s">&amp;#34;memory&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// clobber list
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">ret&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h3>Fetch-And-Add 构建锁&lt;span class="hx-absolute -hx-mt-20" id="fetch-and-add-构建锁">&lt;/span>
-&lt;a href="#fetch-and-add-%e6%9e%84%e5%bb%ba%e9%94%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>C 语言表示 Fetch-And-Add 语义&lt;span class="hx-absolute -hx-mt-20" id="c-语言表示-fetch-and-add-语义">&lt;/span>
-&lt;a href="#c-%e8%af%ad%e8%a8%80%e8%a1%a8%e7%a4%ba-fetch-and-add-%e8%af%ad%e4%b9%89" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">FetchAndAdd&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">old&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">*&lt;/span>&lt;span class="n">ptr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">old&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">old&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h4>构建 ticket lock&lt;span class="hx-absolute -hx-mt-20" id="构建-ticket-lock">&lt;/span>
-&lt;a href="#%e6%9e%84%e5%bb%ba-ticket-lock" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="n">__lock_t&lt;/span>&lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">ticket&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">turn&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span> &lt;span class="kt">lock_t&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">lock_init&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">ticket&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">turn&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">lock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">myturn&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">FetchAndAdd&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">ticket&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// 获取票号，类似于用票号来给要获取锁的线程排队。拿到票号的最终都会成功获取锁。
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">turn&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="n">myturn&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;&lt;/span> &lt;span class="c1">// spin
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">unlock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">turn&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">lock&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">turn&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 下一位
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h2>如何避免 spin？&lt;span class="hx-absolute -hx-mt-20" id="如何避免-spin">&lt;/span>
-&lt;a href="#%e5%a6%82%e4%bd%95%e9%81%bf%e5%85%8d-spin" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>yield(放弃 CPU)&lt;span class="hx-absolute -hx-mt-20" id="yield放弃-cpu">&lt;/span>
-&lt;a href="#yield%e6%94%be%e5%bc%83-cpu" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">init&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">lock&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">TestAndSet&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">flag&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">yield&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">// give up the CPU, 线程状态由 running-&amp;gt;ready
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">unlock&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>当一个线程无法获取锁时，不是 spin，而是 yield(), 线程状态由 running 变为 ready。
-这样就节约了时间。但是无法解决饥饿问题。
-若一个线程不停的获取锁，进入临界区，释放锁。
-其他的尝试获取锁的线程就会不断的 yield。&lt;/p>
-&lt;h3>Using Queues: Sleeping Instead Of Spinning&lt;span class="hx-absolute -hx-mt-20" id="using-queues-sleeping-instead-of-spinning">&lt;/span>
-&lt;a href="#using-queues-sleeping-instead-of-spinning" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>Lock With Queues, Test-and-set, Yield, And Wakeup&lt;span class="hx-absolute -hx-mt-20" id="lock-with-queues-test-and-set-yield-and-wakeup">&lt;/span>
-&lt;a href="#lock-with-queues-test-and-set-yield-and-wakeup" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="n">__lock_t&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">flag&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// lock
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">guard&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// spin lock
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">queue_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">q&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 队列,需要锁的线程放在队列里，避免饥饿。
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span> &lt;span class="kt">lock_t&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">lock_init&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">guard&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">queue_init&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">q&lt;/span>&lt;span class="p">);&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">lock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">TestAndSet&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">guard&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;&lt;/span> &lt;span class="c1">//acquire guard lock by spinning
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// lock is acquired
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">guard&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">queue_add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">q&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nf">gettid&lt;/span>&lt;span class="p">());&lt;/span> &lt;span class="c1">//1 线程 id 放入队列
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">setpark&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">// 将要 park()！！！！
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">guard&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">//2
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">park&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">//3 running-&amp;gt;sleep，被 unpark() 叫醒，就像在这里返回。先去获取 guard 这个 spin lock。
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">unlock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">lock_t&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 先获取 guard 这个 spin lock
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">TestAndSet&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">guard&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">;&lt;/span> &lt;span class="c1">//acquire guard lock by spinning
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nf">queue_empty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">q&lt;/span>&lt;span class="p">))&lt;/span> &lt;span class="c1">// 队列为空，没有等待锁的线程
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">flag&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// let go of lock; no one wants it
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">else&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">unpark&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nf">queue_remove&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">q&lt;/span>&lt;span class="p">));&lt;/span> &lt;span class="c1">//4 hold lock, 叫醒这个 m-&amp;gt;q 线程。
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// (for next thread!)
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">m&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">guard&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;h2>Spin Lock 的问题&lt;span class="hx-absolute -hx-mt-20" id="spin-lock-的问题">&lt;/span>
-&lt;a href="#spin-lock-%e7%9a%84%e9%97%ae%e9%a2%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>spin forever&lt;span class="hx-absolute -hx-mt-20" id="spin-forever">&lt;/span>
-&lt;a href="#spin-forever" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/sync/ostep-spin-lock-spin-forever.svg" alt="spin-lock-spin-forever" loading="lazy" />&lt;/p>
-&lt;p>线程有优先级的概念。
-Thread1(priority1) &amp;lt; Thread(priority2), 在 Thread1 和 Thread2 都是 runnable 情况下，调度器保证先运行 Thread2。
-由上图可知，Thread2 可能永远无法获取锁，导致系统挂掉。&lt;/p>
-&lt;h3>Priority Inversion&lt;span class="hx-absolute -hx-mt-20" id="priority-inversion">&lt;/span>
-&lt;a href="#priority-inversion" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/sync/ostep-spin-lock-priority-inversion.svg" alt="spin-lock-priority-inversion" loading="lazy" />&lt;/p>
-&lt;p>有上图可知 Thread2 有可能在 Thread3 之前运行，这不符合线程优先级的要求。
-Thread2 和 Thread3 的优先级反转了。&lt;/p>
-&lt;h2>two-phrase-lock&lt;span class="hx-absolute -hx-mt-20" id="two-phrase-lock">&lt;/span>
-&lt;a href="#two-phrase-lock" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>spin(先旋转一段时间，看能不能获取锁)&lt;/li>
-&lt;li>sleep(先旋转一段时间，不能获取锁，线程进入 sleep 状态，放弃 CPU)&lt;/li>
-&lt;/ol>
-&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
-&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>&lt;a href="https://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf" target="_blank" rel="noopener">Lock&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html" target="_blank" rel="noopener">gcc-inline-assembly-howto&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.felixcloutier.com/x86/xchg" target="_blank" rel="noopener">atomic-exchange&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/remzi-arpacidusseau/ostep-code/tree/master/threads-locks" target="_blank" rel="noopener">compare-and-swap-lock&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.felixcloutier.com/x86/lock" target="_blank" rel="noopener">lock&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.felixcloutier.com/x86/cmpxchg" target="_blank" rel="noopener">cpmxchg&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.felixcloutier.com/x86/xadd" target="_blank" rel="noopener">xadd&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://filippo.io/linux-syscall-table/" target="_blank" rel="noopener">system-call-table&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/sched_yield.2.html" target="_blank" rel="noopener">sched_yield&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/gettid.2.html" target="_blank" rel="noopener">gettid&lt;/a>&lt;/li>
-&lt;/ol></description></item></channel></rss>
+&lt;a href="#z" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2></description></item></channel></rss>
