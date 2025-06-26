@@ -104,6 +104,7 @@ title="Copy code"
 &lt;li>Code Point: &lt;a href="https://symbl.cc/en/1F467-girl-emoji/" target="_blank" rel="noopener">1F467&lt;/a> &lt;code>girl-emoji&lt;/code> 位于 &lt;code>SP&lt;/code> 使用 2 个编码单元，长度为 2&lt;/li>
 &lt;li>Code Point: &lt;a href="https://symbl.cc/en/200D/" target="_blank" rel="noopener">200D&lt;/a> &lt;code>Zero Width Joiner&lt;/code>位于 &lt;code>BMP&lt;/code> 使用 1 个编码单元，长度为 1&lt;/li>
 &lt;li>Code Point: &lt;a href="https://symbl.cc/en/1F466-boy-emoji/" target="_blank" rel="noopener">1F466&lt;/a> &lt;code>boy-emoji&lt;/code> 位于 &lt;code>SP&lt;/code> 使用 2 个编码单元，长度为 2&lt;/li>
+&lt;li>当这 7 个码点连续出现，就是新的 emoji family 了&lt;/li>
 &lt;/ol>
 &lt;/li>
 &lt;/ol>
