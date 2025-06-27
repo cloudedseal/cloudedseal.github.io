@@ -661,12 +661,8 @@ title="Copy code"
 &lt;li>&lt;a href="https://chat.qwen.ai/c/83ce0a69-a113-4a13-89c4-9a50ce806806" target="_blank" rel="noopener">supported by qwen&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Master Dns Resolve Steps</title><link>https://cloudedseal.github.io/blog/master-dns-resolve-steps/</link><pubDate>Fri, 23 May 2025 11:55:31 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-dns-resolve-steps/</guid><description>
 &lt;blockquote>
-&lt;p>分析环境 mint21&lt;/p>
+&lt;p>弄懂在本机向外部的(上游的) DNS server 发出查询之前, 也就是没有找到目标域名的 ip，必须进行一次查询。在本机的查询次序是什么？&lt;/p>
 &lt;/blockquote>
-&lt;h2>本文目标&lt;span class="hx-absolute -hx-mt-20" id="本文目标">&lt;/span>
-&lt;a href="#%e6%9c%ac%e6%96%87%e7%9b%ae%e6%a0%87" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
-&lt;li>弄懂在本机向外部的(上游的) DNS server 发出查询之前, 在本机的查询步骤是什么？&lt;/li>
-&lt;/ul>
 &lt;h2>本文总结&lt;span class="hx-absolute -hx-mt-20" id="本文总结">&lt;/span>
 &lt;a href="#%e6%9c%ac%e6%96%87%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;code>/etc/nsswitch.conf&lt;/code> 的 &lt;code>hosts&lt;/code> 配置本机 DNS 服务查询的顺序, 即 &lt;code>/etc/hosts&lt;/code> 文件等&lt;/li>
