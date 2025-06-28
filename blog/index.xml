@@ -187,7 +187,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU5MDExNDE5MA==&amp;amp;action=getalbum&amp;amp;album_id=3270895673529450496&amp;amp;subscene=159&amp;amp;subscene=126&amp;amp;scenenote=https%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzU5MDExNDE5MA%3D%3D%26mid%3D2247483840%26idx%3D1%26sn%3Db3e8b10ceec3a68f37132511ab86199b%26chksm%3Dfcb044d993201ba9f9c86af082898b4d9fd186d1200596a144b4d582b013950db23c8d0ec6ba%26scene%3D126%26sessionid%3D1750901842%23rd&amp;amp;nolastread=1#wechat_redirect" target="_blank" rel="noopener">字体排印学的乱麻梳理&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://hsivonen.fi/string-length/" target="_blank" rel="noopener">string.length&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://chat.qwen.ai/c/dc5e5e67-8c14-4c42-a1e6-6018a7688317" target="_blank" rel="noopener">qwen&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>Linux Io Model</title><link>https://cloudedseal.github.io/blog/linux-io-model/</link><pubDate>Thu, 29 May 2025 15:44:41 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-io-model/</guid><description>
+&lt;/ol></description></item><item><title>Linux IO Model</title><link>https://cloudedseal.github.io/blog/linux-io-model/</link><pubDate>Thu, 29 May 2025 15:44:41 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-io-model/</guid><description>
 &lt;blockquote>
 &lt;p>IO 的同步、异步、阻塞、非阻塞取决于相关 syscall 的实现。&lt;/p>
 &lt;/blockquote>
@@ -195,7 +195,7 @@ title="Copy code"
 &lt;a href="#%e7%94%a8%e6%88%b7%e7%a9%ba%e9%97%b4%e8%8e%b7%e5%8f%96%e6%95%b0%e6%8d%ae%e5%89%8d%e6%8f%90%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>数据准备阶段
 &lt;ul>
-&lt;li>内核准备数据，这就引出了问题，内核还没准备好数据，等(sleep)还是不等？
+&lt;li>内核准备数据，这就引出了问题，内核还没准备好数据，等(进程进入 sleep 状态)还是不等？
 &lt;ul>
 &lt;li>比如内核 &lt;code>sock&lt;/code> 的 &lt;a href="https://elixir.bootlin.com/linux/v6.15/source/include/net/sock.h#L252" target="_blank" rel="noopener">sk_receive_queue&lt;/a> 没有数据&lt;/li>
 &lt;/ul>
