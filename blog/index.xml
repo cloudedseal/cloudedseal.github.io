@@ -1,7 +1,138 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://cloudedseal.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://cloudedseal.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://cloudedseal.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Linux User vs Kernel</title><link>https://cloudedseal.github.io/blog/linux-user-vs-kernel/</link><pubDate>Sat, 28 Jun 2025 20:33:09 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-user-vs-kernel/</guid><description>
+&lt;/blockquote></description></item><item><title>Java How Jvm Works</title><link>https://cloudedseal.github.io/blog/java-how-jvm-works/</link><pubDate>Thu, 03 Jul 2025 11:47:45 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-how-jvm-works/</guid><description>
+&lt;p>how modern JVMs (like HotSpot/OpenJDK, OpenJ9, or GraalVM) work?&lt;/p>
+&lt;ol>
+&lt;li>这是一个经过多层次抽象的软件系统。&lt;/li>
+&lt;li>想要彻底了解，需要理解每一层，显然要知道每一层是做什么的。&lt;/li>
+&lt;li>每一层的边界在哪里。&lt;/li>
+&lt;li>问题出于哪一层。&lt;/li>
+&lt;/ol>
+&lt;h2>&lt;strong>1. Java Layer&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-java-layer">&lt;/span>
+&lt;a href="#1-java-layer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>&lt;strong>Java Code&lt;/strong>: application code (e.g., &lt;code>MyClass.java&lt;/code>) is compiled into &lt;strong>bytecode&lt;/strong> (&lt;code>.class&lt;/code> files).&lt;/li>
+&lt;li>&lt;strong>Bytecode Execution&lt;/strong>: The JVM interprets this bytecode or compiles it to native machine code using a &lt;strong>Just-In-Time (JIT) compiler&lt;/strong> (e.g., C1/C2 in HotSpot, or the newer Graal compiler).&lt;/li>
+&lt;li>&lt;strong>Java APIs&lt;/strong>: Even core Java APIs (e.g., &lt;code>java.lang.Object&lt;/code>, &lt;code>java.io.File&lt;/code>) are implemented in Java but rely on &lt;strong>native methods&lt;/strong> (via JNI/&lt;code>native&lt;/code> keywords) for low-level operations.&lt;/li>
+&lt;/ul>
+&lt;h2>&lt;strong>2. C/C++ Layer (JVM Implementation)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="2-cc-layer-jvm-implementation">&lt;/span>
+&lt;a href="#2-cc-layer-jvm-implementation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>&lt;strong>JVM Internals&lt;/strong>: The JVM itself (e.g., HotSpot) is primarily written in &lt;strong>C++&lt;/strong>. This layer handles:
+&lt;ul>
+&lt;li>&lt;strong>Memory Management&lt;/strong>: Garbage collection (G1, ZGC, Shenandoah, etc.).&lt;/li>
+&lt;li>&lt;strong>Threading&lt;/strong>: Thread scheduling and synchronization.&lt;/li>
+&lt;li>&lt;strong>JIT Compilation&lt;/strong>: Translating bytecode to optimized machine code.&lt;/li>
+&lt;li>&lt;strong>Class Loading&lt;/strong>: Parsing &lt;code>.class&lt;/code> files and verifying bytecode.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>JNI (Java Native Interface)&lt;/strong>: When Java code calls &lt;code>native&lt;/code> methods (e.g., &lt;code>java.lang.Thread.start()&lt;/code>), the JVM delegates to C++ code via JNI. This bridges Java and native code.&lt;/li>
+&lt;li>&lt;strong>OS Abstraction&lt;/strong>: The JVM uses platform-specific C/C++ code (e.g., &lt;code>os_linux.cpp&lt;/code>, &lt;code>os_windows.cpp&lt;/code>) to handle OS differences.&lt;/li>
+&lt;/ul>
+&lt;h2>&lt;strong>3. System Call Layer&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="3-system-call-layer">&lt;/span>
+&lt;a href="#3-system-call-layer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ul>
+&lt;li>&lt;strong>OS Interaction&lt;/strong>: The JVM’s C++ code interacts with the operating system through &lt;strong>system calls&lt;/strong> (e.g., &lt;code>read()&lt;/code>, &lt;code>write()&lt;/code>, &lt;code>mmap()&lt;/code>). These are often wrapped by:
+&lt;ul>
+&lt;li>&lt;strong>Standard Libraries&lt;/strong> (e.g., glibc on Linux, MSVCRT on Windows).&lt;/li>
+&lt;li>&lt;strong>Direct Syscall Wrappers&lt;/strong>: For performance-critical paths (e.g., thread scheduling via &lt;code>futex()&lt;/code> on Linux).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Kernel Mode&lt;/strong>: System calls transition into &lt;strong>kernel mode&lt;/strong> to access hardware resources (e.g., file I/O, network sockets, memory allocation).&lt;/li>
+&lt;/ul>
+&lt;h2>&lt;strong>Visualizing the Full Chain&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="visualizing-the-full-chain">&lt;/span>
+&lt;a href="#visualizing-the-full-chain" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>Java Application Code
+↓ (Bytecode)
+JVM (C&amp;#43;&amp;#43;/C) → JIT Compiler → Machine Code
+↓ (Native Methods, GC, Threading)
+OS Libraries (glibc, MSVCRT) → System Calls → Kernel&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>&lt;strong>Key Details to Clarify&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="key-details-to-clarify">&lt;/span>
+&lt;a href="#key-details-to-clarify" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Not All Paths Go Directly to System Calls&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Many operations (e.g., arithmetic, object allocation) are handled purely in user space by the JVM/JIT.&lt;/li>
+&lt;li>Only I/O, threading, memory management, etc., require system calls.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>JNI and Native Libraries&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Java applications can directly load native libraries (e.g., via &lt;code>System.loadLibrary&lt;/code>) and call C/C++ code, bypassing the JVM’s internal layers. This adds another path:
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>Java → JNI → Native Library (C/C&amp;#43;&amp;#43;) → System Calls&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>AOT Compilation (Ahead-of-Time)&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>Tools like &lt;strong>GraalVM Native Image&lt;/strong> compile Java directly to native machine code ahead of time, skipping the JVM runtime. Here, the chain becomes:
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;pre>&lt;code>Java → Native Code (via AOT) → System Calls&lt;/code>&lt;/pre>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>OS Abstraction in the JVM&lt;/strong>:&lt;/p>
+&lt;ul>
+&lt;li>The JVM hides OS differences. For example, thread creation in Java uses &lt;code>pthread_create()&lt;/code> on Linux/macOS but &lt;code>CreateThread()&lt;/code> on Windows, all abstracted by the JVM’s C++ code.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2>&lt;strong>Example: File I/O in Java&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example-file-io-in-java">&lt;/span>
+&lt;a href="#example-file-io-in-java" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="n">FileInputStream&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">fis&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">FileInputStream&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;file.txt&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">fis&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">read&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Java&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">→&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">C&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">→&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Call&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">→&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Kernel&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ol>
+&lt;li>&lt;strong>Java Layer&lt;/strong>: &lt;code>FileInputStream.read()&lt;/code> (Java method).&lt;/li>
+&lt;li>&lt;strong>JNI&lt;/strong>: Calls &lt;code>JVM_Read()&lt;/code> (native method in JVM’s C++ code).&lt;/li>
+&lt;li>&lt;strong>C++ Layer&lt;/strong>: Uses &lt;code>read()&lt;/code> system call via OS-specific wrappers.&lt;/li>
+&lt;li>&lt;strong>System Call&lt;/strong>: The kernel reads data from disk.&lt;/li>
+&lt;/ol>
+&lt;h2>&lt;strong>Summary&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="summary">&lt;/span>
+&lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The full stack is:&lt;/p>
+&lt;p>&lt;strong>&lt;code>Java (Bytecode/App)&lt;/code>&lt;/strong> → &lt;strong>&lt;code>JVM (C++/C)&lt;/code>&lt;/strong> → OS Libraries → System Calls → Kernel&lt;/p>
+&lt;p>This abstraction allows Java to maintain &lt;strong>write-once, run-anywhere&lt;/strong> portability while leveraging low-level system capabilities through the JVM’s native implementation.&lt;/p>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.zhihu.com/question/1921502817790726530/answer/1922327406754108184" target="_blank" rel="noopener">java 面向对象是怎样实现的?&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Linux User vs Kernel</title><link>https://cloudedseal.github.io/blog/linux-user-vs-kernel/</link><pubDate>Sat, 28 Jun 2025 20:33:09 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-user-vs-kernel/</guid><description>
 &lt;h2>从 stack 说起&lt;span class="hx-absolute -hx-mt-20" id="从-stack-说起">&lt;/span>
 &lt;a href="#%e4%bb%8e-stack-%e8%af%b4%e8%b5%b7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>函数调用链使用 stack 实现的。所谓内核也是由一个一个内核的函数实现的。所以，毫无疑问，内核的函数调用链也是用 stack 实现的。&lt;/p>
@@ -11119,11 +11250,4 @@ pointee(下级)
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man3/malloc.3.html" target="_blank" rel="noopener">malloc&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man3/free.3p.html" target="_blank" rel="noopener">free&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://godbolt.org/z/ncfo1q4M7" target="_blank" rel="noopener">square-function&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>cs-condition-variables</title><link>https://cloudedseal.github.io/blog/cs-condition-variables/</link><pubDate>Sun, 18 Apr 2021 20:44:09 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-condition-variables/</guid><description>
-&lt;h2>condition variable 是啥？&lt;span class="hx-absolute -hx-mt-20" id="condition-variable-是啥">&lt;/span>
-&lt;a href="#condition-variable-%e6%98%af%e5%95%a5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>condition variable 是啥？本质上就是一个&lt;code>状态变量&lt;/code> +&lt;code>队列&lt;/code>。现实世界中，想要进行下一步的行动，往往需要满足一定的条件(condition)。如十字路口的交通信号灯，信号灯的颜色可以视为状态变量，根据不同的状态，汽车做出不同的选择。一条马路，可以视为&lt;code>队列&lt;/code>。红灯时, 汽车就不能通过，排队等候。绿灯时，汽车才可以通过。在计算机中，同样存在这样的问题，如父进程需要等待&lt;code>子进程完成后(条件)&lt;/code>，才能继续运行。关键就是围绕&lt;code>状态变量&lt;/code>来构建。&lt;/p>
-&lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
-&lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_wait.3p.html" target="_blank" rel="noopener">pthread_cond_wait&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://man7.org/linux/man-pages/man3/pthread_cond_signal.3p.html" target="_blank" rel="noopener">pthread_cond_signal&lt;/a>&lt;/li>
 &lt;/ol></description></item></channel></rss>
