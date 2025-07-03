@@ -1585,8 +1585,8 @@ title="Copy code"
 &lt;/ul>
 &lt;h3>&lt;strong>java 可以影响 Thread 行为&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="java-可以影响-thread-行为">&lt;/span>
 &lt;a href="#java-%e5%8f%af%e4%bb%a5%e5%bd%b1%e5%93%8d-thread-%e8%a1%8c%e4%b8%ba" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>While the &lt;strong>&lt;code>OS scheduler&lt;/code>&lt;/strong> has &lt;code>ultimate authority&lt;/code>, Java applications can &lt;strong>influence thread behavior&lt;/strong> through:&lt;/p>
-&lt;h4>&lt;strong>Thread Priority&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="thread-priority">&lt;/span>
-&lt;a href="#thread-priority" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;h4>&lt;strong>1. Thread Priority&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-thread-priority">&lt;/span>
+&lt;a href="#1-thread-priority" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
 &lt;p>设置线程的优先级&lt;/p>
 &lt;/blockquote>
 &lt;ul>
@@ -1597,21 +1597,21 @@ title="Copy code"
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h4>&lt;strong>Thread Yielding and Sleeping&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="thread-yielding-and-sleeping">&lt;/span>
-&lt;a href="#thread-yielding-and-sleeping" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;h4>&lt;strong>2. Thread Yielding and Sleeping&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="2-thread-yielding-and-sleeping">&lt;/span>
+&lt;a href="#2-thread-yielding-and-sleeping" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
 &lt;p>放弃 CPU 的控制权/休眠&lt;/p>
 &lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;code>Thread.yield()&lt;/code>: Hints to the OS scheduler that the current thread is willing to yield its CPU time. The scheduler may choose another thread of the same priority to run.&lt;/li>
 &lt;li>&lt;code>Thread.sleep(long millis)&lt;/code>: Pauses the thread for a specified time, allowing other threads to execute. This indirectly affects scheduling by reducing contention.&lt;/li>
 &lt;/ul>
-&lt;h4>&lt;strong>Synchronization and Blocking&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="synchronization-and-blocking">&lt;/span>
-&lt;a href="#synchronization-and-blocking" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;h4>&lt;strong>3. Synchronization and Blocking&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="3-synchronization-and-blocking">&lt;/span>
+&lt;a href="#3-synchronization-and-blocking" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
 &lt;li>Synchronized blocks, locks (&lt;code>synchronized&lt;/code>, &lt;code>ReentrantLock&lt;/code>), and I/O operations (e.g., file/network I/O) can cause threads to block, triggering context switches managed by the OS.&lt;/li>
 &lt;li>Contention for shared resources (e.g., locks) can lead to thread starvation or deadlocks, which the application must manage.&lt;/li>
 &lt;/ul>
-&lt;h4>&lt;strong>Thread States and Lifecycle&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="thread-states-and-lifecycle">&lt;/span>
-&lt;a href="#thread-states-and-lifecycle" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;h4>&lt;strong>4. Thread States and Lifecycle&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="4-thread-states-and-lifecycle">&lt;/span>
+&lt;a href="#4-thread-states-and-lifecycle" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
 &lt;li>Application code controls thread states (e.g., &lt;code>start()&lt;/code>, &lt;code>join()&lt;/code>, &lt;code>interrupt()&lt;/code>). For example:
 &lt;ul>
 &lt;li>&lt;code>start()&lt;/code>: start the thread&lt;/li>
@@ -1620,8 +1620,8 @@ title="Copy code"
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h4>&lt;strong>Executor Framework and Thread Pools&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="executor-framework-and-thread-pools">&lt;/span>
-&lt;a href="#executor-framework-and-thread-pools" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;h4>&lt;strong>5. Executor Framework and Thread Pools&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="5-executor-framework-and-thread-pools">&lt;/span>
+&lt;a href="#5-executor-framework-and-thread-pools" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
 &lt;li>High-level concurrency utilities (&lt;code>java.util.concurrent&lt;/code>) abstract thread management.&lt;/li>
 &lt;li>Applications can configure thread pools (e.g., &lt;code>ThreadPoolExecutor&lt;/code>) to control how tasks are scheduled, but the actual execution still depends on the OS scheduler.&lt;/li>
 &lt;/ul>
@@ -1662,7 +1662,7 @@ title="Copy code"
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;p>In short, &lt;strong>the OS scheduler ultimately controls thread execution&lt;/strong>, but application code can influence behavior through Java&amp;rsquo;s threading APIs, synchronization, and resource management. For fine-grained control, low-level OS tools or real-time systems are required.&lt;/p>
+&lt;p>In short, &lt;strong>the OS scheduler ultimately controls thread execution&lt;/strong>, but application code can &lt;code>influence behavior&lt;/code> through Java&amp;rsquo;s threading APIs, synchronization, and resource management. For fine-grained control, low-level OS tools or real-time systems are required.&lt;/p>
 &lt;h3>&lt;strong>JVM and OS Interactions&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="jvm-and-os-interactions">&lt;/span>
 &lt;a href="#jvm-and-os-interactions" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
 &lt;li>The JVM acts as an &lt;code>intermediary&lt;/code> between Java code and the OS. It maps Java thread operations to OS-specific primitives (e.g., POSIX threads on Unix-like systems).&lt;/li>
@@ -1679,7 +1679,8 @@ title="Copy code"
 &lt;/ul>
 &lt;hr>
 &lt;h2>AQS 和 OS 关系&lt;span class="hx-absolute -hx-mt-20" id="aqs-和-os-关系">&lt;/span>
-&lt;a href="#aqs-%e5%92%8c-os-%e5%85%b3%e7%b3%bb" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The &lt;strong>AbstractQueuedSynchronizer (AQS)&lt;/strong> is a foundational class in Java&amp;rsquo;s &lt;code>java.util.concurrent&lt;/code> package that provides a framework for building &lt;strong>synchronizers&lt;/strong> like locks (&lt;code>ReentrantLock&lt;/code>), barriers (&lt;code>CyclicBarrier&lt;/code>), latches (&lt;code>CountDownLatch&lt;/code>), and semaphores (&lt;code>Semaphore&lt;/code>). While the &lt;strong>OS scheduler&lt;/strong> still governs thread execution, AQS introduces mechanisms to &lt;strong>manage thread blocking/waking&lt;/strong> and &lt;strong>fairness policies&lt;/strong>, which directly influence thread behavior and scheduling.&lt;/p>
+&lt;a href="#aqs-%e5%92%8c-os-%e5%85%b3%e7%b3%bb" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The &lt;strong>AbstractQueuedSynchronizer (AQS)&lt;/strong> is a foundational class in Java&amp;rsquo;s &lt;code>java.util.concurrent&lt;/code> package that provides a framework for building &lt;strong>synchronizers&lt;/strong> like locks (&lt;code>ReentrantLock&lt;/code>), barriers (&lt;code>CyclicBarrier&lt;/code>), latches (&lt;code>CountDownLatch&lt;/code>), and semaphores (&lt;code>Semaphore&lt;/code>).
+While the &lt;strong>OS scheduler&lt;/strong> still governs thread execution, AQS introduces mechanisms to &lt;strong>manage thread blocking/waking&lt;/strong> and &lt;strong>fairness policies&lt;/strong>, which directly &lt;code>influence&lt;/code> thread behavior and scheduling.&lt;/p>
 &lt;h3>&lt;strong>How AQS Works&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="how-aqs-works">&lt;/span>
 &lt;a href="#how-aqs-works" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>AQS manages synchronization by:&lt;/p>
 &lt;ol>
@@ -1784,12 +1785,13 @@ title="Copy code"
 &lt;ul>
 &lt;li>On Linux: Uses &lt;code>futex&lt;/code> (fast userspace mutex).&lt;/li>
 &lt;li>On Windows: Uses &lt;code>WaitOnAddress&lt;/code> or &lt;code>Condition Variables&lt;/code>.&lt;/li>
-&lt;li>These mechanisms allow threads to &lt;code>sleep/wakeup&lt;/code> efficiently, managed by the OS scheduler.&lt;/li>
+&lt;li>These mechanisms allow threads to &lt;code>sleep/wakeup&lt;/code> efficiently, &lt;code>managed by the OS scheduler&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>&lt;strong>Context Switching&lt;/strong>:&lt;br>
-When a thread is parked, the OS scheduler &lt;code>removes&lt;/code> it from the &lt;code>runnable queue&lt;/code>. When unparked, it is &lt;code>re-added&lt;/code> to the queue, triggering a context switch if necessary.&lt;/p>
+When a thread is parked, the OS scheduler &lt;code>removes&lt;/code> it from the &lt;code>runnable queue&lt;/code>.
+When unparked, it is &lt;code>re-added&lt;/code> to the queue, triggering a context switch if necessary.&lt;/p>
 &lt;/li>
 &lt;/ul>
 &lt;h3>&lt;strong>Example: &lt;code>ReentrantLock&lt;/code> and AQS&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="example">&lt;/span>
@@ -1815,7 +1817,7 @@ title="Copy code"
 &lt;ol>
 &lt;li>Attempts to acquire the state (e.g., sets &lt;code>state = 1&lt;/code> for the first lock).&lt;/li>
 &lt;li>Fails → Adds the thread to the AQS queue.&lt;/li>
-&lt;li>Parks the thread (OS scheduler skips it).&lt;/li>
+&lt;li>Parks the thread (OS scheduler skips it). 线程放弃 CPU，去休眠&lt;/li>
 &lt;/ol>
 &lt;/li>
 &lt;li>When &lt;code>unlock()&lt;/code> is called:
@@ -1981,8 +1983,8 @@ title="Copy code"
 &lt;h2>&lt;code>synchronized&lt;/code> 用户空间优化思路&lt;span class="hx-absolute -hx-mt-20" id="synchronized-用户空间优化思路">&lt;/span>
 &lt;a href="#synchronized-%e7%94%a8%e6%88%b7%e7%a9%ba%e9%97%b4%e4%bc%98%e5%8c%96%e6%80%9d%e8%b7%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>The &lt;strong>core ideas&lt;/strong> behind user-space optimizations for Java intrinsic locks (&lt;code>synchronized&lt;/code>) revolve around &lt;strong>minimizing the cost of synchronization&lt;/strong> by reducing reliance on expensive OS-level operations (like system calls or context switches). These optimizations exploit patterns in real-world code and runtime adaptability to make synchronization faster in common scenarios, while still falling back to kernel-level mechanisms only when necessary.&lt;/p>
 &lt;h3>&lt;strong>User-Space Lock 优化原则&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="user-space-lock-优化原则">&lt;/span>
-&lt;a href="#user-space-lock-%e4%bc%98%e5%8c%96%e5%8e%9f%e5%88%99" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>1. &lt;strong>Avoid Kernel Transitions (Fast Paths)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-avoid-kernel-transitions-fast-paths">&lt;/span>
-&lt;a href="#1-avoid-kernel-transitions-fast-paths" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;a href="#user-space-lock-%e4%bc%98%e5%8c%96%e5%8e%9f%e5%88%99" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>1. &lt;strong>Avoid Kernel Transitions (Fast Paths)&lt;/strong> 避免进入内核模式，尽量在用户空间获取锁&lt;span class="hx-absolute -hx-mt-20" id="1-avoid-kernel-transitions-fast-paths-避免进入内核模式尽量在用户空间获取锁">&lt;/span>
+&lt;a href="#1-avoid-kernel-transitions-fast-paths-%e9%81%bf%e5%85%8d%e8%bf%9b%e5%85%a5%e5%86%85%e6%a0%b8%e6%a8%a1%e5%bc%8f%e5%b0%bd%e9%87%8f%e5%9c%a8%e7%94%a8%e6%88%b7%e7%a9%ba%e9%97%b4%e8%8e%b7%e5%8f%96%e9%94%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
 &lt;li>&lt;strong>Goal&lt;/strong>: Reduce or eliminate transitions to the OS kernel (e.g., &lt;code>futex&lt;/code> waits, mutex operations) for uncontended locks.&lt;/li>
 &lt;li>&lt;strong>How&lt;/strong>:
 &lt;ul>
@@ -2003,8 +2005,8 @@ title="Copy code"
 &lt;/li>
 &lt;li>&lt;strong>Example&lt;/strong>: Biased locks are revoked only when contention occurs, saving overhead in single-threaded cases.&lt;/li>
 &lt;/ul>
-&lt;h4>3. &lt;strong>Reduce Lock Granularity Overhead&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="3-reduce-lock-granularity-overhead">&lt;/span>
-&lt;a href="#3-reduce-lock-granularity-overhead" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;h4>3. &lt;strong>Reduce Lock Granularity Overhead&lt;/strong> 减小锁的粒度和获取锁的次数&lt;span class="hx-absolute -hx-mt-20" id="3-reduce-lock-granularity-overhead-减小锁的粒度和获取锁的次数">&lt;/span>
+&lt;a href="#3-reduce-lock-granularity-overhead-%e5%87%8f%e5%b0%8f%e9%94%81%e7%9a%84%e7%b2%92%e5%ba%a6%e5%92%8c%e8%8e%b7%e5%8f%96%e9%94%81%e7%9a%84%e6%ac%a1%e6%95%b0" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
 &lt;li>&lt;strong>Goal&lt;/strong>: Minimize the number of lock operations and their critical sections.&lt;/li>
 &lt;li>&lt;strong>How&lt;/strong>:
 &lt;ul>
@@ -2014,8 +2016,8 @@ title="Copy code"
 &lt;/li>
 &lt;li>&lt;strong>Trade-off&lt;/strong>: Balance between reducing overhead and avoiding overly large critical sections that increase contention.&lt;/li>
 &lt;/ul>
-&lt;h4>4. &lt;strong>Exploit Common Concurrency Patterns&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="4-exploit-common-concurrency-patterns">&lt;/span>
-&lt;a href="#4-exploit-common-concurrency-patterns" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;h4>4. &lt;strong>Exploit Common Concurrency Patterns&lt;/strong> 获取锁的条件假设&lt;span class="hx-absolute -hx-mt-20" id="4-exploit-common-concurrency-patterns-获取锁的条件假设">&lt;/span>
+&lt;a href="#4-exploit-common-concurrency-patterns-%e8%8e%b7%e5%8f%96%e9%94%81%e7%9a%84%e6%9d%a1%e4%bb%b6%e5%81%87%e8%ae%be" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
 &lt;li>&lt;strong>Goal&lt;/strong>: Optimize for typical usage patterns in Java applications.&lt;/li>
 &lt;li>&lt;strong>How&lt;/strong>:
 &lt;ul>
@@ -2110,8 +2112,8 @@ title="Copy code"
 &lt;/li>
 &lt;li>&lt;strong>Why It Helps&lt;/strong>: Avoids the cost of parking/unparking threads for short waits.&lt;/li>
 &lt;/ul>
-&lt;h3>&lt;strong>为什么优化会有用?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="为什么优化会有用">&lt;/span>
-&lt;a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e4%bc%98%e5%8c%96%e4%bc%9a%e6%9c%89%e7%94%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;h3>&lt;strong>userspace 为什么优化会有用?&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="userspace-为什么优化会有用">&lt;/span>
+&lt;a href="#userspace-%e4%b8%ba%e4%bb%80%e4%b9%88%e4%bc%98%e5%8c%96%e4%bc%9a%e6%9c%89%e7%94%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
 &lt;li>
 &lt;p>&lt;strong>Most Locks Are Uncontended&lt;/strong>:&lt;/p>
 &lt;ul>
