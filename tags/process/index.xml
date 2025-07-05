@@ -103,8 +103,8 @@ title="Copy code"
 &lt;p>• &lt;code>Child's PID&lt;/code> to the parent.&lt;/p>
 &lt;p>• &lt;code>-1&lt;/code> on error.&lt;/p>
 &lt;p>• Example: Used in spawning new processes (e.g., shell commands).&lt;/p>
-&lt;h3>&lt;code>execve()&lt;/code> 复位状态机&lt;span class="hx-absolute -hx-mt-20" id="execve-复位状态机">&lt;/span>
-&lt;a href="#execve-%e5%a4%8d%e4%bd%8d%e7%8a%b6%e6%80%81%e6%9c%ba" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>• Purpose: Replaces the current process&amp;rsquo;s memory space with a new program.&lt;/p>
+&lt;h3>&lt;code>execve()&lt;/code> 重置状态机&lt;span class="hx-absolute -hx-mt-20" id="execve-重置状态机">&lt;/span>
+&lt;a href="#execve-%e9%87%8d%e7%bd%ae%e7%8a%b6%e6%80%81%e6%9c%ba" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>• Purpose: Replaces the current process&amp;rsquo;s memory space with a new program.&lt;/p>
 &lt;p>• State Change: The process remains in the &lt;code>running state&lt;/code> but executes new code.&lt;/p>
 &lt;p>• Parameters:&lt;/p>
 &lt;p>• &lt;code>path&lt;/code>: Path to the executable.&lt;/p>
