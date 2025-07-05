@@ -571,19 +571,19 @@ title="Copy code"
 &lt;/div>
 &lt;h4>进程 ID&lt;span class="hx-absolute -hx-mt-20" id="进程-id">&lt;/span>
 &lt;a href="#%e8%bf%9b%e7%a8%8b-id" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>&lt;strong>Parent Shell (sh)&lt;/strong>: PID &lt;code>27640&lt;/code>&lt;/li>
-&lt;li>&lt;strong>Child 1 (&lt;code>cat&lt;/code>)&lt;/strong>: PID &lt;code>27641&lt;/code>&lt;/li>
-&lt;li>&lt;strong>Child 2 (&lt;code>wc&lt;/code>)&lt;/strong>: PID &lt;code>27642&lt;/code>&lt;/li>
+&lt;li>&lt;strong>Parent Shell (sh)&lt;/strong>: PID &lt;code>27640&lt;/code> shell 进程 ID&lt;/li>
+&lt;li>&lt;strong>Child 1 (&lt;code>cat&lt;/code>)&lt;/strong>: PID &lt;code>27641&lt;/code> cat 进程 ID&lt;/li>
+&lt;li>&lt;strong>Child 2 (&lt;code>wc&lt;/code>)&lt;/strong>: PID &lt;code>27642&lt;/code> wc 进程 ID&lt;/li>
 &lt;/ul>
 &lt;h3>&lt;strong>数据流向&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="数据流向">&lt;/span>
 &lt;a href="#%e6%95%b0%e6%8d%ae%e6%b5%81%e5%90%91" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
 &lt;li>
-&lt;p>&lt;strong>Pipe Setup&lt;/strong>:&lt;/p>
+&lt;p>&lt;strong>Pipe Setup (&lt;code>shell&lt;/code>)&lt;/strong>:&lt;/p>
 &lt;ul>
 &lt;li>&lt;code>pipe2([3,4])&lt;/code> creates a communication channel:
 &lt;ul>
-&lt;li>&lt;code>3&lt;/code>: &lt;strong>Read&lt;/strong> end (used by &lt;code>wc&lt;/code>)&lt;/li>
-&lt;li>&lt;code>4&lt;/code>: &lt;strong>Write&lt;/strong> end (used by &lt;code>cat&lt;/code>)&lt;/li>
+&lt;li>&lt;code>3&lt;/code>: &lt;strong>Read&lt;/strong> end (used by &lt;code>wc&lt;/code>) read port(读口)&lt;/li>
+&lt;li>&lt;code>4&lt;/code>: &lt;strong>Write&lt;/strong> end (used by &lt;code>cat&lt;/code>) write port(写口)&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -591,14 +591,14 @@ title="Copy code"
 &lt;li>
 &lt;p>&lt;strong>Child 1 (&lt;code>cat&lt;/code>)&lt;/strong>:&lt;/p>
 &lt;ul>
-&lt;li>&lt;code>dup2(4, 1)&lt;/code> → Redirects &lt;code>cat&lt;/code>&amp;rsquo;s stdout to the pipe.&lt;/li>
+&lt;li>&lt;code>dup2(4, 1)&lt;/code> → Redirects &lt;code>cat&lt;/code>&amp;rsquo;s stdout to the pipe 写口.&lt;/li>
 &lt;li>&lt;code>execve(&amp;quot;cat&amp;quot;, ...)&lt;/code> → &lt;code>cat&lt;/code> writes &lt;code>/etc/passwd&lt;/code> to the pipe.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>
 &lt;p>&lt;strong>Child 2 (&lt;code>wc&lt;/code>)&lt;/strong>:&lt;/p>
 &lt;ul>
-&lt;li>&lt;code>dup2(3, 0)&lt;/code> → Redirects &lt;code>wc&lt;/code>&amp;rsquo;s stdin to the pipe.&lt;/li>
+&lt;li>&lt;code>dup2(3, 0)&lt;/code> → Redirects &lt;code>wc&lt;/code>&amp;rsquo;s stdin to the pipe 读口.&lt;/li>
 &lt;li>&lt;code>execve(&amp;quot;wc&amp;quot;, ...)&lt;/code> → &lt;code>wc&lt;/code> reads from the pipe and counts lines.&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -827,7 +827,7 @@ title="Copy code"
 &lt;tr>
 &lt;td>27640&lt;/td>
 &lt;td>&lt;code>pipe2([3, 4], 0)&lt;/code>&lt;/td>
-&lt;td>Creates pipe&lt;/td>
+&lt;td>Creates pipe by shell process&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>27640&lt;/td>
