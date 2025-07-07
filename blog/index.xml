@@ -402,6 +402,24 @@ title="Copy code"
 &lt;li>&lt;a href="https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU5MDExNDE5MA==&amp;amp;action=getalbum&amp;amp;album_id=3270895673529450496&amp;amp;subscene=159&amp;amp;subscene=126&amp;amp;scenenote=https%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzU5MDExNDE5MA%3D%3D%26mid%3D2247483840%26idx%3D1%26sn%3Db3e8b10ceec3a68f37132511ab86199b%26chksm%3Dfcb044d993201ba9f9c86af082898b4d9fd186d1200596a144b4d582b013950db23c8d0ec6ba%26scene%3D126%26sessionid%3D1750901842%23rd&amp;amp;nolastread=1#wechat_redirect" target="_blank" rel="noopener">字体排印学的乱麻梳理&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://hsivonen.fi/string-length/" target="_blank" rel="noopener">string.length&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://chat.qwen.ai/c/dc5e5e67-8c14-4c42-a1e6-6018a7688317" target="_blank" rel="noopener">qwen&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Linux File Descriptor</title><link>https://cloudedseal.github.io/blog/linux-file-descriptor/</link><pubDate>Fri, 20 Jun 2025 15:45:48 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-file-descriptor/</guid><description>
+&lt;h2>fd 一个编号,一个指针&lt;span class="hx-absolute -hx-mt-20" id="fd-一个编号一个指针">&lt;/span>
+&lt;a href="#fd-%e4%b8%80%e4%b8%aa%e7%bc%96%e5%8f%b7%e4%b8%80%e4%b8%aa%e6%8c%87%e9%92%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>指向文件 -&amp;gt; private_data 指向具体的文件&lt;/p>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/include/linux/fs.h#L1064" target="_blank" rel="noopener">file void *private_data 指向具体的文件，这就是一切皆为文件的实现&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15.4/source/fs/eventpoll.c#L179-L242" target="_blank" rel="noopener">file private_data 指向具体的文件 eventpoll&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15.4/source/include/linux/net.h#L107-L129" target="_blank" rel="noopener">file private_data 指向具体的文件 socket&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15.3/source/include/net/sock.h#L432" target="_blank" rel="noopener">sock.h sk_data_ready 回调函数&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15.3/source/net/core/sock.c#L3524" target="_blank" rel="noopener">sock_def_readable&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15.3/source/include/linux/net.h#L99" target="_blank" rel="noopener">net.h socket_wq socket 等待队列&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/include/net/sock.h#L1167" target="_blank" rel="noopener">sk_wait_event socket 进入阻塞状态&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/kernel/sched/wait.c#L413" target="_blank" rel="noopener">wait_woken 真正进入等待状态&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15.3/source/include/linux/net.h#L117" target="_blank" rel="noopener">socket.file socket 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/net/ipv4/ip_input.c#L338" target="_blank" rel="noopener">ip_input.c ip_rcv_finish_core 处理不同的协议&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/net/ipv4/inet_hashtables.c#L32" target="_blank" rel="noopener">(source ip, source port, dest ip, dest port) 计算 hash 值&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/net/socket.c#L156-L173" target="_blank" rel="noopener">file_operations 实现之 socket_file_ops&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/fs/ext4/file.c#L962-L981" target="_blank" rel="noopener">file_operations 实现之 ext4_file_operations&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Linux IO Model</title><link>https://cloudedseal.github.io/blog/linux-io-model/</link><pubDate>Thu, 29 May 2025 15:44:41 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-io-model/</guid><description>
 &lt;blockquote>
 &lt;p>IO 的同步、异步、阻塞、非阻塞取决于相关 syscall 的实现。&lt;/p>
@@ -11118,136 +11136,4 @@ title="Copy code"
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Out-of-order_execution" target="_blank" rel="noopener">out-of-order-execution(dynamic execution)&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Instruction_scheduling" target="_blank" rel="noopener">Instruction_scheduling&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/41872203" target="_blank" rel="noopener">X86/GCC memory fence的一些见解&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>cs-semaphores</title><link>https://cloudedseal.github.io/blog/cs-semaphores/</link><pubDate>Tue, 25 May 2021 12:38:06 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-semaphores/</guid><description/></item><item><title>asm-pointers-and-memory</title><link>https://cloudedseal.github.io/blog/asm-pointers-and-memory/</link><pubDate>Wed, 28 Apr 2021 16:04:36 +0800</pubDate><guid>https://cloudedseal.github.io/blog/asm-pointers-and-memory/</guid><description>
-&lt;h2>Basic Pointer&lt;span class="hx-absolute -hx-mt-20" id="basic-pointer">&lt;/span>
-&lt;a href="#basic-pointer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>为啥需要 Pointer？&lt;span class="hx-absolute -hx-mt-20" id="为啥需要-pointer">&lt;/span>
-&lt;a href="#%e4%b8%ba%e5%95%a5%e9%9c%80%e8%a6%81-pointer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
-&lt;li>&lt;code>更容易&lt;/code>在不同代码段之间&lt;code>共享&lt;/code>信息，在不同代码段之间来回复制也是可以的。但用指针的形式更好。&lt;/li>
-&lt;li>&lt;code>链式&lt;/code>数据结构, 如链表和二叉树。&lt;/li>
-&lt;/ol>
-&lt;h3>pointer dereference&lt;span class="hx-absolute -hx-mt-20" id="pointer-dereference">&lt;/span>
-&lt;a href="#pointer-dereference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>指针必须要有指向的值，才可以 dereference。
-没有指向的指针，dereference 时会 runtime error。&lt;/p>
-&lt;h3>NULL pointer&lt;span class="hx-absolute -hx-mt-20" id="null-pointer">&lt;/span>
-&lt;a href="#null-pointer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>C -&amp;gt; NULL -&amp;gt; 0 -&amp;gt; false
-java -&amp;gt; null&lt;/p>
-&lt;h3>pointer assignment&lt;span class="hx-absolute -hx-mt-20" id="pointer-assignment">&lt;/span>
-&lt;a href="#pointer-assignment" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>指针赋值&lt;/p>
-&lt;h3>copy&lt;span class="hx-absolute -hx-mt-20" id="copy">&lt;/span>
-&lt;a href="#copy" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>shallow copy&lt;span class="hx-absolute -hx-mt-20" id="shallow-copy">&lt;/span>
-&lt;a href="#shallow-copy" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>copy reference&lt;/p>
-&lt;h4>deep copy&lt;span class="hx-absolute -hx-mt-20" id="deep-copy">&lt;/span>
-&lt;a href="#deep-copy" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>copy real value&lt;/p>
-&lt;h2>two levels&lt;span class="hx-absolute -hx-mt-20" id="two-levels">&lt;/span>
-&lt;a href="#two-levels" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/clang/memory_and_pointers-two-levels.svg" alt="two-levels" loading="lazy" />&lt;/p>
-&lt;h3>C 语言下指针探析&lt;span class="hx-absolute -hx-mt-20" id="c-语言下指针探析">&lt;/span>
-&lt;a href="#c-%e8%af%ad%e8%a8%80%e4%b8%8b%e6%8c%87%e9%92%88%e6%8e%a2%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">long&lt;/span> &lt;span class="nf">pointer&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">ptr&lt;/span>&lt;span class="p">){&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">long&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">long&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">ptr&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-asm" data-lang="asm">&lt;span class="line">&lt;span class="cl">&lt;span class="nl">pointer:&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">pushq&lt;/span> &lt;span class="nv">%rbp&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">movq&lt;/span> &lt;span class="nv">%rsp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nv">%rbp&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">movq&lt;/span> &lt;span class="nv">%rdi&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">%rbp&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">movq&lt;/span> &lt;span class="p">-&lt;/span>&lt;span class="mi">24&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">%rbp&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="nv">%rax&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">movq&lt;/span> &lt;span class="nv">%rax&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">-&lt;/span>&lt;span class="mi">8&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">%rbp&lt;/span>&lt;span class="p">)&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">movq&lt;/span> &lt;span class="p">-&lt;/span>&lt;span class="mi">8&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nv">%rbp&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="nv">%rax&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">movq&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nv">%rax&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="nv">%rax&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">popq&lt;/span> &lt;span class="nv">%rbp&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">ret&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
-&lt;button
-class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
-title="Copy code"
->
-&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
-&lt;/button>
-&lt;/div>
-&lt;/div>
-&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/clang/asm-pointer.png" alt="clang-pointer" loading="lazy" />&lt;/p>
-&lt;p>由上可知：&lt;code>long *p = (long*)ptr&lt;/code> 被编译成&lt;/p>
-&lt;ol>
-&lt;li>movq -8(%rbp), %rax %rax 这个寄存器里放的是传来的指针&lt;/li>
-&lt;li>movq (%rax), %rax (%rax) 寄存器&lt;code>间接寻址&lt;/code>，也就是取寄存器 %rax 指向的内存里的值。这就是指针在汇编层面的意义。&lt;/li>
-&lt;/ol>
-&lt;h2>memory&lt;span class="hx-absolute -hx-mt-20" id="memory">&lt;/span>
-&lt;a href="#memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>variable -&amp;gt; variable name -&amp;gt; memory
-编译后，变量名就没有了。&lt;/p>
-&lt;h3>local memory&lt;span class="hx-absolute -hx-mt-20" id="local-memory">&lt;/span>
-&lt;a href="#local-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
-&lt;p>local memory is allocated automatically on function call and it is deallocated automatically when a function exits.&lt;/p>
-&lt;/blockquote>
-&lt;p>编译器管理 local memory，size 编译时决定。
-Local memory 最根本的性质：相互独立，这是本地内存优点和缺点的根本原因。&lt;/p>
-&lt;h4>stack frame&lt;span class="hx-absolute -hx-mt-20" id="stack-frame">&lt;/span>
-&lt;a href="#stack-frame" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>local memory 通过调用函数时创建的&lt;code>栈帧&lt;/code>来体现。&lt;/p>
-&lt;h5>allocation&lt;span class="hx-absolute -hx-mt-20" id="allocation">&lt;/span>
-&lt;a href="#allocation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>栈帧创建时, local variable 一并创建。&lt;/p>
-&lt;h5>deallocation&lt;span class="hx-absolute -hx-mt-20" id="deallocation">&lt;/span>
-&lt;a href="#deallocation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>栈帧销毁时，local variable 一并销毁。&lt;/p>
-&lt;h5>lifetime&lt;span class="hx-absolute -hx-mt-20" id="lifetime">&lt;/span>
-&lt;a href="#lifetime" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>随着函数栈帧同生共死。&lt;/p>
-&lt;h5>local/stack/automatic variable&lt;span class="hx-absolute -hx-mt-20" id="localstackautomatic-variable">&lt;/span>
-&lt;a href="#localstackautomatic-variable" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>栈帧中的变量。
-local/automatic 底层经常使用 stack 结构来实现。&lt;/p>
-&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/clang/clang-square-function.png" alt="栈帧-lexical-scope" loading="lazy" />&lt;/p>
-&lt;h5>advantage of locals&lt;span class="hx-absolute -hx-mt-20" id="advantage-of-locals">&lt;/span>
-&lt;a href="#advantage-of-locals" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ol>
-&lt;li>convenient. 函数需要临时的内存空间做计算，计算完毕后，释放。&lt;/li>
-&lt;li>efficient. 分配和释放都很快。&lt;/li>
-&lt;li>local copies.
-&lt;blockquote>
-&lt;p>pass by value
-local parameters are basically local copies of the information from the caller.
-caller 原值
-callee 副本，如何修改不影响 caller 中的值
-软件设计原则：seperate components&lt;/p>
-&lt;/blockquote>
-&lt;/li>
-&lt;/ol>
-&lt;h5>disadvantage of locals&lt;span class="hx-absolute -hx-mt-20" id="disadvantage-of-locals">&lt;/span>
-&lt;a href="#disadvantage-of-locals" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ol>
-&lt;li>short lifetime. 和栈帧同生共死。(heap memory 解决)&lt;/li>
-&lt;li>restricted communication。caller&amp;rsquo;s parameter -&amp;gt; callee 单向通信。(reference parameter 解决)&lt;/li>
-&lt;/ol>
-&lt;h3>heap/dynamic memory&lt;span class="hx-absolute -hx-mt-20" id="heapdynamic-memory">&lt;/span>
-&lt;a href="#heapdynamic-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>malloc()
-free()&lt;/p>
-&lt;h4>lifetime&lt;span class="hx-absolute -hx-mt-20" id="lifetime-1">&lt;/span>
-&lt;a href="#lifetime-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>程序员自主决定何时申请内存, 申请多少内存，何时释放内存。
-runtime 决定。&lt;/p>
-&lt;h2>parameter&lt;span class="hx-absolute -hx-mt-20" id="parameter">&lt;/span>
-&lt;a href="#parameter" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>pass by value&lt;span class="hx-absolute -hx-mt-20" id="pass-by-value">&lt;/span>
-&lt;a href="#pass-by-value" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>local copy
-caller parameter(原值)
-callee parameter(副本)
-separate components&lt;/p>
-&lt;h3>pass by reference&lt;span class="hx-absolute -hx-mt-20" id="pass-by-reference">&lt;/span>
-&lt;a href="#pass-by-reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>其实就是指针。这个二级结构。
-pointer(上级)，把上级传出去，就可以指挥下级了。
-pointee(下级)
-一级指针也可以理解为 &lt;code>hop&lt;/code>，非常像 router 中的下一跳。&lt;/p>
-&lt;h2>ownership&lt;span class="hx-absolute -hx-mt-20" id="ownership">&lt;/span>
-&lt;a href="#ownership" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
-&lt;p>each blok of memory has &lt;code>exactly one&lt;/code> &amp;ldquo;owner&amp;rdquo; who takes responsibility for &lt;code>deallocating&lt;/code> it.&lt;/p>
-&lt;/blockquote>
-&lt;h3>caller ownership&lt;span class="hx-absolute -hx-mt-20" id="caller-ownership">&lt;/span>
-&lt;a href="#caller-ownership" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h3>callee allocated and return&lt;span class="hx-absolute -hx-mt-20" id="callee-allocated-and-return">&lt;/span>
-&lt;a href="#callee-allocated-and-return" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h2>Reference&lt;span class="hx-absolute -hx-mt-20" id="reference">&lt;/span>
-&lt;a href="#reference" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>&lt;a href="http://cslibrary.stanford.edu/102/" target="_blank" rel="noopener">memory and pointers&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://man7.org/linux/man-pages/man3/malloc.3.html" target="_blank" rel="noopener">malloc&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://man7.org/linux/man-pages/man3/free.3p.html" target="_blank" rel="noopener">free&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://godbolt.org/z/ncfo1q4M7" target="_blank" rel="noopener">square-function&lt;/a>&lt;/li>
-&lt;/ol></description></item></channel></rss>
+&lt;/ol></description></item><item><title>cs-semaphores</title><link>https://cloudedseal.github.io/blog/cs-semaphores/</link><pubDate>Tue, 25 May 2021 12:38:06 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-semaphores/</guid><description/></item></channel></rss>
