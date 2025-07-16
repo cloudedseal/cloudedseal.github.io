@@ -832,42 +832,42 @@ title="Copy code"
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td>27640&lt;/td>
+&lt;td>43141&lt;/td>
 &lt;td>&lt;code>pipe2([3, 4], 0)&lt;/code>&lt;/td>
 &lt;td>Creates pipe by shell process&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>27640&lt;/td>
+&lt;td>43141&lt;/td>
 &lt;td>&lt;code>clone(...)&lt;/code>&lt;/td>
 &lt;td>Forks first child (PID 27641)&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>27640&lt;/td>
+&lt;td>43141&lt;/td>
 &lt;td>&lt;code>clone(...)&lt;/code>&lt;/td>
 &lt;td>Forks second child (PID 27642)&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>27641&lt;/td>
+&lt;td>43142&lt;/td>
 &lt;td>&lt;code>dup2(4, 1)&lt;/code>&lt;/td>
 &lt;td>Redirects stdout to pipe write end&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>27642&lt;/td>
+&lt;td>43143&lt;/td>
 &lt;td>&lt;code>dup2(3, 0)&lt;/code>&lt;/td>
 &lt;td>Redirects stdin to pipe read end&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>27641&lt;/td>
+&lt;td>43142&lt;/td>
 &lt;td>&lt;code>execve(&amp;quot;cat&amp;quot;, ...)&lt;/code>&lt;/td>
 &lt;td>Replaces child with &lt;code>cat&lt;/code>&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>27642&lt;/td>
+&lt;td>43143&lt;/td>
 &lt;td>&lt;code>execve(&amp;quot;wc&amp;quot;, ...)&lt;/code>&lt;/td>
 &lt;td>Replaces child with &lt;code>wc -l&lt;/code>&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td>27640&lt;/td>
+&lt;td>43141&lt;/td>
 &lt;td>&lt;code>wait4()&lt;/code>&lt;/td>
 &lt;td>Waits for both children to finish&lt;/td>
 &lt;/tr>
