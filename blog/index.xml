@@ -573,12 +573,6 @@ title="Copy code"
 &lt;blockquote>
 &lt;p>By default, all open file descriptors remain open across an execve call unless explicitly marked with the &lt;code>FD_CLOEXEC&lt;/code> flag.&lt;/p>
 &lt;/blockquote>
-&lt;h4>进程 ID&lt;span class="hx-absolute -hx-mt-20" id="进程-id">&lt;/span>
-&lt;a href="#%e8%bf%9b%e7%a8%8b-id" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
-&lt;li>&lt;strong>Parent Shell (sh)&lt;/strong>: PID &lt;code>43141&lt;/code> shell 进程 ID&lt;/li>
-&lt;li>&lt;strong>Child 1 (&lt;code>cat&lt;/code>)&lt;/strong>: PID &lt;code>43142&lt;/code> cat 进程 ID&lt;/li>
-&lt;li>&lt;strong>Child 2 (&lt;code>wc&lt;/code>)&lt;/strong>: PID &lt;code>43143&lt;/code> wc 进程 ID&lt;/li>
-&lt;/ul>
 &lt;h3>&lt;strong>数据流向&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="数据流向">&lt;/span>
 &lt;a href="#%e6%95%b0%e6%8d%ae%e6%b5%81%e5%90%91" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
 &lt;li>
