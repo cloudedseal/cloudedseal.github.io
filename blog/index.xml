@@ -47,8 +47,8 @@ title="Copy code"
 &lt;a href="#%e4%bf%ae%e6%94%b9-virtual-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>gcc -o loop loop.c&lt;/li>
 &lt;/ol>
-&lt;h3>使用 dd 修改&lt;span class="hx-absolute -hx-mt-20" id="使用-dd-修改">&lt;/span>
-&lt;a href="#%e4%bd%bf%e7%94%a8-dd-%e4%bf%ae%e6%94%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>使用 dd 修改 /proc/pid/mem&lt;span class="hx-absolute -hx-mt-20" id="使用-dd-修改-procpidmem">&lt;/span>
+&lt;a href="#%e4%bd%bf%e7%94%a8-dd-%e4%bf%ae%e6%94%b9-procpidmem" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">./loop
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span> Hello virtual memory &lt;span class="o">(&lt;/span>0x5cdeb6ed72a0&lt;span class="o">)&lt;/span>
