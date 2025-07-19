@@ -1,7 +1,99 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://cloudedseal.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://cloudedseal.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://cloudedseal.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Java How Jvm Works</title><link>https://cloudedseal.github.io/blog/java-how-jvm-works/</link><pubDate>Thu, 03 Jul 2025 11:47:45 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-how-jvm-works/</guid><description>
+&lt;/blockquote></description></item><item><title>Linux Modify Virtual Memory</title><link>https://cloudedseal.github.io/blog/linux-modify-virtual-memory/</link><pubDate>Wed, 16 Jul 2025 17:47:03 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-modify-virtual-memory/</guid><description>
+&lt;h2>使用的测试代码&lt;span class="hx-absolute -hx-mt-20" id="使用的测试代码">&lt;/span>
+&lt;a href="#%e4%bd%bf%e7%94%a8%e7%9a%84%e6%b5%8b%e8%af%95%e4%bb%a3%e7%a0%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">loop.c&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdlib.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;string.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;unistd.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> * main - uses strdup to create a new string, loops forever-ever
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> * Return: EXIT_FAILURE if malloc failed. Other never returns
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">char&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">unsigned&lt;/span> &lt;span class="kt">long&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">s&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">strdup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Hello virtual memory&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">fprintf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">stderr&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;Can&amp;#39;t allocate mem with malloc&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">EXIT_FAILURE&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;[%lu] %s (%p)&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">s&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">sleep&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">EXIT_SUCCESS&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>修改 virtual Memory&lt;span class="hx-absolute -hx-mt-20" id="修改-virtual-memory">&lt;/span>
+&lt;a href="#%e4%bf%ae%e6%94%b9-virtual-memory" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>gcc -o loop loop.c&lt;/li>
+&lt;/ol>
+&lt;h3>使用 dd 修改&lt;span class="hx-absolute -hx-mt-20" id="使用-dd-修改">&lt;/span>
+&lt;a href="#%e4%bd%bf%e7%94%a8-dd-%e4%bf%ae%e6%94%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">./loop
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>0&lt;span class="o">]&lt;/span> Hello virtual memory &lt;span class="o">(&lt;/span>0x5cdeb6ed72a0&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>1&lt;span class="o">]&lt;/span> Hello virtual memory &lt;span class="o">(&lt;/span>0x5cdeb6ed72a0&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 更改 1 个字节的数据&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> -ne &lt;span class="s2">&amp;#34;\x42&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> sudo dd &lt;span class="nv">of&lt;/span>&lt;span class="o">=&lt;/span>/proc/&lt;span class="k">$(&lt;/span>pidof loop&lt;span class="k">)&lt;/span>/mem &lt;span class="nv">bs&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="nv">count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="nv">seek&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span>&lt;span class="m">0&lt;/span>x5cdeb6ed72a0&lt;span class="k">))&lt;/span> &lt;span class="nv">conv&lt;/span>&lt;span class="o">=&lt;/span>notrunc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 更改 4 个字节的数据&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> -ne &lt;span class="s2">&amp;#34;\x41\x42\x43\x44&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> sudo dd &lt;span class="nv">of&lt;/span>&lt;span class="o">=&lt;/span>/proc/&lt;span class="k">$(&lt;/span>pidof loop&lt;span class="k">)&lt;/span>/mem &lt;span class="nv">bs&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="nv">count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">4&lt;/span> &lt;span class="nv">seek&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span>&lt;span class="m">0&lt;/span>x5a6be9ed32a0&lt;span class="k">))&lt;/span> &lt;span class="nv">conv&lt;/span>&lt;span class="o">=&lt;/span>notrunc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 更改 5 个字节的数据&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> -ne &lt;span class="s2">&amp;#34;\x41\x42\x43\x44\x00&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> sudo dd &lt;span class="nv">of&lt;/span>&lt;span class="o">=&lt;/span>/proc/&lt;span class="k">$(&lt;/span>pidof loop&lt;span class="k">)&lt;/span>/mem &lt;span class="nv">bs&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="nv">count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">5&lt;/span> &lt;span class="nv">seek&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span>&lt;span class="m">0&lt;/span>x5a6be9ed32a0&lt;span class="k">))&lt;/span> &lt;span class="nv">conv&lt;/span>&lt;span class="o">=&lt;/span>notrunc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> -ne &lt;span class="s2">&amp;#34;\x41\x42\x43\x44\x44&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> sudo dd &lt;span class="nv">of&lt;/span>&lt;span class="o">=&lt;/span>/proc/&lt;span class="k">$(&lt;/span>pidof loop&lt;span class="k">)&lt;/span>/mem &lt;span class="nv">bs&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1&lt;/span> &lt;span class="nv">count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">5&lt;/span> &lt;span class="nv">seek&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span>&lt;span class="m">0&lt;/span>x5a6be9ed32a0&lt;span class="k">))&lt;/span> &lt;span class="nv">conv&lt;/span>&lt;span class="o">=&lt;/span>notrunc&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>使用 gdb 修改&lt;span class="hx-absolute -hx-mt-20" id="使用-gdb-修改">&lt;/span>
+&lt;a href="#%e4%bd%bf%e7%94%a8-gdb-%e4%bf%ae%e6%94%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo gdb -p &lt;span class="k">$(&lt;/span>pidof loop&lt;span class="k">)&lt;/span> -batch -ex &lt;span class="s2">&amp;#34;set {int}0x6515df2922a0 = 0x41424344&amp;#34;&lt;/span> -ex &lt;span class="s2">&amp;#34;detach&amp;#34;&lt;/span> -ex &lt;span class="s2">&amp;#34;quit&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo gdb -p &lt;span class="k">$(&lt;/span>pidof loop&lt;span class="k">)&lt;/span> -batch -ex &lt;span class="s2">&amp;#34;set {char}0x6515df2922a0 = 0x41&amp;#34;&lt;/span> -ex &lt;span class="s2">&amp;#34;detach&amp;#34;&lt;/span> -ex &lt;span class="s2">&amp;#34;quit&amp;#34;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://blog.holbertonschool.com/hack-the-virtual-memory-c-strings-proc/" target="_blank" rel="noopener">hack-the-virtual-memory-c-strings-proc&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man5/proc_pid_mem.5.html" target="_blank" rel="noopener">/proc/pid/mem&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://chat.qwen.ai/c/71592756-3669-424d-8613-f40a26b7944a" target="_blank" rel="noopener">supportedByQwen&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Java How Jvm Works</title><link>https://cloudedseal.github.io/blog/java-how-jvm-works/</link><pubDate>Thu, 03 Jul 2025 11:47:45 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-how-jvm-works/</guid><description>
 &lt;p>how modern JVMs (like HotSpot/OpenJDK, OpenJ9, or GraalVM) work?&lt;/p>
 &lt;ol>
 &lt;li>这是一个经过多层次抽象的软件系统。&lt;/li>
@@ -11120,4 +11212,4 @@ title="Copy code"
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Out-of-order_execution" target="_blank" rel="noopener">out-of-order-execution(dynamic execution)&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://en.wikipedia.org/wiki/Instruction_scheduling" target="_blank" rel="noopener">Instruction_scheduling&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/41872203" target="_blank" rel="noopener">X86/GCC memory fence的一些见解&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>cs-semaphores</title><link>https://cloudedseal.github.io/blog/cs-semaphores/</link><pubDate>Tue, 25 May 2021 12:38:06 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cs-semaphores/</guid><description/></item></channel></rss>
+&lt;/ol></description></item></channel></rss>
