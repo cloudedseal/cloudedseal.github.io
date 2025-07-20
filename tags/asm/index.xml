@@ -1628,7 +1628,7 @@ call 带来的效果之一就是 push %rip, ret 带来的效果之一就是 pop 
 &lt;a href="#jmp-label" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>When a jump instruction executes (in the last step of the machine cycle), it puts a new address into the PC. Now the fetch at the top of the next machine cycle fetches the instruction at that new address. Instead of executing the instruction that follows the jump instruction in memory, the processor &amp;ldquo;jumps&amp;rdquo; to an instruction somewhere else in memory.&lt;br>
 jmp 指令把 label 所在的地址, 复制给 pc 寄存器. 这就改变了程序的控制流. 然后程序流程就脱离了原来的执行流. 和 call label 很相似, 对, call 指令作用之一就包括了一个隐式的 jmp label.
-函数调用也就是把控制权交给了被调用者. 但是控制权最后要回到调用函数那里. 只不过 call 指令在函数交出控制权之前还多干了一件事, 就是把此时的 pc 值 push 到了栈里.&lt;/p>
+call 函数调用也就是把控制权交给了被调用者. 但是控制权最后要回到调用函数那里. 只不过 call 指令在函数交出控制权之前还多干了一件事, 就是把&lt;code>此时的 pc 值&lt;/code> push 到了栈里.&lt;/p>
 &lt;/blockquote>
 &lt;h1>stack management&lt;/h1>&lt;h2>stack pointer&lt;span class="hx-absolute -hx-mt-20" id="stack-pointer">&lt;/span>
 &lt;a href="#stack-pointer" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
