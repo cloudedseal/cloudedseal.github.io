@@ -497,7 +497,7 @@ title="Copy code"
 &lt;li>&lt;a href="https://chat.qwen.ai/c/dc5e5e67-8c14-4c42-a1e6-6018a7688317" target="_blank" rel="noopener">qwen&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Linux File Descriptor</title><link>https://cloudedseal.github.io/blog/linux-file-descriptor/</link><pubDate>Fri, 20 Jun 2025 15:45:48 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-file-descriptor/</guid><description>
 &lt;h2>fd 一个编号,一个指针&lt;span class="hx-absolute -hx-mt-20" id="fd-一个编号一个指针">&lt;/span>
-&lt;a href="#fd-%e4%b8%80%e4%b8%aa%e7%bc%96%e5%8f%b7%e4%b8%80%e4%b8%aa%e6%8c%87%e9%92%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>指向文件 -&amp;gt; private_data 指向具体的文件&lt;/p>
+&lt;a href="#fd-%e4%b8%80%e4%b8%aa%e7%bc%96%e5%8f%b7%e4%b8%80%e4%b8%aa%e6%8c%87%e9%92%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>指向文件 -&amp;gt; private_data 指向具体的文件, OS 内部对象&lt;/p>
 &lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/include/linux/fs.h#L1064" target="_blank" rel="noopener">file void *private_data 指向具体的文件，这就是一切皆为文件的实现&lt;/a>&lt;/li>
