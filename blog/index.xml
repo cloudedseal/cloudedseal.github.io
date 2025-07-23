@@ -92,6 +92,7 @@ title="Copy code"
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://blog.holbertonschool.com/hack-the-virtual-memory-c-strings-proc/" target="_blank" rel="noopener">hack-the-virtual-memory-c-strings-proc&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man5/proc_pid_mem.5.html" target="_blank" rel="noopener">/proc/pid/mem&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://jyywiki.cn/OS/2025/lect6.md" target="_blank" rel="noopener">modify-virtual-memory&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://chat.qwen.ai/c/71592756-3669-424d-8613-f40a26b7944a" target="_blank" rel="noopener">supportedByQwen&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Java How Jvm Works</title><link>https://cloudedseal.github.io/blog/java-how-jvm-works/</link><pubDate>Thu, 03 Jul 2025 11:47:45 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-how-jvm-works/</guid><description>
 &lt;p>how modern JVMs (like HotSpot/OpenJDK, OpenJ9, or GraalVM) work?&lt;/p>
