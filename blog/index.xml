@@ -701,7 +701,8 @@ title="Copy code"
 &lt;/li>
 &lt;/ol>
 &lt;h3>&lt;strong>数据流可视化&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="数据流可视化">&lt;/span>
-&lt;a href="#%e6%95%b0%e6%8d%ae%e6%b5%81%e5%8f%af%e8%a7%86%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;a href="#%e6%95%b0%e6%8d%ae%e6%b5%81%e5%8f%af%e8%a7%86%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/pipe2.drawio.svg" alt="pipe2" loading="lazy" />&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;pre>&lt;code>&amp;#43;-------------------&amp;#43;
 | Parent Shell |
 | (PID 43141) |
@@ -887,6 +888,32 @@ title="Copy code"
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">43142&lt;/span> &lt;span class="mi">11&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">44&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">13.290401&lt;/span> &lt;span class="o">+++&lt;/span> &lt;span class="n">exited&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">+++&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">43143&lt;/span> &lt;span class="mi">11&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">44&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">13.309383&lt;/span> &lt;span class="o">+++&lt;/span> &lt;span class="n">exited&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">+++&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;p>And finally, the parent shell exits:&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">43141&lt;/span> &lt;span class="mi">11&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">44&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">13.318626&lt;/span> &lt;span class="o">+++&lt;/span> &lt;span class="n">exited&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="o">+++&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>✅ Step 7: shell wait subProcess Exit&lt;span class="hx-absolute -hx-mt-20" id="-step-7-shell-wait-subprocess-exit">&lt;/span>
+&lt;a href="#-step-7-shell-wait-subprocess-exit" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">43141&lt;/span> &lt;span class="mi">11&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">44&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">13.290534&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="p">...&lt;/span> &lt;span class="n">wait4&lt;/span> &lt;span class="n">resumed&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">[{&lt;/span>&lt;span class="nf">WIFEXITED&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nf">WEXITSTATUS&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">}],&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">43142&lt;/span> &lt;span class="err">#&lt;/span>&lt;span class="n">cat&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="mi">43141&lt;/span> &lt;span class="mi">11&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">44&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">13.311084&lt;/span> &lt;span class="o">&amp;lt;&lt;/span>&lt;span class="p">...&lt;/span> &lt;span class="n">wait4&lt;/span> &lt;span class="n">resumed&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="p">[{&lt;/span>&lt;span class="nf">WIFEXITED&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nf">WEXITSTATUS&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">}],&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">43143&lt;/span> &lt;span class="err">#&lt;/span>&lt;span class="n">wc&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
 &lt;button
 class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
 title="Copy code"
