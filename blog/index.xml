@@ -517,6 +517,11 @@ title="Copy code"
 &lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/net/socket.c#L156-L173" target="_blank" rel="noopener">file_operations 实现之 socket_file_ops&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/fs/ext4/file.c#L962-L981" target="_blank" rel="noopener">file_operations 实现之 ext4_file_operations&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/fs/pipe.c#L1243-L1263" target="_blank" rel="noopener">file_operations 实现之 pipe&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Linux Spurious Wakeup</title><link>https://cloudedseal.github.io/blog/linux-spurious-wakeup/</link><pubDate>Mon, 02 Jun 2025 16:38:23 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-spurious-wakeup/</guid><description>
+&lt;p>火车到站才能下车，中途被唤醒，也不能立刻下车，得先检查一下是不是目的站。这样的唤醒无处不在啊。。。&lt;/p>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://mohitmishra786.github.io/chessman/2025/03/31/Technical-Guide-to-System-Calls-Implementation-and-Signal-Handling-in-Modern-Operating-Systems.html" target="_blank" rel="noopener">syscall 实现和信号处理-处于 sleep 状态可被 signal 唤醒&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Linux IO Model</title><link>https://cloudedseal.github.io/blog/linux-io-model/</link><pubDate>Thu, 29 May 2025 15:44:41 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-io-model/</guid><description>
 &lt;blockquote>
 &lt;p>IO 的同步、异步、阻塞、非阻塞取决于相关 syscall 的实现。&lt;/p>
@@ -11246,15 +11251,4 @@ title="Copy code"
 &lt;li>&lt;a href="https://www.felixcloutier.com/x86/lea" target="_blank" rel="noopener">load-effective-address(lea)&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html" target="_blank" rel="noopener">java-bytecode&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://blog.csdn.net/appleyuchi/article/details/84036985" target="_blank" rel="noopener">圆圈数字等&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>java-keyword-volatile</title><link>https://cloudedseal.github.io/blog/java-keyword-volatile/</link><pubDate>Fri, 18 Jun 2021 14:54:23 +0800</pubDate><guid>https://cloudedseal.github.io/blog/java-keyword-volatile/</guid><description>
-&lt;h2>可见性问题&lt;span class="hx-absolute -hx-mt-20" id="可见性问题">&lt;/span>
-&lt;a href="#%e5%8f%af%e8%a7%81%e6%80%a7%e9%97%ae%e9%a2%98" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/java/java-volatile.svg" alt="thread stack frame" loading="lazy" />&lt;/p>
-&lt;h2>可见性问题思路&lt;span class="hx-absolute -hx-mt-20" id="可见性问题思路">&lt;/span>
-&lt;a href="#%e5%8f%af%e8%a7%81%e6%80%a7%e9%97%ae%e9%a2%98%e6%80%9d%e8%b7%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;img src="https://github.com/stardustman/pictures/raw/main/img/java/thread-visibility.svg" alt="线程可见性问题思路" loading="lazy" />&lt;/p>
-&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
-&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>&lt;a href="https://teachcomputerscience.com/von-neumann-harvard-architecture/" target="_blank" rel="noopener">von-neumann-harvard-architecture&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Out-of-order_execution" target="_blank" rel="noopener">out-of-order-execution(dynamic execution)&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Instruction_scheduling" target="_blank" rel="noopener">Instruction_scheduling&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/41872203" target="_blank" rel="noopener">X86/GCC memory fence的一些见解&lt;/a>&lt;/li>
 &lt;/ol></description></item></channel></rss>
