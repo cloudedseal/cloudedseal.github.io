@@ -834,7 +834,18 @@ title="Copy code"
 &lt;li>Closes the redundant &lt;code>FD 3&lt;/code> after duplication.&lt;/li>
 &lt;/ul>
 &lt;h3>✅ Step 4: Executing Commands&lt;span class="hx-absolute -hx-mt-20" id="-step-4-executing-commands">&lt;/span>
-&lt;a href="#-step-4-executing-commands" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>&lt;code>cat&lt;/code> Process (PID &lt;code>43142&lt;/code>)&lt;span class="hx-absolute -hx-mt-20" id="cat-process-pid-43142">&lt;/span>
+&lt;a href="#-step-4-executing-commands" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>execve() 到底做了什么?&lt;span class="hx-absolute -hx-mt-20" id="execve-到底做了什么">&lt;/span>
+&lt;a href="#execve-%e5%88%b0%e5%ba%95%e5%81%9a%e4%ba%86%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>execve() replaces the current process with a new program:
+It replaces the process&amp;rsquo;s code, data, heap, and stack.&lt;/p>
+&lt;p>But it preserves :&lt;/p>
+&lt;ul>
+&lt;li>Open file descriptors (unless FD_CLOEXEC is set). 子进程提前重定向 fd，execve 后并不失效&lt;/li>
+&lt;li>Signal handlers (unless changed in the new program).&lt;/li>
+&lt;li>Current working directory.&lt;/li>
+&lt;li>Umask.&lt;/li>
+&lt;li>User/group IDs, etc.&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;code>cat&lt;/code> Process (PID &lt;code>43142&lt;/code>)&lt;span class="hx-absolute -hx-mt-20" id="cat-process-pid-43142">&lt;/span>
 &lt;a href="#cat-process-pid-43142" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="mi">27641&lt;/span> &lt;span class="mi">13&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">23&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mf">49.476204&lt;/span> &lt;span class="nf">execve&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;/usr/bin/cat&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;cat&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;/etc/passwd&amp;#34;&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="p">...)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
 &lt;button
