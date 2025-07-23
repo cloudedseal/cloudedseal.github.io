@@ -702,7 +702,8 @@ title="Copy code"
 &lt;/ol>
 &lt;h3>&lt;strong>数据流可视化&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="数据流可视化">&lt;/span>
 &lt;a href="#%e6%95%b0%e6%8d%ae%e6%b5%81%e5%8f%af%e8%a7%86%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/pipe2.drawio.svg" alt="pipe2" loading="lazy" />&lt;/p>
-&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>&lt;strong>syscalls 可视化&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="syscalls-可视化">&lt;/span>
+&lt;a href="#syscalls-%e5%8f%af%e8%a7%86%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;pre>&lt;code>&amp;#43;-------------------&amp;#43;
 | Parent Shell |
 | (PID 43141) |
