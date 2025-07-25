@@ -7112,6 +7112,9 @@ Final executable &lt;code>hello&lt;/code> is created.&lt;/p>
 &lt;li>&lt;strong>Assembly&lt;/strong>: Done by &lt;code>as&lt;/code>.&lt;/li>
 &lt;li>&lt;strong>Linking&lt;/strong>: Orchestrated by &lt;code>collect2&lt;/code> → &lt;code>ld&lt;/code>.&lt;/li>
 &lt;/ol></description></item><item><title>Master Elf</title><link>https://cloudedseal.github.io/blog/master-elf/</link><pubDate>Mon, 28 Apr 2025 15:29:57 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-elf/</guid><description>
+&lt;blockquote>
+&lt;p>elf 描述进程的初始状态&lt;/p>
+&lt;/blockquote>
 &lt;h2>hello world&lt;span class="hx-absolute -hx-mt-20" id="hello-world">&lt;/span>
 &lt;a href="#hello-world" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
