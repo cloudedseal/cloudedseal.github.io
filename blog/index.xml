@@ -1,7 +1,108 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://cloudedseal.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://cloudedseal.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://cloudedseal.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Master Dynamic Dns</title><link>https://cloudedseal.github.io/blog/master-dynamic-dns/</link><pubDate>Wed, 30 Jul 2025 17:07:23 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-dynamic-dns/</guid><description>
+&lt;/blockquote></description></item><item><title>Bing9 Reverse Dns</title><link>https://cloudedseal.github.io/blog/bing9-reverse-dns/</link><pubDate>Thu, 31 Jul 2025 06:25:50 +0800</pubDate><guid>https://cloudedseal.github.io/blog/bing9-reverse-dns/</guid><description>
+&lt;h2>配置&lt;span class="hx-absolute -hx-mt-20" id="配置">&lt;/span>
+&lt;a href="#%e9%85%8d%e7%bd%ae" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>网段 x.y 配置反向的 DNS&lt;/p>
+&lt;p>zone &lt;em>&lt;strong>&lt;font style="color:#DF2A3F;">y.x.&lt;/font>&lt;/strong>&lt;/em>&lt;strong>in-addr.arpa&lt;/strong>&lt;/p>
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">view &lt;span class="s2">&amp;#34;MASTER&amp;#34;&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> match-clients &lt;span class="o">{&lt;/span> 10.10.0.111/32&lt;span class="p">;&lt;/span> 10.10.9.11/32&lt;span class="p">;&lt;/span> key key1&lt;span class="p">;&lt;/span> &lt;span class="o">}&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> key &lt;span class="s2">&amp;#34;key1&amp;#34;&lt;/span> &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> algorithm hmac-sha256&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> secret &lt;span class="s2">&amp;#34;N0c+DmoYWriFeN8SAwGg+i+E+CS4jMRplzs8+fGlLAQ=&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> zone &lt;span class="s2">&amp;#34;10.10.in-addr.arpa&amp;#34;&lt;/span> IN &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">type&lt;/span> master&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> file &lt;span class="s2">&amp;#34;db.10.10&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> update-policy &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> grant key1 zonesub ANY&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> notify yes&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> also-notify &lt;span class="o">{&lt;/span> 10.10.0.182&lt;span class="p">;&lt;/span> &lt;span class="o">}&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> allow-transfer &lt;span class="o">{&lt;/span> 10.10.0.182&lt;span class="p">;&lt;/span> &lt;span class="o">}&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> zone &lt;span class="s2">&amp;#34;.&amp;#34;&lt;/span> IN &lt;span class="o">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">type&lt;/span> hint&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> file &lt;span class="s2">&amp;#34;named.ca&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">}&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> include &lt;span class="s2">&amp;#34;/etc/named.rfc1912.zones&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">}&lt;/span>&lt;span class="p">;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>db.10.10 zone 文件&lt;span class="hx-absolute -hx-mt-20" id="db1010-zone-文件">&lt;/span>
+&lt;a href="#db1010-zone-%e6%96%87%e4%bb%b6" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$ORIGIN&lt;/span> .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$TTL&lt;/span> &lt;span class="m">60&lt;/span> &lt;span class="p">;&lt;/span> &lt;span class="m">1&lt;/span> minute
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">10.10.in-addr.arpa IN SOA 10.10.in-addr.arpa. root.myexample.com. &lt;span class="o">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">2023111495&lt;/span> &lt;span class="p">;&lt;/span> serial
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">604800&lt;/span> &lt;span class="p">;&lt;/span> refresh &lt;span class="o">(&lt;/span>&lt;span class="m">1&lt;/span> week&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">86400&lt;/span> &lt;span class="p">;&lt;/span> retry &lt;span class="o">(&lt;/span>&lt;span class="m">1&lt;/span> day&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">2419200&lt;/span> &lt;span class="p">;&lt;/span> expire &lt;span class="o">(&lt;/span>&lt;span class="m">4&lt;/span> weeks&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">604800&lt;/span> &lt;span class="p">;&lt;/span> minimum &lt;span class="o">(&lt;/span>&lt;span class="m">1&lt;/span> week&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> NS ns1.myexample.com.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> NS ns2.myexample.com.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$ORIGIN&lt;/span> 10.10.in-addr.arpa.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$TTL&lt;/span> &lt;span class="m">30&lt;/span> &lt;span class="p">;&lt;/span> &lt;span class="m">30&lt;/span> seconds
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">34.12 PTR shogun14.myexample.com.&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>nsupdate 命令&lt;span class="hx-absolute -hx-mt-20" id="nsupdate-命令">&lt;/span>
+&lt;a href="#nsupdate-%e5%91%bd%e4%bb%a4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>添加&lt;span class="hx-absolute -hx-mt-20" id="添加">&lt;/span>
+&lt;a href="#%e6%b7%bb%e5%8a%a0" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">nsupdate -y hmac-sha256:key1:N0c+DmoYWriFeN8SAwGg+i+E+CS4jMRplzs8+fGlLAQ&lt;span class="o">=&lt;/span> &amp;lt;&amp;lt;&lt;span class="s2">&amp;#34;EOF&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">server 10.10.0.181 &lt;span class="m">53&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">update add 34.12.10.10.in-addr.arpa &lt;span class="m">30&lt;/span> PTR shogun14.myexample.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">send
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">EOF&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>删除&lt;span class="hx-absolute -hx-mt-20" id="删除">&lt;/span>
+&lt;a href="#%e5%88%a0%e9%99%a4" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">nsupdate -y hmac-sha256:key1:N0c+DmoYWriFeN8SAwGg+i+E+CS4jMRplzs8+fGlLAQ&lt;span class="o">=&lt;/span> &amp;lt;&amp;lt;&lt;span class="s2">&amp;#34;EOF&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">server 10.10.0.181 &lt;span class="m">53&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">update del 34.12.10.10.in-addr.arpa &lt;span class="m">30&lt;/span> PTR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">send
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">EOF&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://www.isc.org/docs/ReverseDNSpresentation.pdf" target="_blank" rel="noopener">https://www.isc.org/docs/ReverseDNSpresentation.pdf&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.interserver.net/tips/kb/bind-reverse-dns-example-setup/" target="_blank" rel="noopener">https://www.interserver.net/tips/kb/bind-reverse-dns-example-setup/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.apnic.net/about-apnic/corporate-documents/documents/resource-guidelines/reverse-zones/" target="_blank" rel="noopener">https://www.apnic.net/about-apnic/corporate-documents/documents/resource-guidelines/reverse-zones/&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Master Dynamic Dns</title><link>https://cloudedseal.github.io/blog/master-dynamic-dns/</link><pubDate>Wed, 30 Jul 2025 17:07:23 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-dynamic-dns/</guid><description>
 &lt;h2>重要概念&lt;span class="hx-absolute -hx-mt-20" id="重要概念">&lt;/span>
 &lt;a href="#%e9%87%8d%e8%a6%81%e6%a6%82%e5%bf%b5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>dns zone&lt;span class="hx-absolute -hx-mt-20" id="dns-zone">&lt;/span>
 &lt;a href="#dns-zone" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
@@ -11534,14 +11635,4 @@ title="Copy code"
 &lt;li>&lt;input disabled="" type="checkbox"> ComputerSystem:A programer perspective Edtion3 English&lt;/li>
 &lt;li>&lt;input disabled="" type="checkbox"> rust-lang&lt;/li>
 &lt;li>&lt;input disabled="" type="checkbox"> kubernetes&lt;/li>
-&lt;/ul></description></item><item><title>js-eventloop</title><link>https://cloudedseal.github.io/blog/js-eventloop/</link><pubDate>Sun, 05 Dec 2021 23:24:48 +0800</pubDate><guid>https://cloudedseal.github.io/blog/js-eventloop/</guid><description>
-&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
-&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>&lt;a href="https://www.digitalocean.com/community/tutorials/understanding-the-event-loop-callbacks-promises-and-async-await-in-javascript" target="_blank" rel="noopener">understanding-the-event-loop-callbacks-promises-and-async-await-in-javascript&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://slidr.io/vakila/learning-functional-programming-with-javascript" target="_blank" rel="noopener">learning-functional-programming-with-javascript&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ" target="_blank" rel="noopener">what is event loop?js-conf&lt;/a>&lt;/li>
-&lt;li>&lt;a href="http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D" target="_blank" rel="noopener">what is event loop demo&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://codewords.recurse.com/issues/one/an-introduction-to-functional-programming" target="_blank" rel="noopener">an-introduction-to-functional-programming&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://medium.com/jspoint/how-javascript-works-in-browser-and-node-ab7d0d09ac2f" target="_blank" rel="noopener">how-javascript-works-in-browser-and-node&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://developer.mozilla.org/en-US/docs/Web/API" target="_blank" rel="noopener">浏览器提供 Web Apis&lt;/a>&lt;/li>
-&lt;/ol></description></item></channel></rss>
+&lt;/ul></description></item></channel></rss>
