@@ -1,7 +1,70 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – Blog</title><link>https://cloudedseal.github.io/blog/</link><description>Recent content in Blog on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 27 Apr 2025 15:20:04 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>About</title><link>https://cloudedseal.github.io/blog/about/</link><pubDate>Sun, 27 Mar 2022 23:18:39 +0800</pubDate><guid>https://cloudedseal.github.io/blog/about/</guid><description>
 &lt;blockquote>
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)&lt;/p>
-&lt;/blockquote></description></item><item><title>Macos Cli Update Bypassdomain</title><link>https://cloudedseal.github.io/blog/macos-cli-update-bypassdomain/</link><pubDate>Thu, 24 Jul 2025 10:56:10 +0800</pubDate><guid>https://cloudedseal.github.io/blog/macos-cli-update-bypassdomain/</guid><description>
+&lt;/blockquote></description></item><item><title>Syscall Details</title><link>https://cloudedseal.github.io/blog/syscall-details/</link><pubDate>Sun, 27 Jul 2025 17:45:55 +0800</pubDate><guid>https://cloudedseal.github.io/blog/syscall-details/</guid><description>
+&lt;h3>什么是操作系统？&lt;span class="hx-absolute -hx-mt-20" id="什么是操作系统">&lt;/span>
+&lt;a href="#%e4%bb%80%e4%b9%88%e6%98%af%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>os 初始状态 + syscalls&lt;/p>
+&lt;p>When a user program issues a system call, the operating system (OS) and hardware collaborate to transition from user mode to kernel mode, execute &lt;code>privileged&lt;/code> operations, and safely return control to the user program.&lt;/p>
+&lt;h3>&lt;strong>1. Issuing the System Call&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-issuing-the-system-call">&lt;/span>
+&lt;a href="#1-issuing-the-system-call" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>User Program Action&lt;/strong>: The program invokes a system call (e.g., &lt;code>read()&lt;/code> or &lt;code>write()&lt;/code>) via a library function (e.g., &lt;code>libc&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>Setup&lt;/strong>: The library function prepares:
+&lt;ul>
+&lt;li>&lt;strong>System Call Number&lt;/strong>: Identifies the requested service (e.g., stored in &lt;code>RAX&lt;/code> on x86-64).&lt;/li>
+&lt;li>&lt;strong>Arguments&lt;/strong>: Passed via registers (e.g., &lt;code>RDI&lt;/code>, &lt;code>RSI&lt;/code>, &lt;code>RDX&lt;/code> on x86-64).&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Trigger&lt;/strong>: Executes a hardware instruction (e.g., &lt;code>syscall&lt;/code> on x86-64, &lt;code>svc&lt;/code> on ARM, or &lt;code>int 0x80&lt;/code> for legacy x86) to switch to kernel mode.&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>2. Hardware Transition to Kernel Mode&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="2-hardware-transition-to-kernel-mode">&lt;/span>
+&lt;a href="#2-hardware-transition-to-kernel-mode" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Privilege Elevation&lt;/strong>: The CPU switches from &lt;strong>user mode&lt;/strong> (limited privileges) to &lt;strong>kernel mode&lt;/strong> (full privileges).&lt;/li>
+&lt;li>&lt;strong>Interrupt Handling&lt;/strong>:
+&lt;ul>
+&lt;li>The CPU consults the &lt;strong>Interrupt Descriptor Table (IDT)&lt;/strong> or system call entry point to locate the kernel&amp;rsquo;s handler.&lt;/li>
+&lt;li>The &lt;strong>Memory Management Unit (MMU)&lt;/strong> enforces memory protection, ensuring user programs cannot access kernel memory.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Context Save&lt;/strong>:
+&lt;ul>
+&lt;li>The CPU saves the user program’s state (registers, program counter, stack pointer, flags) to the &lt;strong>kernel stack&lt;/strong> (not the user stack).&lt;/li>
+&lt;li>The kernel stack is per-process and isolated for security.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>3. Kernel Executes the System Call&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="3-kernel-executes-the-system-call">&lt;/span>
+&lt;a href="#3-kernel-executes-the-system-call" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Handler Invocation&lt;/strong>: The kernel’s system call dispatcher uses the system call number to jump to the appropriate handler (e.g., &lt;code>sys_read()&lt;/code> or &lt;code>sys_write()&lt;/code>).&lt;/li>
+&lt;li>&lt;strong>Privileged Operations&lt;/strong>:
+&lt;ul>
+&lt;li>The kernel performs tasks like I/O, file access, or memory allocation, interacting directly with hardware if needed.&lt;/li>
+&lt;li>If the operation blocks (e.g., waiting for disk data), the process may be paused, and the scheduler switches to another task.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>Result Preparation&lt;/strong>: The return value (or error code) is stored in a register (e.g., &lt;code>RAX&lt;/code> on x86-64).&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>4. Returning to User Mode&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="4-returning-to-user-mode">&lt;/span>
+&lt;a href="#4-returning-to-user-mode" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Context Restoration&lt;/strong>: The kernel restores the saved user state (registers, program counter) from the kernel stack.&lt;/li>
+&lt;li>&lt;strong>Mode Switch&lt;/strong>: The CPU executes a return instruction (e.g., &lt;code>sysret&lt;/code> or &lt;code>iret&lt;/code> on x86), switching back to &lt;strong>user mode&lt;/strong>.&lt;/li>
+&lt;li>&lt;strong>Resumption&lt;/strong>: The user program continues execution at the next instruction, typically checking the return value for success/error.&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Hardware and OS Roles&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="hardware-and-os-roles">&lt;/span>
+&lt;a href="#hardware-and-os-roles" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>CPU&lt;/strong>: Manages privilege levels, mode transitions, and instruction execution.&lt;/li>
+&lt;li>&lt;strong>MMU&lt;/strong>: Enforces memory isolation between user and kernel spaces.&lt;/li>
+&lt;li>&lt;strong>Kernel&lt;/strong>: Provides system call handlers, manages resources, and ensures security.&lt;/li>
+&lt;/ul>
+&lt;h3>&lt;strong>Summary&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="summary">&lt;/span>
+&lt;a href="#summary" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>User-to-Kernel Transition&lt;/strong>: Hardware elevates privileges, saves state, and jumps to the kernel.&lt;/li>
+&lt;li>&lt;strong>Kernel Execution&lt;/strong>: Performs the requested service using privileged operations.&lt;/li>
+&lt;li>&lt;strong>Kernel-to-User Transition&lt;/strong>: Restores user state, drops privileges, and resumes the user program.&lt;/li>
+&lt;/ul>
+&lt;p>This controlled interaction ensures user programs can safely access OS services without compromising system stability or security.&lt;/p>
+&lt;h1>References&lt;/h1>&lt;ol>
+&lt;li>&lt;a href="https://kib.kiev.ua/x86docs/AMD/MISC/21086C.pdf" target="_blank" rel="noopener">https://kib.kiev.ua/x86docs/AMD/MISC/21086C.pdf&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Macos Cli Update Bypassdomain</title><link>https://cloudedseal.github.io/blog/macos-cli-update-bypassdomain/</link><pubDate>Thu, 24 Jul 2025 10:56:10 +0800</pubDate><guid>https://cloudedseal.github.io/blog/macos-cli-update-bypassdomain/</guid><description>
 &lt;h2>起因&lt;span class="hx-absolute -hx-mt-20" id="起因">&lt;/span>
 &lt;a href="#%e8%b5%b7%e5%9b%a0" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
 &lt;p>在 GUI 配置 bypassdomain 后，有时候会丢失，频繁配置太麻烦了。&lt;/p>
@@ -11139,30 +11202,4 @@ title="Copy code"
 &lt;li>&lt;a href="https://www.katacoda.com/courses/kubernetes/kubectl-run-containers" target="_blank" rel="noopener">https://www.katacoda.com/courses/kubernetes/kubectl-run-containers&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html" target="_blank" rel="noopener">apiversion&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://www.redhat.com/en/topics/containers/what-is-kubernetes-deployment" target="_blank" rel="noopener">what is k8s deployment?&lt;/a>&lt;/li>
-&lt;/ol></description></item><item><title>What-happens-type-url-into-browser-and-press-enter</title><link>https://cloudedseal.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</link><pubDate>Sat, 11 Sep 2021 16:21:12 +0800</pubDate><guid>https://cloudedseal.github.io/blog/what-happens-type-url-into-browser-and-press-enter/</guid><description>
-&lt;h2>dns query&lt;span class="hx-absolute -hx-mt-20" id="dns-query">&lt;/span>
-&lt;a href="#dns-query" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>get the ip of the target domain&lt;/p>
-&lt;h3>browser cache&lt;span class="hx-absolute -hx-mt-20" id="browser-cache">&lt;/span>
-&lt;a href="#browser-cache" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>firefox(about:networking#dns)
-&lt;img src="https://raw.githubusercontent.com/buybyte/pictures/main/img/firefox_dns_cache.png" alt="firefox_dns_cache" loading="lazy" />&lt;/p>
-&lt;h3>/etc/hosts&lt;span class="hx-absolute -hx-mt-20" id="etchosts">&lt;/span>
-&lt;a href="#etchosts" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h3>os cache&lt;span class="hx-absolute -hx-mt-20" id="os-cache">&lt;/span>
-&lt;a href="#os-cache" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
-&lt;li>macos 查看 dns 请求日志 sudo log stream &amp;ndash;predicate &amp;lsquo;process == &amp;ldquo;mDNSResponder&amp;rdquo;&amp;rsquo; &amp;ndash;info&lt;/li>
-&lt;/ol>
-&lt;h3>dns resolver&lt;span class="hx-absolute -hx-mt-20" id="dns-resolver">&lt;/span>
-&lt;a href="#dns-resolver" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>/etc/resolv.conf&lt;/p>
-&lt;ol>
-&lt;li>arp -a 查看有没有 dns 服务器的 mac 地址&lt;/li>
-&lt;li>ARP request for the nameserver&lt;/li>
-&lt;li>send dns query to get the ip of the domain&lt;/li>
-&lt;/ol>
-&lt;h2>arp 获取 gateway 的 mac 地址&lt;span class="hx-absolute -hx-mt-20" id="arp-获取-gateway-的-mac-地址">&lt;/span>
-&lt;a href="#arp-%e8%8e%b7%e5%8f%96-gateway-%e7%9a%84-mac-%e5%9c%b0%e5%9d%80" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>向 gateway 发送 ip packet&lt;span class="hx-absolute -hx-mt-20" id="向-gateway-发送-ip-packet">&lt;/span>
-&lt;a href="#%e5%90%91-gateway-%e5%8f%91%e9%80%81-ip-packet" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
-&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
-&lt;li>&lt;a href="http://www.science.smith.edu/~nhowe/262/oldlabs/keyboard.html" target="_blank" rel="noopener">keyborad-interrput&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.zhihu.com/question/560616439/answer/2722866208" target="_blank" rel="noopener">Chrome 是怎么判断地址栏输入的东西是不是网址? 这就是第一步😂-omnibox&lt;/a>&lt;/li>
-&lt;li>&lt;a href="about:networking#dns" >firefox dns&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.fortinet.com/resources/cyberglossary/what-is-arp" target="_blank" rel="noopener">ARP&lt;/a>&lt;/li>
 &lt;/ol></description></item></channel></rss>
