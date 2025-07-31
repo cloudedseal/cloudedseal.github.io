@@ -9017,7 +9017,7 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h1>RentrantLock.lock 整体概览&lt;/h1>&lt;p>&lt;a href="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/CAS_acquire.png" target="_blank" rel="noopener">RentrantLock.lock 流程概览&lt;/a>&lt;/p>
+&lt;h1>RentrantLock.lock 整体概览&lt;/h1>&lt;p>&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/CAS_acquire.png" alt="RentrantLock.lock 流程概览" loading="lazy" />&lt;/p>
 &lt;h2>FairSync.lock 分析&lt;span class="hx-absolute -hx-mt-20" id="fairsynclock-分析">&lt;/span>
 &lt;a href="#fairsynclock-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>acquire(1) 分析&lt;span class="hx-absolute -hx-mt-20" id="acquire1-分析">&lt;/span>
 &lt;a href="#acquire1-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
