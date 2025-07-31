@@ -9117,7 +9117,7 @@ title="Copy code"
 &lt;a href="#addwaiter-%e5%9b%be%e7%a4%ba" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
 &lt;p>链表，还是画一画图，理解的更好&lt;/p>
 &lt;/blockquote>
-&lt;p>&lt;img src="https://raw.githubusercontent.com/clouded/pictures/main/img/AQS-addWaiter.drawio.svg" alt="addWaiter-图示" loading="lazy" />&lt;/p>
+&lt;p>&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/AQS-addWaiter.drawio.svg" alt="addWaiter-图示" loading="lazy" />&lt;/p>
 &lt;ol>
 &lt;li>tail == null, 等待队列里一个等待的线程 Node 也没有
 &lt;ul>
