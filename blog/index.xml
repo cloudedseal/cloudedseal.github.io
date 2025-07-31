@@ -9176,8 +9176,8 @@ title="Copy code"
 &lt;li>当前节点是等待队列第一个 &amp;amp;&amp;amp; tryAcquire 成功获取了锁&lt;/li>
 &lt;li>tryAcquire 抛出了 Error, finally 的 failed 逻辑会执行 cancelAcquire&lt;/li>
 &lt;/ol>
-&lt;h5>acquireQueued 线程进入 sleep，两轮循环分析&lt;span class="hx-absolute -hx-mt-20" id="acquirequeued-线程进入-sleep两轮循环分析">&lt;/span>
-&lt;a href="#acquirequeued-%e7%ba%bf%e7%a8%8b%e8%bf%9b%e5%85%a5-sleep%e4%b8%a4%e8%bd%ae%e5%be%aa%e7%8e%af%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/AQS-acquireQueuedPark.drawio.svg" alt="acquireQueued 两轮分析" loading="lazy" />&lt;/p>
+&lt;h5>acquireQueued 两轮循环线程进入 sleep 分析&lt;span class="hx-absolute -hx-mt-20" id="acquirequeued-两轮循环线程进入-sleep-分析">&lt;/span>
+&lt;a href="#acquirequeued-%e4%b8%a4%e8%bd%ae%e5%be%aa%e7%8e%af%e7%ba%bf%e7%a8%8b%e8%bf%9b%e5%85%a5-sleep-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/AQS-acquireQueuedPark.drawio.svg" alt="acquireQueued 两轮分析" loading="lazy" />&lt;/p>
 &lt;ol>
 &lt;li>第 1 轮 for 循环
 &lt;ul>
