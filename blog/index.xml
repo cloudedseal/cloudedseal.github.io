@@ -9101,7 +9101,7 @@ title="Copy code"
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">node&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// 返回包装申请锁的线程的 Node 节点&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line hl">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">enq&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">node&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// 说明队列为空&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line hl">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">enq&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">node&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// 说明队列为空, enq 返回 node 的前驱节点&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">node&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// 返回包装申请锁的线程的 Node 节点&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
 &lt;button
@@ -9113,12 +9113,11 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h5>enq 返回 node 的前驱节点&lt;span class="hx-absolute -hx-mt-20" id="enq-返回-node-的前驱节点">&lt;/span>
-&lt;a href="#enq-%e8%bf%94%e5%9b%9e-node-%e7%9a%84%e5%89%8d%e9%a9%b1%e8%8a%82%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;h4>addWaiter 图示&lt;span class="hx-absolute -hx-mt-20" id="addwaiter-图示">&lt;/span>
+&lt;h4>addWaiter 图示&lt;span class="hx-absolute -hx-mt-20" id="addwaiter-图示">&lt;/span>
 &lt;a href="#addwaiter-%e5%9b%be%e7%a4%ba" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
 &lt;p>链表，还是画一画图，理解的更好&lt;/p>
 &lt;/blockquote>
-&lt;p>![addWaiter-图示](&lt;a href="https://raw.githubusercontent.com/c" target="_blank" rel="noopener">https://raw.githubusercontent.com/c&lt;/a> lou de d/pictures/main/img/AQS-addWaiter.drawio.svg)&lt;/p>
+&lt;p>&lt;img src="https://raw.githubusercontent.com/clouded/pictures/main/img/AQS-addWaiter.drawio.svg" alt="addWaiter-图示" loading="lazy" />&lt;/p>
 &lt;ol>
 &lt;li>tail == null, 等待队列里一个等待的线程 Node 也没有
 &lt;ul>
