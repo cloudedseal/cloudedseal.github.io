@@ -258,11 +258,8 @@ All of the information for a zone is stored in what’s called a &lt;code>DNS zo
 /var/named/named.loopback&lt;br>
 /var/named/slaves&lt;/p>
 &lt;/blockquote>
-&lt;ol>
-&lt;li>/var/named/named.ca 13 个 rootnameserver 的信息&lt;/li>
-&lt;/ol>
-&lt;h3>/var/named/named.ca&lt;span class="hx-absolute -hx-mt-20" id="varnamednamedca">&lt;/span>
-&lt;a href="#varnamednamedca" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>/var/named/named.ca 13 个 rootnameserver 的 IP 等信息&lt;span class="hx-absolute -hx-mt-20" id="varnamednamedca-13-个-rootnameserver-的-ip-等信息">&lt;/span>
+&lt;a href="#varnamednamedca-13-%e4%b8%aa-rootnameserver-%e7%9a%84-ip-%e7%ad%89%e4%bf%a1%e6%81%af" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="p">;&lt;/span> &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.11.3-RedHat-9.11.3-3.fc27 &amp;lt;&amp;lt;&amp;gt;&amp;gt; +bufsize&lt;span class="o">=&lt;/span>&lt;span class="m">1200&lt;/span> +norec @a.root-servers.net
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;&lt;/span> &lt;span class="o">(&lt;/span>&lt;span class="m">2&lt;/span> servers found&lt;span class="o">)&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">;;&lt;/span> global options: +cmd
