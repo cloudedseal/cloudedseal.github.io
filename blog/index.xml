@@ -9206,7 +9206,10 @@ title="Copy code"
 &lt;li>tryAcquire 抛出了 Error(超出了锁的最大可重入次数😂), finally 的 failed 逻辑会执行 cancelAcquire&lt;/li>
 &lt;/ol>
 &lt;h5>acquireQueued 两轮循环线程进入 sleep 分析&lt;span class="hx-absolute -hx-mt-20" id="acquirequeued-两轮循环线程进入-sleep-分析">&lt;/span>
-&lt;a href="#acquirequeued-%e4%b8%a4%e8%bd%ae%e5%be%aa%e7%8e%af%e7%ba%bf%e7%a8%8b%e8%bf%9b%e5%85%a5-sleep-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;p>&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/AQS-acquireQueuedPark.drawio.svg" alt="acquireQueued 两轮分析" loading="lazy" />&lt;/p>
+&lt;a href="#acquirequeued-%e4%b8%a4%e8%bd%ae%e5%be%aa%e7%8e%af%e7%ba%bf%e7%a8%8b%e8%bf%9b%e5%85%a5-sleep-%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;blockquote>
+&lt;p>第一个等待节点添加时需要两轮 for 循环&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/AQS-acquireQueuedPark.drawio.svg" alt="acquireQueued 两轮分析" loading="lazy" />&lt;/p>
 &lt;ol>
 &lt;li>第 1 轮 for 循环
 &lt;ul>
