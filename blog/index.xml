@@ -1078,8 +1078,8 @@ title="Copy code"
 &lt;/div>
 &lt;h3>java 字节码文件中的字符串存储&lt;span class="hx-absolute -hx-mt-20" id="java-字节码文件中的字符串存储">&lt;/span>
 &lt;a href="#java-%e5%ad%97%e8%8a%82%e7%a0%81%e6%96%87%e4%bb%b6%e4%b8%ad%e7%9a%84%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%ad%98%e5%82%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>常量字符串比如 &lt;code>emoji&lt;/code> String s = &amp;ldquo;🤣&amp;rdquo; 使用的是 &lt;a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.7" target="_blank" rel="noopener">modified UTF-8&lt;/a>&lt;/p>
-&lt;h3>java 字符串内部表示&lt;span class="hx-absolute -hx-mt-20" id="java-字符串内部表示">&lt;/span>
-&lt;a href="#java-%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%86%85%e9%83%a8%e8%a1%a8%e7%a4%ba" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>所有 String 对象、常量字符串内部存储使用的是 &lt;code>UTF-16&lt;/code>&lt;/p>
+&lt;h3>java 进程字符串内部表示&lt;span class="hx-absolute -hx-mt-20" id="java-进程字符串内部表示">&lt;/span>
+&lt;a href="#java-%e8%bf%9b%e7%a8%8b%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%86%85%e9%83%a8%e8%a1%a8%e7%a4%ba" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>所有 String 对象、常量字符串内部存储使用的是 &lt;code>UTF-16&lt;/code>&lt;/p>
 &lt;h2>默认的字符集&lt;span class="hx-absolute -hx-mt-20" id="默认的字符集">&lt;/span>
 &lt;a href="#%e9%bb%98%e8%ae%a4%e7%9a%84%e5%ad%97%e7%ac%a6%e9%9b%86" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;code>defaultCharset&lt;/code> 在 jvm 启动时使用 &lt;code>file.encoding&lt;/code> 设置。&lt;/li>
