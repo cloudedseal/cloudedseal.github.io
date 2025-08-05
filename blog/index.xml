@@ -9605,15 +9605,17 @@ raw text &amp;mdash;&amp;gt;tokenization &amp;mdash;&amp;gt; token&lt;/p>
 &lt;h2>tokenization&lt;span class="hx-absolute -hx-mt-20" id="tokenization">&lt;/span>
 &lt;a href="#tokenization" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;a href="https://tiktokenizer.vercel.app/?model=cl100k_base" target="_blank" rel="noopener">https://tiktokenizer.vercel.app/?model=cl100k_base&lt;/a>&lt;/p>
 &lt;h2>statistic token simulator&lt;span class="hx-absolute -hx-mt-20" id="statistic-token-simulator">&lt;/span>
-&lt;a href="#statistic-token-simulator" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>这就是所谓的 prediction
-参数 各个 token 的权重
-模型有大量的知识，存储在上亿的参数之中。这些参数可以视为对超大规模的知识进行的一种有损压缩。超大规模知识的模糊记忆。
-按照统计规律给出所谓的答案
-模型需要中间结果
-概率、统计
-in-context learning&lt;/p>
+&lt;a href="#statistic-token-simulator" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>这就是所谓的 prediction&lt;/li>
+&lt;li>参数 各个 token 的权重&lt;/li>
+&lt;li>模型有大量的知识，存储在上亿的参数之中。这些参数可以视为对超大规模的知识进行的一种有损压缩。超大规模知识的模糊记忆。&lt;/li>
+&lt;li>按照统计规律给出所谓的答案&lt;/li>
+&lt;li>模型需要中间结果&lt;/li>
+&lt;li>概率、统计&lt;/li>
+&lt;li>in-context learning&lt;/li>
+&lt;/ol>
 &lt;h1>post-training&lt;/h1>&lt;p>对话集结构 &amp;mdash;&amp;gt; 一维 token 序列
-&lt;img src="https://raw.githubusercontent.com/buybyte/pictures/main/img/conversation-structure-to-token-sequence.png" alt="conversation-structure-to-token-sequence" loading="lazy" />&lt;/p>
+&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/conversation-structure-to-token-sequence.png" alt="conversation-structure-to-token-sequence" loading="lazy" />&lt;/p>
 &lt;p>instruct-gpt&lt;/p>
 &lt;p>强化学习
 reinforcement learning
