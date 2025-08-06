@@ -1251,6 +1251,8 @@ title="Copy code"
 &lt;ol>
 &lt;li>最适合字节流，何为字节流，写进去就写进去了，读出来后就再也无法重新读出了。&lt;/li>
 &lt;/ol>
+&lt;h2>什么是文件？&lt;span class="hx-absolute -hx-mt-20" id="什么是文件">&lt;/span>
+&lt;a href="#%e4%bb%80%e4%b9%88%e6%98%af%e6%96%87%e4%bb%b6" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>实现了 &lt;a href="https://elixir.bootlin.com/linux/v6.15/source/include/linux/fs.h#L2129-L2172" target="_blank" rel="noopener">file_operations&lt;/a> 的就是文件&lt;/p>
 &lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://elixir.bootlin.com/linux/v6.15/source/include/linux/fs.h#L1064" target="_blank" rel="noopener">file void *private_data 指向具体的文件，这就是一切皆为文件的实现&lt;/a>&lt;/li>
@@ -1858,8 +1860,8 @@ title="Copy code"
 &lt;li>This file defines the &lt;code>order of name resolution services&lt;/code> (e.g., &lt;code>files&lt;/code> for &lt;code>/etc/hosts&lt;/code>, &lt;code>dns&lt;/code> for DNS).&lt;/li>
 &lt;li>定义了 DNS 解析服务的顺序&lt;/li>
 &lt;/ul>
-&lt;h4>/etc/nsswitch.conf 内容&lt;span class="hx-absolute -hx-mt-20" id="etcnsswitchconf-内容">&lt;/span>
-&lt;a href="#etcnsswitchconf-%e5%86%85%e5%ae%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h4>4.1 /etc/nsswitch.conf 内容&lt;span class="hx-absolute -hx-mt-20" id="41-etcnsswitchconf-内容">&lt;/span>
+&lt;a href="#41-etcnsswitchconf-%e5%86%85%e5%ae%b9" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># /etc/nsswitch.conf&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Example configuration of GNU Name Service Switch functionality.&lt;/span>
@@ -1905,14 +1907,14 @@ title="Copy code"
 &lt;li>
 &lt;p>&lt;strong>Order of resolution-DNS 解析核心逻辑&lt;/strong>:&lt;/p>
 &lt;ol>
-&lt;li>&lt;strong>&lt;code>files&lt;/code>&lt;/strong>: Check &lt;code>/etc/hosts&lt;/code> first (static hostname-to-IP mappings).&lt;/li>
+&lt;li>&lt;strong>&lt;code>files&lt;/code>&lt;/strong>: Check &lt;code>/etc/hosts&lt;/code> first (&lt;strong>static&lt;/strong> hostname-to-IP mappings). 静态配置&lt;/li>
 &lt;li>&lt;strong>&lt;code>mdns4_minimal&lt;/code>&lt;/strong>: Use multicast DNS (mDNS) for &lt;code>.local&lt;/code> names &lt;strong>IPv4-only&lt;/strong> (common for local network devices).
 &lt;ul>
 &lt;li>&lt;code>[NOTFOUND=return]&lt;/code>: If mDNS returns &amp;ldquo;not found,&amp;rdquo; stop here and don’t proceed to &lt;code>dns&lt;/code> or &lt;code>myhostname&lt;/code>.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>&lt;strong>&lt;code>dns&lt;/code>&lt;/strong>: Use DNS (configured in &lt;code>/etc/resolv.conf&lt;/code>).&lt;/li>
-&lt;li>&lt;strong>&lt;code>myhostname&lt;/code>&lt;/strong>: Resolve the local machine’s hostname to its IP addresses (loopback and network interfaces).&lt;/li>
+&lt;li>&lt;strong>&lt;code>dns&lt;/code>&lt;/strong>: Use DNS (configured in &lt;code>/etc/resolv.conf&lt;/code>). 使用 DNS&lt;/li>
+&lt;li>&lt;strong>&lt;code>myhostname&lt;/code>&lt;/strong>: Resolve the local machine’s hostname to its IP addresses (loopback and network interfaces). 本机 hostname 解析成 IP&lt;/li>
 &lt;/ol>
 &lt;/li>
 &lt;li>
@@ -1973,7 +1975,7 @@ title="Copy code"
 &lt;ol>
 &lt;li>Check &lt;code>/etc/hosts&lt;/code> → No match.&lt;/li>
 &lt;li>Skip &lt;code>mdns4_minimal&lt;/code> (not relevant for &lt;code>baidu.com&lt;/code>).&lt;/li>
-&lt;li>Query DNS via &lt;code>systemd-resolved&lt;/code> (uses &lt;code>/etc/resolv.conf&lt;/code>).&lt;/li>
+&lt;li>Query DNS via &lt;code>systemd-resolved&lt;/code> (uses &lt;code>/etc/resolv.conf&lt;/code>). 这就是本机的 &lt;strong>stub dns resolver&lt;/strong>&lt;/li>
 &lt;li>Fallback to &lt;code>myhostname&lt;/code> only if DNS fails (unlikely).&lt;/li>
 &lt;/ol>
 &lt;/li>
@@ -1983,9 +1985,9 @@ title="Copy code"
 &lt;li>The &lt;code>dns&lt;/code> source uses settings from &lt;code>/etc/resolv.conf&lt;/code> (e.g., &lt;code>nameserver 127.0.0.53&lt;/code> for &lt;code>systemd-resolved&lt;/code>).&lt;/li>
 &lt;li>&lt;code>systemd-resolved&lt;/code> acts as a local DNS stub resolver, handling:
 &lt;ul>
-&lt;li>DNSSEC validation.&lt;/li>
-&lt;li>Caching.&lt;/li>
-&lt;li>Split DNS (for VPNs).&lt;/li>
+&lt;li>&lt;code>DNSSEC&lt;/code> validation.&lt;/li>
+&lt;li>&lt;code>Caching&lt;/code>.&lt;/li>
+&lt;li>&lt;code>Split&lt;/code> DNS (for VPNs).&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
@@ -2005,7 +2007,7 @@ title="Copy code"
 &lt;ul>
 &lt;li>The system checks &lt;code>/etc/hosts&lt;/code> for a static entry for &lt;code>baidu.com&lt;/code>.&lt;/li>
 &lt;li>If found, it skips DNS. No match is found here.&lt;/li>
-&lt;li>在这个文件里寻找目标域名的 IP, 找到之后返回&lt;/li>
+&lt;li>在这个文件里寻找目标域名的 IP, 找到之后返回。停止查询。&lt;/li>
 &lt;/ul>
 &lt;h3>5. &lt;strong>Read &lt;code>/etc/resolv.conf&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="5-read">&lt;/span>
 &lt;a href="#5-read" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
@@ -2023,10 +2025,10 @@ title="Copy code"
 &lt;p>读取 DNS 解析器配置文件, 真正的配置在 /run/systemd/resolve/stub-resolv.conf&lt;/p>
 &lt;/blockquote>
 &lt;ul>
-&lt;li>dynamic DNS configuration file managed by &lt;code>systemd-resolved&lt;/code>, the local DNS stub resolver.&lt;/li>
+&lt;li>dynamic DNS configuration file managed by &lt;code>systemd-resolved&lt;/code>, the &lt;strong>local DNS stub resolver&lt;/strong>.&lt;/li>
 &lt;li>It serves as the system&amp;rsquo;s &lt;strong>primary DNS resolver&lt;/strong> configuration, ensuring applications route DNS queries through systemd-resolved for features like &lt;code>caching&lt;/code>, &lt;code>DNSSEC validation&lt;/code>, and &lt;code>split DNS&lt;/code> (e.g., for VPNs).&lt;/li>
 &lt;/ul>
-&lt;h4>&lt;strong>&lt;code>systemd-resolved&lt;/code>&lt;/strong> local DNS stub resolver&lt;span class="hx-absolute -hx-mt-20" id="systemd-resolved-local-dns-stub-resolver">&lt;/span>
+&lt;h4>&lt;strong>&lt;code>systemd-resolved&lt;/code>&lt;/strong> （local DNS stub resolver）&lt;span class="hx-absolute -hx-mt-20" id="systemd-resolved-local-dns-stub-resolver">&lt;/span>
 &lt;a href="#systemd-resolved-local-dns-stub-resolver" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">systemctl status systemd-resolved.service
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">● systemd-resolved.service - Network Name Resolution
@@ -2080,13 +2082,13 @@ title="Copy code"
 &lt;a href="#1-nameserver-1270053" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ul>
 &lt;li>&lt;strong>Purpose&lt;/strong>: All DNS queries from applications are sent to this &lt;strong>local DNS stub resolver&lt;/strong>.
 &lt;ul>
-&lt;li>&lt;code>127.0.0.53&lt;/code> is a special &lt;code>loopback address&lt;/code> used exclusively by &lt;code>systemd-resolved&lt;/code>.&lt;/li>
+&lt;li>&lt;code>127.0.0.53&lt;/code> is a special &lt;code>loopback address&lt;/code> used exclusively by &lt;code>systemd-resolved&lt;/code>. 专用的 IP&lt;/li>
 &lt;li>The resolver listens on this address to handle queries from applications.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;strong>Why Not a Public DNS Server?&lt;/strong>
 &lt;ul>
-&lt;li>Applications &lt;code>don't communicate directly&lt;/code> with public DNS servers (e.g., &lt;code>8.8.8.8&lt;/code>). Instead, they send queries to &lt;code>127.0.0.53&lt;/code>, and &lt;code>systemd-resolved&lt;/code> forwards them to upstream DNS servers configured elsewhere.&lt;/li>
+&lt;li>Applications &lt;code>don't communicate directly&lt;/code> with public DNS servers (e.g., &lt;code>8.8.8.8&lt;/code>). Instead, they send queries to &lt;code>127.0.0.53&lt;/code>, and &lt;code>systemd-resolved&lt;/code> forwards them to upstream DNS servers configured elsewhere. 由 &lt;code>systemd-resolved&lt;/code> 所谓发起递归查询。&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;strong>连接测试&lt;/strong>
@@ -2108,7 +2110,7 @@ title="Copy code"
 &lt;a href="#2-options-edns0-trust-ad" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h5>&lt;ul>
 &lt;li>&lt;strong>&lt;code>edns0&lt;/code>&lt;/strong>:
 &lt;ul>
-&lt;li>Enables &lt;strong>EDNS(0)&lt;/strong> (Extension Mechanisms for DNS), allowing larger UDP packets (up to 4096 bytes instead of 512 bytes).&lt;/li>
+&lt;li>Enables &lt;strong>EDNS(0)&lt;/strong> (&lt;code>Extension Mechanisms&lt;/code> for DNS), allowing larger UDP packets (up to 4096 bytes instead of 512 bytes).&lt;/li>
 &lt;li>Required for DNSSEC and modern DNS features like DNS over TLS (DoT).&lt;/li>
 &lt;/ul>
 &lt;/li>
@@ -2126,16 +2128,16 @@ title="Copy code"
 &lt;ul>
 &lt;li>If you run &lt;code>ping myhost&lt;/code>, the resolver will attempt:
 &lt;ol>
-&lt;li>&lt;code>myhost&lt;/code>&lt;/li>
-&lt;li>&lt;code>myhost.localdomain&lt;/code>&lt;/li>
+&lt;li>&lt;code>myhost&lt;/code> 简名&lt;/li>
+&lt;li>&lt;code>myhost.localdomain&lt;/code> 全名&lt;/li>
 &lt;/ol>
 &lt;/li>
 &lt;li>Avoids needing to type full FQDNs (Fully Qualified Domain Names) in local networks.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h3>6. &lt;strong>Query DNS via &lt;code>systemd-resolved&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="6-query-dns-via">&lt;/span>
-&lt;a href="#6-query-dns-via" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>6. &lt;strong>Query DNS(递归查询) via &lt;code>systemd-resolved&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="6-query-dns递归查询-via">&lt;/span>
+&lt;a href="#6-query-dns%e9%80%92%e5%bd%92%e6%9f%a5%e8%af%a2-via" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">socket&lt;span class="o">(&lt;/span>AF_INET, SOCK_DGRAM&lt;span class="p">|&lt;/span>SOCK_CLOEXEC&lt;span class="p">|&lt;/span>SOCK_NONBLOCK, IPPROTO_IP&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">5&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">connect&lt;span class="o">(&lt;/span>5, &lt;span class="o">{&lt;/span>&lt;span class="nv">sa_family&lt;/span>&lt;span class="o">=&lt;/span>AF_INET, &lt;span class="nv">sin_port&lt;/span>&lt;span class="o">=&lt;/span>htons&lt;span class="o">(&lt;/span>53&lt;span class="o">)&lt;/span>, &lt;span class="nv">sin_addr&lt;/span>&lt;span class="o">=&lt;/span>inet_addr&lt;span class="o">(&lt;/span>&lt;span class="s2">&amp;#34;127.0.0.53&amp;#34;&lt;/span>&lt;span class="o">)}&lt;/span>, 16&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">0&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sendmmsg&lt;span class="o">(&lt;/span>5, &lt;span class="o">[{&lt;/span>&lt;span class="nv">msg_hdr&lt;/span>&lt;span class="o">={&lt;/span>...&lt;span class="o">}&lt;/span>, &lt;span class="nv">msg_len&lt;/span>&lt;span class="o">=&lt;/span>38&lt;span class="o">}&lt;/span>, ...&lt;span class="o">]&lt;/span>, 2, MSG_NOSIGNAL&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">2&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
@@ -2157,8 +2159,8 @@ title="Copy code"
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h4>&lt;strong>upstream DNS servers&lt;/strong> 上游的 DNS 服务器&lt;span class="hx-absolute -hx-mt-20" id="upstream-dns-servers-上游的-dns-服务器">&lt;/span>
-&lt;a href="#upstream-dns-servers-%e4%b8%8a%e6%b8%b8%e7%9a%84-dns-%e6%9c%8d%e5%8a%a1%e5%99%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
+&lt;h4>&lt;strong>upstream DNS servers&lt;/strong> 上游的 DNS 服务器(迭代查询)&lt;span class="hx-absolute -hx-mt-20" id="upstream-dns-servers-上游的-dns-服务器迭代查询">&lt;/span>
+&lt;a href="#upstream-dns-servers-%e4%b8%8a%e6%b8%b8%e7%9a%84-dns-%e6%9c%8d%e5%8a%a1%e5%99%a8%e8%bf%ad%e4%bb%a3%e6%9f%a5%e8%af%a2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;blockquote>
 &lt;p>upstream DNS servers is external DNS servers that local DNS resolver &lt;code>forwards&lt;/code> queries to for resolution&lt;/p>
 &lt;/blockquote>
 &lt;ul>
@@ -2197,8 +2199,8 @@ Current DNS Server 就是上游的 DNS 服务器&lt;/p>
 &lt;/blockquote>
 &lt;h3>7. &lt;strong>Receive DNS Responses&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="7-receive-dns-responses">&lt;/span>
 &lt;a href="#7-receive-dns-responses" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
-&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">recvfrom&lt;span class="o">(&lt;/span>5, &lt;span class="s2">&amp;#34;\266L\201\200\0\1\0\2\0\0\0\1\5baidu\3com\0\0\1\0\1\300\f\0\1\0...&amp;#34;&lt;/span>, 2048, 0, ...&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">70&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">recvfrom&lt;span class="o">(&lt;/span>5, &lt;span class="s2">&amp;#34;\261e\201\200\0\1\0\0\0\1\0\1\5baidu\3com\0\0\34\0\1\300\f\0\6\0...&amp;#34;&lt;/span>, 65536, 0, ...&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">81&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl"> recvfrom&lt;span class="o">(&lt;/span>5, &lt;span class="s2">&amp;#34;\266L\201\200\0\1\0\2\0\0\0\1\5baidu\3com\0\0\1\0\1\300\f\0\1\0...&amp;#34;&lt;/span>, 2048, 0, ...&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">70&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> recvfrom&lt;span class="o">(&lt;/span>5, &lt;span class="s2">&amp;#34;\261e\201\200\0\1\0\0\0\1\0\1\5baidu\3com\0\0\34\0\1\300\f\0\6\0...&amp;#34;&lt;/span>, 65536, 0, ...&lt;span class="o">)&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">81&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
 &lt;button
 class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
 title="Copy code"
@@ -2247,7 +2249,7 @@ title="Copy code"
 &lt;/li>
 &lt;li>&lt;strong>&lt;code>systemd-resolved&lt;/code>&lt;/strong>:
 &lt;ul>
-&lt;li>A local DNS stub resolver that handles queries and caches results.&lt;/li>
+&lt;li>A local DNS &lt;code>stub&lt;/code> resolver that handles queries and caches results.&lt;/li>
 &lt;/ul>
 &lt;/li>
 &lt;li>&lt;strong>&lt;code>/etc/hosts&lt;/code>&lt;/strong>:
