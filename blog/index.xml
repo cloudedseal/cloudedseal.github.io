@@ -11195,6 +11195,15 @@ title="Copy code"
 &lt;/ol>
 &lt;h2>图解&lt;span class="hx-absolute -hx-mt-20" id="图解">&lt;/span>
 &lt;a href="#%e5%9b%be%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;img src="https://raw.githubusercontent.com/stardustman/pictures/main/img/java-thread-pool-params.drawio.svg" alt="java-线程池参数" loading="lazy" />&lt;/p>
+&lt;h2>线程数量和提交任务的关系&lt;span class="hx-absolute -hx-mt-20" id="线程数量和提交任务的关系">&lt;/span>
+&lt;a href="#%e7%ba%bf%e7%a8%8b%e6%95%b0%e9%87%8f%e5%92%8c%e6%8f%90%e4%ba%a4%e4%bb%bb%e5%8a%a1%e7%9a%84%e5%85%b3%e7%b3%bb" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>corePoolSize = 4&lt;/li>
+&lt;li>maxPoolSize = 8&lt;/li>
+&lt;li>queueCapacity = 10&lt;/li>
+&lt;li>totalTasks = 30&lt;/li>
+&lt;li>提交的任务执行时间较长，也就是提交后相当于占用这个线程。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://raw.githubusercontent.com/cloudedseal/pictures/main/img/threads-tasks-count-visual.png" alt="threads-tasks-count-visual" loading="lazy" />&lt;/p>
 &lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://mp.weixin.qq.com/s/OKTW_mZnNJcRBrIFHONR3g" target="_blank" rel="noopener">你管这破玩意叫线程池&lt;/a>&lt;/li>
