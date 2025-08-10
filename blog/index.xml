@@ -1307,21 +1307,28 @@ title="Copy code"
 &lt;h2>I/O 模型&lt;span class="hx-absolute -hx-mt-20" id="io-模型">&lt;/span>
 &lt;a href="#io-%e6%a8%a1%e5%9e%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>Blocking I/O&lt;span class="hx-absolute -hx-mt-20" id="blocking-io">&lt;/span>
 &lt;a href="#blocking-io" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
-&lt;p>阻塞&lt;/p>
+&lt;p>The process is blocked until the I/O operation completes.
+阻塞&lt;/p>
 &lt;/blockquote>
 &lt;ol>
 &lt;li>用户调用阻塞的 &lt;code>read&lt;/code> 后，没有数据进程就放弃 CPU，进入阻塞状态(sleep)&lt;/li>
 &lt;/ol>
 &lt;h3>Non-blocking I/O&lt;span class="hx-absolute -hx-mt-20" id="non-blocking-io">&lt;/span>
 &lt;a href="#non-blocking-io" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
-&lt;p>非阻塞&lt;/p>
+&lt;p>The system call returns &lt;code>immediately&lt;/code>, either with the data or with an error indicating that the data is not ready.
+The process can then &lt;code>periodically check&lt;/code> (poll) for readiness.
+非阻塞&lt;/p>
 &lt;/blockquote>
 &lt;ol>
 &lt;li>用户自己去调用非阻塞的 &lt;code>read&lt;/code> 轮询&lt;/li>
 &lt;/ol>
 &lt;h3>I/O Multiplexing&lt;span class="hx-absolute -hx-mt-20" id="io-multiplexing">&lt;/span>
 &lt;a href="#io-multiplexing" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
-&lt;p>同步非阻塞&lt;/p>
+&lt;p>(e.g., select, poll, epoll)​​: The process can &lt;code>block&lt;/code> on multiple I/O sources at &lt;code>once&lt;/code>, and is woken up when &lt;code>any&lt;/code> of them are ready.
+This allows one thread to manage multiple I/O operations.&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>同步非阻塞, java 的 NIO 就是这个模型。&lt;/p>
 &lt;/blockquote>
 &lt;ol>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/select.2.html" target="_blank" rel="noopener">select&lt;/a> 内核轮询，返回结果。用户再遍历获取哪些 IO ready。&lt;/li>
@@ -1329,11 +1336,12 @@ title="Copy code"
 &lt;/ol>
 &lt;h3>Signal-Driven I/O&lt;span class="hx-absolute -hx-mt-20" id="signal-driven-io">&lt;/span>
 &lt;a href="#signal-driven-io" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
-&lt;p>信号驱动 SIGIO 只有一种状态&lt;/p>
+&lt;p>The kernel notifies the process via a signal (e.g., SIGIO) when the I/O operation is ready to proceed.
+信号驱动 SIGIO 只有一种状态&lt;/p>
 &lt;/blockquote>
 &lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">kill&lt;/span> -l &lt;span class="p">|&lt;/span> grep SIGIO
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">26&lt;span class="o">)&lt;/span> SIGVTALRM 27&lt;span class="o">)&lt;/span> SIGPROF 28&lt;span class="o">)&lt;/span> SIGWINCH 29&lt;span class="o">)&lt;/span> SIGIO 30&lt;span class="o">)&lt;/span> SIGPWR&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">1&lt;span class="o">)&lt;/span> SIGVTALRM 27&lt;span class="o">)&lt;/span> SIGPROF 28&lt;span class="o">)&lt;/span> SIGWINCH 29&lt;span class="o">)&lt;/span> SIGIO 30&lt;span class="o">)&lt;/span> SIGPWR&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
 &lt;button
 class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
 title="Copy code"
@@ -1345,12 +1353,16 @@ title="Copy code"
 &lt;/div>
 &lt;h3>Asynchronous I/O&lt;span class="hx-absolute -hx-mt-20" id="asynchronous-io">&lt;/span>
 &lt;a href="#asynchronous-io" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>The I/O operation is initiated, and the process continues. The kernel sends a signal when the entire I/O operation is completed.&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
 &lt;p>异步&lt;/p>
 &lt;/blockquote>
 &lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://mp.weixin.qq.com/s?__biz=Mzg2MzU3Mjc3Ng==&amp;amp;mid=2247483737&amp;amp;idx=1&amp;amp;sn=7ef3afbb54289c6e839eed724bb8a9d6&amp;amp;chksm=ce77c71ef9004e08e3d164561e3a2708fc210c05408fa41f7fe338d8e85f39c1ad57519b614e&amp;amp;scene=178&amp;amp;cur_album_id=2559805446807928833&amp;amp;search_click_id=#rd" target="_blank" rel="noopener">内核角度看 I/O 模型-强烈推荐&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://mohitmishra786.github.io/chessman/2025/03/31/Technical-Guide-to-System-Calls-Implementation-and-Signal-Handling-in-Modern-Operating-Systems.html" target="_blank" rel="noopener">syscall 分类&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/fcntl.2.html" target="_blank" rel="noopener">fcntl-O_NONBLOCK&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Master Linux Pipe</title><link>https://cloudedseal.github.io/blog/master-linux-pipe/</link><pubDate>Sun, 25 May 2025 18:26:01 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-linux-pipe/</guid><description>
 &lt;h2>file descriptor&lt;span class="hx-absolute -hx-mt-20" id="file-descriptor">&lt;/span>
 &lt;a href="#file-descriptor" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
