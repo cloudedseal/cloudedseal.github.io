@@ -1446,8 +1446,10 @@ title="Copy code"
 &lt;/div>
 &lt;h3>Asynchronous I/O&lt;span class="hx-absolute -hx-mt-20" id="asynchronous-io">&lt;/span>
 &lt;a href="#asynchronous-io" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
-&lt;p>The I/O operation is initiated, and the process continues. The kernel sends a signal when the entire I/O operation is completed.
-Async I/O = &lt;code>Decoupling&lt;/code> request submission from result processing, where the duration of thread occupancy is minimized to the time required to handle the result—not the time required for the physical I/O operation. 发起请求&lt;/p>
+&lt;p>The I/O operation is initiated, and the process continues. The kernel sends a signal when the entire I/O operation is completed.&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Async I/O = &lt;code>Decoupling&lt;/code> request submission from result processing, where the duration of thread occupancy is minimized to the time required to handle the result—not the time required for the physical I/O operation. 发起请求, 处理结果&lt;/p>
 &lt;/blockquote>
 &lt;blockquote>
 &lt;p>异步 io_uring&lt;/p>
