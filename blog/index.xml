@@ -1275,9 +1275,99 @@ title="Copy code"
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://mohitmishra786.github.io/chessman/2025/03/31/Technical-Guide-to-System-Calls-Implementation-and-Signal-Handling-in-Modern-Operating-Systems.html" target="_blank" rel="noopener">syscall 实现和信号处理-处于 sleep 状态可被 signal 唤醒&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Linux IO Model</title><link>https://cloudedseal.github.io/blog/linux-io-model/</link><pubDate>Thu, 29 May 2025 15:44:41 +0800</pubDate><guid>https://cloudedseal.github.io/blog/linux-io-model/</guid><description>
-&lt;blockquote>
-&lt;p>IO 的同步、异步、阻塞、非阻塞取决于相关 syscall 的实现。&lt;/p>
+&lt;h2>cpu 基本概念&lt;span class="hx-absolute -hx-mt-20" id="cpu-基本概念">&lt;/span>
+&lt;a href="#cpu-%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>CPU 执行的流程&lt;span class="hx-absolute -hx-mt-20" id="cpu-执行的流程">&lt;/span>
+&lt;a href="#cpu-%e6%89%a7%e8%a1%8c%e7%9a%84%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
+&lt;p>A CPU core is a thread execution unit – if it has no runnable thread, it &lt;code>physically&lt;/code> cannot do work.&lt;/p>
 &lt;/blockquote>
+&lt;pre class="mermaid hx-mt-6">
+flowchart LR
+A[CPU Core] --&amp;gt;|Fetches| B[Instruction Pointer]
+B --&amp;gt;|Executes| C[Current Thread&amp;#39;s Code]
+C --&amp;gt;|Needs data| D[Registers/Memory]
+D --&amp;gt;|If data not ready| E[Stall Pipeline]
+E --&amp;gt;|If stall too long| F[Switch to another thread]
+F --&amp;gt;|If no threads ready| G[HALT Instruction]
+G --&amp;gt; H[CPU IDLE]
+&lt;/pre>&lt;h3>现代 CPU idle(空闲) 会怎样?&lt;span class="hx-absolute -hx-mt-20" id="现代-cpu-idle空闲-会怎样">&lt;/span>
+&lt;a href="#%e7%8e%b0%e4%bb%a3-cpu-idle%e7%a9%ba%e9%97%b2-%e4%bc%9a%e6%80%8e%e6%a0%b7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ol>
+&lt;li>modern CPU 在空闲时会进入低功耗(低电压)状态，称为 C-state。&lt;/li>
+&lt;li>C-state 分为多个级别，C0 是 CPU 正在工作，C1、C2 等是不同的低功耗状态。&lt;/li>
+&lt;li>CPU 会根据负载情况自动调整 C-state。&lt;/li>
+&lt;/ol>
+&lt;h2>等待发生在何处?&lt;span class="hx-absolute -hx-mt-20" id="等待发生在何处">&lt;/span>
+&lt;a href="#%e7%ad%89%e5%be%85%e5%8f%91%e7%94%9f%e5%9c%a8%e4%bd%95%e5%a4%84" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>&lt;strong>The Brutal Truth: Waiting &lt;code>Never Disappears&lt;/code>&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="the-brutal-truth-waiting">&lt;/span>
+&lt;a href="#the-brutal-truth-waiting" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;p>&lt;strong>Physics law&lt;/strong>: I/O operations (disk/network) are &lt;strong>orders of magnitude slower&lt;/strong> than CPU.&lt;/p>
+&lt;ul>
+&lt;li>Disk seek: ~10ms (10,000,000 CPU cycles)&lt;/li>
+&lt;li>Network roundtrip: ~100ms (100,000,000 CPU cycles)&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>No technology can eliminate this latency&lt;/strong>—it&amp;rsquo;s physics.
+Async I/O doesn&amp;rsquo;t &lt;em>remove&lt;/em> waiting; it &lt;strong>relocates who bears the cost of waiting&lt;/strong>.&lt;/p>
+&lt;h3>&lt;strong>Where Waiting Happens: The 3 Layers&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="where-waiting-happens-the-3-layers">&lt;/span>
+&lt;a href="#where-waiting-happens-the-3-layers" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>&lt;strong>1. Hardware Layer (Unavoidable Waiting)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="1-hardware-layer-unavoidable-waiting">&lt;/span>
+&lt;a href="#1-hardware-layer-unavoidable-waiting" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>Disk controller waits for platter rotation → &lt;strong>kernel cannot bypass this&lt;/strong>&lt;/li>
+&lt;li>Network card waits for packets → &lt;strong>kernel cannot bypass this&lt;/strong>&lt;/li>
+&lt;li>&lt;em>This waiting is PHYSICAL and happens regardless of software model.&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;strong>2. Kernel Layer (The &amp;ldquo;Delegation&amp;rdquo; Illusion)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="2-kernel-layer-the">&lt;/span>
+&lt;a href="#2-kernel-layer-the" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>&lt;strong>What the kernel &lt;em>actually&lt;/em> does&lt;/strong>:
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Simplified Linux kernel pseudo-code for async I/O
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">void&lt;/span> &lt;span class="nf">handle_async_read&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">request&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">req&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">data_ready_in_hardware&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="c1">// Hardware completed wait
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">copy_data_to_user&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">req&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">buffer&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">trigger_user_notification&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">req&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">callback&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// &amp;#34;Wake up&amp;#34; user-space
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">queue_request_for_later&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">req&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// Defer until hardware finishes
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;/li>
+&lt;li>&lt;strong>The kernel &lt;em>is&lt;/em> waiting&lt;/strong>—but &lt;strong>not in your thread&amp;rsquo;s context&lt;/strong>.
+&lt;ul>
+&lt;li>It uses &lt;strong>kernel threads&lt;/strong> (for &lt;code>aio_*&lt;/code>) or &lt;strong>completion rings&lt;/strong> (&lt;code>io_uring&lt;/code>) to track hardware progress.&lt;/li>
+&lt;li>&lt;em>Your thread isn&amp;rsquo;t blocked&lt;/em>, but the kernel &lt;em>is&lt;/em> managing the wait elsewhere.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4>&lt;strong>3. User-Space Layer (The Critical Nuance)&lt;/strong>&lt;span class="hx-absolute -hx-mt-20" id="3-user-space-layer-the-critical-nuance">&lt;/span>
+&lt;a href="#3-user-space-layer-the-critical-nuance" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>&lt;strong>Your thread &lt;em>does&lt;/em> &amp;ldquo;wait&amp;rdquo;&lt;/strong>—but in a &lt;strong>non-wasteful way&lt;/strong>:
+&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Java AsynchronousFileChannel example&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="n">channel&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">read&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">buffer&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">null&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CompletionHandler&lt;/span>&lt;span class="o">&amp;lt;&amp;gt;&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">completed&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Integer&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">bytes&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Object&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">att&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// THIS is where you &amp;#34;wait&amp;#34; - but only AFTER data arrives&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Data processed: &amp;#34;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">bytes&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">});&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Thread continues immediately&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;strong>Before data arrives&lt;/strong>: Your thread executes other code → &lt;strong>no CPU wasted&lt;/strong>.&lt;/li>
+&lt;li>&lt;strong>When data arrives&lt;/strong>: Your thread &lt;em>must&lt;/em> run the callback → &lt;strong>this is &amp;ldquo;waiting&amp;rdquo; in disguise&lt;/strong>.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
 &lt;h2>用户空间获取数据前提是什么?&lt;span class="hx-absolute -hx-mt-20" id="用户空间获取数据前提是什么">&lt;/span>
 &lt;a href="#%e7%94%a8%e6%88%b7%e7%a9%ba%e9%97%b4%e8%8e%b7%e5%8f%96%e6%95%b0%e6%8d%ae%e5%89%8d%e6%8f%90%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>数据准备阶段
@@ -1305,7 +1395,10 @@ title="Copy code"
 &lt;li>根据以上两大阶段理解 block/non-block sync/async&lt;/li>
 &lt;/ol>
 &lt;h2>I/O 模型&lt;span class="hx-absolute -hx-mt-20" id="io-模型">&lt;/span>
-&lt;a href="#io-%e6%a8%a1%e5%9e%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>Blocking I/O&lt;span class="hx-absolute -hx-mt-20" id="blocking-io">&lt;/span>
+&lt;a href="#io-%e6%a8%a1%e5%9e%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
+&lt;p>IO 的同步、异步、阻塞、非阻塞取决于相关 syscall 的实现。&lt;/p>
+&lt;/blockquote>
+&lt;h3>Blocking I/O&lt;span class="hx-absolute -hx-mt-20" id="blocking-io">&lt;/span>
 &lt;a href="#blocking-io" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
 &lt;p>The process is blocked until the I/O operation completes.
 阻塞&lt;/p>
@@ -1328,7 +1421,7 @@ The process can then &lt;code>periodically check&lt;/code> (poll) for readiness.
 This allows one thread to manage multiple I/O operations.&lt;/p>
 &lt;/blockquote>
 &lt;blockquote>
-&lt;p>同步非阻塞, java 的 NIO 就是这个模型。&lt;/p>
+&lt;p>同步非阻塞, java 的 NIO 就是这个模型。有一个线程阻塞在 &lt;code>epoll_wait()&lt;/code>&lt;/p>
 &lt;/blockquote>
 &lt;ol>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/select.2.html" target="_blank" rel="noopener">select&lt;/a> 内核轮询，返回结果。用户再遍历获取哪些 IO ready。&lt;/li>
@@ -1353,16 +1446,18 @@ title="Copy code"
 &lt;/div>
 &lt;h3>Asynchronous I/O&lt;span class="hx-absolute -hx-mt-20" id="asynchronous-io">&lt;/span>
 &lt;a href="#asynchronous-io" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;blockquote>
-&lt;p>The I/O operation is initiated, and the process continues. The kernel sends a signal when the entire I/O operation is completed.&lt;/p>
+&lt;p>The I/O operation is initiated, and the process continues. The kernel sends a signal when the entire I/O operation is completed.
+Async I/O = &lt;code>Decoupling&lt;/code> request submission from result processing, where the duration of thread occupancy is minimized to the time required to handle the result—not the time required for the physical I/O operation. 发起请求&lt;/p>
 &lt;/blockquote>
 &lt;blockquote>
-&lt;p>异步&lt;/p>
+&lt;p>异步 io_uring&lt;/p>
 &lt;/blockquote>
 &lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
 &lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>&lt;a href="https://mp.weixin.qq.com/s?__biz=Mzg2MzU3Mjc3Ng==&amp;amp;mid=2247483737&amp;amp;idx=1&amp;amp;sn=7ef3afbb54289c6e839eed724bb8a9d6&amp;amp;chksm=ce77c71ef9004e08e3d164561e3a2708fc210c05408fa41f7fe338d8e85f39c1ad57519b614e&amp;amp;scene=178&amp;amp;cur_album_id=2559805446807928833&amp;amp;search_click_id=#rd" target="_blank" rel="noopener">内核角度看 I/O 模型-强烈推荐&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://mohitmishra786.github.io/chessman/2025/03/31/Technical-Guide-to-System-Calls-Implementation-and-Signal-Handling-in-Modern-Operating-Systems.html" target="_blank" rel="noopener">syscall 分类&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mohitmishra786.github.io/chessman/2025/03/31/Technical-Guide-to-System-Calls-Implementation-and-Signal-Handling-in-Modern-Operating-Systems.html" target="_blank" rel="noopener">syscall 分类-block/non-block&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://man7.org/linux/man-pages/man2/fcntl.2.html" target="_blank" rel="noopener">fcntl-O_NONBLOCK&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://chat.qwen.ai/c/ca5a7f7b-0084-4812-97d4-2463748d9010" target="_blank" rel="noopener">IO model-Qwen&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Master Linux Pipe</title><link>https://cloudedseal.github.io/blog/master-linux-pipe/</link><pubDate>Sun, 25 May 2025 18:26:01 +0800</pubDate><guid>https://cloudedseal.github.io/blog/master-linux-pipe/</guid><description>
 &lt;h2>file descriptor&lt;span class="hx-absolute -hx-mt-20" id="file-descriptor">&lt;/span>
 &lt;a href="#file-descriptor" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
