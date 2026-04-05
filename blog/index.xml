@@ -11627,8 +11627,8 @@ title="Copy code"
 raw text &amp;mdash;&amp;gt;tokenization &amp;mdash;&amp;gt; token&lt;/p>
 &lt;h2>tokenization&lt;span class="hx-absolute -hx-mt-20" id="tokenization">&lt;/span>
 &lt;a href="#tokenization" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>&lt;a href="https://tiktokenizer.vercel.app/?model=cl100k_base" target="_blank" rel="noopener">https://tiktokenizer.vercel.app/?model=cl100k_base&lt;/a>&lt;/p>
-&lt;h2>statistic token simulator&lt;span class="hx-absolute -hx-mt-20" id="statistic-token-simulator">&lt;/span>
-&lt;a href="#statistic-token-simulator" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;h2>statistic token simulator(预测下一个 token)&lt;span class="hx-absolute -hx-mt-20" id="statistic-token-simulator预测下一个-token">&lt;/span>
+&lt;a href="#statistic-token-simulator%e9%a2%84%e6%b5%8b%e4%b8%8b%e4%b8%80%e4%b8%aa-token" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
 &lt;li>这就是所谓的 prediction&lt;/li>
 &lt;li>参数 各个 token 的权重&lt;/li>
 &lt;li>模型有大量的知识，存储在上亿的参数之中。这些参数可以视为对超大规模的知识进行的一种有损压缩。超大规模知识的模糊记忆。&lt;/li>
@@ -11652,6 +11652,7 @@ supervised-fine-tuning&lt;/p>
 &lt;li>&lt;a href="https://hyperbolic.xyz/" target="_blank" rel="noopener">https://hyperbolic.xyz/&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://atlas.nomic.ai/map/0ce65783-c3a9-40b5-895d-384933f50081/a7b46301-022f-45d8-bbf4-98107eabdbac" target="_blank" rel="noopener">对话数据集&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1" target="_blank" rel="noopener">互联网数据集&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://platform.openai.com/tokenizer" target="_blank" rel="noopener">open-ai-tokenizer&lt;/a>&lt;/li>
 &lt;/ol></description></item><item><title>Cache Miss Anomaly</title><link>https://cloudedseal.github.io/blog/cache-miss-anomaly/</link><pubDate>Thu, 13 Feb 2025 16:25:17 +0800</pubDate><guid>https://cloudedseal.github.io/blog/cache-miss-anomaly/</guid><description>
 &lt;h1>缓存 miss 类型&lt;/h1>&lt;h2>compulsory miss&lt;span class="hx-absolute -hx-mt-20" id="compulsory-miss">&lt;/span>
 &lt;a href="#compulsory-miss" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;blockquote>
