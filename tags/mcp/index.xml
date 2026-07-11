@@ -1,8 +1,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – MCP</title><link>https://cloudedseal.github.io/tags/mcp/</link><description>Recent content in MCP on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 10 Jul 2026 13:45:25 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/mcp/index.xml" rel="self" type="application/rss+xml"/><item><title>Ai Agent Invoke Tool Call Mcp</title><link>https://cloudedseal.github.io/blog/ai-agent-invoke-tool-call-mcp/</link><pubDate>Fri, 10 Jul 2026 13:45:25 +0800</pubDate><guid>https://cloudedseal.github.io/blog/ai-agent-invoke-tool-call-mcp/</guid><description>
-&lt;h1>MCP 是什么？&lt;/h1>&lt;p>一个 &lt;code>Tool&lt;/code> 的 RPC（远程过程调用）层，用于在 AI Agent 中调用外部工具。
+&lt;h2>MCP 是什么？&lt;span class="hx-absolute -hx-mt-20" id="mcp-是什么">&lt;/span>
+&lt;a href="#mcp-%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>一个 &lt;code>Tool&lt;/code> 的 RPC（远程过程调用）层，用于在 AI Agent 中调用外部工具。
 大模型支持 tool calls 就能发现可以使用的 tools，然后让 AI Agent 调用这些 tools 来完成任务。&lt;/p>
-&lt;h1>mcp &lt;code>stdio&lt;/code> 示例&lt;/h1>&lt;h2>代码示例&lt;span class="hx-absolute -hx-mt-20" id="代码示例">&lt;/span>
-&lt;a href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h2>mcp &lt;code>stdio&lt;/code> 示例&lt;span class="hx-absolute -hx-mt-20" id="mcp-stdio-示例">&lt;/span>
+&lt;a href="#mcp-stdio-%e7%a4%ba%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>代码示例&lt;span class="hx-absolute -hx-mt-20" id="代码示例">&lt;/span>
+&lt;a href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="ch">#!/usr/bin/env node
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="ch">&lt;/span>&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">readFileSync&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;node:fs&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">createInterface&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;node:readline&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
@@ -124,9 +126,9 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h2>保存为 &lt;code>mcp-readfile-server.js&lt;/code>，并确保文件具有可执行权限。&lt;span class="hx-absolute -hx-mt-20" id="保存为-mcp-readfile-serverjs并确保文件具有可执行权限">&lt;/span>
-&lt;a href="#%e4%bf%9d%e5%ad%98%e4%b8%ba-mcp-readfile-serverjs%e5%b9%b6%e7%a1%ae%e4%bf%9d%e6%96%87%e4%bb%b6%e5%85%b7%e6%9c%89%e5%8f%af%e6%89%a7%e8%a1%8c%e6%9d%83%e9%99%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h2>初始化&lt;span class="hx-absolute -hx-mt-20" id="初始化">&lt;/span>
-&lt;a href="#%e5%88%9d%e5%a7%8b%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>保存为 &lt;code>mcp-readfile-server.js&lt;/code>，并确保文件具有可执行权限。&lt;span class="hx-absolute -hx-mt-20" id="保存为-mcp-readfile-serverjs并确保文件具有可执行权限">&lt;/span>
+&lt;a href="#%e4%bf%9d%e5%ad%98%e4%b8%ba-mcp-readfile-serverjs%e5%b9%b6%e7%a1%ae%e4%bf%9d%e6%96%87%e4%bb%b6%e5%85%b7%e6%9c%89%e5%8f%af%e6%89%a7%e8%a1%8c%e6%9d%83%e9%99%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h3>初始化&lt;span class="hx-absolute -hx-mt-20" id="初始化">&lt;/span>
+&lt;a href="#%e5%88%9d%e5%a7%8b%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s1">&amp;#39;{&amp;#34;jsonrpc&amp;#34;:&amp;#34;2.0&amp;#34;,&amp;#34;id&amp;#34;:1,&amp;#34;method&amp;#34;:&amp;#34;initialize&amp;#34;,&amp;#34;params&amp;#34;:{}}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> node mcp-readfile-server.mjs &lt;span class="p">|&lt;/span> jq .
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">{&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;jsonrpc&amp;#34;&lt;/span>: &lt;span class="s2">&amp;#34;2.0&amp;#34;&lt;/span>,
@@ -151,8 +153,8 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h2>查看工具列表&lt;span class="hx-absolute -hx-mt-20" id="查看工具列表">&lt;/span>
-&lt;a href="#%e6%9f%a5%e7%9c%8b%e5%b7%a5%e5%85%b7%e5%88%97%e8%a1%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>查看工具列表&lt;span class="hx-absolute -hx-mt-20" id="查看工具列表">&lt;/span>
+&lt;a href="#%e6%9f%a5%e7%9c%8b%e5%b7%a5%e5%85%b7%e5%88%97%e8%a1%a8" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s1">&amp;#39;{&amp;#34;jsonrpc&amp;#34;:&amp;#34;2.0&amp;#34;,&amp;#34;id&amp;#34;:2,&amp;#34;method&amp;#34;:&amp;#34;tools/list&amp;#34;,&amp;#34;params&amp;#34;:{}}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> node mcp-readfile-server.mjs &lt;span class="p">|&lt;/span> jq
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">{&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;jsonrpc&amp;#34;&lt;/span>: &lt;span class="s2">&amp;#34;2.0&amp;#34;&lt;/span>,
@@ -187,8 +189,8 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h2>调用 read_file 这个工具&lt;span class="hx-absolute -hx-mt-20" id="调用-read_file-这个工具">&lt;/span>
-&lt;a href="#%e8%b0%83%e7%94%a8-read_file-%e8%bf%99%e4%b8%aa%e5%b7%a5%e5%85%b7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>调用 read_file 这个工具&lt;span class="hx-absolute -hx-mt-20" id="调用-read_file-这个工具">&lt;/span>
+&lt;a href="#%e8%b0%83%e7%94%a8-read_file-%e8%bf%99%e4%b8%aa%e5%b7%a5%e5%85%b7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Downloads/mcp &lt;span class="nb">echo&lt;/span> &lt;span class="s1">&amp;#39;{&amp;#34;jsonrpc&amp;#34;:&amp;#34;2.0&amp;#34;,&amp;#34;id&amp;#34;:3,&amp;#34;method&amp;#34;:&amp;#34;tools/call&amp;#34;,&amp;#34;params&amp;#34;:{&amp;#34;name&amp;#34;:&amp;#34;read_file&amp;#34;,&amp;#34;arguments&amp;#34;:{&amp;#34;filePath&amp;#34;:&amp;#34;/etc/hosts&amp;#34;}}}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> node mcp-readfile-server.mjs &lt;span class="p">|&lt;/span> jq
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">{&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;jsonrpc&amp;#34;&lt;/span>: &lt;span class="s2">&amp;#34;2.0&amp;#34;&lt;/span>,
@@ -211,8 +213,9 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h1>mcp &lt;code>http&lt;/code> 示例&lt;/h1>&lt;h2>代码示例&lt;span class="hx-absolute -hx-mt-20" id="代码示例-1">&lt;/span>
-&lt;a href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h2>mcp &lt;code>http&lt;/code> 示例&lt;span class="hx-absolute -hx-mt-20" id="mcp-http-示例">&lt;/span>
+&lt;a href="#mcp-http-%e7%a4%ba%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;h3>代码示例&lt;span class="hx-absolute -hx-mt-20" id="代码示例-1">&lt;/span>
+&lt;a href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="ch">#!/usr/bin/env node
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="ch">&lt;/span>&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">createServer&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;node:http&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">readFileSync&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;node:fs&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
@@ -394,8 +397,8 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h2>访问 http://localhost:3000/ ，浏览器会显示 SSE 连接建立，并返回 sessionId。&lt;span class="hx-absolute -hx-mt-20" id="访问-httplocalhost3000-浏览器会显示-sse-连接建立并返回-sessionid">&lt;/span>
-&lt;a href="#%e8%ae%bf%e9%97%ae-httplocalhost3000-%e6%b5%8f%e8%a7%88%e5%99%a8%e4%bc%9a%e6%98%be%e7%a4%ba-sse-%e8%bf%9e%e6%8e%a5%e5%bb%ba%e7%ab%8b%e5%b9%b6%e8%bf%94%e5%9b%9e-sessionid" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>访问 http://localhost:3000/ ，浏览器会显示 SSE 连接建立，并返回 sessionId。&lt;span class="hx-absolute -hx-mt-20" id="访问-httplocalhost3000-浏览器会显示-sse-连接建立并返回-sessionid">&lt;/span>
+&lt;a href="#%e8%ae%bf%e9%97%ae-httplocalhost3000-%e6%b5%8f%e8%a7%88%e5%99%a8%e4%bc%9a%e6%98%be%e7%a4%ba-sse-%e8%bf%9e%e6%8e%a5%e5%bb%ba%e7%ab%8b%e5%b9%b6%e8%bf%94%e5%9b%9e-sessionid" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">curl -N http://localhost:3000/
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">event: endpoint
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">data: /message?sessionId&lt;span class="o">=&lt;/span>f2d05540-3384-401a-8a34-cd64c1ecbf33&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
@@ -408,8 +411,8 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h2>初始化&lt;span class="hx-absolute -hx-mt-20" id="初始化-1">&lt;/span>
-&lt;a href="#%e5%88%9d%e5%a7%8b%e5%8c%96-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>初始化&lt;span class="hx-absolute -hx-mt-20" id="初始化-1">&lt;/span>
+&lt;a href="#%e5%88%9d%e5%a7%8b%e5%8c%96-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">curl -X POST &lt;span class="s2">&amp;#34;http://localhost:3000/message?sessionId=f2d05540-3384-401a-8a34-cd64c1ecbf33&amp;#34;&lt;/span> &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -H &lt;span class="s2">&amp;#34;Content-Type: application/json&amp;#34;&lt;/span> &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -d &lt;span class="s1">&amp;#39;{&amp;#34;jsonrpc&amp;#34;:&amp;#34;2.0&amp;#34;,&amp;#34;id&amp;#34;:1,&amp;#34;method&amp;#34;:&amp;#34;initialize&amp;#34;,&amp;#34;params&amp;#34;:{}}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> jq&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
@@ -422,8 +425,8 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h2>查看工具列表&lt;span class="hx-absolute -hx-mt-20" id="查看工具列表-1">&lt;/span>
-&lt;a href="#%e6%9f%a5%e7%9c%8b%e5%b7%a5%e5%85%b7%e5%88%97%e8%a1%a8-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>查看工具列表&lt;span class="hx-absolute -hx-mt-20" id="查看工具列表-1">&lt;/span>
+&lt;a href="#%e6%9f%a5%e7%9c%8b%e5%b7%a5%e5%85%b7%e5%88%97%e8%a1%a8-1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">curl -X POST &lt;span class="s2">&amp;#34;http://localhost:3000/message?sessionId=f2d05540-3384-401a-8a34-cd64c1ecbf33&amp;#34;&lt;/span> &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -H &lt;span class="s2">&amp;#34;Content-Type: application/json&amp;#34;&lt;/span> &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -d &lt;span class="s1">&amp;#39;{&amp;#34;jsonrpc&amp;#34;:&amp;#34;2.0&amp;#34;,&amp;#34;id&amp;#34;:1,&amp;#34;method&amp;#34;:&amp;#34;initialize&amp;#34;,&amp;#34;params&amp;#34;:{}}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> jq&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
@@ -436,8 +439,8 @@ title="Copy code"
 &lt;/button>
 &lt;/div>
 &lt;/div>
-&lt;h2>调用 read_file工具&lt;span class="hx-absolute -hx-mt-20" id="调用-read_file工具">&lt;/span>
-&lt;a href="#%e8%b0%83%e7%94%a8-read_file%e5%b7%a5%e5%85%b7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h3>调用 read_file工具&lt;span class="hx-absolute -hx-mt-20" id="调用-read_file工具">&lt;/span>
+&lt;a href="#%e8%b0%83%e7%94%a8-read_file%e5%b7%a5%e5%85%b7" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">curl -X POST &lt;span class="s2">&amp;#34;http://localhost:3000/message?sessionId=f2d05540-3384-401a-8a34-cd64c1ecbf33&amp;#34;&lt;/span> &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -H &lt;span class="s2">&amp;#34;Content-Type: application/json&amp;#34;&lt;/span> &lt;span class="se">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -d &lt;span class="s1">&amp;#39;{&amp;#34;jsonrpc&amp;#34;:&amp;#34;2.0&amp;#34;,&amp;#34;id&amp;#34;:2,&amp;#34;method&amp;#34;:&amp;#34;tools/list&amp;#34;,&amp;#34;params&amp;#34;:{}}&amp;#39;&lt;/span> &lt;span class="p">|&lt;/span> jq&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
