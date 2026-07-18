@@ -3,8 +3,22 @@
 &lt;p>The pain you feel when you write is actually the pain of clarifying your thinking.(David Perell)
 你说你懂得挺多，不落实成文字，谁知道？&lt;/p>
 &lt;/blockquote></description></item><item><title>Ai Agent React</title><link>https://cloudedseal.github.io/blog/ai-agent-react/</link><pubDate>Mon, 13 Jul 2026 10:55:28 +0800</pubDate><guid>https://cloudedseal.github.io/blog/ai-agent-react/</guid><description>
-&lt;h2>React 是什么？&lt;span class="hx-absolute -hx-mt-20" id="react-是什么">&lt;/span>
-&lt;a href="#react-%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;h2>Reasoning + Acting (ReAct范式) 是什么？&lt;span class="hx-absolute -hx-mt-20" id="reasoning--acting-react范式-是什么">&lt;/span>
+&lt;a href="#reasoning--acting-react%e8%8c%83%e5%bc%8f-%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>这是一种将逻辑推理与实际行动紧密交织的方法论。它不是先做完所有计划再执行，而是在每一步中：
+推理：思考当前状态、目标、已有信息，决定下一步该做什么，并给出理由。
+行动：执行一个具体动作（如调用工具、查询数据库、发送API请求）。
+观察：获取行动返回的结果，作为新的信息输入。
+关键点：推理和行动是交替进行、相互促进的。推理指导行动，行动的结果又反过来修正和推进推理。最著名的实现就是ReAct论文提出的提示词模式&lt;/p>
+&lt;h2>Agent Loop 是什么？&lt;span class="hx-absolute -hx-mt-20" id="agent-loop-是什么">&lt;/span>
+&lt;a href="#agent-loop-%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>这是智能体持续运行的基本工作流程或生命周期。它是一个周而复始的循环，直到任务完成或终止。一个典型的Agent Loop包含以下步骤：
+感知：获取用户输入或环境反馈。
+规划/决策：决定下一步要做什么。（这里就包含了Reasoning）
+行动：执行决策，调用工具或产生响应。（这里就包含了Acting）
+反思/学习：评估行动结果，更新内部状态或记忆。
+循环：回到第1步，带着新的信息继续。
+关键点：Loop强调的是持续性、迭代性和闭环控制。&lt;/p>
+&lt;h2>代码示例&lt;span class="hx-absolute -hx-mt-20" id="代码示例">&lt;/span>
+&lt;a href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
 &lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="s1">&amp;#39;dotenv/config&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">ChatOpenAI&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;@langchain/openai&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">tool&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;@langchain/core/tools&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
