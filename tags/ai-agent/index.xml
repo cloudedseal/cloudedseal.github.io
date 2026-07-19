@@ -1,4 +1,649 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – AI Agent</title><link>https://cloudedseal.github.io/tags/ai-agent/</link><description>Recent content in AI Agent on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 10 Jul 2026 13:45:25 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/ai-agent/index.xml" rel="self" type="application/rss+xml"/><item><title>Ai Agent Invoke Tool Call Mcp</title><link>https://cloudedseal.github.io/blog/ai-agent-invoke-tool-call-mcp/</link><pubDate>Fri, 10 Jul 2026 13:45:25 +0800</pubDate><guid>https://cloudedseal.github.io/blog/ai-agent-invoke-tool-call-mcp/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>keep doing – AI Agent</title><link>https://cloudedseal.github.io/tags/ai-agent/</link><description>Recent content in AI Agent on keep doing</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 19 Jul 2026 10:36:25 +0800</lastBuildDate><atom:link href="https://cloudedseal.github.io/tags/ai-agent/index.xml" rel="self" type="application/rss+xml"/><item><title>Ai Agent Rag</title><link>https://cloudedseal.github.io/blog/ai-agent-rag/</link><pubDate>Sun, 19 Jul 2026 10:36:25 +0800</pubDate><guid>https://cloudedseal.github.io/blog/ai-agent-rag/</guid><description>
+&lt;h2>RAG（Retrieval-Augmented Generation）是什么？&lt;span class="hx-absolute -hx-mt-20" id="ragretrieval-augmented-generation是什么">&lt;/span>
+&lt;a href="#ragretrieval-augmented-generation%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>RAG是一种结合了检索（Retrieval）和生成（Generation）的技术，用于增强大语言模型的回答能力。
+它的核心思想是：&lt;/p>
+&lt;ol>
+&lt;li>检索：从外部知识库中检索与用户问题相关的文档或信息片段。&lt;/li>
+&lt;li>生成：将检索到的文档作为上下文，结合大语言模型生成最终的回答。
+RAG的优势在于：&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>提高回答的准确性：通过检索相关文档，减少模型凭空生成的错误信息。&lt;/li>
+&lt;li>支持知识更新：知识库可以独立更新，而不需要重新训练模型。&lt;/li>
+&lt;li>适应特定领域：可以针对特定领域构建知识库，使模型在该领域的回答更专业。&lt;/li>
+&lt;/ul>
+&lt;p>R 是体力活：现在向量数据库都很成熟了，搜得准不准很大程度看模型，工程上就是调参数。
+A 是艺术活：怎么把 R 找来的东西，用 G 最容易听懂的方式喂进去，这是 RAG 工程成败的关键。
+G 是技术活：大模型的能力决定了天花板。&lt;/p>
+&lt;h2>为啥需要 RAG？&lt;span class="hx-absolute -hx-mt-20" id="为啥需要-rag">&lt;/span>
+&lt;a href="#%e4%b8%ba%e5%95%a5%e9%9c%80%e8%a6%81-rag" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>技术原理、工程成本、业务合规 三个维度，详细解释为什么我们需要 RAG。&lt;/p>
+&lt;h3>解决大模型的“先天缺陷”（技术原理层面）&lt;span class="hx-absolute -hx-mt-20" id="解决大模型的先天缺陷技术原理层面">&lt;/span>
+&lt;a href="#%e8%a7%a3%e5%86%b3%e5%a4%a7%e6%a8%a1%e5%9e%8b%e7%9a%84%e5%85%88%e5%a4%a9%e7%bc%ba%e9%99%b7%e6%8a%80%e6%9c%af%e5%8e%9f%e7%90%86%e5%b1%82%e9%9d%a2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h3>知识的静态性（Knowledge Cutoff）&lt;span class="hx-absolute -hx-mt-20" id="知识的静态性knowledge-cutoff">&lt;/span>
+&lt;a href="#%e7%9f%a5%e8%af%86%e7%9a%84%e9%9d%99%e6%80%81%e6%80%a7knowledge-cutoff" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;ul>
+&lt;li>
+&lt;p>问题：大模型的知识停留在训练时刻（比如 GPT-5 pro Turbo 是 2025 年 12 月）。之后新的知识、事件、法规、技术都无法被模型掌握。你问它“2026 年 1 月 1 日发生了什么大事？”，它只能回答“我不知道”。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>RAG 的作用：热更新。RAG 把知识库变成了“外挂硬盘”。只要把最新的文档丢进向量数据库，模型立刻就能回答新问题，不需要重新训练（训练成本极高）。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h4>幻觉问题（Hallucination）&lt;span class="hx-absolute -hx-mt-20" id="幻觉问题hallucination">&lt;/span>
+&lt;a href="#%e5%b9%bb%e8%a7%89%e9%97%ae%e9%a2%98hallucination" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;ul>
+&lt;li>
+&lt;p>问题：大模型是“概率预测”专家，不是“事实检索”专家。当它不知道答案时，为了迎合你的提问，它会一本正经地胡说八道（例如编造“严复写过《相对论导论》”）。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>RAG 的作用： grounding（接地气）。RAG 强制模型在生成答案前必须先阅读给定的文本（Context）。我们在 Prompt 里加了一句“不知道就说不知道”，这就像给教授发了试卷并规定“本题答案必须引用原文”。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h4>缺乏私有知识（Private Data）&lt;span class="hx-absolute -hx-mt-20" id="缺乏私有知识private-data">&lt;/span>
+&lt;a href="#%e7%bc%ba%e4%b9%8f%e7%a7%81%e6%9c%89%e7%9f%a5%e8%af%86private-data" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>问题：大模型没见过你们公司的内部 Wiki、财务报表、客户聊天记录。你没法问它“我们公司上个季度的 KPI 完成了吗？”。&lt;/p>
+&lt;p>RAG 的作用：私有化部署。RAG 可以把企业的私域数据向量化。数据可以不出内网，既利用了大模型的能力，又保证了数据安全。&lt;/p>
+&lt;h4>黑盒问题（Black Box &amp;amp; Citation）&lt;span class="hx-absolute -hx-mt-20" id="黑盒问题black-box--citation">&lt;/span>
+&lt;a href="#%e9%bb%91%e7%9b%92%e9%97%ae%e9%a2%98black-box--citation" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>问题：大模型说完了就完了，你不知道它这话是从哪听来的。如果它引用法条判案，律师需要知道是哪条法律第几款。&lt;/p>
+&lt;p>RAG 的作用：可追溯性（Citation）。因为 RAG 把检索到的 Document 给了模型，我们可以很容易地在答案后面附上引用来源（比如“来源：第 3 章第 2 节”）。这在法律、医疗、学术领域至关重要。&lt;/p>
+&lt;h3>降低落地成本（工程经济层面）&lt;span class="hx-absolute -hx-mt-20" id="降低落地成本工程经济层面">&lt;/span>
+&lt;a href="#%e9%99%8d%e4%bd%8e%e8%90%bd%e5%9c%b0%e6%88%90%e6%9c%ac%e5%b7%a5%e7%a8%8b%e7%bb%8f%e6%b5%8e%e5%b1%82%e9%9d%a2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>微调（Fine-tuning）太贵了&lt;span class="hx-absolute -hx-mt-20" id="微调fine-tuning太贵了">&lt;/span>
+&lt;a href="#%e5%be%ae%e8%b0%83fine-tuning%e5%a4%aa%e8%b4%b5%e4%ba%86" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>对比：&lt;/p>
+&lt;ol>
+&lt;li>微调：想让模型学习新知识，需要准备海量标注数据，租用昂贵的 GPU 集群进行训练，耗时几天甚至几周，花费成千上万美金。而且知识过期了还得重训。&lt;/li>
+&lt;li>RAG：只需要把文档切分、Embedding（这个成本极低，甚至可以用 CPU 跑），存进向量库。几分钟搞定，几十块钱人民币。&lt;/li>
+&lt;li>结论：RAG 是性价比最高的知识注入方式。&lt;/li>
+&lt;/ol>
+&lt;h4>长上下文的陷阱&lt;span class="hx-absolute -hx-mt-20" id="长上下文的陷阱">&lt;/span>
+&lt;a href="#%e9%95%bf%e4%b8%8a%e4%b8%8b%e6%96%87%e7%9a%84%e9%99%b7%e9%98%b1" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>误区：有人会说“现在的模型上下文窗口很大（128k tokens），我直接把整本书塞进去不就行了？”
+真相：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>性能：把整本书塞进 Prompt（这叫 Long Context），推理速度极慢，且成本是按 Token 算的，极其昂贵。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>注意力分散：研究表明，模型在处理超长文本时，容易“忘记”中间的内容（Lost in the Middle）。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>RAG 的优势：RAG 只把最相关的 3-5 个片段 喂给模型。这大大降低了 Token 消耗，提高了响应速度，且因为上下文短而精准，模型回答质量反而更高。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3>适应复杂业务场景（业务逻辑层面）&lt;span class="hx-absolute -hx-mt-20" id="适应复杂业务场景业务逻辑层面">&lt;/span>
+&lt;a href="#%e9%80%82%e5%ba%94%e5%a4%8d%e6%9d%82%e4%b8%9a%e5%8a%a1%e5%9c%ba%e6%99%af%e4%b8%9a%e5%8a%a1%e9%80%bb%e8%be%91%e5%b1%82%e9%9d%a2" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;h4>权限控制（Access Control）&lt;span class="hx-absolute -hx-mt-20" id="权限控制access-control">&lt;/span>
+&lt;a href="#%e6%9d%83%e9%99%90%e6%8e%a7%e5%88%b6access-control" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>场景：在公司里，实习生不能看 CEO 的财报，HR 不能看技术部的核心代码。&lt;/p>
+&lt;p>RAG 的实现：我们可以在 Metadata 里加入权限标签（如 level: &amp;ldquo;public&amp;rdquo; 或 level: &amp;ldquo;confidential&amp;rdquo;）。在检索（Retrieval）阶段，根据用户身份注入 Filter，直接把无权限的文档排除在向量搜索之外。这是单纯的大模型做不到的。&lt;/p>
+&lt;h4>多轮对话与记忆&lt;span class="hx-absolute -hx-mt-20" id="多轮对话与记忆">&lt;/span>
+&lt;a href="#%e5%a4%9a%e8%bd%ae%e5%af%b9%e8%af%9d%e4%b8%8e%e8%ae%b0%e5%bf%86" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h4>&lt;p>场景：用户问：“严复翻译了什么书？” -&amp;gt; 模型回答：“《天演论》”。 -&amp;gt; 用户接着问：“那他是在哪一年翻译的？”&lt;/p>
+&lt;p>RAG 的作用：RAG 可以将历史对话也作为一种“检索源”，或者将历史对话作为上下文注入。这让模型拥有了“短期记忆”，能理解上下文的指代关系。&lt;/p>
+&lt;h2>RAG 例子&lt;span class="hx-absolute -hx-mt-20" id="rag-例子">&lt;/span>
+&lt;a href="#rag-%e4%be%8b%e5%ad%90" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div class="filename not-prose" dir="auto">rag-demo.mjs&lt;/div>&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="s2">&amp;#34;dotenv/config&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">ChatOpenAI&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">OpenAIEmbeddings&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s2">&amp;#34;@langchain/openai&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">Document&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s2">&amp;#34;@langchain/core/documents&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">MemoryVectorStore&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s2">&amp;#34;@langchain/classic/vectorstores/memory&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 1. 初始化大模型
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">ChatOpenAI&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">temperature&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 0代表回答最严谨，不发散
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">model&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">MODEL_NAME&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">apiKey&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">OPENAI_API_KEY&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">configuration&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">baseURL&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">OPENAI_BASE_URL&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 2. 初始化Embedding模型
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">embeddings&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">OpenAIEmbeddings&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">apiKey&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">OPENAI_API_KEY&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">model&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">EMBEDDINGS_MODEL_NAME&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">configuration&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">baseURL&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">OPENAI_BASE_URL&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> * 知识库：中国近代启蒙先驱
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> * metadata全中文键名
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">documents&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">Document&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line hl">&lt;span class="cl"> &lt;span class="nx">pageContent&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="sb">`严复是中国近代著名的启蒙思想家、翻译家，曾任北洋水师学堂总办。他翻译了《天演论》，首次将“物竞天择，适者生存”的进化论思想引入中国，对清末维新运动产生了深远影响。他还提出了翻译的“信、达、雅”三原则，至今仍被翻译界奉为圭臬。`&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">metadata&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">人物&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;严复&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">身份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;思想家/翻译家&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">年份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">1897&lt;/span> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">Document&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">pageContent&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="sb">`梁启超是戊戌变法的主要领袖之一，号饮冰室主人。他倡导“诗界革命”“小说界革命”，代表作《少年中国说》中的“少年强则国强”至今广为流传。他主张君主立宪，重视国民启蒙教育，一生著述颇丰，合编为《饮冰室合集》。`&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">metadata&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">人物&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;梁启超&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">身份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;政治家/学者&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">年份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">1899&lt;/span> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">Document&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">pageContent&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="sb">`詹天佑是中国近代铁路工程专家，被誉为“中国铁路之父”。1905年他主持修建中国自主设计的第一条铁路——京张铁路，创新采用“人”字形线路设计，克服了八达岭隧道的施工难题，为中国铁路事业奠定了坚实基础。`&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">metadata&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">人物&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;詹天佑&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">身份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;工程师&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">年份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">1905&lt;/span> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">Document&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">pageContent&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="sb">`1897年严复在天津创办《国闻报》，作为维新派的舆论阵地之一，与上海的《时务报》（梁启超主笔）南北呼应，宣传变法图强的思想。《国闻报》经常刊登严复翻译的西方社科著作选段，是当时重要的启蒙刊物。`&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">metadata&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">人物&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;严复&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">身份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;媒体人&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">年份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">1897&lt;/span> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">Document&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">pageContent&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="sb">`严复与梁启超虽同为维新派代表人物，但思想侧重有所不同：严复更注重引进西方自然科学与社会科学理论，希望通过思想启蒙推动变革；梁启超更注重政治宣传与国民意识觉醒，文风通俗易懂，受众更广。两人的分歧也反映了清末启蒙运动的多元性。`&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">metadata&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">人物&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;严复/梁启超&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">身份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;思想对比&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">年份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">1898&lt;/span> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">Document&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">pageContent&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="sb">`戊戌变法失败后，严复继续从事翻译与教育工作，先后担任北京大学首任校长、复旦公学校长等职，培养了一大批近代人才。他晚年趋于保守，对激进的革命思潮持保留态度，1921年在福州病逝。`&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">metadata&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">人物&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;严复&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">身份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;教育家&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">年份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">1921&lt;/span> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">Document&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">pageContent&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="sb">`詹天佑除了主持修建京张铁路外，还参与制定了中国的铁路建设规范，培养了第一批中国本土铁路工程师。他在1919年参与协约国远东铁路会议时积劳成疾，同年逝世，临终前仍牵挂中国铁路事业的发展。`&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">metadata&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">人物&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;詹天佑&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">身份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;工程师&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">年份&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">1919&lt;/span> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 3. 创建向量存储
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 注意：MemoryVectorStore重启后会丢失数据，仅适合Demo
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">vectorStore&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">MemoryVectorStore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">fromDocuments&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">documents&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">embeddings&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 4. 创建检索器
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// ⚠️ 重点提醒：MemoryVectorStore的filter必须是函数，不能用{人物:&amp;#34;严复&amp;#34;}这种对象形式！
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 如果要过滤严复的文档，取消下面filter的注释即可
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">retriever&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">vectorStore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">asRetriever&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">k&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 召回最相关的3个片段
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// filter: (doc) =&amp;gt; doc.metadata.人物 === &amp;#34;严复&amp;#34;, // 仅检索严复相关的文档
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 5. 测试问题（全中文，覆盖不同类型）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">questions&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;谁翻译了《天演论》？&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 事实性问题
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="s2">&amp;#34;严复和梁启超的思想有什么不同？&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 对比性问题
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="s2">&amp;#34;中国近代第一位铁路总工程师是谁？他主持修建了哪条铁路？&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 多跳问题
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="s2">&amp;#34;戊戌变法期间严复创办了什么报纸？&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 细节问题
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 6. 循环处理每个问题（标准RAG流程）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">question&lt;/span> &lt;span class="k">of&lt;/span> &lt;span class="nx">questions&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;=&amp;#34;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">repeat&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">80&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`问题: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">question&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;=&amp;#34;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">repeat&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">80&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// R环节：检索相关文档
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">retrievedDocs&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">retriever&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">invoke&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">question&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 获取相似度评分（调试用）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">scoredResults&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">vectorStore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">similaritySearchWithScore&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">question&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 打印检索结果（调试用，生产环境可删除）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;\n【检索到的文档及相似度】&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">retrievedDocs&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">forEach&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">doc&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">i&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">scoredResult&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">scoredResults&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">find&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">([&lt;/span>&lt;span class="nx">scoredDoc&lt;/span>&lt;span class="p">])&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="nx">scoredDoc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">pageContent&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="nx">doc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">pageContent&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">score&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">scoredResult&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="nx">scoredResult&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">similarity&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">score&lt;/span> &lt;span class="o">!==&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="o">?&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="nx">score&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="nx">toFixed&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">4&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;N/A&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`\n[文档&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">i&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">] 相似度: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">similarity&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`内容: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">doc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">pageContent&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">substring&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">120&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">...`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`元数据: 人物=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">doc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">metadata&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">人物&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">, 身份=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">doc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">metadata&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">身份&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">, 年份=&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">doc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">metadata&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">年份&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// A环节：增强上下文（拼接检索结果+约束条件）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// map 整理资料，这是在 augmentation
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">context&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">retrievedDocs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="nx">map&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">doc&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">i&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="sb">`[资料&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">i&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">（来源：&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">doc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">metadata&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">人物&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">，年份：&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">doc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">metadata&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">年份&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">）]\n&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">doc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">pageContent&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="nx">join&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;\n\n━━━━━\n\n&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 7. 构建提示词（Prompt）模板，这是在增强约束
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// 用户的 question + 增强的 context 作为输入，要求模型严格根据 context 回答
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">prompt&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sb">`你是一名中国近代史研究员，请根据以下提供的史料回答问题，要求严谨准确，符合史实。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">如果提供的史料中没有相关内容，请明确回答“根据现有资料无法回答”，不要编造信息。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">史料：
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">context&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">问题：&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">question&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">研究员回答：`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// G环节：大模型生成回答
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;\n【AI回答】&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">model&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">invoke&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">prompt&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">content&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;\n&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-8">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h3>执行&lt;span class="hx-absolute -hx-mt-20" id="执行">&lt;/span>
+&lt;a href="#%e6%89%a7%e8%a1%8c" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">node rag-demo.mjs
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">================================================================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">问题: 谁翻译了《天演论》？
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">================================================================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">【检索到的文档及相似度】
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档1&lt;span class="o">]&lt;/span> 相似度: 0.3705
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 严复是中国近代著名的启蒙思想家、翻译家，曾任北洋水师学堂总办。他翻译了《天演论》，首次将“物竞天择，适者生存”的进化论思想引入中国，对清末维新运动产生了深远影响。他还提出了翻译的“信、达、雅”三原则，至今仍被翻译界奉为圭臬。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>严复, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>思想家/翻译家, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1897&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档2&lt;span class="o">]&lt;/span> 相似度: 0.5519
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 詹天佑是中国近代铁路工程专家，被誉为“中国铁路之父”。1905年他主持修建中国自主设计的第一条铁路——京张铁路，创新采用“人”字形线路设计，克服了八达岭隧道的施工难题，为中国铁路事业奠定了坚实基础。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>詹天佑, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>工程师, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1905&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档3&lt;span class="o">]&lt;/span> 相似度: 0.5825
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 詹天佑除了主持修建京张铁路外，还参与制定了中国的铁路建设规范，培养了第一批中国本土铁路工程师。他在1919年参与协约国远东铁路会议时积劳成疾，同年逝世，临终前仍牵挂中国铁路事业的发展。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>詹天佑, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>工程师, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1919&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">【AI回答】
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">研究员回答：严复翻译了《天演论》。
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">================================================================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">问题: 严复和梁启超的思想有什么不同？
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">================================================================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">【检索到的文档及相似度】
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档1&lt;span class="o">]&lt;/span> 相似度: 0.1392
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 严复与梁启超虽同为维新派代表人物，但思想侧重有所不同：严复更注重引进西方自然科学与社会科学理论，希望通过思想启蒙推动变革；梁启超更注重政治宣传与国民意识觉醒，文风通俗易懂，受众更广。两人的分歧也反映了清末启蒙运动的多元性。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>严复/梁启超, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>思想对比, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1898&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档2&lt;span class="o">]&lt;/span> 相似度: 0.2778
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 严复是中国近代著名的启蒙思想家、翻译家，曾任北洋水师学堂总办。他翻译了《天演论》，首次将“物竞天择，适者生存”的进化论思想引入中国，对清末维新运动产生了深远影响。他还提出了翻译的“信、达、雅”三原则，至今仍被翻译界奉为圭臬。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>严复, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>思想家/翻译家, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1897&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档3&lt;span class="o">]&lt;/span> 相似度: 0.3525
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 戊戌变法失败后，严复继续从事翻译与教育工作，先后担任北京大学首任校长、复旦公学校长等职，培养了一大批近代人才。他晚年趋于保守，对激进的革命思潮持保留态度，1921年在福州病逝。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>严复, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>教育家, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1921&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">【AI回答】
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">严复和梁启超的思想有所不同，主要体现在侧重点上。严复更注重引进西方自然科学与社会科学理论，希望通过思想启蒙推动变革；而梁启超更注重政治宣传与国民意识觉醒，其文风通俗易懂，受众更广。两人的分歧也反映了清末启蒙运动的多元性。
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">================================================================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">问题: 中国近代第一位铁路总工程师是谁？他主持修建了哪条铁路？
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">================================================================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">【检索到的文档及相似度】
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档1&lt;span class="o">]&lt;/span> 相似度: 0.3454
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 詹天佑是中国近代铁路工程专家，被誉为“中国铁路之父”。1905年他主持修建中国自主设计的第一条铁路——京张铁路，创新采用“人”字形线路设计，克服了八达岭隧道的施工难题，为中国铁路事业奠定了坚实基础。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>詹天佑, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>工程师, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1905&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档2&lt;span class="o">]&lt;/span> 相似度: 0.3806
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 詹天佑除了主持修建京张铁路外，还参与制定了中国的铁路建设规范，培养了第一批中国本土铁路工程师。他在1919年参与协约国远东铁路会议时积劳成疾，同年逝世，临终前仍牵挂中国铁路事业的发展。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>詹天佑, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>工程师, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1919&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档3&lt;span class="o">]&lt;/span> 相似度: 0.5576
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 戊戌变法失败后，严复继续从事翻译与教育工作，先后担任北京大学首任校长、复旦公学校长等职，培养了一大批近代人才。他晚年趋于保守，对激进的革命思潮持保留态度，1921年在福州病逝。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>严复, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>教育家, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1921&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">【AI回答】
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">中国近代第一位铁路总工程师是詹天佑，他主持修建了京张铁路。
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">================================================================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">问题: 戊戌变法期间严复创办了什么报纸？
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">================================================================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">【检索到的文档及相似度】
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档1&lt;span class="o">]&lt;/span> 相似度: 0.2223
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 1897年严复在天津创办《国闻报》，作为维新派的舆论阵地之一，与上海的《时务报》（梁启超主笔）南北呼应，宣传变法图强的思想。《国闻报》经常刊登严复翻译的西方社科著作选段，是当时重要的启蒙刊物。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>严复, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>媒体人, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1897&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档2&lt;span class="o">]&lt;/span> 相似度: 0.2908
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 戊戌变法失败后，严复继续从事翻译与教育工作，先后担任北京大学首任校长、复旦公学校长等职，培养了一大批近代人才。他晚年趋于保守，对激进的革命思潮持保留态度，1921年在福州病逝。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>严复, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>教育家, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1921&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>文档3&lt;span class="o">]&lt;/span> 相似度: 0.3131
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">内容: 严复是中国近代著名的启蒙思想家、翻译家，曾任北洋水师学堂总办。他翻译了《天演论》，首次将“物竞天择，适者生存”的进化论思想引入中国，对清末维新运动产生了深远影响。他还提出了翻译的“信、达、雅”三原则，至今仍被翻译界奉为圭臬。...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">元数据: &lt;span class="nv">人物&lt;/span>&lt;span class="o">=&lt;/span>严复, &lt;span class="nv">身份&lt;/span>&lt;span class="o">=&lt;/span>思想家/翻译家, &lt;span class="nv">年份&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">1897&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">【AI回答】
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">研究员回答：根据现有资料，严复在戊戌变法期间创办了《国闻报》。&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>References&lt;span class="hx-absolute -hx-mt-20" id="references">&lt;/span>
+&lt;a href="#references" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;ol>
+&lt;li>&lt;a href="https://github.com/HaoooWang/llm-knowledge-cutoff-dates" target="_blank" rel="noopener">LLM knowledge cutoff&lt;/a>&lt;/li>
+&lt;/ol></description></item><item><title>Ai Agent React</title><link>https://cloudedseal.github.io/blog/ai-agent-react/</link><pubDate>Mon, 13 Jul 2026 10:55:28 +0800</pubDate><guid>https://cloudedseal.github.io/blog/ai-agent-react/</guid><description>
+&lt;h2>Reasoning + Acting (ReAct范式) 是什么？&lt;span class="hx-absolute -hx-mt-20" id="reasoning--acting-react范式-是什么">&lt;/span>
+&lt;a href="#reasoning--acting-react%e8%8c%83%e5%bc%8f-%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>这是一种将逻辑推理与实际行动紧密交织的方法论。它不是先做完所有计划再执行，而是在每一步中：
+推理：思考当前状态、目标、已有信息，决定下一步该做什么，并给出理由。
+行动：执行一个具体动作（如调用工具、查询数据库、发送API请求）。
+观察：获取行动返回的结果，作为新的信息输入。
+关键点：推理和行动是交替进行、相互促进的。推理指导行动，行动的结果又反过来修正和推进推理。最著名的实现就是ReAct论文提出的提示词模式&lt;/p>
+&lt;h2>Agent Loop 是什么？&lt;span class="hx-absolute -hx-mt-20" id="agent-loop-是什么">&lt;/span>
+&lt;a href="#agent-loop-%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>这是智能体持续运行的基本工作流程或生命周期。它是一个周而复始的循环，直到任务完成或终止。一个典型的Agent Loop包含以下步骤：
+感知：获取用户输入或环境反馈。
+规划/决策：决定下一步要做什么。（这里就包含了Reasoning）
+行动：执行决策，调用工具或产生响应。（这里就包含了Acting）
+反思/学习：评估行动结果，更新内部状态或记忆。
+循环：回到第1步，带着新的信息继续。
+关键点：Loop强调的是持续性、迭代性和闭环控制。&lt;/p>
+&lt;h2>代码示例&lt;span class="hx-absolute -hx-mt-20" id="代码示例">&lt;/span>
+&lt;a href="#%e4%bb%a3%e7%a0%81%e7%a4%ba%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="s1">&amp;#39;dotenv/config&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">ChatOpenAI&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;@langchain/openai&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">tool&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;@langchain/core/tools&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">HumanMessage&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">SystemMessage&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">ToolMessage&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;@langchain/core/messages&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="nx">fs&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;node:fs/promises&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">z&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;zod&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">ChatOpenAI&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">modelName&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">MODEL_NAME&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="s2">&amp;#34;qwen-plus&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">apiKey&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">OPENAI_API_KEY&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">temperature&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">configuration&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">baseURL&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">OPENAI_BASE_URL&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// tool()是 LangChain 提供的一个高阶函数（Factory Function），
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 用来把一个普通的 JavaScript 函数，包装成 LLM 可以理解并调用的“工具”。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 第一个参数：真正执行的业务逻辑
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 第二个参数：工具的元数据（名字、描述、参数结构）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 标准化，统一工具调用格式
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 自描述，自动生成 JSON Schema
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 可绑定，可被 bindTools()挂载到模型
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">readFileTool&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">tool&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">async&lt;/span> &lt;span class="p">({&lt;/span> &lt;span class="nx">filePath&lt;/span> &lt;span class="p">})&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">content&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">fs&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">readFile&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">filePath&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;utf-8&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">` [工具调用] read_file(&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">filePath&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">&amp;#34;) - 成功读取 &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">content&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">length&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> 字节`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="sb">`文件内容:\n&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">content&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">name&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;read_file&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">description&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;用此工具来读取文件内容。当用户要求读取文件、查看代码、分析文件内容时，调用此工具。输入文件路径（可以是相对路径或绝对路径）。&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">schema&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">z&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">object&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">filePath&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">z&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">string&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="nx">describe&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;要读取的文件路径&amp;#39;&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">tools&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">readFileTool&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">modelWithTools&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">model&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bindTools&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">tools&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">messages&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">SystemMessage&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`你是一个代码助手，可以使用工具读取文件并解释代码。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">工作流程：
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">1. 用户要求读取文件时，立即调用合适的工具
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">2. 等待工具返回文件内容
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">3. 基于文件内容进行分析和解释
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">`&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">HumanMessage&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;请读取 ./src/tool-file-read.mjs 文件内容并解释代码&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">let&lt;/span> &lt;span class="nx">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">modelWithTools&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">invoke&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">messages&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// console.log(response);
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">messages&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">push&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 只要模型返回了 tool_calls，就继续循环调用工具
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tool_calls&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tool_calls&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">length&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`\n[检测到 &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tool_calls&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">length&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> 个工具调用]`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 执行所有工具调用
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">toolResults&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nb">Promise&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">all&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tool_calls&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">map&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kr">async&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">toolCall&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">tool&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">tools&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">find&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">t&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="nx">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">name&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="nx">toolCall&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">name&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="nx">tool&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="sb">`错误: 找不到工具 &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">toolCall&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">` [执行工具] &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">toolCall&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">(&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">JSON&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">stringify&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">toolCall&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">args&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">)`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">tool&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">invoke&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">toolCall&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">args&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nx">result&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="sb">`错误: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">message&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 将工具结果添加到消息历史
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tool_calls&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">forEach&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">toolCall&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">index&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">messages&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">push&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">ToolMessage&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">content&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">toolResults&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="nx">index&lt;/span>&lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">tool_call_id&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">toolCall&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">id&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 再次调用模型，传入工具结果
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">modelWithTools&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">invoke&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">messages&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;\n[最终回复]&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">content&lt;/span>&lt;span class="p">);&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;h2>执行 node src/tool-file-read.mjs&lt;span class="hx-absolute -hx-mt-20" id="执行-node-srctool-file-readmjs">&lt;/span>
+&lt;a href="#%e6%89%a7%e8%a1%8c-node-srctool-file-readmjs" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>[检测到 1 个工具调用]
+[执行工具] read_file({&amp;ldquo;filePath&amp;rdquo;:&amp;quot;./src/tool-file-read.mjs&amp;quot;})
+[工具调用] read_file(&amp;quot;./src/tool-file-read.mjs&amp;quot;) - 成功读取 2542 字节&lt;/p>
+&lt;p>[最终回复]
+这段代码 &lt;code>./src/tool-file-read.mjs&lt;/code> 是一个基于 &lt;strong>LangChain（v0.3+）&lt;/strong> 的 Node.js 脚本，用于构建一个具备「文件读取能力」的 AI 助手（LLM Agent），其核心目标是：&lt;br>
+✅ &lt;strong>自动识别用户请求中的文件读取意图 → 调用 &lt;code>read_file&lt;/code> 工具读取指定路径文件 → 将内容返回给模型 → 生成自然语言解释。&lt;/strong>&lt;/p>
+&lt;p>下面分模块详细解释：&lt;/p>
+&lt;hr>
+&lt;h3>🔧 1. 环境与依赖&lt;span class="hx-absolute -hx-mt-20" id="-1-环境与依赖">&lt;/span>
+&lt;a href="#-1-%e7%8e%af%e5%a2%83%e4%b8%8e%e4%be%9d%e8%b5%96" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="s1">&amp;#39;dotenv/config&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 加载 .env 文件（如 OPENAI_API_KEY, OPENAI_BASE_URL, MODEL_NAME）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">ChatOpenAI&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;@langchain/openai&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// LangChain 官方 OpenAI 兼容模型封装（支持自定义 base URL，适配 Qwen、Ollama 等）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">tool&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;@langchain/core/tools&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 创建可被 LLM 调用的工具（Tool）的工厂函数
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">HumanMessage&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">SystemMessage&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">ToolMessage&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;@langchain/core/messages&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 消息类型（系统/用户/工具响应）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">import&lt;/span> &lt;span class="nx">fs&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;node:fs/promises&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// Node.js 原生 Promise 版 fs（安全异步读文件）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">z&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;zod&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 用于定义工具参数 Schema（强类型校验 + 自动生成 JSON Schema）
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;blockquote>
+&lt;p>✅ 注意：此脚本使用的是 &lt;strong>ESM 模块语法&lt;/strong>（&lt;code>.mjs&lt;/code> 后缀），需在 &lt;code>package.json&lt;/code> 中设置 &lt;code>&amp;quot;type&amp;quot;: &amp;quot;module&amp;quot;&lt;/code>。&lt;/p>
+&lt;/blockquote>
+&lt;hr>
+&lt;h3>🤖 2. 大模型初始化（支持本地/私有模型）&lt;span class="hx-absolute -hx-mt-20" id="-2-大模型初始化支持本地私有模型">&lt;/span>
+&lt;a href="#-2-%e5%a4%a7%e6%a8%a1%e5%9e%8b%e5%88%9d%e5%a7%8b%e5%8c%96%e6%94%af%e6%8c%81%e6%9c%ac%e5%9c%b0%e7%a7%81%e6%9c%89%e6%a8%a1%e5%9e%8b" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">ChatOpenAI&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">modelName&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">MODEL_NAME&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="s2">&amp;#34;qwen-plus&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">apiKey&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">OPENAI_API_KEY&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">temperature&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">configuration&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">baseURL&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">process&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">OPENAI_BASE_URL&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 关键！支持非 OpenAI 的兼容 API（如 DashScope、Qwen API、Ollama）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>不依赖 OpenAI 官方服务，通过 &lt;code>baseURL&lt;/code> 可对接：
+&lt;ul>
+&lt;li>阿里云 DashScope（Qwen 系列）&lt;/li>
+&lt;li>Ollama（&lt;code>http://localhost:11434/v1&lt;/code>）&lt;/li>
+&lt;li>自建 vLLM / FastChat 等&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>temperature: 0&lt;/code> → 确保输出确定性（适合工具调用场景）&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3>🛠️ 3. 定义 &lt;code>read_file&lt;/code> 工具（核心逻辑）&lt;span class="hx-absolute -hx-mt-20" id="-3-定义-read_file-工具核心逻辑">&lt;/span>
+&lt;a href="#-3-%e5%ae%9a%e4%b9%89-read_file-%e5%b7%a5%e5%85%b7%e6%a0%b8%e5%bf%83%e9%80%bb%e8%be%91" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">readFileTool&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">tool&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">async&lt;/span> &lt;span class="p">({&lt;/span> &lt;span class="nx">filePath&lt;/span> &lt;span class="p">})&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">content&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">fs&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">readFile&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">filePath&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;utf-8&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">` [工具调用] read_file(&amp;#34;&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">filePath&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">&amp;#34;) - 成功读取 &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">content&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">length&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> 字节`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="sb">`文件内容:\n&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">content&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">name&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;read_file&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">description&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;用此工具来读取文件内容。当用户要求读取文件、查看代码、分析文件内容时，调用此工具。输入文件路径（可以是相对路径或绝对路径）。&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// schema 定义了工具的参数结构
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">schema&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">z&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">object&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">filePath&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">z&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">string&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="nx">describe&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;要读取的文件路径&amp;#39;&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">);&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>✅ &lt;strong>&lt;code>tool()&lt;/code> 是 LangChain 的标准工具包装器&lt;/strong>：
+&lt;ul>
+&lt;li>第一个参数：实际执行的异步函数（接收 &lt;code>filePath&lt;/code>，返回字符串内容）&lt;/li>
+&lt;li>第二个参数：元数据（名称、描述、Zod Schema）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>📌 Schema 作用：
+&lt;ul>
+&lt;li>LLM 调用前会做参数校验（如 &lt;code>filePath&lt;/code> 必须是 string）&lt;/li>
+&lt;li>自动生成符合 OpenAI Tool Calling 格式的 JSON Schema（供 LLM 理解如何调用）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>⚠️ 安全提示：生产环境应增加路径白名单/沙箱限制（当前可读任意文件，存在风险）&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3>🧩 4. 绑定工具到模型 &amp;amp; 构建消息流&lt;span class="hx-absolute -hx-mt-20" id="-4-绑定工具到模型--构建消息流">&lt;/span>
+&lt;a href="#-4-%e7%bb%91%e5%ae%9a%e5%b7%a5%e5%85%b7%e5%88%b0%e6%a8%a1%e5%9e%8b--%e6%9e%84%e5%bb%ba%e6%b6%88%e6%81%af%e6%b5%81" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">tools&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="nx">readFileTool&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">modelWithTools&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">model&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bindTools&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">tools&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// 模型“知道”有哪些工具可用
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">messages&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">new&lt;/span> &lt;span class="nx">SystemMessage&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`你是一个代码助手...`&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="c1">// 明确 Agent 角色 + 工作流程（3 步法）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">HumanMessage&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;请读取 ./src/tool-file-read.mjs 文件内容并解释代码&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">// 初始用户请求
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">];&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>System Message 是关键！它教会 LLM：
+&lt;ul>
+&lt;li>何时调用 &lt;code>read_file&lt;/code>（用户要求读文件时）&lt;/li>
+&lt;li>必须立即调用（不拖延、不假设）&lt;/li>
+&lt;li>如何处理工具返回结果（基于内容解释）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3>🔄 5. 工具调用循环（Agent 执行引擎）&lt;span class="hx-absolute -hx-mt-20" id="-5-工具调用循环agent-执行引擎">&lt;/span>
+&lt;a href="#-5-%e5%b7%a5%e5%85%b7%e8%b0%83%e7%94%a8%e5%be%aa%e7%8e%afagent-%e6%89%a7%e8%a1%8c%e5%bc%95%e6%93%8e" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;div class="hextra-code-block hx-relative hx-mt-6 first:hx-mt-0 hx-group/code">
+&lt;div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="kd">let&lt;/span> &lt;span class="nx">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">modelWithTools&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">invoke&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">messages&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">while&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tool_calls&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tool_calls&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">length&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`\n[检测到 &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tool_calls&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">length&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> 个工具调用]`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 并行执行所有 tool_calls（支持多工具并发）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">toolResults&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nb">Promise&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">all&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tool_calls&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">map&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kr">async&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">toolCall&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="cm">/* ... */&lt;/span> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 将每个工具结果转为 ToolMessage，加入对话历史
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tool_calls&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">forEach&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">toolCall&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">index&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">messages&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">push&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="nx">ToolMessage&lt;/span>&lt;span class="p">({&lt;/span> &lt;span class="nx">content&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">toolResults&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="nx">index&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="nx">tool_call_id&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">toolCall&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">id&lt;/span> &lt;span class="p">}));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 再次调用模型，让其基于工具结果生成最终回复
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">response&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nx">modelWithTools&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">invoke&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">messages&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;\n[最终回复]&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">content&lt;/span>&lt;span class="p">);&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>&lt;div class="hextra-code-copy-btn-container hx-opacity-0 hx-transition group-hover/code:hx-opacity-100 hx-flex hx-gap-1 hx-absolute hx-m-[11px] hx-right-0 hx-top-0">
+&lt;button
+class="hextra-code-copy-btn hx-group/copybtn hx-transition-all active:hx-opacity-50 hx-bg-primary-700/5 hx-border hx-border-black/5 hx-text-gray-600 hover:hx-text-gray-900 hx-rounded-md hx-p-1.5 dark:hx-bg-primary-300/10 dark:hx-border-white/10 dark:hx-text-gray-400 dark:hover:hx-text-gray-50"
+title="Copy code"
+>
+&lt;div class="copy-icon group-[.copied]/copybtn:hx-hidden hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;div class="success-icon hx-hidden group-[.copied]/copybtn:hx-block hx-pointer-events-none hx-h-4 hx-w-4">&lt;/div>
+&lt;/button>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>这是典型的 &lt;strong>ReAct（Reasoning + Acting）Agent 循环&lt;/strong>：
+&lt;ol>
+&lt;li>LLM 输出 &lt;code>tool_calls&lt;/code>（结构化调用指令）&lt;/li>
+&lt;li>代码解析并由 agent &lt;code>执行&lt;/code>对应工具&lt;/li>
+&lt;li>将结果以 &lt;code>ToolMessage&lt;/code> 形式喂回模型&lt;/li>
+&lt;li>LLM 综合原始请求 + 工具结果 → 生成自然语言回答&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>✅ 支持多个工具调用、错误捕获、日志追踪&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3>🌟 总结：这个脚本的价值&lt;span class="hx-absolute -hx-mt-20" id="-总结这个脚本的价值">&lt;/span>
+&lt;a href="#-%e6%80%bb%e7%bb%93%e8%bf%99%e4%b8%aa%e8%84%9a%e6%9c%ac%e7%9a%84%e4%bb%b7%e5%80%bc" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h3>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>特性&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>✅ &lt;strong>开箱即用的文件读取 Agent&lt;/strong>&lt;/td>
+&lt;td>用户一句话即可触发读文件 + 解释，无需手动写 &lt;code>fs.readFile&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>✅ &lt;strong>模型无关 &amp;amp; API 兼容&lt;/strong>&lt;/td>
+&lt;td>通过 &lt;code>baseURL&lt;/code> 无缝切换 Qwen/Ollama/DeepSeek 等后端&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>✅ &lt;strong>标准化工具协议&lt;/strong>&lt;/td>
+&lt;td>基于 LangChain &lt;code>tool()&lt;/code> + Zod Schema，可轻松扩展其他工具（如 &lt;code>run_code&lt;/code>, &lt;code>search_web&lt;/code>）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>✅ &lt;strong>清晰的调试日志&lt;/strong>&lt;/td>
+&lt;td>每一步（调用、执行、返回）都有 &lt;code>console.log&lt;/code>，便于排查问题&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Ai Agent Invoke Tool Call Mcp</title><link>https://cloudedseal.github.io/blog/ai-agent-invoke-tool-call-mcp/</link><pubDate>Fri, 10 Jul 2026 13:45:25 +0800</pubDate><guid>https://cloudedseal.github.io/blog/ai-agent-invoke-tool-call-mcp/</guid><description>
 &lt;h2>MCP 是什么？&lt;span class="hx-absolute -hx-mt-20" id="mcp-是什么">&lt;/span>
 &lt;a href="#mcp-%e6%98%af%e4%bb%80%e4%b9%88" class="subheading-anchor" aria-label="Permalink for this section">&lt;/a>&lt;/h2>&lt;p>一个 &lt;code>Tool&lt;/code> 的 RPC（远程过程调用）层，用于在 AI Agent 中调用外部工具。
 大模型支持 tool calls 就能发现可以使用的 tools，然后让 AI Agent 调用这些 tools 来完成任务。&lt;/p>
